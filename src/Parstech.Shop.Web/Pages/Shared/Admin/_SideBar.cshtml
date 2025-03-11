@@ -1,0 +1,316 @@
+﻿<div id="sidebar">
+    <div class="sidebar-top">
+        @* <div class="search-box">
+        <form class="search-form" action="#" method="GET">
+        <div class="input-group">
+        <input type="text" class="form-control" placeholder="جستجو..." name="key">
+        <span class="input-group-btn">
+        <button type="submit" class="btn btn-round submit">
+        <i class="icon-magnifier"></i>
+        </button>
+        </span>
+        </div>
+        </form>
+        </div><!-- /.search-box -->*@
+        <partial name="Shared/_UserNamePartialSideBar" />
+        <!-- /.user-box -->
+    </div><!-- /.sidebar-top -->
+    <div class="side-menu-container">
+        <ul class="metismenu" id="side-menu">
+            <li class="open active conditional-bg">
+                <a href="/Admin">
+                    <i class="icon-home Red"></i>
+                    <span>پیشخوان</span>
+                </a>
+
+            </li>
+            @if (User.IsInRole("SupperUser") || (!User.IsInRole("Store") && !User.IsInRole("StoreBySend")))
+            {
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-settings"></i>
+                        <span>تنظیمات سایت</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Setting/Site/">
+                                <i class="icon-folder "></i>
+                                <span>تنظیمات اصلی سایت</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Setting/Seo/">
+                                <i class="icon-folder"></i>
+                                <span>بهینه سازی و SEO</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Setting/Sections/">
+                                <i class="icon-folder"></i>
+                                <span>صفحه اصلی فروشگاه</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Setting/DiscountPanel/">
+                                <i class="icon-folder"></i>
+                                <span>پنل تخفیف</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Setting/Social/">
+                                <i class="icon-folder"></i>
+                                <span>شبکه های اجتماعی</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-user Green"></i>
+                        <span>کاربران</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Users/">
+                                <i class="icon-folder"></i>
+                                <span>لیست کاربران</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Users/Stores">
+                                <i class="icon-folder"></i>
+                                <span>تامین کنندگان</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Admin/Users/Permission/">
+                                <i class="icon-folder"></i>
+                                <span>دسترسی کاربران</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-layers Orange"></i>
+                        <span>محصولات</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Categuries" class="">
+                                <i class="icon-folder"></i>
+                                <span>دسته بندی محصولات</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Products" class="">
+                                <i class="icon-folder "></i>
+                                <span>لیست محصولات</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Admin/Feutures/Categuries" class="">
+                                <i class="icon-folder"></i>
+                                <span>دسته بندی ویژگی ها</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Admin/Feutures/" class="">
+                                <i class="icon-folder"></i>
+                                <span>ویژگی محصولات</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Brands/" class="">
+                                <i class="icon-folder"></i>
+                                <span>برند ها</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Admin/Representations/" class="">
+                        <i class="icon-folder Cyen"></i>
+                        <span>انبار داری</span>
+                    </a>
+
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-basket-loaded Pink"></i>
+                        <span>سفارشات</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Orders/" class="">
+                                <i class="icon-folder"></i>
+                                <span>لیست سفارشات</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Coupons/" class="">
+                                <i class="icon-folder"></i>
+                                <span>مدیریت کوپن ها</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Admin/Finanical/" class="">
+                        <i class="icon-credit-card Blue"></i>
+                        <span>مدیریت مالی</span>
+                    </a>
+                    @*<ul>
+                <li>
+                <a href="blank.html" class="">
+                <i class="icon-folder"></i>
+                <span></span>
+                </a>
+                </li>
+
+                </ul>*@
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-basket-loaded Pink"></i>
+                        <span>پنل فروشنده</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Store/Sections" class="">
+                                <i class="icon-folder"></i>
+                                <span>صفحه فروشنده</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Store/Sales" class="">
+                                <i class="icon-folder"></i>
+                                <span>لیست فروش</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Representations/testquick" class="">
+                                <i class="icon-folder"></i>
+                                <span>ویرایش سریع انبار</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-doc Green"></i>
+                        <span>درخواست ها</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Requests/CreditRequests">
+                                <i class="icon-folder"></i>
+                                <span>
+                                    اعتبار خرید از پارس تک
+                                </span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-chart Yellow"></i>
+                        <span>گزارشات</span>
+                    </a>
+                    <ul>
+                        @*<li>
+                    <a href="/Admin/Reports">
+                    <i class="icon-folder"></i>
+                    <span>
+                    پنل گزارشات
+                    </span>
+                    </a>
+                    </li>*@
+                        <li>
+                            <a href="/Admin/Reports/Finanical/Transactions">
+                                <i class="icon-folder"></i>
+                                <span>
+                                    امور مالی
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Reports/Finanical/ActiveCredit">
+                                <i class="icon-folder"></i>
+                                <span>
+                                    امور تسهیلات و وام
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-basket-loaded Pink"></i>
+                        <span>پنل فروشنده</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Store/Sections" class="">
+                                <i class="icon-folder"></i>
+                                <span>صفحه فروشنده</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Products" class="">
+                                <i class="icon-folder "></i>
+                                <span>لیست محصولات</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Representations/" class="">
+                                <i class="icon-folder Cyen"></i>
+                                <span>انبار داری</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="/Admin/Representations/testquick" class="">
+                                <i class="icon-folder"></i>
+                                <span>ویرایش سریع انبار</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/Store/Sales" class="">
+                                <i class="icon-folder"></i>
+                                <span>لیست فروش</span>
+                            </a>
+                        </li>
+
+                        @if (User.IsInRole("StoreBySend"))
+                        {
+                            <li>
+                                <a href="/Admin/Orders/" class="">
+                                    <i class="icon-folder"></i>
+                                    <span>لیست سفارشات جهت ارسال</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+        </ul><!-- /#side-menu -->
+    </div><!-- /.side-menu-container -->
+</div><!-- /#sidebar -->

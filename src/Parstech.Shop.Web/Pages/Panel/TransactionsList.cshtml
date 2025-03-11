@@ -1,0 +1,137 @@
+﻿@page
+@model Shop.Web.Pages.Panel.TransactionsListModel
+@{
+}
+<main id="content" role="main">
+
+
+    <div class="container">
+
+
+
+        <div class="row">
+            <partial name="Site/_PanelSideBar" />
+
+            <div class="col-lg-9 order-lg-1">
+                <div class="pb-7 mb-7">
+                    <!-- Title -->
+                    <div class="panel panel-warning box shadow border">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h6 class="title">
+
+                                    تراکنشات حساب
+                                    <i class="    fas fa-money-bill-transfer Green"></i>
+                                </h6>
+                            </div><!-- /.panel-title -->
+                            <div class="buttons-box toggle">
+                            </div><!-- /.buttons-box -->
+                        </div><!-- /.panel-heading -->
+                        <div class="panel-body rtl">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-6"><button onclick="GetTransaction()" type="button" class="btn w-100 btn-xs cart-Green cart-Hover font-weight-bold m-1"><i class="fas fa-money-bill-transfer Green m-1"></i>تراکنشات کیف پول</button></div>
+                                <div class="col-lg-3 col-6"><button onclick="GetCoins()" type="button" class="btn w-100 btn-xs cart-Orange cart-Hover font-weight-bold m-1"><i class=" fas fa-coins Yellow m-1"></i>لیست امتیازات</button></div>
+                                <div class="col-lg-3 col-6"><button onclick="GetAghsat()" type="button" class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i class="fas fa-circle-info Blue m-1"></i>اقساط تسهیلات</button></div>
+                                <div class="col-lg-3 col-6"><button onclick="GetOrgCredit()" type="button" class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i class="fas fa-circle-info Blue m-1"></i>اعتبار سازمانی</button></div>
+                            </div>
+                            <div class="d-flex mb-2" id="pagingHeader">
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table " id="data-table">
+
+                                    <thead>
+                                        <tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            <div class="d-flex mb-2" id="paging">
+                            </div>
+                        </div><!-- /.panel-body -->
+                    </div>
+                    <!-- End Title -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+
+@*Modal*@
+<!--Start Transaction Detail-->
+<div id="TransactionDetailModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">جزئیات</h4>
+
+            </div>
+            <div class="modal-body">
+
+
+                <div id="TransactionDto">
+
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--End Transaction Detail-->
+@*End Modal*@
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoading"
+      data-ajax-complete="OnComplete"
+      data-ajax-failure="OnError">
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+    <input type="hidden" asp-for="Type" id="walletType" />
+</form>
+<form method="post" id="TransactionDetail" asp-page-handler="TransactionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingTransactionDetail"
+      data-ajax-complete="OnCompleteTransactionDetail"
+      data-ajax-failure="OnErrorTransactionDetail">
+    <input type="hidden" asp-for="transactionId" id="transactionId" />
+</form>
+<!--End FORMS-->
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+    <script src="~/Admin/js/pages/swal.js"></script>
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+    <script src="~/shared/lib/site/panel/Transactions.js"></script>
+    <script src="~/shared/lib/site/panel/AllShared.js"></script>
+}

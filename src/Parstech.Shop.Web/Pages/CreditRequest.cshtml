@@ -1,0 +1,142 @@
+﻿@page
+@model Shop.Web.Pages.CreditRequest
+@{
+    ViewData["Title"] = "CreditRequest";
+}
+
+<main id="content" role="main">
+
+
+    <div class="container">
+        <div class="row m-5">
+
+            
+
+            <div class="col-lg-12 order-lg-1">
+                <div class="pb-7 mb-7">
+                    <!-- Title -->
+                    <div class="panel panel-warning box shadow border">
+                        <div class="panel-heading">
+                            <div class="panel-title form-weight-bold">
+                                <h6 class="title ">
+
+                                    فرم درخواست اعتبار خرید از پارس تک
+                                    <i class="  far fa-credit-card Orange"></i>
+                                </h6>
+                            </div><!-- /.panel-title -->
+                            <div class="buttons-box toggle">
+                            </div><!-- /.buttons-box -->
+                        </div><!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form method="post"
+                                  data-ajax="true"
+                                  data-ajax-method="POST"
+                                  data-ajax-complete="OnCompleteCreditRequest">
+                                
+                                <div class="row rtl">
+                                   
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label> نام</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.Name" id="formCredit_Name" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label> نام خانوادگی</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.Family" id="formCredit_Family" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کدپرسنلی</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.PersonalCode" id="formCredit_PersonalCode" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کد ملی</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.InternationalCode" id="formCredit_InternationalCode" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>تلفن همراه</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.Mobile" id="formCredit_Mobile" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>استان</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.State" id="formCredit_State" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>مبلغ درخواستی وام ( تومان)</label>
+                                        <label class="red">الزامی</label>
+                                        <div class="form-group round">
+                                            <input asp-for="formCredit.TextRequestPrice" id="formCredit_TextRequestPrice" type="text" class="form-control" value="" onkeyup="javascript:this.value=itpro(this.value);">
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                        <button type="submit" class="btn BgOrange text-white btn-round btn-block mb-2">
+                                            ثبت درخواست
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
+                                        </button>
+                                    </div><!-- /.col-md-8 -->
+
+
+                                </div>
+                                </form>
+                        </div><!-- /.panel-body -->
+                    </div>
+                    <!-- End Title -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<form method="post" id="DeleteChild" asp-page-handler="DeleteChild"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteDeleteChild">
+
+    <input type="hidden" name="childId" id="childId" />
+
+</form>
+<!--FORMS-->
+@section Styles{
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+
+}
+@section Scripts {
+
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/shared/lib/site/creditrequest.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+}

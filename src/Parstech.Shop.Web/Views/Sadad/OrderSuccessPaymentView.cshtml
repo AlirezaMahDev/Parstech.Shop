@@ -1,0 +1,225 @@
+﻿@model Shop.Application.DTOs.Order.VerifyResultData
+
+
+@{
+    //Layout = "/Pages/Shared/Checkout_Layout.cshtml";
+    ViewData["Title"] = "بازگشت از پرداخت";
+}
+<main id="content" role="main">
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-9 order-lg-1">
+                <div class="pb-7 mb-7">
+                    <!-- Title -->
+                    <div class="panel panel-warning box shadow border">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h6 class="title">
+
+                                    بازگشت از پرداخت
+                                    <i class="  fas fa-bag-shopping Yellow "></i>
+                                </h6>
+                            </div><!-- /.panel-title -->
+                            <div class="buttons-box toggle">
+                            </div><!-- /.buttons-box -->
+                        </div><!-- /.panel-heading -->
+                        <div class="panel-body text-center">
+                           @* @if (Model.Result.IsSuccessed)
+                            {
+                                <i class="  fas fa-circle-check Green fa-big"></i>
+                                <h3>پرداخت موفق</h3>
+                                <h5>@Model.Result.Message</h5>
+                                <h6>@Model.Result.Object</h6>
+                                <h6>توضیحات</h6>
+                                <small>@Model.Result.Object2</small>
+                            }
+                            else
+                            {
+                                <i class="  fas fa-circle-xmark Red fa-big"></i>
+                                <h3>پرداخت ناموفق</h3>
+                                <h5>@Model.Result.Message</h5>
+                            }*@
+
+                        </div><!-- /.panel-body -->
+                    </div>
+                    <!-- End Title -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+@*@{
+    OrderCompleteDTO data = ViewData["data"] as OrderCompleteDTO;
+    Layout = "/Pages/Shared/Checkout_Layout.cshtml";
+}*@
+
+
+@*<header class="header-shopping dt-sl">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center pt-2">
+                <div class="header-shopping-logo dt-sl">
+                    <a href="#">
+                        <img src="/img/logo.png" alt="" width="170">
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <ul class="checkout-steps">
+                    <li>
+                        <a href="#" class="active">
+                            <span>اطلاعات ارسال</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <span>پرداخت</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <span>اتمام خرید و ارسال</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="main-content dt-sl mt-4 mb-3">
+    <div class="container main-container">
+
+        <div class="row">
+            <div class="cart-page-content col-12 px-0">
+                <div class="checkout-alert dt-sn dt-sn--box mb-4">
+                    <div class="circle-box-icon successful">
+                        <i class="mdi mdi-check-bold"></i>
+                    </div>
+                    <div class="checkout-alert-title">
+                        <h4>
+                            سفارش <span class="checkout-alert-highlighted checkout-alert-highlighted-success">@data.Order.OrderCode</span>
+                            با موفقیت در سیستم ثبت شد.
+                        </h4>
+                    </div>
+                    <div class="checkout-alert-content">
+                        <p class="checkout-alert-content-success">
+                            سفارش نهایتا تا یک روز آماده ارسال خواهد شد.
+                        </p>
+                    </div>
+                </div>
+                <section class="checkout-details dt-sl dt-sn dt-sn--box mt-4 pt-4 pb-3 pr-3 pl-3 mb-5 px-res-1">
+                    <div class="checkout-details-title">
+                        <h4>
+                            کد سفارش:
+                            <span>
+                                @data.Order.OrderCode
+                            </span>
+                        </h4>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-8 col-sm-12">
+                                <div class="checkout-details-title">
+                                    <p>
+                                        سفارش شما با موفقیت در سیستم ثبت شد و هم اکنون
+                                        <span class="text-highlight text-highlight-success">تکیمل شده </span>
+                                        است.
+                                        جزئیات این سفارش را می‌توانید با کلیک بر روی دکمه
+                                        <a href="/profile/orders" class="border-bottom-dt">پیگیری سفارش</a>
+                                        مشاهده نمایید.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                <a href="#" class="btn-primary-cm bg-secondary btn-with-icon d-block text-center pr-0">
+                                    <i class="mdi mdi-shopping"></i>
+                                    پیگیری سفارش
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 px-res-0">
+                                <div class="checkout-table">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                نام تحویل گیرنده:
+                                                <span>
+                                                    @data.UserAddress.PersonGive
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                شماره تماس :
+                                                <span>
+                                                    @data.UserAddress.PersonNumber
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                تعداد مرسوله :
+                                                <span>
+                                                    ۱
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                مبلغ کل:
+                                                <span>
+                                                    @data.Order.Total.ToString("#,0") تومان
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                روش پرداخت:
+                                                <span>
+                                                    پرداخت الکترونیکی سداد
+
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                وضعیت سفارش:
+                                                <span>
+                                                    پرداخت موفق
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p>
+                                                آدرس : @data.UserAddress.State.StateTitle , @data.UserAddress.City , @data.UserAddress.FullAddress
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+        </div>
+
+    </div>
+</main>*@
+
+

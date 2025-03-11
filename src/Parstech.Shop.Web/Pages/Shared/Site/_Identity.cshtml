@@ -1,0 +1,265 @@
+﻿<div class="js-scrollbar u-sidebar__body">
+    <div class="u-sidebar__content u-header-sidebar__content">
+        <form class="js-validate rtl">
+            <!-- Login -->
+            <div id="login" data-target-group="idForm">
+                <!-- Title -->
+                <header class="text-center mb-7">
+                    <h2 class="h4 mb-0">ورود با کد یکبار مصرف</h2>
+                    <p>شماره همراهی که با آن عضو شده اید را وارد نمایید</p>
+                </header>
+                <!-- End Title -->
+                <!-- Form Group -->
+                <div class="form-group">
+                    <label>شماره همراه</label>
+                    <input type="tel" class="form-control" name="loginmobile" id="loginmobile" />
+                   @*  <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="signupPassword">شماره همراه </label>
+                        <div class="input-group">
+                            
+                            <input type="tel" class="form-control" name="loginmobile" id="loginmobile" placeholder="شماره همراه" aria-describedby="signupPasswordLabel" required
+                                   data-msg=" شماره همراه را به درستی وارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div> *@
+                </div>
+                <!-- End Form Group -->
+
+
+                <div class="show" id="smsSection">
+                    <div class="mb-2">
+                        <button type="button" onclick="LoginReqUser()" class="btn btn-block btn-sm BgYellow White transition-3d-hover">دریافت کد یکبار مصرف</button>
+                    </div>
+                </div>
+                <div class="show" id="PasswordSection">
+                    <div class="mb-2">
+                        <button type="button" onclick="PasswordLoginReqUser()" class="btn btn-block btn-sm BgBlue White transition-3d-hover">ورود با کلمه عبور</button>
+                    </div>
+                </div>
+                <div class="hidden" id="loginSection">
+                    <div class="form-group">
+                        <label>کد تائید را وارد نمایید</label>
+                        <input type="text" class="form-control" name="loginactiveCode" id="loginactiveCode" />
+
+                       
+                    </div>
+                    <div class="mb-2">
+                        <button type="button" onclick="LoginUser()" class="btn btn-block btn-sm BgYellow White transition-3d-hover">تائیدیه حساب کاربری</button>
+                    </div>
+                </div>
+                <div class="hidden" id="PasswordloginSection">
+                    <div class="form-group">
+                        <label>کلمه عبور</label>
+                        <input type="password" class="form-control" name="loginPassword" id="loginPassword" />
+
+                        
+                    </div>
+                    <div class="mb-2">
+                        <button type="button" onclick="PasswordLoginUser()" class="btn btn-block btn-sm BgYellow White transition-3d-hover">ورود به حساب کاربری</button>
+                    </div>
+                </div>
+                
+
+                <div class="text-center mb-4">
+                    <span class="small text-muted">حساب کاربری ندارید؟</span>
+                    <a class="js-animation-link small text-dark" href="javascript:;"
+                       data-target="#signup"
+                       data-link-group="idForm"
+                       data-animation-in="slideInUp">
+                        ثبت نام در سایت
+                    </a>
+                </div>
+
+               
+            </div>
+
+            <!-- Signup -->
+            <div id="signup" style="display: none; opacity: 0;" data-target-group="idForm">
+                <!-- Title -->
+                <header class="text-center mb-7">
+                    <h3 class="h5 mb-0">ثبت نام در فروشگاه</h3>
+                    <p>جهت ثبت نام فرم زیر را تکمیل نمایید</p>
+                </header>
+                <!-- End Title -->
+                <!-- Form Group -->
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="mobile">شماره همراه </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="fas fa-mobile"></span>
+                                </span>
+                            </div>
+                            <input type="tel" class="form-control" name="registerMobile" id="registermobile" placeholder="شماره همراه" aria-describedby="signupPasswordLabel" required
+                                   data-msg=" شماره همراه به درستی را وارد نماییدوارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Input -->
+                <!-- Form Group -->
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="name">نام </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="fas fa-user"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="registerName" id="registername" placeholder="نام" aria-describedby="signupPasswordLabel" required
+                                   data-msg="نام کاربری را وارد نماییدخود شماره همراه به درستی را وارد نماییدوارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="family">نام خانوادگی </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="fas fa-user"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="registerFamily" id="registerfamily" placeholder="نام خانوادگی" aria-describedby="signupPasswordLabel" required
+                                   data-msg="نام کاربری را وارد نماییدخود شماره همراه به درستی را وارد نماییدوارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="family">کد ملی</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="fas fa-user"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="registerMeliCode" id="registerMeliCode" placeholder="کد ملی" aria-describedby="signupPasswordLabel" required
+                                   data-msg="کد ملی را به درستی را وارد نماییدوارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="state">استان </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class=" fas fa-map-location"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="registerState" id="registerstate" placeholder="استان محل زندگی" aria-describedby="signupPasswordLabel" required
+                                   data-msg="استان را  وارد کنید "
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Input -->
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="city">شهر </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="  fas fa-location-dot"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="registerCity" id="registercity" placeholder="شهر محل زندگی" aria-describedby="signupPasswordLabel" required
+                                   data-msg="شهر را  وارد کنید "
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Input -->
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="address">آدرس محل زندگی </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="  fas fa-location-crosshairs"></span>
+                                </span>
+                            </div>
+                            <textarea type="text" class="form-control" name="registerAddress" id="registeraddress" placeholder="آدرس محل زندگی" aria-describedby="signupPasswordLabel" required
+                                   data-msg="آدرس را  وارد کنید "
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <button type="button" onclick="RegisterUser()" class="btn btn-block btn-sm BgYellow White transition-3d-hover">ثبت نام </button>
+                </div>
+
+                <div class="text-center mb-4">
+                    <span class="small text-muted">قبلا ثبت نام کرده اید؟</span>
+                    <a class="js-animation-link small text-dark" href="javascript:;"
+                       data-target="#login"
+                       data-link-group="idForm"
+                       data-animation-in="slideInUp">
+                        وارد شوید
+                    </a>
+                </div>
+
+               
+                <!-- End Login Buttons -->
+            </div>
+            <!-- End Signup -->
+            <!-- Forgot Password -->
+            <div id="forgotPassword" style="display: none; opacity: 0;" data-target-group="idForm">
+                <!-- Title -->
+                <header class="text-center mb-7">
+                    <h2 class="h4 mb-0">ورود با کد یکبار مصرف</h2>
+                    <p>شماره همراهی که با آن عضو شده اید را وارد نمایید</p>
+                </header>
+                <!-- End Title -->
+                <!-- Form Group -->
+                <div class="form-group">
+                    <div class="js-form-message js-focus-state">
+                        <label class="sr-only" for="signupPassword">شماره همراه </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text inputIcon" id="signupPasswordLabel">
+                                    <span class="fas fa-mobile"></span>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" name="password" id="signupPassword" placeholder="شماره همراه" aria-describedby="signupPasswordLabel" required
+                                   data-msg=" شماره همراه را به درستی وارد نمایید"
+                                   data-error-class="u-has-error"
+                                   data-success-class="u-has-success">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Form Group -->
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-block btn-sm BgYellow White transition-3d-hover">دریافت کد یکبار مصرف</button>
+                </div>
+
+                <div class="text-center mb-4">
+                    <span class="small text-muted">انصراف؟</span>
+                    <a class="js-animation-link small" href="javascript:;"
+                       data-target="#login"
+                       data-link-group="idForm"
+                       data-animation-in="slideInUp">
+                        ورود به حساب از طریق نام کاربری و کلمه عبور
+                    </a>
+                </div>
+            </div>
+            <!-- End Forgot Password -->
+        </form>
+    </div>
+</div>
