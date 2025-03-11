@@ -1,0 +1,140 @@
+﻿@page
+@model Shop.Web.Pages.Admin.Requests.CreditRequestsModel
+@{
+    Layout = "Shared/Admin_Layout";
+    ViewData["Title"] = "Home page";
+}
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست درخواست اعتبار خرید
+                    </h3>
+
+                </div>
+
+                <div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-bs-dismiss="modal">×</button>
+                                <h4 class="modal-title">افزودن کیف پول</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round"
+                                    data-bs-dismiss="modal">بازگشت</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body" style="">
+
+
+
+                <div class="table-responsive">
+
+                    <div id="DataSection">
+                    </div>
+
+
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+
+
+        </div>
+    </div>
+
+<div id="ChangeModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تغییر وضعیت درخواست</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                        <form method="post" asp-page-handler="ChangeStatus"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          
+                          data-ajax-complete="OnCompleteChangeSubmit">
+                            <input type="hidden" name="Id" id="FCid" />
+
+
+
+                        <div class="form-group">
+                            <label>وضعیت</label>
+                            <select class="form-control" name="Type" id="type">
+                                
+                                    <option value="Valid">تائید درخواست</option>
+                                    <option value="InValid">در انتظار</option>
+                                
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">ثبت </button>
+                        </div>
+
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <form method="post" asp-page-handler="GetData" id="GetDataForm" data-ajax="true" data-ajax-method="POST"
+        data-ajax-begin="OnLoading" data-ajax-complete="OnComplete" data-ajax-failure="OnError">
+    </form>
+    <form method="post" asp-page-handler="Excel" id="ExcelForm">
+        <input type="hidden" name="userFilter" id="exuserFilter" />
+        <input type="hidden" name="walletType" id="exwalletType" />
+        <input type="hidden" name="transactionType" id="extransactionType" />
+        <input type="hidden" name="fromDate" id="exfromDate" />
+        <input type="hidden" name="toDate" id="extoDate" />
+    </form>
+    @section Scripts {
+        <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/Admin/plugins/morris.js/morris.min.js"></script>
+        <script src="~/shared/lib/admin/requests/creditrequests.js"></script>
+        <script src="~/shared/lib/shared/toast/toast.js"></script>
+        <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+        <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+        <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+        <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+        <script src="~/Admin/js/pages/select2.js"></script>
+        <script src="~/Admin/plugins/persian-date/persian-date.min.js"></script>
+
+        <script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
+        <script src="~/Admin/js/pages/calendar.js"></script>
+    }
+
+    @section Styles {
+        <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+        <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+        <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
+
+    }

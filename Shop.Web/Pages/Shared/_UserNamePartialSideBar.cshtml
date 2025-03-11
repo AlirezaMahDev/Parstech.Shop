@@ -1,0 +1,6 @@
+﻿@{
+    var Param = new Shop.Application.DTOs.User.UserNameDto();
+    Param.userName = User.Identity.Name;
+    Param.Position = "SideBar";
+}
+@await Component.InvokeAsync("UserName",Param)  

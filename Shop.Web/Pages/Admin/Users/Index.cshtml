@@ -1,0 +1,609 @@
+﻿@page
+@using Shop.Application.Contracts.Persistance
+@model Shop.Web.Pages.Admin.Users.IndexModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+@inject IRoleRepository _roleRep;
+@{
+    var Roles = await _roleRep.GetAll();
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست کاربران
+                    </h3>
+                </div>
+                <div class="buttons-box">
+                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal" data-bs-target="#CreateUser">
+                        <i class="icon-plus"></i>
+                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                    </button>
+
+                </div>
+                <div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">افزودن کاربر</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <form method="post" asp-page-handler="CreateUser" class="form-horizontal" role="form" enctype="multipart/form-data"
+                                              data-ajax="true"
+                                              data-ajax-method="POST"
+                                              data-ajax-begin="OnLoadingCreateUser"
+                                              data-ajax-complete="OnCompleteCreateUser"
+                                              data-ajax-failure="OnErrorCreateUser">
+
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                                <label>نام کاربری<span class="text-danger">*</span></label>
+                                                <div class="form-group round">
+                                                    <input asp-for="UserRegisterDto.UserName" required="" type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                                <label>نام<span class="text-danger">*</span></label>
+                                                <div class="form-group round">
+                                                    <input asp-for="UserRegisterDto.FirstName" required="" type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                                <label>نام خانوادگی<span class="text-danger">*</span></label>
+                                                <div class="form-group round">
+                                                    <input asp-for="UserRegisterDto.LastName" required="" type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                                <label>موبایل<span class="text-danger">*</span></label>
+                                                <div class="form-group round">
+                                                    <input asp-for="UserRegisterDto.Mobile" type="text" required="" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                                <label>دسترسی</label>
+                                                <div class="form-group round">
+                                                    <select asp-for="UserRegisterDto.RoleName" type="text" class="form-control">
+                                                        @foreach (var role in Roles)
+                                                        {
+                                                            <option value="@role.Name">@role.PersianName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                                    ثبت
+                                                    <div class="paper-ripple">
+                                                        <div class="paper-ripple__background"></div>
+                                                        <div class="paper-ripple__waves"></div>
+                                                    </div>
+                                                </button>
+                                            </div><!-- /.col-md-8 -->
+                                        </form>
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body" style="">
+                <div class="d-flex mb-2" id="pagingHeader">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="data-table">
+
+                        <div class="form-group">
+                            <label>فیلتر کاربر</label>
+                            <select id="FilterInput" class="form-control select2">
+                                <option value="">انتخاب نشده</option>
+                                @foreach (var item in Model.UserFilterDtos)
+                                {
+                                    <option value="@item.Id">@item.UserName | @item.FirstName @item.LastName | @item.EconomicCode | @item.NationalCode | @item.Mobile</option>
+                                }
+                            </select>
+                            <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
+
+
+                        </div>
+                        
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="d-flex mb-2" id="paging">
+                </div>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+
+    </div>
+</div>
+
+
+
+
+
+<!--billing Data-->
+<div id="BillingModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">اطلاعات حقوقی</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <form method="post" asp-page-handler="EditOrCreateBilling" class="form-horizontal" role="form" enctype="multipart/form-data"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-begin="OnLoadingBillingEC"
+                              data-ajax-complete="OnCompleteBillingEC"
+                              data-ajax-failure="OnErrorBillingEC">
+
+                            <input type="hidden" asp-for="UserBillingDto.Id" id="UserBillingDto_Id" />
+                            <input type="hidden" asp-for="UserBillingDto.UserId" id="UserBillingDto_UserId" />
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.FirstName" id="UserBillingDto_FirstName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام خانودگی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.LastName" id="UserBillingDto_LastName" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>شرکت</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.Company" id="UserBillingDto_Company" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>پست الکترونیکی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.Email" id="UserBillingDto_Email" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>تلفن</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.Phone" id="UserBillingDto_Phone" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>موبایل</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.Mobile" id="UserBillingDto_Mobile" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کشور</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.Country" id="UserBillingDto_Country" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>استان</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.State" id="UserBillingDto_State" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>شهر</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.City" id="UserBillingDto_City" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>آدرس</label>
+                                <div class="form-group round">
+                                    <textarea asp-for="UserBillingDto.Address" id="UserBillingDto_Address" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد پستی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.PostCode" id="UserBillingDto_PostCode" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد اقتصادی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.EconomicCode" id="UserBillingDto_EconomicCode" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد ملی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserBillingDto.NationalCode" id="UserBillingDto_NationalCode" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </form>
+                    </div><!-- /col-lg-12 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--shipping Data-->
+<div id="ShippingDataModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">آدرس های کاربر</h4>
+                <button onclick="AddShipping()" class="btn btn-success w-50">افزودن آدرس</button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="AddressData">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--shipping CreateUpdate-->
+<div id="ShippingCreateUpdateModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">آدرس کاربر</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <form method="post" asp-page-handler="EditOrCreateShipping" class="form-horizontal" role="form" enctype="multipart/form-data"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-begin="OnLoadingShippingEC"
+                              data-ajax-complete="OnCompleteShippingEC"
+                              data-ajax-failure="OnErrorShippingEC">
+
+                            <input type="hidden" asp-for="UserShippingDto.Id" id="UserShippingDto_Id" />
+                            <input type="hidden" asp-for="UserShippingDto.UserId" id="UserShippingDto_UserId" class="IUserId" />
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.FirstName" id="UserShippingDto_FirstName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام خانوادگی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.LastName" id="UserShippingDto_LastName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>تلفن</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.Phone" id="UserShippingDto_Phone" type="text" class="form-control ">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>موبایل</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.Mobile" id="UserShippingDto_Mobile" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کشور</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.Country" id="UserShippingDto_Country" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>استان</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.State" id="UserShippingDto_State" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>شهر</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.City" id="UserShippingDto_City" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>آدرس</label>
+                                <div class="form-group round">
+                                    <textarea asp-for="UserShippingDto.Address" id="UserShippingDto_Address" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد پستی</label>
+                                <div class="form-group round">
+                                    <input asp-for="UserShippingDto.PostCode" id="UserShippingDto_PostCode" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </form>
+                    </div><!-- /col-lg-12 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Persmissoin Data-->
+<div id="PersmissoinDataModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">دسترسی های کاربر</h4>
+                <button onclick="ShowRoleCreateModal()" class="btn btn-success"><i class="icon-plus"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th>دسترسی</th>
+                                    <th>عملیات</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="PersmissoinData">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="RoleCreateModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">دسترسی کاربر</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <form method="post" asp-page-handler="AddRole" class="form-horizontal" role="form" enctype="multipart/form-data"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-begin="OnLoadingAddRole"
+                              data-ajax-complete="OnCompleteAddRole"
+                              data-ajax-failure="OnErrorAddRole">
+
+                            <input type="hidden" asp-for="UserRole.NumberuserId" id="UserRole_NumberuserId" />
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>دسترسی</label>
+                                <div class="form-group round">
+                                    <select asp-for="UserRole.RoleName" type="text" class="form-control">
+                                        @foreach (var role in Roles)
+                                        {
+                                            <option value="@role.Name">@role.PersianName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </form>
+                    </div><!-- /col-lg-12 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FORMS-->
+<!--GetData*-->
+<form method="post" id="GetDataForm" asp-page-handler="Data" class="form-horizontal" role="form" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+</form>
+<form id="GetBillingForm" method="post" asp-page-handler="Billing" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingBillingGet"
+      data-ajax-complete="OnCompleteBillingGet"
+      data-ajax-failure="OnErrorBillingGet">
+
+    <input type="hidden" asp-for="IUserId" class="IUserId" />
+</form>
+
+<form id="GetShipppingListForm" method="post" asp-page-handler="ShippingList" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingShippingListGet"
+      data-ajax-complete="OnCompleteShippingListGet"
+      data-ajax-failure="OnErrorShippingListGet">
+
+    <input type="hidden" asp-for="IUserId" class="IUserId" />
+</form>
+
+<form id="GetPersmissoinDataListForm" method="post" asp-page-handler="Roles" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingPersmissoinListGet"
+      data-ajax-complete="OnCompletePersmissoinListGet"
+      data-ajax-failure="OnErrorPersmissoinListGet">
+
+    <input type="hidden" asp-for="IUserId" class="IUserId" />
+    <input type="hidden" asp-for="UserRole.UserId" id="UserRole_UserId" />
+</form>
+
+<form id="GetShippingForm" method="post" asp-page-handler="Shipping" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingShippingGet"
+      data-ajax-complete="OnCompleteShippingGet"
+      data-ajax-failure="OnErrorShippingGet">
+
+    <input type="hidden" asp-for="ShippingId" class="ShippingId" />
+</form>
+
+<form id="DeleteShippingForm" method="post" asp-page-handler="DeleteShipping" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingShippingDelete"
+      data-ajax-complete="OnCompleteShippingDelete"
+      data-ajax-failure="OnErrorShippingDelete">
+
+    <input type="hidden" asp-for="ShippingId" class="ShippingId" />
+</form>
+
+<form id="DeleteRoleForm" method="post" asp-page-handler="DeleteRole" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingDeleteRole"
+      data-ajax-complete="OnCompleteDeleteRole"
+      data-ajax-failure="OnErrorDeleteRole">
+
+    <input type="hidden" asp-for="UserRole.UserName" id="UserRole_UserName2" />
+    <input type="hidden" asp-for="UserRole.RoleName" id="URole_RoleName" />
+
+</form>
+
+<form id="LoginByUserForm" method="post" asp-page-handler="loginByUser" >
+
+    <input type="hidden" name="loginUserId" id="loginUserId" />
+</form>
+<!--END FORMS-->
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    @*<script src="~/Admin/js/pages/datatable.js"></script>*@
+
+    <script src="~/shared/lib/admin/users/base.js"></script>
+    <script src="~/shared/lib/admin/users/billing.js"></script>
+    <script src="~/shared/lib/admin/users/shipping.js"></script>
+    <script src="~/shared/lib/admin/users/persmission.js"></script>
+    <script src="~/shared/lib/admin/users/user.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+
+}

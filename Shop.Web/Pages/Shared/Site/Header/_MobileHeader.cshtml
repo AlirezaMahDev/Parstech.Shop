@@ -1,0 +1,90 @@
+﻿<div class="row flex">
+    <div class="col-4">
+        <div class="col-auto position-static">
+            <div class="d-flex">
+                <ul class="d-flex list-unstyled mb-0">
+                    <partial name="Shared/_UserNamePartialSiteMenu" />
+
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="col d-none d-xl-block ">
+
+
+            <div class="input-group">
+                <input type="text" class="form-control text-right py-2 pl-5 font-size-15 border-right-0 height-40 border-width-2 rounded-left-pill SearchInput" id="SearchFilter" placeholder="جستجو" aria-label="Search for Products" aria-describedby="searchProduct1" required="">
+                <div class="input-group-append">
+                    <!-- Select -->
+                    <!-- End Select -->
+                    <button onclick="Search()" class="btn btn-gray border-width-2 height-40 py-2 px-3 rounded-right-pill" type="button" id="searchProduct1">
+                        <span class="ec ec-search font-size-24"></span>
+                    </button>
+                </div>
+            </div>
+            <div id="SearchSection">
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="col-4">
+        <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-center mt-2 mr-1 mr-xl-0 ml-xl-2" href="/" aria-label="Parstech">
+            <img src="~/Shared/Images/logo.png">
+        </a>
+    </div>
+    <div class="col-4">
+        <button type="button" id="toggleSidebar">باز/بسته کردن</button>
+        <div class="Mysidebar">
+            
+            <div class="sidebarContent">
+                <button type="button" id="toggleSidebar">باز/بسته کردن</button>
+                <a>اهههههههههههههههههههههههههههههههههههههههههههههههههههههههه</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* استایل‌های سایدبار */
+    .Mysidebar {
+        position: fixed;
+        top: 0;
+        right: -300px; /* این عدد می‌تواند اندازه‌ی سایدبار باشد */
+        width: 300px; /* عرض سایدبار */
+        height: 100%;
+        background-color: #f2f2f2;
+        transition: right 0.3s ease; /* انیمیشن باز و بسته شدن */
+        z-index: 999; /* تا از بقیه المان‌ها روی صفحه بالاتر باشد */
+    }
+
+    .sidebarContent {
+        padding: 20px;
+    }
+
+    /* استایل دکمه باز/بسته کردن */
+    #toggleSidebar {
+        position: absolute;
+        top: 10px;
+        right: -40px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+</style>
+<script>
+    document.getElementById('toggleSidebar').addEventListener('click', function () {
+        var sidebar = document.querySelector('.Mysidebar');
+        if (sidebar.style.right === '-300px') {
+            sidebar.style.right = '0';
+        } else {
+            sidebar.style.right = '-300px';
+        }
+    });
+
+</script>
