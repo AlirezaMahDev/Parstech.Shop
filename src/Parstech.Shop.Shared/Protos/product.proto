@@ -1,0 +1,224 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Product;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Product";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// ProductDto
+message Product {
+  int32 id = 1;
+  int32 product_stock_price_id = 2;
+  int32 product_id = 3;
+  string name = 4;
+  google.protobuf.StringValue latin_name = 5;
+  google.protobuf.StringValue code = 6;
+  int64 price = 7;
+  int64 sale_price = 8;
+  int64 discount_price = 9;
+  google.protobuf.Timestamp discount_date = 10;
+  int64 base_price = 11;
+  bool stock_status = 12;
+  int32 quantity = 13;
+  int32 maximum_sale_in_order = 14;
+  int32 score = 15;
+  google.protobuf.StringValue description = 16;
+  google.protobuf.StringValue short_description = 17;
+  google.protobuf.StringValue short_link = 18;
+  int32 type_id = 19;
+  string type_name = 20;
+  google.protobuf.StringValue variation_name = 21;
+  int32 store_id = 22;
+  string store_name = 23;
+  string latin_store_name = 24;
+  string image = 25;
+  google.protobuf.Int32Value parent_id = 26;
+  string parent_product_name = 27;
+  int32 brand_id = 28;
+  string brand_name = 29;
+  string latin_brand_name = 30;
+  int32 tax_id = 31;
+  int32 rep_id = 32;
+  string rep_name = 33;
+  google.protobuf.Timestamp create_date = 34;
+  string create_date_shamsi = 35;
+  int32 visit = 36;
+  int32 categury_id = 37;
+  string categury_name = 38;
+  string categury_latin_name = 39;
+  int32 count_sale = 40;
+  bool single_sale = 41;
+  google.protobuf.Int32Value quantity_per_bundle = 42;
+  google.protobuf.StringValue tax_code = 43;
+  google.protobuf.StringValue keywords = 44;
+  bool is_active = 45;
+  google.protobuf.BoolValue show_in_discount_panels = 46;
+  google.protobuf.Int32Value categury_of_user_id = 47;
+  string categury_of_user_name = 48;
+  string categury_of_user_type = 49;
+  google.protobuf.Int32Value best_stock_id = 50;
+  google.protobuf.Int32Value best_stock_user_categury_id = 51;
+}
+
+// ProductPageingDto
+message ProductPaging {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 searched = 3;
+  repeated Product product_list = 4;
+}
+
+// ProductParameterDto
+message ProductParameter {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  int32 page_count = 3;
+  string filter = 4;
+  string store = 5;
+  string categury = 6;
+  string brand = 7;
+  string type = 8;
+}
+
+// ProductListShowDto
+message ProductListShow {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 product_stock_price_id = 3;
+  string name = 4;
+  google.protobuf.StringValue latin_name = 5;
+  string image = 6;
+  string categury_name = 7;
+  string categury_latin_name = 8;
+  int32 quantity = 9;
+  int64 sale_price = 10;
+  int64 discount_price = 11;
+  google.protobuf.Timestamp discount_date = 12;
+  google.protobuf.StringValue short_description = 13;
+  google.protobuf.StringValue short_link = 14;
+  google.protobuf.StringValue variation_name = 15;
+  int32 section_id = 16;
+  string section_name = 17;
+  google.protobuf.BoolValue show_in_discount_panels = 18;
+}
+
+// ProductDetailShowDto
+message ProductDetailShow {
+  int32 id = 1;
+  int32 product_stock_price_id = 2;
+  google.protobuf.StringValue short_link = 3;
+  string name = 4;
+  google.protobuf.StringValue latin_name = 5;
+  int64 sale_price = 6;
+  int64 discount_price = 7;
+  int32 score = 8;
+  string code = 9;
+  int32 quantity = 10;
+  string description = 11;
+  string short_description = 12;
+  google.protobuf.StringValue variation_name = 13;
+  repeated Product related_stores = 14;
+  // Will need to reference other proto files for these types
+  // repeated ProductPropertyBase properties = 15;
+  // repeated ProductProperty some_properties = 16;
+  repeated Product accessories = 17;
+  repeated Product childs = 18;
+  // Brand brand = 19;
+  string store = 20;
+  string store_latin = 21;
+  google.protobuf.Timestamp discount_date = 22;
+  google.protobuf.Int32Value categury_of_user_id = 23;
+}
+
+// ProductSelectDto
+message ProductSelect {
+  int32 id = 1;
+  string product_name = 2;
+  string code = 3;
+}
+
+// ProductQuickEditDto
+message ProductQuickEdit {
+  int32 id = 1;
+  int32 product_id = 2;
+  string code = 3;
+  string name = 4;
+  google.protobuf.StringValue latin_name = 5;
+  int32 type_id = 6;
+  google.protobuf.StringValue variation_name = 7;
+  int32 store_id = 8;
+  google.protobuf.Int32Value parent_id = 9;
+  int32 brand_id = 10;
+  int32 tax_id = 11;
+  int32 score = 12;
+  google.protobuf.Int32Value quantity_per_bundle = 13;
+}
+
+// ProductExcelDto
+message ProductExcel {
+  string id = 1;
+  string type = 2;
+  string name = 3;
+  string parent = 4;
+  string description = 5;
+  string brand_id = 6;
+}
+
+// ChildsAndStock
+message ChildsAndStock {
+  repeated Product product_dtos = 1;
+  // Will need to reference ProductStockPrice proto
+  // repeated ProductStockPrice product_stock_dtos = 2;
+}
+
+// ProductSearchParameterDto
+message ProductSearchParameter {
+  int32 current_page = 1;
+  int32 page_size = 2;
+  int32 take = 3;
+  string filter = 4;
+  repeated int32 brand_ids = 5;
+  repeated int32 categury_ids = 6;
+}
+
+// ProductPaginationCateguryDto
+message ProductPaginationCategury {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  repeated Product products = 3;
+  repeated int32 categury_ids = 4;
+  int32 min_price = 5;
+  int32 max_price = 6;
+  int32 select_min_price = 7;
+  int32 select_max_price = 8;
+}
+
+// Product Service
+service ProductService {
+  // Get product by ID
+  rpc GetProduct(ProductRequest) returns (Product);
+  
+  // Get products with paging
+  rpc GetProducts(ProductPagingRequest) returns (ProductPaging);
+  
+  // Search products
+  rpc SearchProducts(ProductSearchParameter) returns (ProductPaging);
+  
+  // Get product details
+  rpc GetProductDetails(ProductRequest) returns (ProductDetailShow);
+  
+  // Get related products
+  rpc GetRelatedProducts(ProductRequest) returns (ProductPaging);
+}
+
+// Request message types
+message ProductRequest {
+  int32 product_id = 1;
+}
+
+message ProductPagingRequest {
+  ProductParameter parameter = 1;
+  string user_name = 2;
+}

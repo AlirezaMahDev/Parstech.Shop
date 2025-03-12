@@ -1,0 +1,48 @@
+using Parstech.Shop.Shared.Protos.Product;
+
+namespace Parstech.Shop.Web.Services.GrpcClients
+{
+    public class ProductGrpcClient : GrpcClientBase
+    {
+        private readonly ProductService.ProductServiceClient _client;
+
+        public ProductGrpcClient(IConfiguration configuration) : base(configuration)
+        {
+            _client = new ProductService.ProductServiceClient(Channel);
+        }
+
+        public async Task<Product> GetProductAsync(int productId)
+        {
+            var request = new ProductRequest { ProductId = productId };
+            return await _client.GetProductAsync(request);
+        }
+
+        public async Task<ProductPaging> GetProductsAsync(ProductParameter parameter, string? userName = null)
+        {
+            var request = new ProductPagingRequest
+            {
+                Parameter = parameter,
+                UserName = userName ?? string.Empty
+            };
+            
+            return await _client.GetProductsAsync(request);
+        }
+
+        public async Task<ProductPaging> SearchProductsAsync(string filter, int take = 4)
+        {
+            var request = new ProductSearchParameter
+            {
+                Filter = filter,
+                Take = take
+            };
+            
+            return await _client.SearchProductsAsync(request);
+        }
+
+        public async Task<ProductDetailShow> GetProductDetailsAsync(int productId)
+        {
+            var request = new ProductRequest { ProductId = productId };
+            return await _client.GetProductDetailsAsync(request);
+        }
+    }
+}

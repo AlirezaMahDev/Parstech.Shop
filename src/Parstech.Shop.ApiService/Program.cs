@@ -2,6 +2,8 @@ using Shop.Persistence.Context;
 using Shop.Application;
 using Shop.Infrastructure;
 using Shop.Persistence;
+using Parstech.Shop.ApiService.Services;
+using Parstech.Shop.ApiService.MapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,20 +11,38 @@ builder.Services.ConfigurePersistenceService(builder.Configuration);
 builder.Services.ConfigureInfrustructureService();
 builder.Services.ConfigureApplicationService(builder.Configuration);
 
-builder.Services.AddCors(option =>
+// Add gRPC services
+builder.Services.AddGrpc(options =>
 {
-    option.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyMethod()
-            .AllowAnyMethod()
-            .WithOrigins("https://localhost:7040");
-    });
+    options.EnableDetailedErrors = true;
+    options.MaxReceiveMessageSize = 16 * 1024 * 1024; // 16 MB
+    options.MaxSendMessageSize = 16 * 1024 * 1024; // 16 MB
 });
 
 builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddSqlServer<DatabaseContext>("database");
+
+// Add AutoMapper profiles
+builder.Services.AddAutoMapper(config => 
+{
+    config.AddProfile<GrpcMapper>();
+    // Apply extensions
+    OrderShippingMapperExtensions.AddOrderShippingMappings(config);
+});
+
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("https://localhost:7040")
+            .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+    });
+});
 
 var app = builder.Build();
 
@@ -37,15 +57,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseRouting();
+app.UseGrpcWeb(); // Enable gRPC-Web middleware
 app.UseAuthorization();
+
+// Configure gRPC service endpoints
+app.MapGrpcService<ProductService>().EnableGrpcWeb();
+app.MapGrpcService<OrderService>().EnableGrpcWeb();
+app.MapGrpcService<UserService>().EnableGrpcWeb();
+app.MapGrpcService<UserShippingService>().EnableGrpcWeb();
+app.MapGrpcService<OrderShippingService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();
 app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

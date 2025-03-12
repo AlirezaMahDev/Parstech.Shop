@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Order;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Order";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// OrderDto
+message Order {
+  int32 order_id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  string costumer = 4;
+  string first_name = 5;
+  string last_name = 6;
+  google.protobuf.Timestamp create_date = 7;
+  string create_date_shamsi = 8;
+  string order_code = 9;
+  int64 order_sum = 10;
+  int64 shipping = 11;
+  int64 tax = 12;
+  int64 discount = 13;
+  int64 total = 14;
+  bool is_finaly = 15;
+  google.protobuf.StringValue intro_code = 16;
+  int32 intro_coin = 17;
+  google.protobuf.BoolValue confirm_payment = 18;
+  google.protobuf.StringValue factor_file = 19;
+  bool is_delete = 20;
+  int32 tax_id = 21;
+  string status = 22;
+  string status_icon = 23;
+  string pay_type = 24;
+  string type_name = 25;
+  string status_name = 26;
+}
+
+// OrderDetailShowDto
+message OrderDetailShow {
+  repeated OrderDetail order_detail_dto = 1;
+  Order order = 2;
+  UserBilling costumer = 3;
+  OrderShipping order_shipping = 4;
+  repeated UserShipping user_shipping_list = 5;
+  int32 order_shipping_id = 6;
+  OrderCoupon order_coupon = 7;
+  repeated PayType pay_types = 8;
+  repeated OrderPay order_pay = 9;
+}
+
+// OrderForUserDto
+message OrderForUser {
+  Order order = 1;
+  repeated OrderDetailShow order_details = 2;
+  OrderCoupon order_coupon = 3;
+  OrderPay order_pay = 4;
+  OrderShipping order_shipping = 5;
+}
+
+// OrderResponse
+message OrderResponse {
+  bool status = 1;
+  string message = 2;
+  int64 discount = 3;
+}
+
+// OrderFilterDto
+message OrderFilter {
+  repeated StoreFilter stores = 1;
+  repeated StatusFilter statuses = 2;
+  repeated PayFilter pays = 3;
+  repeated OrdercodeFilter ordercodes = 4;
+  repeated CustomerFilter customers = 5;
+}
+
+// StoreFilterDto
+message StoreFilter {
+  string store_name = 1;
+  int32 user_store_id = 2;
+  int32 user_id = 3;
+}
+
+// CustomerFilterDto
+message CustomerFilter {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+// StatusFilterDto
+message StatusFilter {
+  int32 id = 1;
+  string status_name = 2;
+  string user_name = 3;
+}
+
+// PayFilterDto
+message PayFilter {
+  int32 id = 1;
+  string type_name = 2;
+}
+
+// OrdercodeFilterDto
+message OrdercodeFilter {
+  string order_code = 1;
+}
+
+// Forward declarations for imported types
+message OrderDetail {}
+message UserBilling {}
+message OrderShipping {}
+message UserShipping {}
+message OrderCoupon {}
+message PayType {}
+message OrderPay {}
+
+// Order Service
+service OrderService {
+  // Get order by ID
+  rpc GetOrder(OrderRequest) returns (Order);
+  
+  // Get order details
+  rpc GetOrderDetails(OrderRequest) returns (OrderDetailShow);
+  
+  // Get orders for user
+  rpc GetOrdersForUser(UserOrdersRequest) returns (OrdersResponse);
+  
+  // Create order
+  rpc CreateOrder(CreateOrderRequest) returns (OrderResponse);
+  
+  // Update order status
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (OrderResponse);
+  
+  // Get order filters
+  rpc GetOrderFilters(OrderFiltersRequest) returns (OrderFilter);
+}
+
+// Request message types
+message OrderRequest {
+  int32 order_id = 1;
+}
+
+message UserOrdersRequest {
+  string user_name = 1;
+}
+
+message OrdersResponse {
+  repeated Order orders = 1;
+}
+
+message CreateOrderRequest {
+  string user_name = 1;
+  repeated int32 product_ids = 2;
+  int32 shipping_address_id = 3;
+  int32 billing_address_id = 4;
+  google.protobuf.StringValue coupon_code = 5;
+  int32 payment_type_id = 6;
+}
+
+message UpdateOrderStatusRequest {
+  int32 order_id = 1;
+  int32 status_id = 2;
+}
+
+message OrderFiltersRequest {
+  // Empty request or add filter parameters if needed
+}
