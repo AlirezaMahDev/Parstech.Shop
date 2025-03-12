@@ -1,0 +1,13 @@
+syntax = "proto3";
+package Shop.Application.DTOs.Analytics;
+
+message VisitorTracking {
+  string session_id = 1;
+  string user_agent = 2;
+  string ip_address = 3;
+  string entry_page = 4;
+  string exit_page = 5;
+  string session_start = 6;
+  string session_end = 7;
+  repeated string pages_visited = 8;
+}

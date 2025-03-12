@@ -1,0 +1,14 @@
+syntax = "proto3";
+package Shop.Application.DTOs.Coupon;
+
+message CouponRules {
+  int32 coupon_id = 1;
+  int64 minimum_cart_value = 2;
+  optional int64 maximum_discount = 3;
+  repeated string applicable_categories = 4;
+  int32 usage_limit_per_user = 5;
+  string validity_start = 6;
+  string validity_end = 7;
+  bool stackable = 8;
+  optional string excluded_products = 9;
+}
