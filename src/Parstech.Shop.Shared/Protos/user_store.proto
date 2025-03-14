@@ -7,12 +7,17 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.UserStore";
 service UserStoreService {
   rpc GetStores (StoresRequest) returns (UserStoreResponse) {}
   rpc GetStoreById (StoreByIdRequest) returns (UserStore) {}
+  rpc GetStoreByLatinName (StoreByLatinNameRequest) returns (UserStore) {}
 }
 
 message StoresRequest {}
 
 message StoreByIdRequest {
   int32 id = 1;
+}
+
+message StoreByLatinNameRequest {
+  string latin_name = 1;
 }
 
 message UserStoreResponse {

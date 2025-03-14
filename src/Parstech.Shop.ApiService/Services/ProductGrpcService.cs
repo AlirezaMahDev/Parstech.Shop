@@ -145,5 +145,77 @@ namespace Shop.ApiService.Services
                 throw new RpcException(new Status(StatusCode.Internal, ex.Message));
             }
         }
+        
+        public override async Task<ProductPageing> ProductPagingSearchOrStore(ProductSearchParameterRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var parameter = new Shop.Application.DTOs.Product.ProductSearchParameterDto
+                {
+                    Page = request.Page,
+                    PageSize = request.PageSize,
+                    Filter = request.Filter,
+                    CateguryId = request.CateguryId,
+                    BrandId = request.BrandId,
+                    StoreId = request.StoreId,
+                    OnlyAvailable = request.OnlyAvailable,
+                    OnlyDiscount = request.OnlyDiscount,
+                    MinPrice = request.MinPrice,
+                    MaxPrice = request.MaxPrice,
+                    OrderByMostView = request.OrderByMostView,
+                    OrderByNewest = request.OrderByNewest,
+                    OrderByCheapest = request.OrderByCheapest,
+                    OrderByMostExpensive = request.OrderByMostExpensive,
+                    Take = request.Take
+                };
+                
+                var products = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(parameter));
+                
+                var response = new ProductPageing
+                {
+                    CurrentPage = products.CurrentPage,
+                    PageCount = products.PageCount,
+                    RowCount = products.RowCount
+                };
+                
+                foreach (var product in products.ProductList)
+                {
+                    response.ProductList.Add(new ProductResponse
+                    {
+                        Id = product.Id,
+                        ProductName = product.ProductName ?? string.Empty,
+                        ProductLatinName = product.ProductLatinName ?? string.Empty,
+                        Description = product.Description ?? string.Empty,
+                        MainImage = product.MainImage ?? string.Empty,
+                        Price = product.Price,
+                        DiscountedPrice = product.DiscountedPrice,
+                        DiscountPercent = product.DiscountPercent,
+                        HasDiscount = product.HasDiscount,
+                        CateguryId = product.CateguryId,
+                        CateguryName = product.CateguryName ?? string.Empty,
+                        CateguryLatinName = product.CateguryLatinName ?? string.Empty,
+                        IsAvailable = product.IsAvailable,
+                        BrandId = product.BrandId,
+                        BrandName = product.BrandName ?? string.Empty,
+                        BrandLatinName = product.BrandLatinName ?? string.Empty,
+                        IsFavorite = product.IsFavorite,
+                        InComparison = product.InComparison,
+                        ShortLink = product.ShortLink ?? string.Empty,
+                        ProductStockPriceId = product.ProductStockPriceId,
+                        DiscountDate = product.DiscountDate ?? string.Empty,
+                        Quantity = product.Quantity,
+                        SalePrice = product.SalePrice,
+                        DiscountPrice = product.DiscountPrice,
+                        ProductId = product.ProductId
+                    });
+                }
+                
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            }
+        }
     }
 } 

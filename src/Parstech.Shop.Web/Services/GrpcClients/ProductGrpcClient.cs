@@ -73,5 +73,10 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             var response = await _client.GetProductsWithDiscountAsync(request);
             return response.Products.ToList();
         }
+        
+        public async Task<ProductPageing> ProductPagingSearchOrStoreAsync(ProductSearchParameterRequest parameter)
+        {
+            return await _client.ProductPagingSearchOrStoreAsync(parameter);
+        }
     }
 }

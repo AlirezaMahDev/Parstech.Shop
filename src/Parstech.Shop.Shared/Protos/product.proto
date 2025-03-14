@@ -1,6 +1,24 @@
 syntax = "proto3";
 
-package Shop.Application.DTOs.Product;
+package product;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Product";
+
+import "google/protobuf/timestamp.proto";
+
+service ProductService {
+  rpc GetProduct (ProductRequest) returns (Product) {}
+  rpc GetProducts (ProductPagingRequest) returns (ProductPaging) {}
+  rpc SearchProducts (ProductSearchParameter) returns (ProductPaging) {}
+  rpc GetProductDetails (ProductRequest) returns (ProductDetailShow) {}
+  rpc GetIntegratedProductsPaging (IntegratedProductsPagingRequest) returns (IntegratedProductsPagingResponse) {}
+  rpc GetProductsWithDiscount (ProductsWithDiscountRequest) returns (ProductsWithDiscountResponse) {}
+  rpc ProductPagingSearchOrStore (ProductSearchParameterRequest) returns (ProductPageing) {}
+}
+
+message ProductRequest {
+  int32 product_id = 1;
+}
 
 message Product {
     int32 id = 1;
@@ -54,4 +72,196 @@ message Product {
     string categury_of_user_type = 49;
     int32 best_stock_id = 50;
     int32 best_stock_user_categury_id = 51;
+}
+
+message ProductPagingRequest {
+  ProductParameter parameter = 1;
+  string user_name = 2;
+}
+
+message ProductParameter {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  optional int32 categury_id = 4;
+  optional int32 brand_id = 5;
+  optional int32 store_id = 6;
+  optional bool only_available = 7;
+  optional bool only_discount = 8;
+  optional double min_price = 9;
+  optional double max_price = 10;
+}
+
+message ProductPaging {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 row_count = 3;
+  repeated ProductResponse products = 4;
+}
+
+message ProductResponse {
+  int32 id = 1;
+  string product_name = 2;
+  string product_latin_name = 3;
+  string description = 4;
+  string main_image = 5;
+  double price = 6;
+  double discounted_price = 7;
+  int32 discount_percent = 8;
+  bool has_discount = 9;
+  int32 categury_id = 10;
+  string categury_name = 11;
+  string categury_latin_name = 12;
+  bool is_available = 13;
+  int32 brand_id = 14;
+  string brand_name = 15;
+  string brand_latin_name = 16;
+  bool is_favorite = 17;
+  bool in_comparison = 18;
+  string short_link = 19;
+  int32 product_stock_price_id = 20;
+  string discount_date = 21;
+  int32 quantity = 22;
+  double sale_price = 23;
+  double discount_price = 24;
+  int32 product_id = 25;
+}
+
+message ProductSearchParameter {
+  string filter = 1;
+  int32 take = 2;
+}
+
+message ProductDetailShow {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  string description = 4;
+  string short_description = 5;
+  string image = 6;
+  string short_link = 7;
+  repeated Gallery galleries = 8;
+  repeated Feature features = 9;
+  repeated ChildStock childs = 10;
+  repeated ProductVariation variations = 11;
+  int32 price = 12;
+  int32 discount_price = 13;
+  int32 parent_id = 14;
+  bool stock_status = 15;
+  int32 quantity = 16;
+  int32 categury_id = 17;
+  string categury_name = 18;
+  string categury_latin_name = 19;
+  int32 brand_id = 20;
+  string brand_name = 21;
+  string brand_latin_name = 22;
+  string store_name = 23;
+  string discount_date = 24;
+  int32 store_id = 25;
+  bool is_favorite = 26;
+  bool in_comparison = 27;
+  int32 type_id = 28;
+  repeated RelatedProduct related_products = 29;
+  int32 score = 30;
+  int32 count_sale = 31;
+  int32 maximum_sale_in_order = 32;
+  bool single_sale = 33;
+  int32 quantity_per_bundle = 34;
+  int32 stock_id = 35;
+  string keywords = 36;
+}
+
+message Gallery {
+  int32 id = 1;
+  string title = 2;
+  string image = 3;
+  int32 order = 4;
+}
+
+message Feature {
+  int32 id = 1;
+  string name = 2;
+  string value = 3;
+  int32 order = 4;
+}
+
+message ChildStock {
+  int32 id = 1;
+  int32 product_id = 2;
+  string product_name = 3;
+  string product_latin_name = 4;
+  string variation_name = 5;
+  int32 price = 6;
+  int32 discount_price = 7;
+  int32 quantity = 8;
+  bool stock_status = 9;
+  string discount_date = 10;
+}
+
+message ProductVariation {
+  int32 id = 1;
+  string name = 2;
+  repeated VariationValue values = 3;
+}
+
+message VariationValue {
+  int32 id = 1;
+  string value = 2;
+}
+
+message RelatedProduct {
+  int32 id = 1;
+  string name = 2;
+  string image = 3;
+  double price = 4;
+  double discount_price = 5;
+  bool has_discount = 6;
+  bool is_available = 7;
+  string short_link = 8;
+}
+
+message IntegratedProductsPagingRequest {
+  ProductSearchParameterRequest parameter = 1;
+  string user_name = 2;
+}
+
+message ProductSearchParameterRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string filter = 3;
+  int32 categury_id = 4;
+  int32 brand_id = 5;
+  int32 store_id = 6;
+  bool only_available = 7;
+  bool only_discount = 8;
+  double min_price = 9;
+  double max_price = 10;
+  bool order_by_most_view = 11;
+  bool order_by_newest = 12;
+  bool order_by_cheapest = 13;
+  bool order_by_most_expensive = 14;
+  int32 take = 15;
+}
+
+message IntegratedProductsPagingResponse {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 row_count = 3;
+  repeated ProductResponse product_list = 4;
+}
+
+message ProductsWithDiscountRequest {
+  int32 take = 1;
+  int32 section_id = 2;
+}
+
+message ProductsWithDiscountResponse {
+  repeated ProductResponse products = 1;
+}
+
+message ProductPageing {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 row_count = 3;
+  repeated ProductResponse product_list = 4;
 }

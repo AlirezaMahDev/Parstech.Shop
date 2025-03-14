@@ -8,6 +8,7 @@ service SectionService {
   rpc GetSections (SectionRequest) returns (SectionResponse) {}
   rpc GetSectionDetails (SectionDetailsRequest) returns (SectionDetailsResponse) {}
   rpc GetSectionAndDetailsById (SectionByIdRequest) returns (SectionWithDetailsResponse) {}
+  rpc GetSectionAndDetailsByStore (SectionByStoreRequest) returns (SectionWithDetailsResponse) {}
 }
 
 message SectionRequest {
@@ -45,10 +46,20 @@ message SectionDetail {
   string link = 6;
   bool is_active = 7;
   int32 order = 8;
+  string responsive_size = 9;
+  string caption = 10;
+  string sub_caption = 11;
+  string background_image = 12;
+  string slide_nav_name = 13;
+  string alt = 14;
 }
 
 message SectionByIdRequest {
   int32 section_id = 1;
+}
+
+message SectionByStoreRequest {
+  string store = 1;
 }
 
 message SectionWithDetailsResponse {
@@ -87,6 +98,13 @@ message ProductItem {
   string brand_latin_name = 16;
   bool is_favorite = 17;
   bool in_comparison = 18;
+  string short_link = 19;
+  int32 product_stock_price_id = 20;
+  string discount_date = 21;
+  int32 quantity = 22;
+  double sale_price = 23;
+  double discount_price = 24;
+  int32 product_id = 25;
 }
 
 message BrandItem {

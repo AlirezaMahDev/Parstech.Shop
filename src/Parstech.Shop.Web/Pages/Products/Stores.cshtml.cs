@@ -1,25 +1,26 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Shared.Protos.Product;
+using Parstech.Shop.Shared.Protos.UserStore;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Brand;
 using Shop.Application.DTOs.Categury;
-using Shop.Application.DTOs.Product;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Queries;
 
-namespace Shop.Web.Pages.Products
+namespace Parstech.Shop.Web.Pages.Products
 {
     public class StoresModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly ProductGrpcClient _productClient;
+        private readonly UserStoreGrpcClient _userStoreClient;
 
-        public StoresModel(IMediator mediator)
+        public StoresModel(ProductGrpcClient productClient, UserStoreGrpcClient userStoreClient)
         {
-            _mediator = mediator;
+            _productClient = productClient;
+            _userStoreClient = userStoreClient;
         }
 
         #endregion
@@ -28,23 +29,19 @@ namespace Shop.Web.Pages.Products
 
         //paging parameter
         [BindProperty]
-        public ProductSearchParameterDto Parameter { get; set; } = new ProductSearchParameterDto();
-
+        public ProductSearchParameterRequest Parameter { get; set; } = new ProductSearchParameterRequest();
 
         //products
         [BindProperty]
-        public ProductPageingDto List { get; set; }
-
+        public ProductPageing List { get; set; }
 
         //result
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
 
-        //categury
+        //category
         [BindProperty]
         public string Store { get; set; }
-
-
 
         [BindProperty]
         public string FilterCat { get; set; }
@@ -54,7 +51,6 @@ namespace Shop.Web.Pages.Products
 
         [BindProperty]
         public string Filter { get; set; }
-
 
         public List<CateguryDto> categuries { get; set; }
         public List<BrandDto> Brands { get; set; }
@@ -67,19 +63,17 @@ namespace Shop.Web.Pages.Products
         public async Task<IActionResult> OnGet(string store)
         {
             Store = store;
-
             return Page();
         }
 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostData(int skip, string store)
         {
-            //Parameter.CurrentPage = 1;
             Parameter.Skip = skip;
             Parameter.Store = store;
-            List = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(Parameter));
+            List = await _productClient.ProductPagingSearchOrStoreAsync(Parameter);
             Response.Object = List;
-            var userStore = await _mediator.Send(new UserSaleReadByLatinNameQueryReq(Parameter.Store));
+            var userStore = await _userStoreClient.GetStoreByLatinNameAsync(Parameter.Store);
             Response.Object2 = userStore;
             Response.IsSuccessed = true;
             return new JsonResult(Response);

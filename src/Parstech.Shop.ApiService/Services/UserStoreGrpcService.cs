@@ -2,6 +2,7 @@ using Grpc.Core;
 using MediatR;
 using Parstech.Shop.Shared.Protos.UserStore;
 using Shop.Application.Features.Store.Requests.Queries;
+using Shop.Application.Features.UserStore.Requests.Queries;
 
 namespace Shop.ApiService.Services
 {
@@ -40,6 +41,38 @@ namespace Shop.ApiService.Services
             {
                 var store = await _mediator.Send(new StoreReadCommandReq(request.Id));
                 return MapStoreToProto(store);
+            }
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            }
+        }
+        
+        public override async Task<UserStore> GetStoreByLatinName(StoreByLatinNameRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var store = await _mediator.Send(new UserSaleReadByLatinNameQueryReq(request.LatinName));
+                
+                return new UserStore
+                {
+                    Id = store.Id,
+                    Name = store.Name ?? string.Empty,
+                    LatinName = store.LatinName ?? string.Empty,
+                    Description = store.Description ?? string.Empty,
+                    Image = store.Image ?? string.Empty,
+                    IsActive = store.IsActive,
+                    Address = store.Address ?? string.Empty,
+                    Phone = store.Phone ?? string.Empty,
+                    Email = store.Email ?? string.Empty,
+                    Website = store.Website ?? string.Empty,
+                    Instagram = store.Instagram ?? string.Empty,
+                    Telegram = store.Telegram ?? string.Empty,
+                    Whatsapp = store.Whatsapp ?? string.Empty,
+                    UserName = store.UserName ?? string.Empty,
+                    CreatedAt = store.CreatedAt?.ToString() ?? string.Empty,
+                    UpdatedAt = store.UpdatedAt?.ToString() ?? string.Empty
+                };
             }
             catch (Exception ex)
             {

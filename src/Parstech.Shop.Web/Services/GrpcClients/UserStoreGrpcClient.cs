@@ -24,5 +24,11 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             var request = new StoreByIdRequest { Id = id };
             return await _client.GetStoreByIdAsync(request);
         }
+        
+        public async Task<UserStore> GetStoreByLatinNameAsync(string latinName)
+        {
+            var request = new StoreByLatinNameRequest { LatinName = latinName };
+            return await _client.GetStoreByLatinNameAsync(request);
+        }
     }
 } 

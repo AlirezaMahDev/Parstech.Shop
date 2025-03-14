@@ -1,24 +1,23 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Shared.Protos.Product;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Brand;
 using Shop.Application.DTOs.Categury;
-using Shop.Application.DTOs.Product;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Product.Requests.Queries;
 
-namespace Shop.Web.Pages.Products
+namespace Parstech.Shop.Web.Pages.Products
 {
     public class FilterModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly ProductGrpcClient _productClient;
 
-        public FilterModel(IMediator mediator)
+        public FilterModel(ProductGrpcClient productClient)
         {
-            _mediator = mediator;
+            _productClient = productClient;
         }
 
         #endregion
@@ -27,24 +26,19 @@ namespace Shop.Web.Pages.Products
 
         //paging parameter
         [BindProperty]
-        public ProductSearchParameterDto Parameter { get; set; } = new ProductSearchParameterDto();
-
-
+        public ProductSearchParameterRequest Parameter { get; set; } = new ProductSearchParameterRequest();
 
         //products
         [BindProperty]
-        public ProductPageingDto List { get; set; }
-
+        public ProductPageing List { get; set; }
 
         //result
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
 
-        //categury
+        //category
         [BindProperty]
         public string Store { get; set; }
-
-
 
         [BindProperty]
         public string FilterCat { get; set; }
@@ -54,7 +48,6 @@ namespace Shop.Web.Pages.Products
 
         [BindProperty]
         public string Filter { get; set; }
-
 
         public List<CateguryDto> categuries { get; set; }
         public List<BrandDto> Brands { get; set; }
@@ -72,11 +65,9 @@ namespace Shop.Web.Pages.Products
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostData(string filter)
         {
-
             Parameter.Filter = filter;
-            List = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(Parameter));
+            List = await _productClient.ProductPagingSearchOrStoreAsync(Parameter);
             Response.Object = List;
-
             Response.Object2 = filter;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
