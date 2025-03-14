@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.WalletTransaction;
+
+message WalletTransactionPaging {
+    int32 take = 1;
+    int32 current_page = 2;
+    int32 page_count = 3;
+    repeated WalletTransactionReport wallet_transactions = 4;
+}

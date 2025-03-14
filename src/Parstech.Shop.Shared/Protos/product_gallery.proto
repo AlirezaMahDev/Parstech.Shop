@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.ProductGallery;
+
+message ProductGallery {
+    int32 id = 1;
+    int32 product_id = 2;
+    string image_name = 3;
+    bytes file = 4; // Representing IFormFile as bytes
+    string alt = 5;
+    bool is_main = 6;
+}

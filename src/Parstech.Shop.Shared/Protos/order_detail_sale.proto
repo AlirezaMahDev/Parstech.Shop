@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.OrderDetail;
+
+message OrderDetailSale {
+    int32 count = 1;
+    int64 detail_sum = 2;
+    int64 discount = 3;
+    int64 price = 4;
+    int64 tax = 5;
+    int64 total = 6;
+    int32 order_id = 7;
+    string order_code = 8;
+    google.protobuf.Timestamp create_date = 9;
+    string create_date_shamsi = 10;
+    int32 product_stock_price_id = 11;
+    string name = 12;
+    int32 store_id = 13;
+    string store_name = 14;
+}

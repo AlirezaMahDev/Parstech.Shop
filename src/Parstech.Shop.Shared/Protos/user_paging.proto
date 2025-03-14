@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.User;
+
+message UserPaging {
+    int32 current_page = 1;
+    int32 page_count = 2;
+    repeated User user_dtos = 3;
+}

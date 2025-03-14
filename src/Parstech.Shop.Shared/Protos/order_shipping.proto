@@ -1,111 +1,16 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
+package Shop.Application.DTOs.OrderShipping;
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.OrderShipping";
-
-package OrderShipping;
-
-// OrderShipping service definition
-service OrderShippingService {
-  // Get a specific order shipping by ID
-  rpc GetOrderShipping (OrderShippingRequest) returns (OrderShipping);
-  
-  // Get all order shippings for an order
-  rpc GetOrderShippingsByOrderId (OrderShippingsByOrderRequest) returns (OrderShippingListResponse);
-  
-  // Create a new order shipping
-  rpc CreateOrderShipping (CreateOrderShippingRequest) returns (OrderShipping);
-  
-  // Update an existing order shipping
-  rpc UpdateOrderShipping (UpdateOrderShippingRequest) returns (OrderShipping);
-  
-  // Delete an order shipping
-  rpc DeleteOrderShipping (OrderShippingRequest) returns (OrderShippingResponse);
-  
-  // Change an order shipping
-  rpc ChangeOrderShipping (ChangeOrderShippingRequest) returns (OrderShippingResponse);
-}
-
-// OrderShipping message
 message OrderShipping {
-  int32 id = 1;
-  int32 order_id = 2;
-  int32 shipping_type_id = 3;
-  string shipping_type = 4;
-  google.protobuf.StringValue first_name = 5;
-  google.protobuf.StringValue last_name = 6;
-  google.protobuf.StringValue phone = 7;
-  google.protobuf.StringValue mobile = 8;
-  google.protobuf.StringValue post_code = 9;
-  google.protobuf.StringValue full_address = 10;
-}
-
-// UserShipping message (needed for OrderShippingChangeDto)
-message UserShipping {
-  int32 id = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-  google.protobuf.StringValue phone = 4;
-  google.protobuf.StringValue mobile = 5;
-  google.protobuf.StringValue post_code = 6;
-  google.protobuf.StringValue country = 7;
-  google.protobuf.StringValue state = 8;
-  google.protobuf.StringValue city = 9;
-  google.protobuf.StringValue address = 10;
-  int32 user_id = 11;
-}
-
-// Request to get a specific order shipping
-message OrderShippingRequest {
-  int32 shipping_id = 1;
-}
-
-// Request to get all order shippings for an order
-message OrderShippingsByOrderRequest {
-  int32 order_id = 1;
-}
-
-// Response containing multiple order shippings
-message OrderShippingListResponse {
-  repeated OrderShipping shipping_items = 1;
-}
-
-// Request to create a new order shipping
-message CreateOrderShippingRequest {
-  int32 order_id = 1;
-  int32 shipping_type_id = 2;
-  string shipping_type = 3;
-  google.protobuf.StringValue first_name = 4;
-  google.protobuf.StringValue last_name = 5;
-  google.protobuf.StringValue phone = 6;
-  google.protobuf.StringValue mobile = 7;
-  google.protobuf.StringValue post_code = 8;
-  google.protobuf.StringValue full_address = 9;
-}
-
-// Request to update an existing order shipping
-message UpdateOrderShippingRequest {
-  int32 id = 1;
-  int32 order_id = 2;
-  int32 shipping_type_id = 3;
-  string shipping_type = 4;
-  google.protobuf.StringValue first_name = 5;
-  google.protobuf.StringValue last_name = 6;
-  google.protobuf.StringValue phone = 7;
-  google.protobuf.StringValue mobile = 8;
-  google.protobuf.StringValue post_code = 9;
-  google.protobuf.StringValue full_address = 10;
-}
-
-// Request to change an order shipping
-message ChangeOrderShippingRequest {
-  int32 order_shipping_id = 1;
-  repeated UserShipping user_shippings = 2;
-}
-
-// Generic response for order shipping operations
-message OrderShippingResponse {
-  bool status = 1;
-  string message = 2;
+    int32 id = 1;
+    int32 order_id = 2;
+    int32 shipping_type_id = 3;
+    string shipping_type = 4;
+    string first_name = 5;
+    string last_name = 6;
+    string phone = 7;
+    string mobile = 8;
+    string post_code = 9;
+    string full_address = 10;
 }

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Categury;
+
+message SubCateguryShow {
+    int32 group_id = 1;
+    string group_title = 2;
+    int32? parent_id = 3;
+    string latin_group_title = 4;
+    string? image = 5;
+    string? back_image = 6;
+    string? alt = 7;
+    int32? row = 8;
+    repeated SubCateguryShow childs = 9;
+}

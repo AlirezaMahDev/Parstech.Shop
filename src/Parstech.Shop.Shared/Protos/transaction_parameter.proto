@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.WalletTransaction;
+
+message TransactionParameter {
+    int32 current_page = 1;
+    int32 take_page = 2;
+    int32 page_count = 3;
+    string user_filter = 4;
+    string from_date = 5;
+    string to_date = 6;
+    string wallet_type = 7;
+    int32 transaction_type = 8;
+}

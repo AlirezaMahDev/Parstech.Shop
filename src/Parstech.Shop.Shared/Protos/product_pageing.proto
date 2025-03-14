@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Product;
+
+message ProductPageing {
+    int32 current_page = 1;
+    int32 page_count = 2;
+    int32 searched = 3;
+    repeated Product product_dtos = 4;
+    repeated Product product_list = 5;
+}

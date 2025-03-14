@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.WalletTransaction;
+
+message WalletTransaction {
+    int32 id = 1;
+    int32 wallet_id = 2;
+    int32 price = 3;
+    string input_price = 4;
+    string type = 5;
+    int32 type_id = 6;
+    string type_name = 7;
+    string? tracking_code = 8;
+    string? description = 9;
+    int32? persent = 10;
+    int32? month = 11;
+    bool? start = 12;
+    bool? active = 13;
+    string start_name = 14;
+    google.protobuf.Timestamp create_date = 15;
+    string create_date_shamsi = 16;
+    google.protobuf.Timestamp? expire_date = 17;
+    string expire_date_shamsi = 18;
+    string? file_name = 19;
+}

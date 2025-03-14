@@ -1,12 +1,14 @@
 syntax = "proto3";
+
 package Shop.Application.DTOs.Brand;
 
 message Brand {
-  int32 brand_id = 1;
-  string brand_title = 2;
-  string latin_brand_title = 3;
-  string brand_image = 4;
-  bool is_delete = 5;
-  optional string change_by_user_name = 6;
-  optional string last_change_time = 7;
+    int32 brand_id = 1;
+    string brand_title = 2;
+    string latin_brand_title = 3;
+    string brand_image = 4;
+    bool is_delete = 5;
+    string change_by_user_name = 6;
+    google.protobuf.Timestamp last_change_time = 7;
+    bytes brand_file = 8; // Representing IFormFile as bytes
 }

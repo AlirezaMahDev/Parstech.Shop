@@ -2,114 +2,18 @@ syntax = "proto3";
 
 package Shop.Application.DTOs.User;
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.User";
-
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
-
-// UserDto
 message User {
-  int32 id = 1;
-  string user_name = 2;
-  string active_code = 3;
-  google.protobuf.StringValue first_name = 4;
-  google.protobuf.StringValue last_name = 5;
-  google.protobuf.StringValue full_name = 6;
-  google.protobuf.StringValue user_id = 7;
-  google.protobuf.StringValue avatar = 8;
-  google.protobuf.Timestamp last_login_date = 9;
-  string last_login_date_shamsi = 10;
-  string economic_code = 11;
-  bool send_sms = 12;
-  google.protobuf.BoolValue is_delete = 13;
-}
-
-// UserPageingDto
-message UserPaging {
-  int32 current_page = 1;
-  int32 page_count = 2;
-  repeated User users = 3;
-}
-
-// UserParameterDto
-message UserParameter {
-  int32 current_page = 1;
-  int32 take_page = 2;
-  int32 page_count = 3;
-  string filter = 4;
-}
-
-// UserInfoDto
-message UserInfo {
-  string full_name = 1;
-  string role = 2;
-  string last_login_shamsi = 3;
-  string position = 4;
-}
-
-// UserNameDto
-message UserName {
-  string user_name = 1;
-  string position = 2;
-}
-
-// UserForSelectListDto
-message UserForSelectList {
-  string user_name = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-}
-
-// UserFilterDto
-message UserFilter {
-  string id = 1;
-  string user_name = 2;
-  string first_name = 3;
-  string last_name = 4;
-  google.protobuf.StringValue economic_code = 5;
-  google.protobuf.StringValue national_code = 6;
-  google.protobuf.StringValue mobile = 7;
-}
-
-// User Service
-service UserService {
-  // Get user by ID
-  rpc GetUser(UserRequest) returns (User);
-  
-  // Get users with paging
-  rpc GetUsers(UserPagingRequest) returns (UserPaging);
-  
-  // Get user info
-  rpc GetUserInfo(UserInfoRequest) returns (UserInfo);
-  
-  // Get users for select list
-  rpc GetUsersForSelectList(UserSelectListRequest) returns (UserSelectListResponse);
-  
-  // Filter users
-  rpc FilterUsers(UserFilterRequest) returns (UserPaging);
-}
-
-// Request message types
-message UserRequest {
-  int32 user_id = 1;
-}
-
-message UserPagingRequest {
-  UserParameter parameter = 1;
-}
-
-message UserInfoRequest {
-  string user_name = 1;
-}
-
-message UserSelectListRequest {
-  // Empty request or add filter parameters if needed
-}
-
-message UserSelectListResponse {
-  repeated UserForSelectList users = 1;
-}
-
-message UserFilterRequest {
-  UserFilter filter = 1;
+    int32 id = 1;
+    string user_name = 2;
+    string active_code = 3;
+    string? first_name = 4;
+    string? last_name = 5;
+    string? full_name = 6;
+    string? user_id = 7;
+    string? avatar = 8;
+    google.protobuf.Timestamp last_login_date = 9;
+    string last_login_date_shamsi = 10;
+    string economic_code = 11;
+    bool send_sms = 12;
+    bool? is_delete = 13;
 }

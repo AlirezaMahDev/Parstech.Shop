@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.User;
+
+message UserInfo {
+    string full_name = 1;
+    string role = 2;
+    string last_login_shamsi = 3;
+    string position = 4;
+}

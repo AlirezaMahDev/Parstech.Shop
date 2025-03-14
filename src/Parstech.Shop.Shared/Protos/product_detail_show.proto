@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Product;
+
+message ProductDetailShow {
+    int32 id = 1;
+    int32 product_stock_price_id = 2;
+    string short_link = 3;
+    string name = 4;
+    string latin_name = 5;
+    int64 sale_price = 6;
+    int64 discount_price = 7;
+    int32 score = 8;
+    string code = 9;
+    int32 quantity = 10;
+    string description = 11;
+    string short_description = 12;
+    string variation_name = 13;
+    repeated ProductDto related_stores = 14;
+    repeated BaseProductPropertyDto properties = 15;
+    repeated ProductPropertyDto some_properties = 16;
+    repeated ProductDto accessories = 17;
+    repeated ProductDto childs = 18;
+    BrandDto brand = 19;
+    string store = 20;
+    string store_latin = 21;
+    google.protobuf.Timestamp discount_date = 22;
+    int32 categury_of_user_id = 23;
+}

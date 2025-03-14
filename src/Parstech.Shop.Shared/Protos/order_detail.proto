@@ -1,102 +1,21 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
+package Shop.Application.DTOs.OrderDetail;
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.OrderDetail";
-
-package OrderDetail;
-
-// OrderDetail service definition
-service OrderDetailService {
-  // Get a specific order detail by ID
-  rpc GetOrderDetail (OrderDetailRequest) returns (OrderDetail);
-  
-  // Get all order details for an order
-  rpc GetOrderDetailsByOrderId (OrderDetailsByOrderRequest) returns (OrderDetailListResponse);
-  
-  // Create a new order detail
-  rpc CreateOrderDetail (CreateOrderDetailRequest) returns (OrderDetail);
-  
-  // Update an existing order detail
-  rpc UpdateOrderDetail (UpdateOrderDetailRequest) returns (OrderDetail);
-  
-  // Delete an order detail
-  rpc DeleteOrderDetail (OrderDetailRequest) returns (OrderDetailResponse);
-}
-
-// OrderDetail message
 message OrderDetail {
-  int32 id = 1;
-  int32 count = 2;
-  int64 price = 3;
-  int64 detail_sum = 4;
-  int64 discount = 5;
-  int64 tax = 6;
-  int64 total = 7;
-  int32 product_id = 8;
-  int32 product_stock_price_id = 9;
-  string product_name = 10;
-  string product_code = 11;
-  string image = 12;
-  string alt = 13;
-  int32 order_id = 14;
-  string store_name = 15;
-}
-
-// Request to get a specific order detail
-message OrderDetailRequest {
-  int32 detail_id = 1;
-}
-
-// Request to get all order details for an order
-message OrderDetailsByOrderRequest {
-  int32 order_id = 1;
-}
-
-// Response containing multiple order details
-message OrderDetailListResponse {
-  repeated OrderDetail detail_items = 1;
-}
-
-// Request to create a new order detail
-message CreateOrderDetailRequest {
-  int32 count = 1;
-  int64 price = 2;
-  int64 detail_sum = 3;
-  int64 discount = 4;
-  int64 tax = 5;
-  int64 total = 6;
-  int32 product_id = 7;
-  int32 product_stock_price_id = 8;
-  string product_name = 9;
-  string product_code = 10;
-  string image = 11;
-  string alt = 12;
-  int32 order_id = 13;
-  string store_name = 14;
-}
-
-// Request to update an existing order detail
-message UpdateOrderDetailRequest {
-  int32 id = 1;
-  int32 count = 2;
-  int64 price = 3;
-  int64 detail_sum = 4;
-  int64 discount = 5;
-  int64 tax = 6;
-  int64 total = 7;
-  int32 product_id = 8;
-  int32 product_stock_price_id = 9;
-  string product_name = 10;
-  string product_code = 11;
-  string image = 12;
-  string alt = 13;
-  int32 order_id = 14;
-  string store_name = 15;
-}
-
-// Generic response for order detail operations
-message OrderDetailResponse {
-  bool status = 1;
-  string message = 2;
+    int32 id = 1;
+    int32 count = 2;
+    int64 price = 3;
+    int64 detail_sum = 4;
+    int64 discount = 5;
+    int64 tax = 6;
+    int64 total = 7;
+    int32 product_id = 8;
+    int32 product_stock_price_id = 9;
+    string product_name = 10;
+    string product_code = 11;
+    string image = 12;
+    string alt = 13;
+    int32 order_id = 14;
+    string store_name = 15;
 }

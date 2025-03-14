@@ -1,81 +1,17 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
-
-option csharp_namespace = "Parstech.Shop.Shared.Protos.UserShipping";
-
-package user_shipping;
-
-service UserShippingService {
-  // Get a single user shipping address by ID
-  rpc GetUserShipping (UserShippingRequest) returns (UserShipping);
-  
-  // Get all shipping addresses for a user
-  rpc GetUserShippingAddresses (UserShippingListRequest) returns (UserShippingListResponse);
-  
-  // Create a new shipping address
-  rpc CreateUserShipping (CreateUserShippingRequest) returns (UserShipping);
-  
-  // Update an existing shipping address
-  rpc UpdateUserShipping (UpdateUserShippingRequest) returns (UserShipping);
-  
-  // Delete a shipping address
-  rpc DeleteUserShipping (UserShippingRequest) returns (UserShippingResponse);
-}
+package Shop.Application.DTOs.UserShipping;
 
 message UserShipping {
-  int32 id = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-  google.protobuf.StringValue phone = 4;
-  google.protobuf.StringValue mobile = 5;
-  google.protobuf.StringValue country = 6;
-  google.protobuf.StringValue state = 7;
-  google.protobuf.StringValue city = 8;
-  google.protobuf.StringValue address = 9;
-  google.protobuf.StringValue post_code = 10;
-  int32 user_id = 11;
-}
-
-message UserShippingRequest {
-  int32 shipping_id = 1;
-}
-
-message UserShippingListRequest {
-  string user_name = 1;
-}
-
-message UserShippingListResponse {
-  repeated UserShipping shipping_addresses = 1;
-}
-
-message CreateUserShippingRequest {
-  string user_name = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-  google.protobuf.StringValue phone = 4;
-  google.protobuf.StringValue mobile = 5;
-  google.protobuf.StringValue country = 6;
-  google.protobuf.StringValue state = 7;
-  google.protobuf.StringValue city = 8;
-  google.protobuf.StringValue address = 9;
-  google.protobuf.StringValue post_code = 10;
-}
-
-message UpdateUserShippingRequest {
-  int32 id = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-  google.protobuf.StringValue phone = 4;
-  google.protobuf.StringValue mobile = 5;
-  google.protobuf.StringValue country = 6;
-  google.protobuf.StringValue state = 7;
-  google.protobuf.StringValue city = 8;
-  google.protobuf.StringValue address = 9;
-  google.protobuf.StringValue post_code = 10;
-}
-
-message UserShippingResponse {
-  bool status = 1;
-  string message = 2;
+    int32 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string phone = 4;
+    string mobile = 5;
+    string country = 6;
+    string state = 7;
+    string city = 8;
+    string address = 9;
+    string post_code = 10;
+    int32 user_id = 11;
 }

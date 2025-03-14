@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.OrderShipping;
+
+message OrderShippingChange {
+    int32 order_shipping_id = 1;
+    repeated UserShipping user_shippings = 2;
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Order;
+
+message NoPayResponseGenKey {
+    int32 response_code = 1;
+    string bnpl_key = 2;
+    string message = 3;
+    int32 amount = 4;
+    string formated_amount = 5;
+}

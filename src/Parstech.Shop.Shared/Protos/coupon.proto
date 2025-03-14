@@ -1,27 +1,23 @@
 syntax = "proto3";
+
 package Shop.Application.DTOs.Coupon;
 
 message Coupon {
-  int32 id = 1;
-  int32 coupon_type_id = 2;
-  string coupon_type_name = 3;
-  string code = 4;
-  string expire_date = 5;
-  string expire_date_shamsi = 6;
-  bool just_new_user = 7;
-  optional int64 min_price = 8;
-  optional int64 max_price = 9;
-  bool two_use_same_time = 10;
-  optional int32 limit_use = 11;
-  optional int32 limit_each_user = 12;
-  string categury = 13;
-  string products = 14;
-  string users = 15;
-  int32 percent = 16;
-  int64 amount = 17;
-}
-
-message ObjectCoupon {
-  string status = 1;
-  repeated int32 id_list = 2;
+    int32 id = 1;
+    int32 coupon_type_id = 2;
+    string coupon_type_name = 3;
+    string code = 4;
+    string expire_date = 5;
+    string expire_date_shamsi = 6;
+    bool just_new_user = 7;
+    int64? min_price = 8;
+    int64? max_price = 9;
+    bool two_use_same_time = 10;
+    int32? limit_use = 11;
+    int32? limit_each_user = 12;
+    string categury = 13;
+    string products = 14;
+    string users = 15;
+    int32 persent = 16;
+    int64 amount = 17;
 }

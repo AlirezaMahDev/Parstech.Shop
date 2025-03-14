@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.OrderDetail;
+
+message SalesPaging {
+    int32 take = 1;
+    int32 current_page = 2;
+    int32 page_count = 3;
+    repeated OrderDetailSale sales = 4;
+    repeated string stores_select = 5; // Assuming StoresSelect is a list of strings
+}

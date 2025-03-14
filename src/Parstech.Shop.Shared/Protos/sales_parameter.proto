@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.OrderDetail;
+
+message SalesParameter {
+    int32 current_page = 1;
+    int32 take_page = 2;
+    int32 page_count = 3;
+    int32 store_id = 4;
+    string from_date = 5;
+    string to_date = 6;
+    string order_code = 7;
+}

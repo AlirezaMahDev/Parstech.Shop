@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package Shop.Application.DTOs.Order;
+
+message Contracts {
+    repeated Contract details = 1;
+    int64 total_store = 2;
+    int64 total_we = 3;
+}
