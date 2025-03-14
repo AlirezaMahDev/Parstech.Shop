@@ -93,6 +93,7 @@ app.MapGrpcService<UserPreferencesGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<SectionGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserProductGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<SiteSettingGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserAuthGrpcService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();

@@ -36,6 +36,7 @@ builder.Services.AddSingleton<UserStoreGrpcClient>();
 builder.Services.AddSingleton<CategoryGrpcClient>();
 builder.Services.AddSingleton<BrandGrpcClient>();
 builder.Services.AddSingleton<SiteSettingGrpcClient>();
+builder.Services.AddSingleton<UserAuthGrpcClient>();
 
 // Add gRPC clients
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.OrderCheckout.OrderCheckoutService.OrderCheckoutServiceClient>(options =>
@@ -121,6 +122,11 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserPreferencesServic
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.SiteSetting.SiteSettingService.SiteSettingServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserAuth.UserAuthService.UserAuthServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
 builder.Services.AddRazorComponents()
