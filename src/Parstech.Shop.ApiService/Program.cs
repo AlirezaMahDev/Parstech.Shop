@@ -19,6 +19,8 @@ builder.Services.AddGrpc(options =>
     options.MaxSendMessageSize = 16 * 1024 * 1024; // 16 MB
 });
 
+builder.Services.AddGrpcReflection();
+
 builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
@@ -66,6 +68,26 @@ app.MapGrpcService<OrderService>().EnableGrpcWeb();
 app.MapGrpcService<UserService>().EnableGrpcWeb();
 app.MapGrpcService<UserShippingService>().EnableGrpcWeb();
 app.MapGrpcService<OrderShippingService>().EnableGrpcWeb();
+app.MapGrpcService<SectionService>();
+app.MapGrpcService<UserProductService>();
+
+// Map gRPC services
+app.MapGrpcService<CategoryGrpcService>();
+app.MapGrpcService<BrandGrpcService>();
+app.MapGrpcService<UserStoreGrpcService>();
+app.MapGrpcReflectionService();
+app.MapGrpcService<ProductDetailService>();
+app.MapGrpcService<ProductGalleryService>();
+app.MapGrpcService<TorobService>();
+
+// Map new gRPC services
+app.MapGrpcService<OrderCheckoutService>().EnableGrpcWeb();
+app.MapGrpcService<CouponGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<WalletGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ShippingGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<PaymentGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserProfileGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserPreferencesGrpcService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();

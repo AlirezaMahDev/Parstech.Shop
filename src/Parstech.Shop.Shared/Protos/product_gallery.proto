@@ -1,12 +1,26 @@
 syntax = "proto3";
 
-package Shop.Application.DTOs.ProductGallery;
+package product.gallery;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.ProductGallery";
+
+service ProductGalleryService {
+  rpc GetProductGalleries (ProductGalleryRequest) returns (ProductGalleryResponse) {}
+}
+
+message ProductGalleryRequest {
+  int32 product_id = 1;
+}
+
+message ProductGalleryResponse {
+  repeated ProductGallery galleries = 1;
+}
 
 message ProductGallery {
-    int32 id = 1;
-    int32 product_id = 2;
-    string image_name = 3;
-    bytes file = 4; // Representing IFormFile as bytes
-    string alt = 5;
-    bool is_main = 6;
+  int32 id = 1;
+  int32 product_id = 2;
+  string image_name = 3;
+  bytes file = 4; // Representing IFormFile as bytes
+  string alt = 5;
+  bool is_main = 6;
 }

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package category;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Category";
+
+service CategoryService {
+  rpc GetParentCategories (ParentCategoriesRequest) returns (CategoryResponse) {}
+  rpc GetSubCategories (SubCategoriesRequest) returns (CategoryResponse) {}
+  rpc GetCategoryByLatinName (CategoryByLatinNameRequest) returns (Category) {}
+}
+
+message ParentCategoriesRequest {}
+
+message SubCategoriesRequest {
+  int32 parent_id = 1;
+}
+
+message CategoryByLatinNameRequest {
+  string latin_name = 1;
+}
+
+message CategoryResponse {
+  repeated Category categories = 1;
+}
+
+message Category {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  string description = 4;
+  string image = 5;
+  int32 parent_id = 6;
+  int32 group_id = 7;
+  bool is_active = 8;
+  int32 order = 9;
+  repeated Category sub_categories = 10;
+} 

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package coupon.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.CouponService";
+
+service CouponService {
+  rpc UseCoupon (UseCouponRequest) returns (UseCouponResponse) {}
+}
+
+message UseCouponRequest {
+  int32 order_id = 1;
+  string code = 2;
+}
+
+message UseCouponResponse {
+  bool status = 1;
+  string message = 2;
+  double discount = 3;
+  double final_price = 4;
+} 

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package payment.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.PaymentService";
+
+service PaymentService {
+  rpc GetPaymentStatus (PaymentStatusRequest) returns (PaymentStatusResponse) {}
+}
+
+message PaymentStatusRequest {
+  string status = 1;
+}
+
+message PaymentStatusResponse {
+  bool is_successed = 1;
+  string message = 2;
+} 

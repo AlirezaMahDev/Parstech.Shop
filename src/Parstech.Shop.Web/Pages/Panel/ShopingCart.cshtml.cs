@@ -1,24 +1,22 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Order;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Order.Requests.Queries;
 
 namespace Shop.Web.Pages.Panel
 {
     [Authorize]
     public class ShopingCartModel : PageModel
     {
-        #region Constractor
-
-        private readonly IMediator _mediator;
-        public ShopingCartModel(IMediator mediator)
+        #region Constructor
+        private readonly UserPreferencesGrpcClient _userPreferencesClient;
+        
+        public ShopingCartModel(UserPreferencesGrpcClient userPreferencesClient)
         {
-            _mediator = mediator;
+            _userPreferencesClient = userPreferencesClient;
         }
-
         #endregion
 
         #region Properties
@@ -33,14 +31,36 @@ namespace Shop.Web.Pages.Panel
         #endregion
 
         #region Get
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
-
             return Page();
         }
+        
         public async Task<IActionResult> OnPostData()
         {
-            ShoppingCart = await _mediator.Send(new NotFinallyOrderOfUserQueryReq(UserId));
+            var cartResponse = await _userPreferencesClient.GetShoppingCartAsync(UserId);
+            
+            ShoppingCart = new OrderDetailShowDto
+            {
+                OrderId = cartResponse.OrderId,
+                UserName = cartResponse.UserName,
+                Total = cartResponse.Total,
+                Discount = cartResponse.Discount,
+                FinalPrice = cartResponse.FinalPrice,
+                OrderDetails = cartResponse.Details.Select(d => new Shop.Application.DTOs.OrderDetail.OrderDetailItem
+                {
+                    Id = d.Id,
+                    OrderId = d.OrderId,
+                    ProductId = d.ProductId,
+                    ProductName = d.ProductName,
+                    ProductImage = d.ProductImage,
+                    Count = d.Count,
+                    Price = d.Price,
+                    Discount = d.Discount,
+                    Total = d.Total
+                }).ToList()
+            };
+            
             Response.Object = ShoppingCart;
             Response.IsSuccessed = true;
 

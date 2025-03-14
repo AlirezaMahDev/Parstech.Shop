@@ -1,8 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Auth;
 using Shop.Application.DTOs.Response;
 using Shop.Application.Validators.Auth;
@@ -12,34 +11,25 @@ namespace Shop.Web.Pages.Panel
     [Authorize]
     public class ChangePasswordModel : PageModel
     {
-        #region Constractor
-
-        private readonly IMediator _mediator;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public ChangePasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IMediator mediator)
+        #region Constructor
+        private readonly UserPreferencesGrpcClient _userPreferencesClient;
+        
+        public ChangePasswordModel(UserPreferencesGrpcClient userPreferencesClient)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mediator = mediator;
+            _userPreferencesClient = userPreferencesClient;
         }
-
         #endregion
+        
         #region Properties
-
         [BindProperty]
         public ChangePasswordDto Input { get; set; }
+        
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
-
-
         #endregion
+        
         #region Get
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
             return Page();
         }
@@ -58,30 +48,21 @@ namespace Shop.Web.Pages.Panel
             }
             #endregion
 
+            var result = await _userPreferencesClient.ChangePasswordAsync(
+                Input.old,
+                Input.newPassword,
+                Input.confirmPassword);
 
-            var user = await _userManager.GetUserAsync(User);
-
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.old, Input.newPassword);
-            if (!changePasswordResult.Succeeded)
+            Response.IsSuccessed = result.IsSuccess;
+            Response.Message = result.Message;
+            
+            if (!result.IsSuccess && result.ErrorMessages.Count > 0)
             {
-
-                Response.IsSuccessed = false;
-                Response.Message = "اطلاعات به درستی وراد نشده است";
-                return new JsonResult(Response);
+                Response.Errors = result.ErrorMessages.Select(e => new FluentValidation.Results.ValidationFailure("", e)).ToList();
             }
-
-            await _signInManager.RefreshSignInAsync(user);
-            Response.IsSuccessed = false;
-            Response.Message = "عملیات احراز هویت با موفقیت تفییر یافت";
+            
             return new JsonResult(Response);
         }
-
-
         #endregion
-
-
     }
-
-
-
 }

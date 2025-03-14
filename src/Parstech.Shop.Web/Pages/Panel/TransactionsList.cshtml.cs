@@ -1,32 +1,34 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.Wallet;
 using Shop.Application.DTOs.WalletTransaction;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.Wallet.Requests.Queries;
-using Shop.Application.Features.WalletTransaction.Requests.Queries;
 
 namespace Shop.Web.Pages.Panel
 {
     [Authorize]
     public class TransactionsListModel : PageModel
     {
-        #region Constractor
-
-        private readonly IMediator _mediator;
-        public TransactionsListModel(IMediator mediator)
+        #region Constructor
+        private readonly UserGrpcClient _userClient;
+        private readonly WalletGrpcClient _walletClient;
+        private readonly UserProfileGrpcClient _userProfileClient;
+        
+        public TransactionsListModel(
+            UserGrpcClient userClient,
+            WalletGrpcClient walletClient,
+            UserProfileGrpcClient userProfileClient)
         {
-            _mediator = mediator;
+            _userClient = userClient;
+            _walletClient = walletClient;
+            _userProfileClient = userProfileClient;
         }
-
         #endregion
 
         #region Properties
-
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
 
@@ -48,41 +50,85 @@ namespace Shop.Web.Pages.Panel
         [BindProperty]
         public WalletTransactionDto transactionDto { get; set; }
         #endregion
+        
         #region Get
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
             return Page();
         }
 
         public async Task<IActionResult> OnPostData()
         {
-
             Parameter.TakePage = 30;
-            var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            Wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(CurrentUser.Id));
+            var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
+            var wallet = await _walletClient.GetWalletByUserIdAsync(currentUser.Id);
+            
+            Wallet = new WalletDto
+            {
+                WalletId = wallet.WalletId,
+                UserId = wallet.UserId,
+                Credit = wallet.Credit,
+                UsedCredit = wallet.UsedCredit,
+                RemainingCredit = wallet.RemainingCredit,
+                LastUpdated = DateTime.TryParse(wallet.LastUpdated, out var date) ? date : null
+            };
+            
             Parameter.WalletId = Wallet.WalletId;
             Parameter.Type = Type;
-            List = await _mediator.Send(new WalletTransactionsPagingQueryReq(Parameter));
+            
+            var transactions = await _userProfileClient.GetUserTransactionsAsync(
+                Wallet.WalletId, 
+                Parameter.CurrentPage, 
+                Parameter.TakePage, 
+                Parameter.Type);
+            
+            List = new PagingDto
+            {
+                CurrentPage = transactions.CurrentPage,
+                PageCount = transactions.PageCount,
+                RowCount = transactions.TotalCount,
+                List = transactions.Transactions.Select(t => new WalletTransactionDto
+                {
+                    TransactionId = t.TransactionId,
+                    TransactionDate = DateTime.TryParse(t.TransactionDate, out var tDate) ? tDate : null,
+                    Amount = t.Amount,
+                    TypeName = t.TypeName,
+                    Description = t.Description,
+                    IsCredit = t.IsCredit
+                }).ToList()
+            };
+            
             Response.Object = List;
             Response.IsSuccessed = true;
 
             return new JsonResult(Response);
         }
         #endregion
-        #region Search Paging
-
+        
         #region TransactionDetail
-
         public async Task<IActionResult> OnPostTransactionDetail()
         {
-            transactionDto = await _mediator.Send(new WalletTransactionDetailShowQueryReq(transactionId));
+            var transaction = await _userProfileClient.GetTransactionDetailsAsync(transactionId);
+            
+            transactionDto = new WalletTransactionDto
+            {
+                TransactionId = transaction.TransactionId,
+                WalletId = transaction.WalletId,
+                TypeName = transaction.TypeName,
+                Amount = transaction.Amount,
+                Description = transaction.Description,
+                TrackingCode = transaction.TrackingCode,
+                TransactionDate = DateTime.TryParse(transaction.TransactionDate, out var date) ? date : null,
+                Months = transaction.Months,
+                MonthlyPayment = transaction.MonthlyPayment,
+                IsActive = transaction.IsActive,
+                IsCredit = transaction.IsCredit
+            };
+            
             Response.Object = transactionDto;
             return new JsonResult(Response);
         }
-
-        #endregion
-
-
         #endregion
     }
 }
+

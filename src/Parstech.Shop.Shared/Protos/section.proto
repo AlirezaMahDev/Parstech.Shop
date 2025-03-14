@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package section;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Section";
+
+service SectionService {
+  rpc GetSections (SectionRequest) returns (SectionResponse) {}
+  rpc GetSectionDetails (SectionDetailsRequest) returns (SectionDetailsResponse) {}
+}
+
+message SectionRequest {
+  optional int32 parent_id = 1;
+}
+
+message SectionResponse {
+  repeated Section sections = 1;
+}
+
+message Section {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string image = 4;
+  int32 parent_id = 5;
+  bool is_active = 6;
+  repeated SectionDetail details = 7;
+}
+
+message SectionDetailsRequest {
+  int32 section_id = 1;
+}
+
+message SectionDetailsResponse {
+  repeated SectionDetail details = 1;
+}
+
+message SectionDetail {
+  int32 id = 1;
+  int32 section_id = 2;
+  string title = 3;
+  string description = 4;
+  string image = 5;
+  string link = 6;
+  bool is_active = 7;
+  int32 order = 8;
+} 

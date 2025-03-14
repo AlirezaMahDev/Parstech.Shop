@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package user_store;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.UserStore";
+
+service UserStoreService {
+  rpc GetStores (StoresRequest) returns (UserStoreResponse) {}
+  rpc GetStoreById (StoreByIdRequest) returns (UserStore) {}
+}
+
+message StoresRequest {}
+
+message StoreByIdRequest {
+  int32 id = 1;
+}
+
+message UserStoreResponse {
+  repeated UserStore stores = 1;
+}
+
+message UserStore {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  string description = 4;
+  string image = 5;
+  bool is_active = 6;
+  string address = 7;
+  string phone = 8;
+  string email = 9;
+  string website = 10;
+  string instagram = 11;
+  string telegram = 12;
+  string whatsapp = 13;
+  string user_name = 14;
+  string created_at = 15;
+  string updated_at = 16;
+} 

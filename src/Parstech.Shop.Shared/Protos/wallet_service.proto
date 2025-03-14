@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package wallet.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.WalletService";
+
+service WalletService {
+  rpc GetWalletByUserId (WalletRequest) returns (WalletResponse) {}
+  rpc GetActiveTransaction (TransactionRequest) returns (TransactionResponse) {}
+  rpc CalculateInstallments (CalculateRequest) returns (CalculateResponse) {}
+}
+
+message WalletRequest {
+  int32 user_id = 1;
+}
+
+message WalletResponse {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double credit = 3;
+  double used_credit = 4;
+  double remaining_credit = 5;
+  string last_updated = 6;
+}
+
+message TransactionRequest {
+  int32 wallet_id = 1;
+  string type_name = 2;
+}
+
+message TransactionResponse {
+  int32 transaction_id = 1;
+  int32 wallet_id = 2;
+  string type_name = 3; 
+  double amount = 4;
+  string description = 5;
+  string tracking_code = 6;
+  string transaction_date = 7;
+  int32 months = 8;
+  double monthly_payment = 9;
+  bool is_active = 10;
+}
+
+message CalculateRequest {
+  int64 price = 1;
+  int32 transaction_id = 2;
+  int32 month = 3;
+}
+
+message CalculateResponse {
+  bool is_successed = 1;
+  string message = 2;
+  double monthly_amount = 3;
+  double total_amount = 4;
+} 

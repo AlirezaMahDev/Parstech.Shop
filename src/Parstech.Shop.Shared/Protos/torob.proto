@@ -1,6 +1,17 @@
 syntax = "proto3";
 package Shop.Application.DTOs.Api;
 
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Torob";
+
+service TorobService {
+  rpc GetTorobProduct (TorobRequest) returns (Torob) {}
+}
+
+message TorobRequest {
+  int32 store_id = 1;
+  string base_url = 2;
+}
+
 message TorobProduct {
   string name = 1;
   int32 id = 2;

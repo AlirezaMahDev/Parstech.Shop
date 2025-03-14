@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package userprofile.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.UserProfileService";
+
+service UserProfileService {
+  rpc GetUserShippingAddresses (UserShippingRequest) returns (UserShippingListResponse) {}
+  rpc GetUserShippingById (ShippingIdRequest) returns (UserShippingResponse) {}
+  rpc CreateUserShipping (CreateShippingRequest) returns (UserShippingResponse) {}
+  rpc UpdateUserShipping (UpdateShippingRequest) returns (UserShippingResponse) {}
+  rpc DeleteUserShipping (ShippingIdRequest) returns (DeleteShippingResponse) {}
+  rpc GetUserOrdersHistory (UserOrdersRequest) returns (UserOrdersResponse) {}
+  rpc GetOrderDetails (OrderDetailsRequest) returns (OrderDetailsResponse) {}
+  rpc GetUserTransactions (UserTransactionsRequest) returns (UserTransactionsResponse) {}
+  rpc GetTransactionDetails (TransactionDetailsRequest) returns (TransactionDetailsResponse) {}
+}
+
+message UserShippingRequest {
+  int32 user_id = 1;
+}
+
+message ShippingIdRequest {
+  int32 shipping_id = 1;
+}
+
+message UserShippingListResponse {
+  repeated UserShippingResponse shipping_addresses = 1;
+}
+
+message UserShippingResponse {
+  int32 id = 1;
+  int32 user_id = 2;
+  string address = 3;
+  string postal_code = 4;
+  string mobile = 5;
+  string city = 6;
+  string province = 7;
+  bool is_default = 8;
+}
+
+message CreateShippingRequest {
+  int32 user_id = 1;
+  string address = 2;
+  string postal_code = 3;
+  string mobile = 4;
+  string city = 5;
+  string province = 6;
+  bool is_default = 7;
+}
+
+message UpdateShippingRequest {
+  int32 id = 1;
+  int32 user_id = 2;
+  string address = 3;
+  string postal_code = 4;
+  string mobile = 5;
+  string city = 6;
+  string province = 7;
+  bool is_default = 8;
+}
+
+message DeleteShippingResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message UserOrdersRequest {
+  int32 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string search_term = 4;
+}
+
+message UserOrdersResponse {
+  repeated OrderSummary orders = 1;
+  int32 total_count = 2;
+  int32 page_count = 3;
+  int32 current_page = 4;
+}
+
+message OrderSummary {
+  int32 order_id = 1;
+  string tracking_code = 2;
+  string create_date = 3;
+  bool is_paid = 4;
+  double total = 5;
+  double discount = 6;
+  double final_price = 7;
+  string status = 8;
+}
+
+message OrderDetailsRequest {
+  int32 order_id = 1;
+}
+
+message OrderDetailsResponse {
+  int32 order_id = 1;
+  string user_name = 2;
+  double total = 3;
+  double discount = 4;
+  double final_price = 5;
+  int32 shipping_id = 6;
+  string shipping_address = 7;
+  string shipping_postal_code = 8;
+  string shipping_mobile = 9;
+  repeated OrderDetailItem details = 10;
+}
+
+message OrderDetailItem {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 product_id = 3;
+  string product_name = 4;
+  string product_image = 5;
+  int32 count = 6;
+  double price = 7;
+  double discount = 8;
+  double total = 9;
+}
+
+message UserTransactionsRequest {
+  int32 wallet_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string transaction_type = 4;
+}
+
+message UserTransactionsResponse {
+  repeated TransactionSummary transactions = 1;
+  int32 total_count = 2;
+  int32 page_count = 3;
+  int32 current_page = 4;
+}
+
+message TransactionSummary {
+  int32 transaction_id = 1;
+  string transaction_date = 2;
+  double amount = 3;
+  string type_name = 4;
+  string description = 5;
+  bool is_credit = 6;
+}
+
+message TransactionDetailsRequest {
+  int32 transaction_id = 1;
+}
+
+message TransactionDetailsResponse {
+  int32 transaction_id = 1;
+  int32 wallet_id = 2;
+  string type_name = 3;
+  double amount = 4;
+  string description = 5;
+  string tracking_code = 6;
+  string transaction_date = 7;
+  int32 months = 8;
+  double monthly_payment = 9;
+  bool is_active = 10;
+  bool is_credit = 11;
+} 

@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Parstech.Shop.Shared.Protos.Order;
 using Parstech.Shop.Shared.Protos.Product;
 using Parstech.Shop.Shared.Protos.Response;
+using Parstech.Shop.Shared.Protos.Section;
+using Parstech.Shop.Shared.Protos.UserProduct;
 using Parstech.Shop.Web.Services.GrpcClients;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
@@ -19,6 +21,8 @@ namespace Shop.Web.Pages
         #region Constructor
         private readonly ProductGrpcClient _productClient;
         private readonly OrderGrpcClient _orderClient;
+        private readonly SectionGrpcClient _sectionClient;
+        private readonly UserProductGrpcClient _userProductClient;
         private readonly IProductRepository _productRep;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -26,12 +30,16 @@ namespace Shop.Web.Pages
         public IndexModel(
             ProductGrpcClient productClient,
             OrderGrpcClient orderClient,
+            SectionGrpcClient sectionClient,
+            UserProductGrpcClient userProductClient,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IProductRepository productRep)
         {
             _productClient = productClient;
             _orderClient = orderClient;
+            _sectionClient = sectionClient;
+            _userProductClient = userProductClient;
             _userManager = userManager;
             _signInManager = signInManager;
             _productRep = productRep;
@@ -51,11 +59,40 @@ namespace Shop.Web.Pages
         #endregion
         public async Task<IActionResult> OnGet()
         {
-            // TODO: Replace with appropriate gRPC call once SectionService is implemented
-            // For now, we'll use the existing implementation
-            // Sections = await _mediator.Send(new SectionAndDetailsReadsQueryReq(null));
-            
-            return Page();
+            try
+            {
+                var sectionRequest = new SectionRequest();
+                var sectionResponse = await _sectionClient.GetSectionsAsync(sectionRequest);
+                
+                Sections = sectionResponse.Sections.Select(s => new SectionAndDetailsDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Image = s.Image,
+                    ParentId = s.ParentId,
+                    IsActive = s.IsActive,
+                    Details = s.Details.Select(d => new SectionDetailDto
+                    {
+                        Id = d.Id,
+                        SectionId = d.SectionId,
+                        Title = d.Title,
+                        Description = d.Description,
+                        Image = d.Image,
+                        Link = d.Link,
+                        IsActive = d.IsActive,
+                        Order = d.Order
+                    }).ToList()
+                }).ToList();
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                Response.IsSuccessed = false;
+                Response.Message = $"Error loading sections: {ex.Message}";
+                return Page();
+            }
         }
 
         [ValidateAntiForgeryToken]
@@ -63,16 +100,11 @@ namespace Shop.Web.Pages
         {
             try
             {
-                // Get user name if authenticated
                 string userName = User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty;
-
-                // Use the ProductGrpcClient to search products
                 var searchResults = await _productClient.SearchProductsAsync(Filter, 4);
                 
-                // Map the results back to the response format expected by the UI
                 Response.IsSuccessed = true;
                 
-                // Convert gRPC response to the expected format
                 var productList = searchResults.ProductList.Select(p => new
                 {
                     Id = p.Id,
@@ -105,17 +137,18 @@ namespace Shop.Web.Pages
             {
                 try
                 {
-                    // Get product details using gRPC
                     var product = await _productClient.GetProductAsync(ProductId);
-
-                    // TODO: Replace with appropriate gRPC call once UserProductService is implemented
-                    // For now, we'll use the existing implementation to create user product comparison
-                    // var res = await _mediator.Send(new CreateUserProductCommandReq(User.Identity.Name, ProductId, "Compare"));
-                    var res = true; // Placeholder
-
-                    if (res)
+                    var request = new CreateUserProductRequest
                     {
-                        // Map the gRPC product to the response object
+                        UserName = User.Identity.Name,
+                        ProductId = ProductId,
+                        Type = "Compare"
+                    };
+
+                    var response = await _userProductClient.CreateUserProductAsync(request);
+
+                    if (response.Success)
+                    {
                         Response.Object = new
                         {
                             Id = product.Id,
@@ -124,24 +157,24 @@ namespace Shop.Web.Pages
                             Image = product.Image
                         };
                         Response.IsSuccessed = true;
-                        Response.Message = $"محصول {product.Name} به بخش مقایسه افزوده شد";
+                        Response.Message = response.Message;
                     }
                     else
                     {
                         Response.IsSuccessed = false;
-                        Response.Message = $"لیست مقایسه شما تکمیل است";
+                        Response.Message = response.Message;
                     }
                 }
                 catch (Exception ex)
                 {
                     Response.IsSuccessed = false;
-                    Response.Message = $"خطا در افزودن محصول به مقایسه: {ex.Message}";
+                    Response.Message = $"Error adding product to compare: {ex.Message}";
                 }
             }
             else
             {
                 Response.IsSuccessed = false;
-                Response.Message = "ابتدا وارد حساب خود شوید";
+                Response.Message = "Please login first";
             }
             return new JsonResult(Response);
         }
@@ -151,16 +184,16 @@ namespace Shop.Web.Pages
         {
             try
             {
-                // TODO: Replace with appropriate gRPC call once UserProductService is implemented
-                // await _mediator.Send(new DeleteUserProductCommandReq(userProductId));
+                var request = new DeleteUserProductRequest { UserProductId = userProductId };
+                var response = await _userProductClient.DeleteUserProductAsync(request);
 
-                Response.IsSuccessed = true;
-                Response.Message = "محصول از لیست مقایسه شما حذف شد";
+                Response.IsSuccessed = response.Success;
+                Response.Message = response.Message;
             }
             catch (Exception ex)
             {
                 Response.IsSuccessed = false;
-                Response.Message = $"خطا در حذف محصول از مقایسه: {ex.Message}";
+                Response.Message = $"Error deleting product from compare: {ex.Message}";
             }
 
             return new JsonResult(Response);
@@ -173,13 +206,16 @@ namespace Shop.Web.Pages
             {
                 try
                 {
-                    // Get product details using gRPC
                     var product = await _productClient.GetProductAsync(ProductId);
+                    var request = new CreateUserProductRequest
+                    {
+                        UserName = User.Identity.Name,
+                        ProductId = ProductId,
+                        Type = "Favorite"
+                    };
 
-                    // TODO: Replace with appropriate gRPC call once UserProductService is implemented
-                    // var res = await _mediator.Send(new CreateUserProductCommandReq(User.Identity.Name, ProductId, "Favorite"));
+                    var response = await _userProductClient.CreateUserProductAsync(request);
 
-                    // Map the gRPC product to the response
                     Response.Object = new
                     {
                         Id = product.Id,
@@ -187,19 +223,19 @@ namespace Shop.Web.Pages
                         Price = product.Price,
                         Image = product.Image
                     };
-                    Response.IsSuccessed = true;
-                    Response.Message = $"محصول {product.Name} به علاقه مندی های شما افزوده شد";
+                    Response.IsSuccessed = response.Success;
+                    Response.Message = response.Message;
                 }
                 catch (Exception ex)
                 {
                     Response.IsSuccessed = false;
-                    Response.Message = $"خطا در افزودن محصول به علاقه مندی ها: {ex.Message}";
+                    Response.Message = $"Error adding product to favorites: {ex.Message}";
                 }
             }
             else
             {
                 Response.IsSuccessed = false;
-                Response.Message = "ابتدا وارد حساب خود شوید";
+                Response.Message = "Please login first";
             }
             return new JsonResult(Response);
         }
@@ -209,10 +245,8 @@ namespace Shop.Web.Pages
         {
             try
             {
-                // Get product details using gRPC
                 var product = await _productClient.GetProductAsync(ProductId);
 
-                // Map the gRPC product to the response
                 Response.Object = new
                 {
                     Id = product.Id,
@@ -221,12 +255,12 @@ namespace Shop.Web.Pages
                     Image = product.Image
                 };
                 Response.IsSuccessed = true;
-                Response.Message = $"محصول {product.Name} به سبد خرید افزوده شد";
+                Response.Message = $"Product {product.Name} added to cart";
             }
             catch (Exception ex)
             {
                 Response.IsSuccessed = false;
-                Response.Message = $"خطا در افزودن محصول به سبد خرید: {ex.Message}";
+                Response.Message = $"Error adding product to cart: {ex.Message}";
             }
             return new JsonResult(Response);
         }
@@ -237,19 +271,16 @@ namespace Shop.Web.Pages
             try
             {
                 string userName = User.Identity.IsAuthenticated ? User.Identity.Name : "-";
-
-                // Use OrderGrpcClient to create checkout
                 var productIds = new List<int> { productId };
                 var result = await _orderClient.CreateOrderAsync(userName, productIds, 1, 1);
 
-                // Map the response
                 Response.IsSuccessed = result.Status;
                 Response.Message = result.Message;
             }
             catch (Exception ex)
             {
                 Response.IsSuccessed = false;
-                Response.Message = $"خطا در ایجاد سفارش: {ex.Message}";
+                Response.Message = $"Error creating checkout: {ex.Message}";
             }
             return new JsonResult(Response);
         }

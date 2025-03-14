@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package shipping.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.ShippingService";
+
+service ShippingService {
+  rpc GetFirstUserShipping (FirstShippingRequest) returns (UserShippingResponse) {}
+  rpc ChangeOrderShipping (ChangeShippingRequest) returns (ChangeShippingResponse) {}
+  rpc GetOrderShipping (OrderShippingRequest) returns (OrderShippingResponse) {}
+}
+
+message FirstShippingRequest {
+  int32 user_id = 1;
+}
+
+message UserShippingResponse {
+  int32 shipping_id = 1;
+  int32 user_id = 2;
+  string address = 3;
+  string postal_code = 4;
+  string mobile = 5;
+  string city = 6;
+  string province = 7;
+  bool is_default = 8;
+}
+
+message ChangeShippingRequest {
+  string action = 1;
+  int32 user_shipping_id = 2;
+  int32 order_id = 3;
+  int32 shipping_cost = 4;
+}
+
+message ChangeShippingResponse {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 user_shipping_id = 3;
+  string address = 4;
+  string postal_code = 5;
+  string mobile = 6;
+  double shipping_cost = 7;
+}
+
+message OrderShippingRequest {
+  int32 order_id = 1;
+}
+
+message OrderShippingResponse {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 user_shipping_id = 3;
+  string address = 4;
+  string postal_code = 5;
+  string mobile = 6;
+  double shipping_cost = 7;
+} 

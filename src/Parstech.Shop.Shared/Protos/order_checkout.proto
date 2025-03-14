@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package order.checkout;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.OrderCheckout";
+
+service OrderCheckoutService {
+  rpc GetOpenOrder (OpenOrderRequest) returns (OrderResponse) {}
+  rpc RefreshOrder (RefreshOrderRequest) returns (RefreshOrderResponse) {}
+  rpc GetOrderDetails (OrderDetailsRequest) returns (OrderDetailsResponse) {}
+  rpc ChangeOrderDetail (ChangeOrderDetailRequest) returns (ChangeOrderDetailResponse) {}
+  rpc DeleteOrderDetail (DeleteOrderDetailRequest) returns (DeleteOrderDetailResponse) {}
+  rpc CompleteOrder (CompleteOrderRequest) returns (CompleteOrderResponse) {}
+}
+
+message OpenOrderRequest {
+  string user_name = 1;
+}
+
+message OrderResponse {
+  int32 order_id = 1;
+  string user_name = 2;
+  int32 user_id = 3;
+  string create_date = 4;
+  bool is_paid = 5;
+  double total = 6;
+  double discount = 7;
+  double final_price = 8;
+  string tracking_code = 9;
+}
+
+message RefreshOrderRequest {
+  int32 order_id = 1;
+}
+
+message RefreshOrderResponse {
+  bool status = 1;
+  string message = 2;
+  OrderResponse order = 3;
+}
+
+message OrderDetailsRequest {
+  int32 order_id = 1;
+}
+
+message OrderDetailsResponse {
+  int32 order_id = 1;
+  string user_name = 2;
+  double total = 3;
+  double discount = 4;
+  double final_price = 5;
+  int32 shipping_id = 6;
+  string shipping_address = 7;
+  string shipping_postal_code = 8;
+  string shipping_mobile = 9;
+  repeated OrderDetailItem details = 10;
+  repeated UserShippingItem user_shippings = 11;
+  repeated PayTypeItem pay_types = 12;
+}
+
+message OrderDetailItem {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 product_id = 3;
+  string product_name = 4;
+  string product_image = 5;
+  int32 count = 6;
+  double price = 7;
+  double discount = 8;
+  double total = 9;
+}
+
+message UserShippingItem {
+  int32 id = 1;
+  int32 user_id = 2;
+  string address = 3;
+  string postal_code = 4;
+  string mobile = 5;
+  string city = 6;
+  string province = 7;
+  bool is_default = 8;
+}
+
+message PayTypeItem {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_active = 4;
+}
+
+message ChangeOrderDetailRequest {
+  int32 detail_id = 1;
+  int32 count = 2;
+}
+
+message ChangeOrderDetailResponse {
+  bool status = 1;
+  string message = 2;
+  OrderDetailsResponse details = 3;
+}
+
+message DeleteOrderDetailRequest {
+  int32 detail_id = 1;
+}
+
+message DeleteOrderDetailResponse {
+  bool status = 1;
+  string message = 2;
+}
+
+message CompleteOrderRequest {
+  int32 order_id = 1;
+  int32 order_shipping_id = 2;
+  int32 pay_type_id = 3;
+  optional int32 transaction_id = 4;
+  int32 month = 5;
+}
+
+message CompleteOrderResponse {
+  bool is_successed = 1;
+  string message = 2;
+  optional CompleteOrderResult result = 3;
+}
+
+message CompleteOrderResult {
+  int32 order_id = 1;
+  int32 order_pay_id = 2;
+  string tracking_code = 3;
+  double total = 4;
+  string url = 5;
+  int32 transaction_id = 6;
+} 
