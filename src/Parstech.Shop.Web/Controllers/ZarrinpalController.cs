@@ -1,69 +1,71 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Contracts.Persistance;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Order.Requests.Queries;
 
-namespace Shop.Web.Controllers
+namespace Parstech.Shop.Web.Controllers
 {
-
-
     public class ZarrinpalController : Controller
     {
+        private readonly OrderCheckoutGrpcClient _orderCheckoutGrpcClient;
+        private readonly WalletTransactionGrpcClient _walletTransactionGrpcClient;
 
-
-
-        private readonly IMediator _mediator;
-        private readonly IOrderRepository _orderRep;
-        private readonly IWalletTransactionRepository _walletTransactionRep;
-
-        public ZarrinpalController(IMediator mediator,
-            IOrderRepository orderRep, IWalletTransactionRepository walletTransactionRep)
+        public ZarrinpalController(
+            OrderCheckoutGrpcClient orderCheckoutGrpcClient,
+            WalletTransactionGrpcClient walletTransactionGrpcClient)
         {
-            _mediator = mediator;
-            _orderRep = orderRep;
-            _walletTransactionRep = walletTransactionRep;
+            _orderCheckoutGrpcClient = orderCheckoutGrpcClient;
+            _walletTransactionGrpcClient = walletTransactionGrpcClient;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> CallBack(int orderId)
+        public async Task<IActionResult> CallBack(string Authority, string Status)
         {
-            ResponseDto Result = new ResponseDto();
-            var order = await _orderRep.GetAsync(orderId);
-            var transaaction = await _walletTransactionRep.GetLastOfOrder(order.OrderCode);
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok" &&
-                HttpContext.Request.Query["Authority"] != "")
+            if (Status != "OK")
             {
-                string authority = HttpContext.Request.Query["Authority"].ToString();
-
-                var payment = new ZarinpalSandbox.Payment(Convert.ToInt32(order.Total));
-                var res = payment.Verification(authority).Result;
-                if (res.Status == 100)
-                {
-                    Result = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId, transaaction.Id, res.RefId.ToString()));
-                    var redirect = $"https://localhost:7040/checkout/payment/Ok";
-                    return Redirect(redirect);
-                }
-                else
-                {
-                    var redirect = $"https://localhost:7040/checkout/payment/NotOk";
-                    return Redirect(redirect);
-                }
-            }
-            else
-            {
-
-                var redirect = $"https://localhost:7040/checkout/payment/NotOk";
-                return Redirect(redirect);
-
+                return RedirectToAction("PaymentFailed", "Order");
             }
 
+            var transaction = await _walletTransactionGrpcClient.GetWalletTransactionByTokenAsync(Authority);
+            if (!transaction.Status || transaction.Transaction == null)
+            {
+                return RedirectToAction("PaymentFailed", "Order");
+            }
+
+            var transactionItem = transaction.Transaction;
+            var orderId = transactionItem.OrderId;
+
+            if (orderId > 0)
+            {
+                var orderDetails = await _orderCheckoutGrpcClient.GetOrderDetailsAsync(orderId);
+                if (!orderDetails.OrderId.Equals(orderId))
+                {
+                    return RedirectToAction("PaymentFailed", "Order");
+                }
+
+                var result = await _orderCheckoutGrpcClient.CompleteOrderAsync(
+                    orderId,
+                    orderDetails.ShippingId,
+                    1, // Payment type ID for Zarrinpal
+                    transactionItem.Id,
+                    transactionItem.TrackingCode);
+
+                if (result.IsSuccessed)
+                {
+                    await _walletTransactionGrpcClient.UpdateWalletTransactionAsync(
+                        transactionItem.Id,
+                        true,
+                        transactionItem.TrackingCode);
+
+                    return RedirectToAction("PaymentSuccess", "Order", new { trackingCode = result.Result?.TrackingCode });
+                }
+            }
+
+            return RedirectToAction("PaymentFailed", "Order");
         }
     }
 }

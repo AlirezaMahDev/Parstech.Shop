@@ -5,11 +5,20 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Torob";
 
 service TorobService {
   rpc GetTorobProduct (TorobRequest) returns (Torob) {}
+  rpc GetTorobProducts (TorobProductsRequest) returns (TorobProductsResponse) {}
 }
 
 message TorobRequest {
   int32 store_id = 1;
   string base_url = 2;
+}
+
+message TorobProductsRequest {
+  int32 page = 1;
+}
+
+message TorobProductsResponse {
+  repeated TorobProduct products = 1;
 }
 
 message TorobProduct {

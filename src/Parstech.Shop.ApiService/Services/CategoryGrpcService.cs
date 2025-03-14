@@ -1,7 +1,9 @@
 using Grpc.Core;
 using MediatR;
 using Parstech.Shop.Shared.Protos.Category;
+using Shop.Application.DTOs.Categury;
 using Shop.Application.Features.Category.Requests.Queries;
+using Shop.Application.Features.Categury.Requests.Queries;
 
 namespace Shop.ApiService.Services
 {
@@ -61,6 +63,58 @@ namespace Shop.ApiService.Services
                 var category = await _mediator.Send(new GetCategoryByLatinNameQueryReq(request.LatinName));
                 
                 return MapCategoryToProto(category);
+            }
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            }
+        }
+        
+        public override async Task<CategoriesMenuResponse> GetCategoriesMenu(CategoriesMenuRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var categories = await _mediator.Send(new ShowCateguriesQueryReq());
+                
+                var response = new CategoriesMenuResponse();
+                foreach (var parentCategory in categories)
+                {
+                    var parent = new CategoryMenuParent
+                    {
+                        Id = parentCategory.Id,
+                        Name = parentCategory.Name,
+                        LatinName = parentCategory.LatinName,
+                        Image = parentCategory.Img ?? string.Empty
+                    };
+                    
+                    // Add children
+                    foreach (var childCategory in parentCategory.Childs)
+                    {
+                        var child = new CategoryMenuChild
+                        {
+                            Id = childCategory.Id,
+                            Name = childCategory.Name,
+                            LatinName = childCategory.LatinName
+                        };
+                        
+                        // Add grandchildren
+                        foreach (var grandChildCategory in childCategory.Childs)
+                        {
+                            child.GrandChildren.Add(new CategoryMenuGrandChild
+                            {
+                                Id = grandChildCategory.Id,
+                                Name = grandChildCategory.Name,
+                                LatinName = grandChildCategory.LatinName
+                            });
+                        }
+                        
+                        parent.Children.Add(child);
+                    }
+                    
+                    response.Parents.Add(parent);
+                }
+                
+                return response;
             }
             catch (Exception ex)
             {

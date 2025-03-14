@@ -12,6 +12,17 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             _client = new UserProfileService.UserProfileServiceClient(channel);
         }
 
+        public async Task<UserResponse> GetUserByUsernameAsync(string username)
+        {
+            var request = new UserByUsernameRequest { Username = username };
+            return await _client.GetUserByUsernameAsync(request);
+        }
+
+        public async Task<UserInfoResponse> GetUserInfoAsync(UserInfoRequest request)
+        {
+            return await _client.GetUserInfoAsync(request);
+        }
+
         public async Task<UserShippingListResponse> GetUserShippingAddressesAsync(int userId)
         {
             var request = new UserShippingRequest { UserId = userId };

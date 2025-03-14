@@ -1,4 +1,4 @@
-﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+﻿@model Parstech.Shop.Shared.Protos.Section.SectionWithDetailsResponse
 @{
     var detail = Model.SectionDetails.FirstOrDefault();
 }
@@ -6,8 +6,8 @@
     <!-- Nav nav-pills -->
     <div class="position-relative z-index-2">
         <div class="  justify-content-between flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 rtl">
-            <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">@Model.SectionName</h3>
-            <a class="d-block text-gray-16 pt-1" href="/Products/@Model.latinCateguryName">مشاهده همه <i class="ec ec-arrow-right-categproes" style="rotate: 180deg;"></i></a>
+            <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">@Model.Name</h3>
+            <a class="d-block text-gray-16 pt-1" href="/Products/@Model.LatinCategoryName">مشاهده همه <i class="ec ec-arrow-right-categproes" style="rotate: 180deg;"></i></a>
         </div>
         <!-- Tab Content -->
         <div class="row  border border-width-2 border-muted borders-radius-20 mt-2">

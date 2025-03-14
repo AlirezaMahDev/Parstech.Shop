@@ -1,24 +1,22 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Shop.Application.Features.Categury.Requests.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
 
-namespace Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents
 {
     [ViewComponent(Name = "Categuries")]
     public class CateguriesViewComponent : ViewComponent
     {
-
-        private readonly IMediator _mediator;
-        public CateguriesViewComponent(IMediator mediator)
+        private readonly CategoryGrpcClient _categoryGrpcClient;
+        
+        public CateguriesViewComponent(CategoryGrpcClient categoryGrpcClient)
         {
-            _mediator = mediator;
+            _categoryGrpcClient = categoryGrpcClient;
         }
+        
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var List = await _mediator.Send(new ShowCateguriesQueryReq());
-            //var j=JsonConvert.SerializeObject(List);
-            return View(List);
+            var categoriesMenu = await _categoryGrpcClient.GetCategoriesMenuAsync();
+            return View(categoriesMenu);
         }
     }
 }

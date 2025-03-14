@@ -1,4 +1,4 @@
-﻿@model List<Shop.Application.DTOs.Categury.ParrentCateguryShowDto>
+﻿@model Parstech.Shop.Shared.Protos.Category.CategoriesMenuResponse
 <div id="basicsAccordion" class="d-none d-xl-block">
     <!-- Card -->
     <div class="card border-0 py-3 position-static rtl">
@@ -29,7 +29,7 @@
                         <a href="#" class="nav-link u-header__nav-link font-weight-bold">بهترین محصولات</a>
                         </li>*@
 
-                        @foreach (var parrent in Model)
+                        @foreach (var parent in Model.Parents)
                         {
                             <!-- Nav Item MegaMenu -->
                             <li class="nav-item hs-has-mega-menu u-header__nav-item"
@@ -38,153 +38,45 @@
                                 data-animation-out="fadeOut"
                                 data-position="left">
                                 <a id="basicMegaMenu" class=" u-header__nav-link w-100" href="javascript:;" aria-haspopup="true" aria-expanded="false">
-                                    <span class="nav-link"><img width="20" class="ml-1" src="/Shared/Images/@parrent.Image" /> @parrent.GroupTitle</span>
+                                    <span class="nav-link"><img width="20" class="ml-1" src="/Shared/Images/@parent.Image" /> @parent.Name</span>
                                 </a>
 
                                 <!-- Nav Item - Mega Menu -->
                                 <div class="hs-mega-menu vmm-tfw u-header__sub-menu" aria-labelledby="basicMegaMenu">
-
                                     <div class="row u-header__mega-menu-wrapper">
+                                        @{
+                                            // Split children into 4 columns
+                                            var childrenCount = parent.Children.Count;
+                                            var itemsPerColumn = (childrenCount + 3) / 4; // Ceiling division to distribute evenly
+                                            var currentColumn = 0;
+                                            var columnItems = 0;
 
-                                        <div class="col-lg-3 col-md-6 col-xs-12  mb-sm-0">
-                                            @foreach (var subParrent in parrent.Childs1)
+                                            for (int i = 0; i < 4; i++)
                                             {
-                                                <a class="u-header__sub-menu-title" href="/Products/@subParrent.LatinGroupTitle">
-                                                    <div class=""><img width="15" class="ml-1" src="/Shared/Images/@subParrent.Image" /> @subParrent.GroupTitle</div>
-
-                                                </a>
-                                                <div class="row">
-                                                    @foreach (var sub in subParrent.Childs)
-                                                    {
-                                                        <div class="col-12">
-                                                            <a class="p-1 nav-link u-nav-divider font-weight-bold   flex-column align-items-start" href="/Products/@sub.LatinGroupTitle">
-                                                                <div class="">@sub.GroupTitle</div>
-
-                                                            </a>
-                                                            
-                                                        </div>
-                                                        @foreach (var sub2 in sub.Childs)
+                                                <div class="col-lg-3 col-md-6 col-xs-12 mb-sm-0">
+                                                    @{
+                                                        var childrenToDisplay = parent.Children.Skip(i * itemsPerColumn).Take(itemsPerColumn);
+                                                        foreach (var child in childrenToDisplay)
                                                         {
-                                                            <div class="col-12">
-                                                                <a class="p-1 nav-link u-nav-divider   flex-column align-items-start" href="/Products/@sub2.LatinGroupTitle">
-                                                                    <div class="">@sub2.GroupTitle</div>
-
-                                                                </a>
-
+                                                            <a class="u-header__sub-menu-title" href="/Products/@child.LatinName">
+                                                                <div class="">@child.Name</div>
+                                                            </a>
+                                                            <div class="row">
+                                                                @foreach (var grandChild in child.GrandChildren)
+                                                                {
+                                                                    <div class="col-12">
+                                                                        <a class="p-1 nav-link u-nav-divider font-weight-bold flex-column align-items-start" href="/Products/@grandChild.LatinName">
+                                                                            <div class="">@grandChild.Name</div>
+                                                                        </a>
+                                                                    </div>
+                                                                }
                                                             </div>
-                                                            
                                                         }
                                                     }
                                                 </div>
                                             }
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-xs-12  mb-sm-0">
-                                            @foreach (var subParrent in parrent.Childs2)
-                                            {
-                                                <a class="u-header__sub-menu-title" href="/Products/@subParrent.LatinGroupTitle">
-                                                    <div class=""><img width="15" class="ml-1" src="/Shared/Images/@subParrent.Image" /> @subParrent.GroupTitle</div>
-                                                    @*<div class="u-nav-subtext font-size-11 text-gray-30">@subParrent.LatinGroupTitle</div>*@
-                                                </a>
-
-
-                                                <div class="row">
-                                                    @foreach (var sub in subParrent.Childs)
-                                                    {
-                                                        <div class="col-12">
-                                                            <a class="p-1 nav-link u-nav-divider font-weight-bold   flex-column align-items-start" href="/Products/@sub.LatinGroupTitle">
-                                                                <div class="">@sub.GroupTitle</div>
-
-                                                            </a>
-
-                                                        </div>
-                                                        @foreach (var sub2 in sub.Childs)
-                                                        {
-                                                            <div class="col-12">
-                                                                <a class="p-1 nav-link u-nav-divider   flex-column align-items-start" href="/Products/@sub2.LatinGroupTitle">
-                                                                    <div class="">@sub2.GroupTitle</div>
-
-                                                                </a>
-
-                                                            </div>
-
-                                                        }
-                                                    }
-                                                </div>
-                                            }
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-xs-12  mb-sm-0">
-                                            @foreach (var subParrent in parrent.Childs3)
-                                            {
-                                                <a class="u-header__sub-menu-title" href="/Products/@subParrent.LatinGroupTitle">
-                                                    <div class=""><img width="15" class="ml-1" src="/Shared/Images/@subParrent.Image" /> @subParrent.GroupTitle</div>
-                                                    @*<div class="u-nav-subtext font-size-11 text-gray-30">@subParrent.LatinGroupTitle</div>*@
-                                                </a>
-                                                <div class="row">
-                                                    @foreach (var sub in subParrent.Childs)
-                                                    {
-                                                        <div class="col-12">
-                                                            <a class="p-1 nav-link u-nav-divider font-weight-bold   flex-column align-items-start" href="/Products/@sub.LatinGroupTitle">
-                                                                <div class="">@sub.GroupTitle</div>
-
-                                                            </a>
-
-                                                        </div>
-                                                        @foreach (var sub2 in sub.Childs)
-                                                        {
-                                                            <div class="col-12">
-                                                                <a class="p-1 nav-link u-nav-divider   flex-column align-items-start" href="/Products/@sub2.LatinGroupTitle">
-                                                                    <div class="">@sub2.GroupTitle</div>
-
-                                                                </a>
-
-                                                            </div>
-
-                                                        }
-                                                    }
-                                                </div>
-                                            }
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-xs-12  mb-sm-0">
-                                            @foreach (var subParrent in parrent.Childs4)
-                                            {
-                                                <a class="u-header__sub-menu-title" href="/Products/@subParrent.LatinGroupTitle">
-                                                    <div class=""><img width="15" class="ml-1" src="/Shared/Images/@subParrent.Image" /> @subParrent.GroupTitle</div>
-                                                    @*<div class="u-nav-subtext font-size-11 text-gray-30">@subParrent.LatinGroupTitle</div>*@
-                                                </a>
-                                                <div class="row">
-                                                    @foreach (var sub in subParrent.Childs)
-                                                    {
-                                                        <div class="col-12">
-                                                            <a class="p-1 nav-link u-nav-divider font-weight-bold   flex-column align-items-start" href="/Products/@sub.LatinGroupTitle">
-                                                                <div class="">@sub.GroupTitle</div>
-
-                                                            </a>
-
-                                                        </div>
-                                                        @foreach (var sub2 in sub.Childs)
-                                                        {
-                                                            <div class="col-12">
-                                                                <a class="p-1 nav-link u-nav-divider   flex-column align-items-start" href="/Products/@sub2.LatinGroupTitle">
-                                                                    <div class="">@sub2.GroupTitle</div>
-
-                                                                </a>
-
-                                                            </div>
-
-                                                        }
-                                                    }
-                                                </div>
-                                            }
-                                        </div>
-
+                                        }
                                     </div>
-                                    @if (parrent.BackImage != null)
-                                    {
-                                        <div>
-                                            <img class="img-fluid" src="~/Shared/Images/@parrent.BackImage" alt="Image Description">
-                                        </div>
-                                    }
-
                                 </div>
                                 <!-- End Nav Item - Mega Menu -->
                             </li>
@@ -251,14 +143,14 @@
 
                         <h6 class="font-weight-bold">دسته بندی محصولات</h6>
                         <ul id="sidebarNav" class="list-unstyled mb-0 sidebar-navbar">
-                            @foreach (var parrent in Model)
+                            @foreach (var parent in Model.Parents)
                             {
-                                var MenuId = $"sidebarNav1Collapse{parrent.GroupId}";
+                                var MenuId = $"sidebarNav1Collapse{parent.Id}";
                                 <li>
                                     <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;"
                                        role="button" data-toggle="collapse" aria-expanded="false"
                                        aria-controls="@MenuId" data-target="#@MenuId">
-                                        @parrent.GroupTitle
+                                        @parent.Name
                                     </a>
 
                                     <div id="@MenuId" class="collapse" data-parent="#sidebarNav">
@@ -266,44 +158,16 @@
                                         <div id="sidebarNav1" class="card list-unstyled dropdown-list">
                                             <div class="card-body">
                                                 <ul class="u-header-collapse__nav-list">
-                                                    @foreach (var subParrent in parrent.Childs1)
+                                                    @foreach (var child in parent.Children)
                                                     {
-                                                        <li><a href="/Products/@subParrent.LatinGroupTitle" class="u-header-sidebar__sub-menu-title">@subParrent.GroupTitle</a></li>
+                                                        <li><a href="/Products/@child.LatinName" class="u-header-sidebar__sub-menu-title">@child.Name</a></li>
 
-                                                        @foreach (var sub in subParrent.Childs)
+                                                        @foreach (var grandChild in child.GrandChildren)
                                                         {
-                                                            <li class=""><a class="u-header-collapse__submenu-nav-link" href="/Products/@sub.LatinGroupTitle">@sub.GroupTitle</a></li>
-
-                                                        }
-                                                    }@foreach (var subParrent in parrent.Childs2)
-                                                    {
-                                                        <li><a href="/Products/@subParrent.LatinGroupTitle" class="u-header-sidebar__sub-menu-title">@subParrent.GroupTitle</a></li>
-
-                                                        @foreach (var sub in subParrent.Childs)
-                                                        {
-                                                            <li class=""><a class="u-header-collapse__submenu-nav-link" href="/Products/@sub.LatinGroupTitle">@sub.GroupTitle</a></li>
-
-                                                        }
-                                                    }@foreach (var subParrent in parrent.Childs3)
-                                                    {
-                                                        <li><a href="/Products/@subParrent.LatinGroupTitle" class="u-header-sidebar__sub-menu-title">@subParrent.GroupTitle</a></li>
-
-                                                        @foreach (var sub in subParrent.Childs)
-                                                        {
-                                                            <li class=""><a class="u-header-collapse__submenu-nav-link" href="/Products/@sub.LatinGroupTitle">@sub.GroupTitle</a></li>
-
-                                                        }
-                                                    }@foreach (var subParrent in parrent.Childs4)
-                                                    {
-                                                        <li><a href="/Products/@subParrent.LatinGroupTitle" class="u-header-sidebar__sub-menu-title">@subParrent.GroupTitle</a></li>
-
-                                                        @foreach (var sub in subParrent.Childs)
-                                                        {
-                                                            <li class=""><a class="u-header-collapse__submenu-nav-link" href="/Products/@sub.LatinGroupTitle">@sub.GroupTitle</a></li>
+                                                            <li class=""><a class="u-header-collapse__submenu-nav-link" href="/Products/@grandChild.LatinName">@grandChild.Name</a></li>
 
                                                         }
                                                     }
-
                                                 </ul>
                                             </div>
                                         </div>

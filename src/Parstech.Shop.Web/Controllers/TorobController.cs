@@ -1,7 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Api;
-using Shop.Application.Features.Api.Requests.Queries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,10 +10,11 @@ namespace Shop.Web.Controllers
     [ApiController]
     public class TorobController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public TorobController(IMediator mediator)
+        private readonly TorobGrpcClient _torobClient;
+        
+        public TorobController(TorobGrpcClient torobClient)
         {
-            _mediator = mediator;
+            _torobClient = torobClient;
         }
 
         // GET: api/<TorobController>
@@ -22,8 +22,9 @@ namespace Shop.Web.Controllers
         public async Task<IActionResult> Get(int page)
         {
             List<TorobDto> Response = new List<TorobDto>();
-            var result = await _mediator.Send(new TorobGetProductsQueryReq(page));
+            var result = await _torobClient.GetTorobProductsAsync(page);
             string baseUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}";
+            
             foreach (var item in result)
             {
                 string price = "";
@@ -49,6 +50,7 @@ namespace Shop.Web.Controllers
                     price = item.SalePrice.ToString();
                     Oldprice = item.SalePrice.ToString();
                 }
+                
                 TorobDto torobItem = new TorobDto()
                 {
                     product_id = item.Id.ToString(),
@@ -57,12 +59,11 @@ namespace Shop.Web.Controllers
                     old_price = Oldprice,
                     availability = availability
                 };
+                
                 Response.Add(torobItem);
             }
 
             return Ok(Response);
         }
-
-
     }
 }

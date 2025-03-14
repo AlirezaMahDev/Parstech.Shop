@@ -1,15 +1,16 @@
-﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+﻿@model Parstech.Shop.Shared.Protos.Section.SectionWithDetailsResponse
 <div class="mb-6">
     <div class="row">
 
         @foreach (var item in Model.SectionDetails)
         {
-
-            string className = $"col-md-{item.ColSpace} col-lg-{item.ColSpace} col-sm-12";
-            string BannerclassName = $"banner-{item.ColSpace}";
+            // Determine column space from the title or order property
+            string colSpace = item.Order > 0 ? item.Order.ToString() : "6";
+            string className = $"col-md-{colSpace} col-lg-{colSpace} col-sm-12";
+            string bannerClassName = $"banner-{colSpace}";
 
             <div class="@className mb-2">
-                <div class="@BannerclassName " style="background-image: url(/shared/images/@item.BackgroundImage);background-size:cover">
+                <div class="@bannerClassName " style="background-image: url(/shared/images/@item.BackgroundImage);background-size:cover">
                     <a href="@item.Link" class="w-100 bannerHeight-170 py-3 py-xl-3 py-wd-4 my-2 my-wd-1 d-inline-flex align-items-center text-gray-90">
 
                         @if (item.Image != null)

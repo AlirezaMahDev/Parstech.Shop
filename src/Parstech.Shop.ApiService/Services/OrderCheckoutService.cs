@@ -316,5 +316,103 @@ namespace Shop.ApiService.Services
                 };
             }
         }
+
+        public override async Task<OrderPaymentsResponse> GetOrderPayments(OrderPaymentsRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(request.OrderId);
+                if (order == null)
+                {
+                    return new OrderPaymentsResponse
+                    {
+                        Status = false,
+                        Message = "Order not found"
+                    };
+                }
+
+                var payments = await _orderRepository.GetOrderPaymentsAsync(request.OrderId);
+                var paymentItems = payments.Select(p => new OrderPaymentItem
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    PaymentTypeId = p.PaymentTypeId,
+                    PaymentTypeName = p.PaymentType?.Name ?? string.Empty,
+                    Amount = p.Amount,
+                    IsPaid = p.IsPaid,
+                    TrackingCode = p.TrackingCode ?? string.Empty,
+                    PaymentDate = p.PaymentDate.HasValue ? p.PaymentDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : string.Empty
+                }).ToList();
+
+                return new OrderPaymentsResponse
+                {
+                    Status = true,
+                    Message = "Order payments retrieved successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new OrderPaymentsResponse
+                {
+                    Status = false,
+                    Message = $"Error retrieving order payments: {ex.Message}"
+                };
+            }
+        }
+
+        public override async Task<MultiplePaymentsResponse> CompleteOrderWithMultiplePayments(MultiplePaymentsRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(request.OrderId);
+                if (order == null)
+                {
+                    return new MultiplePaymentsResponse
+                    {
+                        Status = false,
+                        Message = "Order not found"
+                    };
+                }
+
+                // Create a new payment for the order
+                var payment = await _orderRepository.AddOrderPaymentAsync(
+                    request.OrderId,
+                    request.PaymentTypeId,
+                    request.Amount);
+
+                if (payment == null)
+                {
+                    return new MultiplePaymentsResponse
+                    {
+                        Status = false,
+                        Message = "Failed to create payment"
+                    };
+                }
+
+                // Check if this payment completes the order
+                var totalPaid = await _orderRepository.GetTotalPaidForOrderAsync(request.OrderId);
+                if (totalPaid >= order.FinalPrice)
+                {
+                    // Mark the order as paid
+                    order.IsPaid = true;
+                    await _orderRepository.UpdateAsync(order);
+                }
+
+                return new MultiplePaymentsResponse
+                {
+                    Status = true,
+                    Message = "Payment added successfully",
+                    PaymentId = payment.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                return new MultiplePaymentsResponse
+                {
+                    Status = false,
+                    Message = $"Error processing payment: {ex.Message}"
+                };
+            }
+        }
     }
 } 

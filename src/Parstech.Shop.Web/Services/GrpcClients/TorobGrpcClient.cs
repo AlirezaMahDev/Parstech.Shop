@@ -22,5 +22,12 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             
             return await _client.GetTorobProductAsync(request);
         }
+
+        public async Task<IEnumerable<TorobProduct>> GetTorobProductsAsync(int page)
+        {
+            var request = new TorobProductsRequest { Page = page };
+            var response = await _client.GetTorobProductsAsync(request);
+            return response.Products;
+        }
     }
 } 

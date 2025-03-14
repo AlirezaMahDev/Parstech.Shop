@@ -11,20 +11,49 @@ namespace Parstech.Shop.Web.Services.GrpcClients
         {
             _client = new UserProductService.UserProductServiceClient(channel);
         }
-
-        public async Task<UserProductResponse> CreateUserProductAsync(CreateUserProductRequest request)
+        
+        public async Task<UserProductResponse> CreateUserProductAsync(string userName, int productId, string type)
         {
+            var request = new CreateUserProductRequest
+            {
+                UserName = userName,
+                ProductId = productId,
+                Type = type
+            };
+            
             return await _client.CreateUserProductAsync(request);
         }
-
-        public async Task<UserProductResponse> DeleteUserProductAsync(DeleteUserProductRequest request)
+        
+        public async Task<UserProductResponse> DeleteUserProductAsync(int userProductId)
         {
+            var request = new DeleteUserProductRequest
+            {
+                UserProductId = userProductId
+            };
+            
             return await _client.DeleteUserProductAsync(request);
         }
-
-        public async Task<GetUserProductsResponse> GetUserProductsAsync(GetUserProductsRequest request)
+        
+        public async Task<IEnumerable<UserProduct>> GetUserProductsAsync(string userName, string type)
         {
-            return await _client.GetUserProductsAsync(request);
+            var request = new GetUserProductsRequest
+            {
+                UserName = userName,
+                Type = type
+            };
+            
+            var response = await _client.GetUserProductsAsync(request);
+            return response.Products;
+        }
+        
+        public async Task<IEnumerable<UserProduct>> GetUserFavoritesAsync(string userName)
+        {
+            return await GetUserProductsAsync(userName, "Favorite");
+        }
+        
+        public async Task<IEnumerable<UserProduct>> GetUserComparisonsAsync(string userName)
+        {
+            return await GetUserProductsAsync(userName, "Compare");
         }
     }
 } 

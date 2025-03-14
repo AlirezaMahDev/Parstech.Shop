@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package wallet;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Wallet";
+
+service WalletService {
+  rpc GetWalletTransaction (WalletTransactionRequest) returns (WalletTransactionResponse) {}
+  rpc GetWalletTransactionByToken (WalletTransactionTokenRequest) returns (WalletTransactionResponse) {}
+  rpc UpdateWalletTransaction (WalletTransactionUpdateRequest) returns (WalletTransactionUpdateResponse) {}
+  rpc GetUserWallet (UserWalletRequest) returns (UserWalletResponse) {}
+}
+
+message WalletTransactionRequest {
+  int32 transaction_id = 1;
+}
+
+message WalletTransactionTokenRequest {
+  string token = 1;
+}
+
+message WalletTransactionResponse {
+  bool status = 1;
+  string message = 2;
+  optional WalletTransactionItem transaction = 3;
+}
+
+message WalletTransactionItem {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  int32 transaction_type_id = 3;
+  string transaction_type_name = 4;
+  double amount = 5;
+  string description = 6;
+  string tracking_code = 7;
+  string transaction_date = 8;
+  bool is_success = 9;
+  string token = 10;
+  int32 order_id = 11;
+}
+
+message WalletTransactionUpdateRequest {
+  int32 transaction_id = 1;
+  bool is_success = 2;
+  optional string tracking_code = 3;
+}
+
+message WalletTransactionUpdateResponse {
+  bool status = 1;
+  string message = 2;
+}
+
+message UserWalletRequest {
+  string user_name = 1;
+}
+
+message UserWalletResponse {
+  bool status = 1;
+  string message = 2;
+  optional UserWalletItem wallet = 3;
+}
+
+message UserWalletItem {
+  int32 id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  double credit = 4;
+  double used_credit = 5;
+  double remaining_credit = 6;
+  string last_updated = 7;
+} 

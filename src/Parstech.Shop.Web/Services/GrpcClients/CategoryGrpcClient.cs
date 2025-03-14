@@ -31,5 +31,11 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             var request = new CategoryByLatinNameRequest { LatinName = latinName };
             return await _client.GetCategoryByLatinNameAsync(request);
         }
+        
+        public async Task<CategoriesMenuResponse> GetCategoriesMenuAsync()
+        {
+            var request = new CategoriesMenuRequest();
+            return await _client.GetCategoriesMenuAsync(request);
+        }
     }
 } 

@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package product.service;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Product";
+
+service ProductService {
+  rpc GetProducts (ProductListRequest) returns (ProductListResponse) {}
+  rpc GetProductById (ProductRequest) returns (ProductResponse) {}
+  rpc GetProductsForSitemap (SitemapProductsRequest) returns (SitemapProductsResponse) {}
+}
+
+message ProductListRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  optional string search_term = 3;
+  optional int32 category_id = 4;
+  optional int32 brand_id = 5;
+  optional int32 store_id = 6;
+  optional bool show_only_available = 7;
+  optional bool show_only_discounted = 8;
+  optional double min_price = 9;
+  optional double max_price = 10;
+}
+
+message ProductListResponse {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 total_count = 3;
+  int32 total_pages = 4;
+  repeated ProductItem products = 5;
+}
+
+message ProductRequest {
+  int32 product_id = 1;
+}
+
+message ProductResponse {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  string code = 4;
+  double price = 5;
+  double sale_price = 6;
+  double discount_price = 7;
+  string discount_date = 8;
+  double base_price = 9;
+  bool stock_status = 10;
+  int32 quantity = 11;
+  string description = 12;
+  string short_description = 13;
+  string short_link = 14;
+  int32 type_id = 15;
+  string type_name = 16;
+  int32 store_id = 17;
+  string store_name = 18;
+  string image = 19;
+  int32 brand_id = 20;
+  string brand_name = 21;
+  int32 category_id = 22;
+  string category_name = 23;
+  int32 visit_count = 24;
+  int32 sales_count = 25;
+  bool is_active = 26;
+}
+
+message ProductItem {
+  int32 id = 1;
+  string name = 2;
+  string short_link = 3;
+  string image = 4;
+  double price = 5;
+  double sale_price = 6;
+  double discount_price = 7;
+  bool stock_status = 8;
+  string brand_name = 9;
+  string category_name = 10;
+}
+
+message SitemapProductsRequest {}
+
+message SitemapProductsResponse {
+  repeated SitemapProduct products = 1;
+}
+
+message SitemapProduct {
+  int32 id = 1;
+  string short_link = 2;
+  string updated_at = 3;
+} 

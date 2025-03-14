@@ -1,21 +1,23 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.DTOs.User;
-using Shop.Application.Features.User.Requests.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.Protos.UserProfileService;
 
-namespace Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents
 {
     [ViewComponent(Name = "UserName")]
     public class UserNameViewComponent : ViewComponent
     {
-        private readonly IMediator _mediator;
-        public UserNameViewComponent(IMediator mediator)
+        private readonly UserProfileGrpcClient _userProfileClient;
+        
+        public UserNameViewComponent(UserProfileGrpcClient userProfileClient)
         {
-            _mediator = mediator;
+            _userProfileClient = userProfileClient;
         }
-        public async Task<IViewComponentResult> InvokeAsync(UserNameDto param)
+        
+        public async Task<IViewComponentResult> InvokeAsync(string userName, string position)
         {
-            var userInfo = await _mediator.Send(new GetUserInfoQueryReq(param.userName, param.Position));
+            var request = new UserInfoRequest { Username = userName, Position = position };
+            var userInfo = await _userProfileClient.GetUserInfoAsync(request);
             return View(userInfo);
         }
     }

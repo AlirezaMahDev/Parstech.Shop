@@ -1,22 +1,22 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Features.SiteSeting.Requests.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
 
-namespace Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents
 {
     [ViewComponent(Name = "Header")]
     public class HeaderViewComponent : ViewComponent
     {
-
-        private readonly IMediator _mediator;
-        public HeaderViewComponent(IMediator mediator)
+        private readonly SiteSettingGrpcClient _siteSettingGrpcClient;
+        
+        public HeaderViewComponent(SiteSettingGrpcClient siteSettingGrpcClient)
         {
-            _mediator = mediator;
+            _siteSettingGrpcClient = siteSettingGrpcClient;
         }
+        
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var result = await _mediator.Send(new GetSettingAndSeoQueryReq());
-            return View(result);
+            var settings = await _siteSettingGrpcClient.GetSettingAndSeoAsync();
+            return View(settings);
         }
     }
 }

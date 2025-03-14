@@ -72,22 +72,27 @@ app.MapGrpcService<SectionService>();
 app.MapGrpcService<UserProductService>();
 
 // Map gRPC services
-app.MapGrpcService<CategoryGrpcService>();
-app.MapGrpcService<BrandGrpcService>();
-app.MapGrpcService<UserStoreGrpcService>();
+app.MapGrpcService<CategoryGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<BrandGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserStoreGrpcService>().EnableGrpcWeb();
 app.MapGrpcReflectionService();
-app.MapGrpcService<ProductDetailService>();
-app.MapGrpcService<ProductGalleryService>();
-app.MapGrpcService<TorobService>();
+app.MapGrpcService<ProductDetailGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductGalleryGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<TorobGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductGrpcService>().EnableGrpcWeb();
 
 // Map new gRPC services
 app.MapGrpcService<OrderCheckoutService>().EnableGrpcWeb();
 app.MapGrpcService<CouponGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<WalletGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<WalletTransactionGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<ShippingGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<PaymentGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserProfileGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserPreferencesGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<SectionGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserProductGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<SiteSettingGrpcService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();

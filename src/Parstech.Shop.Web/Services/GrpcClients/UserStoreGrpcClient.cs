@@ -12,14 +12,17 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             _client = new UserStoreService.UserStoreServiceClient(channel);
         }
 
-        public async Task<UserStoreResponse> GetStoresAsync()
+        public async Task<IEnumerable<UserStore>> GetStoresAsync()
         {
-            return await _client.GetStoresAsync(new StoresRequest());
+            var request = new StoresRequest();
+            var response = await _client.GetStoresAsync(request);
+            return response.Stores;
         }
 
         public async Task<UserStore> GetStoreByIdAsync(int id)
         {
-            return await _client.GetStoreByIdAsync(new StoreByIdRequest { Id = id });
+            var request = new StoreByIdRequest { Id = id };
+            return await _client.GetStoreByIdAsync(request);
         }
     }
 } 

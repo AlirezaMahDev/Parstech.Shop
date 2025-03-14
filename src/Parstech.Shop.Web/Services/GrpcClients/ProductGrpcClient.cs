@@ -17,6 +17,12 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             return await _client.GetProductAsync(request);
         }
 
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            var request = new ProductRequest { ProductId = productId };
+            return await _client.GetProductAsync(request);
+        }
+
         public async Task<ProductPaging> GetProductsAsync(ProductParameter parameter, string? userName = null)
         {
             var request = new ProductPagingRequest
@@ -43,6 +49,29 @@ namespace Parstech.Shop.Web.Services.GrpcClients
         {
             var request = new ProductRequest { ProductId = productId };
             return await _client.GetProductDetailsAsync(request);
+        }
+
+        public async Task<IntegratedProductsPagingResponse> GetIntegratedProductsPagingAsync(ProductSearchParameterRequest parameter, string? userName = null)
+        {
+            var request = new IntegratedProductsPagingRequest
+            {
+                Parameter = parameter,
+                UserName = userName ?? string.Empty
+            };
+            
+            return await _client.GetIntegratedProductsPagingAsync(request);
+        }
+        
+        public async Task<List<ProductResponse>> GetProductsWithDiscountAsync(int take, int sectionId)
+        {
+            var request = new ProductsWithDiscountRequest
+            {
+                Take = take,
+                SectionId = sectionId
+            };
+            
+            var response = await _client.GetProductsWithDiscountAsync(request);
+            return response.Products.ToList();
         }
     }
 }

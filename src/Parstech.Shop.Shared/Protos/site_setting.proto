@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package site.setting;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.SiteSetting";
+
+service SiteSettingService {
+  rpc GetSettingAndSeo (SettingAndSeoRequest) returns (SettingAndSeoResponse) {}
+}
+
+message SettingAndSeoRequest {}
+
+message SettingAndSeoResponse {
+  SiteSettingItem site_setting = 1;
+  SeoSettingItem seo_setting = 2;
+}
+
+message SiteSettingItem {
+  int32 id = 1;
+  string site_name = 2;
+  string site_url = 3;
+  string site_email = 4;
+  string site_tel = 5;
+  string site_fax = 6;
+  string site_address = 7;
+  string site_about = 8;
+  string site_logo = 9;
+  string site_favicon = 10;
+  string copy_right = 11;
+  string map_code = 12;
+  string enamad_code = 13;
+  string samandehi_code = 14;
+  string google_analytics_code = 15;
+  string google_master_code = 16;
+  string google_recaptcha_site_key = 17;
+  string google_recaptcha_secret_key = 18;
+  string sms_user_name = 19;
+  string sms_password = 20;
+  string sms_number = 21;
+  string merchant_id = 22;
+  string terminal_id = 23;
+  string terminal_key = 24;
+  string wallet_merchant_id = 25;
+  string wallet_terminal_id = 26;
+  string wallet_terminal_key = 27;
+  string bnpl_merchant_id = 28;
+  string bnpl_terminal_id = 29;
+  string bnpl_terminal_key = 30;
+}
+
+message SeoSettingItem {
+  int32 id = 1;
+  string meta_title = 2;
+  string meta_description = 3;
+  string meta_keywords = 4;
+  string canonical_url = 5;
+  string robots_txt = 6;
+  string schema_org = 7;
+  string open_graph_title = 8;
+  string open_graph_description = 9;
+  string open_graph_image = 10;
+  string twitter_title = 11;
+  string twitter_description = 12;
+  string twitter_image = 13;
+} 

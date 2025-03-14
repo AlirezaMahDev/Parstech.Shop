@@ -1,36 +1,42 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.Section;
-using Shop.Application.Features.Brand.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.Section.Requests.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.Protos.Section;
+using Parstech.Shop.Shared.Protos.Product;
+using System.Security.Claims;
 
-namespace Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents
 {
     [ViewComponent(Name = "StorePageSection")]
     public class StorePageSectionViewComponent : ViewComponent
     {
+        private readonly SectionGrpcClient _sectionClient;
+        private readonly ProductGrpcClient _productClient;
+        private readonly BrandGrpcClient _brandClient;
 
-        private readonly IMediator _mediator;
-        public StorePageSectionViewComponent(IMediator mediator)
+        public StorePageSectionViewComponent(
+            SectionGrpcClient sectionClient,
+            ProductGrpcClient productClient,
+            BrandGrpcClient brandClient)
         {
-            _mediator = mediator;
+            _sectionClient = sectionClient;
+            _productClient = productClient;
+            _brandClient = brandClient;
         }
+
         public async Task<IViewComponentResult> InvokeAsync(string store)
         {
-            int Take = 9;
-            int DiscountTake = 20;
-            var Item = await _mediator.Send(new SectionAndDetailsReadStoreQueryReq(store));
+            int take = 9;
+            int discountTake = 20;
+            var item = await _sectionClient.GetSectionAndDetailsByStoreAsync(store);
 
-            switch (Item.SectionTypeId)
+            switch (item.SectionTypeId)
             {
                 case 1:
-                    SliderShowDto slider = new SliderShowDto();
-                    List<SectionDetailShowDto> desktop = new List<SectionDetailShowDto>();
-                    List<SectionDetailShowDto> mobile = new List<SectionDetailShowDto>();
-                    foreach (var slide in Item.SectionDetails)
+                    var slider = new SliderShowResponse();
+                    var desktop = new List<SectionDetailResponse>();
+                    var mobile = new List<SectionDetailResponse>();
+                    
+                    foreach (var slide in item.SectionDetails)
                     {
                         if (slide.ResponsiveSize == "Mobile")
                         {
@@ -41,56 +47,63 @@ namespace Shop.Web.ViewComponents
                             desktop.Add(slide);
                         }
                     }
-                    slider.Desktop = desktop;
-                    slider.Mobile = mobile;
+                    
+                    slider.Desktop.AddRange(desktop);
+                    slider.Mobile.AddRange(mobile);
                     return View("SlideShow", slider);
 
                 case 2:
-                    if (Item.CateguryId != 0)
+                    if (item.CateguryId != 0)
                     {
-                        ProductSearchParameterDto parameter = new ProductSearchParameterDto();
-                        parameter.CateguryId = Item.CateguryId;
-                        parameter.Take = 10;
+                        var parameter = new ProductSearchParameterRequest
+                        {
+                            CateguryId = item.CateguryId,
+                            Take = 10
+                        };
+                        
                         #region Get User If Authenticated
-                        var userName = "";
+                        string userName = null;
                         if (User.Identity.IsAuthenticated)
                         {
-                            userName = User.Identity.Name;
+                            userName = User.FindFirstValue(ClaimTypes.Name);
                         }
-                        else
+                        #endregion
+                        
+                        var pagingItem = await _productClient.GetIntegratedProductsPagingAsync(parameter, userName);
+                        item.ProductCateguries.AddRange(pagingItem.ProductList);
+                        
+                        if (item.ProductCateguries.Count > 0)
                         {
-                            userName = null;
+                            item.LatinCateguryName = item.ProductCateguries[0].CateguryLatinName;
                         }
-                        #endregion'
-                        var pagingItem = await _mediator.Send(new IntegratedProductsPagingQueryReq(parameter,userName));
-                        Item.ProductCateguries = pagingItem.ProductList;
-                        //Item.ProductCateguries = await _mediator.Send(new GetSomeOfLastProductsByCateguryIdQueryReq(Take, Item.CateguryId));
-                        Item.latinCateguryName = Item.ProductCateguries.First().CateguryLatinName;
                     }
-                    return View("ListProducts", Item);
+                    return View("ListProducts", item);
 
                 case 3:
+                    var discountProducts = await _productClient.GetProductsWithDiscountAsync(discountTake, item.Id);
+                    item.ProductCateguries.AddRange(discountProducts);
 
-                    Item.ProductCateguries = await _mediator.Send(new GetProductsWithDiscountQueryReq(DiscountTake,Item.Id));
-
-                    if (Item.ProductId != 0)
+                    if (item.ProductId != 0)
                     {
-                        Item.Product = await _mediator.Send(new ProductReadCommandReq(Item.ProductId));
+                        var product = await _productClient.GetProductByIdAsync(item.ProductId);
+                        item.Product = product;
                     }
-                    return View("Discount", Item);
-                case 4: return View("TwoBanner", Item);
-                case 5: return View("SixBanner", Item);
-                case 6: return View("LargeBanner", Item);
-                case 7: return View("Icons", Item);
+                    return View("Discount", item);
+                    
+                case 4: return View("TwoBanner", item);
+                case 5: return View("SixBanner", item);
+                case 6: return View("LargeBanner", item);
+                case 7: return View("Icons", item);
                 case 8:
-                    if (Item.CateguryId != 0)
+                    if (item.CateguryId != 0 && item.ProductCateguries.Count > 0)
                     {
-                        Item.latinCateguryName = Item.ProductCateguries.First().CateguryLatinName;
+                        item.LatinCateguryName = item.ProductCateguries[0].CateguryLatinName;
                     }
-                    return View("CateguryIcons", Item);
+                    return View("CateguryIcons", item);
                 case 9:
-                    Item.Brands = await _mediator.Send(new BrandReadsCommandReq());
-                    return View("BrandSlider", Item);
+                    var brands = await _brandClient.GetAllBrandsAsync();
+                    item.Brands.AddRange(brands.Brands);
+                    return View("BrandSlider", item);
             }
             return View("Default");
         }

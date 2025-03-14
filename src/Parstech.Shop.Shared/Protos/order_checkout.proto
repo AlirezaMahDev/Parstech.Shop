@@ -11,6 +11,8 @@ service OrderCheckoutService {
   rpc ChangeOrderDetail (ChangeOrderDetailRequest) returns (ChangeOrderDetailResponse) {}
   rpc DeleteOrderDetail (DeleteOrderDetailRequest) returns (DeleteOrderDetailResponse) {}
   rpc CompleteOrder (CompleteOrderRequest) returns (CompleteOrderResponse) {}
+  rpc GetOrderPayments (OrderPaymentsRequest) returns (OrderPaymentsResponse) {}
+  rpc CompleteOrderWithMultiplePayments (MultiplePaymentsRequest) returns (MultiplePaymentsResponse) {}
 }
 
 message OpenOrderRequest {
@@ -110,10 +112,10 @@ message DeleteOrderDetailResponse {
 
 message CompleteOrderRequest {
   int32 order_id = 1;
-  int32 order_shipping_id = 2;
-  int32 pay_type_id = 3;
+  int32 shipping_id = 2;
+  int32 payment_type_id = 3;
   optional int32 transaction_id = 4;
-  int32 month = 5;
+  optional string tracking_code = 5;
 }
 
 message CompleteOrderResponse {
@@ -129,4 +131,39 @@ message CompleteOrderResult {
   double total = 4;
   string url = 5;
   int32 transaction_id = 6;
+}
+
+message OrderPaymentsRequest {
+  int32 order_id = 1;
+}
+
+message OrderPaymentsResponse {
+  bool status = 1;
+  string message = 2;
+  repeated OrderPaymentItem payments = 3;
+}
+
+message OrderPaymentItem {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 payment_type_id = 3;
+  string payment_type_name = 4;
+  double amount = 5;
+  bool is_paid = 6;
+  string tracking_code = 7;
+  string payment_date = 8;
+}
+
+message MultiplePaymentsRequest {
+  int32 order_id = 1;
+  int32 payment_type_id = 2;
+  double amount = 3;
+}
+
+message MultiplePaymentsResponse {
+  bool status = 1;
+  string message = 2;
+  optional int32 payment_id = 3;
+  optional string redirect_url = 4;
+  optional int32 transaction_id = 5;
 } 

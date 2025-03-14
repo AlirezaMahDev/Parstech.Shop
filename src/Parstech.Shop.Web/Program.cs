@@ -22,12 +22,22 @@ builder.Services.AddSingleton<OrderShippingGrpcClient>();
 builder.Services.AddSingleton<OrderCheckoutGrpcClient>();
 builder.Services.AddSingleton<CouponGrpcClient>();
 builder.Services.AddSingleton<WalletGrpcClient>();
+builder.Services.AddSingleton<WalletTransactionGrpcClient>();
 builder.Services.AddSingleton<ShippingGrpcClient>();
 builder.Services.AddSingleton<PaymentGrpcClient>();
 builder.Services.AddSingleton<UserProfileGrpcClient>();
 builder.Services.AddSingleton<UserPreferencesGrpcClient>();
+builder.Services.AddSingleton<SectionGrpcClient>();
+builder.Services.AddSingleton<UserProductGrpcClient>();
+builder.Services.AddSingleton<TorobGrpcClient>();
+builder.Services.AddSingleton<ProductDetailGrpcClient>();
+builder.Services.AddSingleton<ProductGalleryGrpcClient>();
+builder.Services.AddSingleton<UserStoreGrpcClient>();
+builder.Services.AddSingleton<CategoryGrpcClient>();
+builder.Services.AddSingleton<BrandGrpcClient>();
+builder.Services.AddSingleton<SiteSettingGrpcClient>();
 
-// Add gRPC channel
+// Add gRPC clients
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.OrderCheckout.OrderCheckoutService.OrderCheckoutServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
@@ -40,7 +50,7 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.CouponService.CouponS
 
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.WalletService.WalletService.WalletServiceClient>(options =>
 {
-    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
 });
 
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ShippingService.ShippingService.ShippingServiceClient>(options =>
@@ -58,42 +68,47 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserProfileService.Us
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<SectionGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Section.SectionService.SectionServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<UserProductGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserProduct.UserProductService.UserProductServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<CategoryGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Torob.TorobService.TorobServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<BrandGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductDetail.ProductDetailService.ProductDetailServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<UserStoreGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductGallery.ProductGalleryService.ProductGalleryServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<ProductDetailGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserStore.UserStoreService.UserStoreServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<ProductGalleryGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Category.CategoryService.CategoryServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<TorobGrpcClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Brand.BrandService.BrandServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Product.ProductService.ProductServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
@@ -101,6 +116,11 @@ builder.Services.AddGrpcClient<TorobGrpcClient>(options =>
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserPreferencesService.UserPreferencesService.UserPreferencesServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.SiteSetting.SiteSettingService.SiteSettingServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
 });
 
 builder.Services.AddRazorComponents()

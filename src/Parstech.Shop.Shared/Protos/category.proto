@@ -8,6 +8,7 @@ service CategoryService {
   rpc GetParentCategories (ParentCategoriesRequest) returns (CategoryResponse) {}
   rpc GetSubCategories (SubCategoriesRequest) returns (CategoryResponse) {}
   rpc GetCategoryByLatinName (CategoryByLatinNameRequest) returns (Category) {}
+  rpc GetCategoriesMenu (CategoriesMenuRequest) returns (CategoriesMenuResponse) {}
 }
 
 message ParentCategoriesRequest {}
@@ -22,6 +23,33 @@ message CategoryByLatinNameRequest {
 
 message CategoryResponse {
   repeated Category categories = 1;
+}
+
+message CategoriesMenuRequest {}
+
+message CategoriesMenuResponse {
+  repeated CategoryMenuParent parents = 1;
+}
+
+message CategoryMenuParent {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  string image = 4;
+  repeated CategoryMenuChild children = 5;
+}
+
+message CategoryMenuChild {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
+  repeated CategoryMenuGrandChild grand_children = 4;
+}
+
+message CategoryMenuGrandChild {
+  int32 id = 1;
+  string name = 2;
+  string latin_name = 3;
 }
 
 message Category {

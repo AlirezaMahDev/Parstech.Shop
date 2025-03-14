@@ -18,6 +18,12 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             var response = await _client.GetBrandsAsync(request);
             return response.Brands;
         }
+        
+        public async Task<BrandsResponse> GetAllBrandsAsync()
+        {
+            var request = new BrandsRequest();
+            return await _client.GetBrandsAsync(request);
+        }
 
         public async Task<Brand> GetBrandByIdAsync(int id)
         {

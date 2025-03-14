@@ -30,30 +30,34 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             return await _client.GetOrderDetailsAsync(request);
         }
 
-        public async Task<ChangeOrderDetailResponse> ChangeOrderDetailAsync(int detailId, int count)
+        public async Task<ChangeOrderDetailResponse> ChangeOrderDetailAsync(int orderDetailId, int quantity)
         {
-            var request = new ChangeOrderDetailRequest
-            {
-                DetailId = detailId,
-                Count = count
+            var request = new ChangeOrderDetailRequest 
+            { 
+                OrderDetailId = orderDetailId,
+                Quantity = quantity
             };
             return await _client.ChangeOrderDetailAsync(request);
         }
 
-        public async Task<DeleteOrderDetailResponse> DeleteOrderDetailAsync(int detailId)
+        public async Task<DeleteOrderDetailResponse> DeleteOrderDetailAsync(int orderDetailId)
         {
-            var request = new DeleteOrderDetailRequest { DetailId = detailId };
+            var request = new DeleteOrderDetailRequest { OrderDetailId = orderDetailId };
             return await _client.DeleteOrderDetailAsync(request);
         }
 
-        public async Task<CompleteOrderResponse> CompleteOrderAsync(int orderId, int orderShippingId, int payTypeId, int? transactionId, int month)
+        public async Task<CompleteOrderResponse> CompleteOrderAsync(
+            int orderId, 
+            int shippingId, 
+            int paymentTypeId, 
+            int? transactionId = null,
+            string trackingCode = null)
         {
-            var request = new CompleteOrderRequest
-            {
+            var request = new CompleteOrderRequest 
+            { 
                 OrderId = orderId,
-                OrderShippingId = orderShippingId,
-                PayTypeId = payTypeId,
-                Month = month
+                ShippingId = shippingId,
+                PaymentTypeId = paymentTypeId
             };
             
             if (transactionId.HasValue)
@@ -61,7 +65,33 @@ namespace Parstech.Shop.Web.Services.GrpcClients
                 request.TransactionId = transactionId.Value;
             }
             
+            if (!string.IsNullOrEmpty(trackingCode))
+            {
+                request.TrackingCode = trackingCode;
+            }
+            
             return await _client.CompleteOrderAsync(request);
+        }
+
+        public async Task<OrderPaymentsResponse> GetOrderPaymentsAsync(int orderId)
+        {
+            var request = new OrderPaymentsRequest { OrderId = orderId };
+            return await _client.GetOrderPaymentsAsync(request);
+        }
+
+        public async Task<MultiplePaymentsResponse> CompleteOrderWithMultiplePaymentsAsync(
+            int orderId,
+            int paymentTypeId,
+            double amount)
+        {
+            var request = new MultiplePaymentsRequest
+            {
+                OrderId = orderId,
+                PaymentTypeId = paymentTypeId,
+                Amount = amount
+            };
+            
+            return await _client.CompleteOrderWithMultiplePaymentsAsync(request);
         }
     }
 } 

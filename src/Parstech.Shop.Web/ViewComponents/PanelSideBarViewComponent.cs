@@ -1,24 +1,31 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.Wallet.Requests.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Parstech.Shop.Web.Services.GrpcClients;
+using System.Security.Claims;
 
-namespace Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents
 {
     [ViewComponent(Name = "PanelSideBar")]
     public class PanelSideBarViewComponent : ViewComponent
     {
+        private readonly UserProfileGrpcClient _userProfileClient;
+        private readonly WalletGrpcClient _walletClient;
 
-        private readonly IMediator _mediator;
-        public PanelSideBarViewComponent(IMediator mediator)
+        public PanelSideBarViewComponent(UserProfileGrpcClient userProfileClient, WalletGrpcClient walletClient)
         {
-            _mediator = mediator;
+            _userProfileClient = userProfileClient;
+            _walletClient = walletClient;
         }
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            var walletDto = await _mediator.Send(new GetWalletByUserIdQueryReq(CurrentUser.Id));
-            return View(walletDto);
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var user = await _userProfileClient.GetUserByUsernameAsync(username);
+            var wallet = await _walletClient.GetWalletByUserIdAsync(user.Id);
+
+            ViewBag.User = user;
+            ViewBag.Wallet = wallet;
+
+            return View();
         }
     }
 }
