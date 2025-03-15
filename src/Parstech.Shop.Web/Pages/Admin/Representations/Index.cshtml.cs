@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.Convertor;
 using Shop.Application.DTOs.Paging;
@@ -13,15 +13,6 @@ using Shop.Application.DTOs.ProductStockPrice;
 using Shop.Application.DTOs.Representation;
 using Shop.Application.DTOs.RepresentationType;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.ProductLog.Requests.Queries;
-using Shop.Application.Features.ProductRepresentation.Requests.Commands;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Commands;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Application.Features.Representation.Requests.Commands;
-using Shop.Application.Features.RepresentationType.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Queries;
 using Shop.Application.Validators.Product;
 using System.Globalization;
 
@@ -32,15 +23,19 @@ namespace Shop.Web.Pages.Admin.Representations
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly IRepresentationAdminGrpcClient _representationClient;
+        private readonly IUserGrpcClient _userClient;
         private readonly IMapper _mapper;
         private readonly IProductStockPriceRepository _productStockRep;
 
-        public IndexModel(IMediator mediator,
+        public IndexModel(
+            IRepresentationAdminGrpcClient representationClient,
+            IUserGrpcClient userClient,
             IMapper mapper,
             IProductStockPriceRepository productStockRep)
         {
-            _mediator = mediator;
+            _representationClient = representationClient;
+            _userClient = userClient;
             _mapper = mapper;
             _productStockRep = productStockRep;
         }
@@ -120,31 +115,35 @@ namespace Shop.Web.Pages.Admin.Representations
             Parameter.CurrentPage = 1;
             if (User.IsInRole("SupperUser"))
             {
-                Representations = await _mediator.Send(new RepresentationReadsCommandReq());
+                Representations = await _representationClient.GetRepresentationsAsync(new RepresentationParameterDto { CurrentPage = 1, TakePage = 100 });
             }
             else if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
             {
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-                var rep = await _mediator.Send(new RepresentationReadCommandReq(userStore.RepId));
+                var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
+                var userStore = await _userClient.GetUserStoreByUserIdAsync(user.Id);
+                var rep = await _representationClient.GetRepresentationByIdAsync(userStore.RepId);
                 Representations.Add(rep);
-
-
             }
             else
             {
-                Representations = await _mediator.Send(new RepresentationReadsCommandReq());
+                Representations = await _representationClient.GetRepresentationsAsync(new RepresentationParameterDto { CurrentPage = 1, TakePage = 100 });
             }
 
-            repTypes = await _mediator.Send(new RepresentationTypeReadsCommandReq());
+            repTypes = await _representationClient.GetRepresentationTypesAsync();
             return Page();
         }
 
         public async Task<IActionResult> OnPostData()
         {
-
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new ProductRepresentaionPagingQueryReq(Parameter));
+            var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
+            List = new ProductRepresentationPagingDto
+            {
+                List = pagingResult,
+                CurrentPage = Parameter.CurrentPage,
+                PageCount = (int)Math.Ceiling(pagingResult.Count / (double)Parameter.TakePage),
+                RowCount = pagingResult.Count
+            };
             Response.Object = List;
             Response.IsSuccessed = true;
             if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
@@ -158,7 +157,14 @@ namespace Shop.Web.Pages.Admin.Representations
         {
             Parameter.CurrentPage = 1;
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new ProductRepresentaionPagingQueryReq(Parameter));
+            var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
+            List = new ProductRepresentationPagingDto
+            {
+                List = pagingResult,
+                CurrentPage = Parameter.CurrentPage,
+                PageCount = (int)Math.Ceiling(pagingResult.Count / (double)Parameter.TakePage),
+                RowCount = pagingResult.Count
+            };
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -171,7 +177,14 @@ namespace Shop.Web.Pages.Admin.Representations
         {
             Parameter.CurrentPage = 1;
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new ProductRepresentaionPagingQueryReq(Parameter));
+            var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
+            List = new ProductRepresentationPagingDto
+            {
+                List = pagingResult,
+                CurrentPage = Parameter.CurrentPage,
+                PageCount = (int)Math.Ceiling(pagingResult.Count / (double)Parameter.TakePage),
+                RowCount = pagingResult.Count
+            };
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -180,7 +193,14 @@ namespace Shop.Web.Pages.Admin.Representations
         public async Task<IActionResult> OnPostPaging()
         {
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new ProductRepresentaionPagingQueryReq(Parameter));
+            var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
+            List = new ProductRepresentationPagingDto
+            {
+                List = pagingResult,
+                CurrentPage = Parameter.CurrentPage,
+                PageCount = (int)Math.Ceiling(pagingResult.Count / (double)Parameter.TakePage),
+                RowCount = pagingResult.Count
+            };
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -192,15 +212,15 @@ namespace Shop.Web.Pages.Admin.Representations
 
         public async Task<IActionResult> OnPostPriceItem()
         {
-            productStock = await _mediator.Send(new ProductStockPriceReadCommandReq(productId));
-
+            productStock = await _representationClient.GetProductStockPriceAsync(productId);
             Response.Object = productStock;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
+        
         public async Task<IActionResult> OnPostEditPriceItem()
         {
-            var currentproductStock = await _mediator.Send(new ProductStockPriceReadCommandReq(productStock.Id));
+            var currentproductStock = await _representationClient.GetProductStockPriceAsync(productStock.Id);
             productStock.Price = long.Parse(productStock.TextPrice.Replace(",", ""));
             productStock.SalePrice = long.Parse(productStock.TextSalePrice.Replace(",", ""));
             productStock.DiscountPrice = long.Parse(productStock.TextDiscountPrice.Replace(",", ""));
@@ -212,6 +232,7 @@ namespace Shop.Web.Pages.Admin.Representations
             productStock.TaxId = currentproductStock.TaxId;
             productStock.QuantityPerBundle = currentproductStock.QuantityPerBundle;
             productStock.DiscountDate = currentproductStock.DiscountDate;
+            
             #region Validator
             var validator = new ProductPriceValidator();
             var valid = validator.Validate(productStock);
@@ -238,83 +259,97 @@ namespace Shop.Web.Pages.Admin.Representations
                     );
                     productStock.DiscountDate = az;
                 }
-
             }
             else
             {
                 productStock.DiscountDate = null;
             }
 
-
-            var current = _productStockRep.DapperGetProductStockPriceById(productStock.Id);
-            var currentDto = _mapper.Map<ProductStockPriceDto>(current.Result);
-            var edit = await _mediator.Send(new ProductStockPriceUpdateCommandReq(productStock));
-            await _mediator.Send(new PriceConflictsCreateLogQueryReq(User.Identity.Name, currentDto, edit));
-            Response.Object = edit;
-            Response.IsSuccessed = true;
-            return new JsonResult(Response);
+            var response = await _representationClient.UpdateProductStockPriceAsync(productStock);
+            return new JsonResult(response);
         }
+
         #endregion
 
-        #region Mojudi
+        #region Log
 
-        public async Task<IActionResult> OnPostAddProductRepresentation()
-        {
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            ProductRepresentationDto.UserId = user.Id;
-            var res = await _mediator.Send(new ProductRepresesntationCreateCommandReq(ProductRepresentationDto));
-            if (res.Id == 0)
-            {
-
-                Response.Message = "موجودی انبار جهت خروج کالا کافی نیست";
-                Response.IsSuccessed = false;
-            }
-            else
-            {
-                Response.Object = res;
-                Response.IsSuccessed = true;
-            }
-            return new JsonResult(Response);
-        }
-        public async Task<IActionResult> OnPostQuickAddProductRepresentation()
-        {
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            ProductRepresentationDto.UserId = user.Id;
-            var res = await _mediator.Send(new ProductRepresesntationQuickCreateCommandReq(ProductRepresentationDto));
-            Response.Object = res;
-            Response.IsSuccessed = true;
-            return new JsonResult(Response);
-        }
-        #endregion
-
-        #region Logs
-
-        public async Task<IActionResult> OnPostGetLogs()
+        public async Task<IActionResult> OnPostLog()
         {
             LogParameter.CurrentPage = 1;
             LogParameter.TakePage = 30;
-            PrParameter.CurrentPage = 1;
-            PrParameter.TakePage = 30;
-            PrParameter.ProductId = productId;
-            PrParameter.RepId = RepId;
-            Log.LogDto = await _mediator.Send(new ProductLogReadsFromProductIdQueryReq(productId));
-            Log.ProductLogPaging = await _mediator.Send(new UniqProductLogPagingQueryReq(LogParameter));
-            Log.ProductRepresntationChart = await _mediator.Send(new ProductRepresentationChartQueryReq(productId));
-            Log.ProductRepresntationPaging = await _mediator.Send(new ProductPresentationsWithProductPagingQueryReq(PrParameter));
-            Response.Object = Log;
+            LogParameter.ProductId = productId;
+            
+            ProductLogPaging = await _representationClient.GetProductLogsAsync(LogParameter);
+            
             Response.IsSuccessed = true;
+            Response.Object = ProductLogPaging;
+            return new JsonResult(Response);
+        }
+
+        public async Task<IActionResult> OnPostLogPaging()
+        {
+            LogParameter.TakePage = 30;
+            LogParameter.ProductId = productId;
+            
+            ProductLogPaging = await _representationClient.GetProductLogsAsync(LogParameter);
+            
+            Response.IsSuccessed = true;
+            Response.Object = ProductLogPaging;
             return new JsonResult(Response);
         }
 
         #endregion
-        #region Delete
-        public async Task<IActionResult> OnPostDelete(int rep, int id)
-        {
-            var result = await _mediator.Send(new ProductStockPriceDeleteQueryReq(rep, id));
 
-            Response.IsSuccessed = result;
+        #region Rep
+
+        public async Task<IActionResult> OnPostProductRep()
+        {
+            var representations = await _representationClient.GetProductRepresentationsAsync(productId);
+            productRepresentation = representations.FirstOrDefault();
+            
+            Response.Object = productRepresentation;
+            Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
+
+        public async Task<IActionResult> OnPostAddProductRep()
+        {
+            ProductRepresentationDto.UserId = User.Identity.Name;
+
+            Response = await _representationClient.AddProductRepresentationAsync(ProductRepresentationDto);
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region QuickAdd
+
+        public async Task<IActionResult> OnPostQuickAdd()
+        {
+            ProductRepresentationDto.UserId = User.Identity.Name;
+            var representations = await _representationClient.GetProductRepresentationsAsync(ProductRepresentationDto.ProductId);
+            
+            if (representations.Any(x => x.RepresentationTypeId == ProductRepresentationDto.RepresentationTypeId))
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "این مشخصه برای محصول وجود دارد";
+                return new JsonResult(Response);
+            }
+            
+            Response = await _representationClient.QuickAddProductRepresentationAsync(ProductRepresentationDto);
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region Delete
+
+        public async Task<IActionResult> OnPostDeleteRep()
+        {
+            Response = await _representationClient.DeleteProductRepresentationAsync(productId);
+            return new JsonResult(Response);
+        }
+
         #endregion
     }
 }

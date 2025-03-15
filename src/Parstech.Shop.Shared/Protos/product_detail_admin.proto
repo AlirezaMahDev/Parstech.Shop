@@ -1,0 +1,298 @@
+syntax = "proto3";
+
+package product_detail_admin;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.ProductDetailAdmin";
+
+service ProductDetailAdminService {
+  // Product operations
+  rpc GetProductById (ProductRequest) returns (ProductDto);
+  rpc CreateProduct (ProductDto) returns (ResponseDto);
+  rpc UpdateProduct (ProductDto) returns (ResponseDto);
+  
+  // Product Gallery operations
+  rpc GetProductGallery (ProductRequest) returns (ProductGalleryListResponse);
+  rpc AddProductGallery (ProductGalleryDto) returns (ResponseDto);
+  rpc UpdateProductGallery (ProductGalleryDto) returns (ResponseDto);
+  rpc DeleteProductGallery (ProductGalleryRequest) returns (ResponseDto);
+  
+  // Product Property operations
+  rpc GetProductProperties (ProductRequest) returns (ProductPropertiesResponse);
+  rpc AddProductProperty (ProductPropertyDto) returns (ResponseDto);
+  rpc UpdateProductProperty (ProductPropertyDto) returns (ResponseDto);
+  rpc DeleteProductProperty (ProductPropertyRequest) returns (ResponseDto);
+  
+  // Product Category operations
+  rpc GetProductCategories (ProductRequest) returns (ProductCategoriesResponse);
+  rpc AddProductCategory (ProductCategoryDto) returns (ResponseDto);
+  rpc DeleteProductCategory (ProductCategoryRequest) returns (ResponseDto);
+  
+  // Product Stock Price operations
+  rpc GetProductStockPrices (ProductRequest) returns (ProductStockPricesResponse);
+  rpc AddProductStockPrice (ProductStockPriceDto) returns (ResponseDto);
+  rpc UpdateProductStockPrice (ProductStockPriceDto) returns (ResponseDto);
+  rpc DeleteProductStockPrice (ProductStockPriceRequest) returns (ResponseDto);
+  rpc UpdateStockQuantityPerBundle (UpdateQuantityRequest) returns (ResponseDto);
+  
+  // Product Representation operations
+  rpc GetProductRepresentations (ProductRequest) returns (ProductRepresentationsResponse);
+  rpc AddProductRepresentation (ProductRepresentationDto) returns (ResponseDto);
+  rpc QuickAddProductRepresentation (ProductRepresentationDto) returns (ResponseDto);
+  rpc DeleteProductRepresentation (ProductRepresentationRequest) returns (ResponseDto);
+  
+  // Product Variation operations
+  rpc AddProductVariation (ProductDto) returns (ResponseDto);
+  rpc GetProductVariation (ProductRequest) returns (ProductDto);
+  rpc DeleteProductVariation (ProductRequest) returns (ResponseDto);
+  
+  // Support data operations
+  rpc GetCategories (EmptyRequest) returns (CategoriesResponse);
+  rpc GetSubCategories (CategoryRequest) returns (CategoriesResponse);
+  rpc GetPropertyCategories (EmptyRequest) returns (PropertyCategoriesResponse);
+  rpc GetProperties (PropertySearchRequest) returns (PropertiesResponse);
+  rpc GetProductTypes (EmptyRequest) returns (ProductTypesResponse);
+  rpc GetTaxes (EmptyRequest) returns (TaxesResponse);
+  rpc GetBrands (EmptyRequest) returns (BrandsResponse);
+  rpc GetUserStores (EmptyRequest) returns (UserStoresResponse);
+  rpc GetRepresentationTypes (EmptyRequest) returns (RepresentationTypesResponse);
+}
+
+// Request messages
+message ProductRequest {
+  int32 product_id = 1;
+}
+
+message ProductGalleryRequest {
+  int32 gallery_id = 1;
+}
+
+message ProductPropertyRequest {
+  int32 product_property_id = 1;
+}
+
+message ProductCategoryRequest {
+  int32 product_category_id = 1;
+}
+
+message ProductStockPriceRequest {
+  int32 product_stock_price_id = 1;
+}
+
+message ProductRepresentationRequest {
+  int32 product_representation_id = 1;
+}
+
+message UpdateQuantityRequest {
+  int32 product_stock_price_id = 1;
+  int32 quantity_per_bundle = 2;
+}
+
+message CategoryRequest {
+  int32 category_id = 1;
+}
+
+message PropertySearchRequest {
+  string filter = 1;
+  int32 category_id = 2;
+}
+
+message EmptyRequest {}
+
+// Response messages
+message ProductDto {
+  int32 id = 1;
+  string title = 2;
+  string latin_title = 3;
+  string description = 4;
+  string content = 5;
+  string summary = 6;
+  int32 product_type_id = 7;
+  bool is_active = 8;
+  bool is_delete = 9;
+  int32 brand_id = 10;
+  int32 parent_id = 11;
+  int32 tax_id = 12;
+  string barcode = 13;
+  string slug = 14;
+  string product_code = 15;
+  string meta_description = 16;
+  string meta_title = 17;
+  string create_time = 18;
+  string last_change_time = 19;
+  string change_by_user_name = 20;
+  int32 store_id = 21;
+  int32 stock = 22;
+  bool auto_stock = 23;
+  repeated ProductGalleryDto galleries = 24;
+  repeated ProductPropertyDto properties = 25;
+  repeated ProductCategoryDto categories = 26;
+  repeated ProductStockPriceDto stock_prices = 27;
+  repeated ProductRepresentationDto representations = 28;
+  repeated ProductDto variations = 29;
+}
+
+message ProductGalleryDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  string image_name = 3;
+  int32 sort = 4;
+  bool is_main = 5;
+  string alt = 6;
+}
+
+message ProductGalleryListResponse {
+  repeated ProductGalleryDto galleries = 1;
+}
+
+message ProductPropertyDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 property_id = 3;
+  string value = 4;
+  bool is_filter = 5;
+  bool is_show = 6;
+  string property_name = 7;
+}
+
+message ProductPropertiesResponse {
+  repeated ProductPropertyDto properties = 1;
+}
+
+message ProductCategoryDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 category_id = 3;
+  string category_name = 4;
+}
+
+message ProductCategoriesResponse {
+  repeated ProductCategoryDto categories = 1;
+}
+
+message ProductStockPriceDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 store_id = 3;
+  double price = 4;
+  double special_price = 5;
+  string special_from_date = 6;
+  string special_to_date = 7;
+  int32 stock = 8;
+  int32 stock_status = 9;
+  double cost = 10;
+  int32 quantity_per_bundle = 11;
+  int32 representation_id = 12;
+  string store_name = 13;
+  string representation_name = 14;
+}
+
+message ProductStockPricesResponse {
+  repeated ProductStockPriceDto stock_prices = 1;
+}
+
+message ProductRepresentationDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 representation_type_id = 3;
+  string representation_type_name = 4;
+  string value = 5;
+}
+
+message ProductRepresentationsResponse {
+  repeated ProductRepresentationDto representations = 1;
+}
+
+message CategoryDto {
+  int32 id = 1;
+  string title = 2;
+  string latin_title = 3;
+  int32 parent_id = 4;
+  string image = 5;
+  bool is_parent = 6;
+  bool show = 7;
+}
+
+message CategoriesResponse {
+  repeated CategoryDto categories = 1;
+}
+
+message PropertyCategoryDto {
+  int32 id = 1;
+  string name = 2;
+}
+
+message PropertyCategoriesResponse {
+  repeated PropertyCategoryDto categories = 1;
+}
+
+message PropertyDto {
+  int32 id = 1;
+  string name = 2;
+  int32 property_category_id = 3;
+}
+
+message PropertiesResponse {
+  repeated PropertyDto properties = 1;
+}
+
+message ProductTypeDto {
+  int32 id = 1;
+  string name = 2;
+}
+
+message ProductTypesResponse {
+  repeated ProductTypeDto types = 1;
+}
+
+message TaxDto {
+  int32 id = 1;
+  string name = 2;
+  int32 percent = 3;
+}
+
+message TaxesResponse {
+  repeated TaxDto taxes = 1;
+}
+
+message BrandDto {
+  int32 id = 1;
+  string title = 2;
+  string latin_title = 3;
+  string image = 4;
+}
+
+message BrandsResponse {
+  repeated BrandDto brands = 1;
+}
+
+message UserStoreDto {
+  int32 id = 1;
+  string user_id = 2;
+  string name = 3;
+  string mobile = 4;
+}
+
+message UserStoresResponse {
+  repeated UserStoreDto stores = 1;
+}
+
+message RepresentationTypeDto {
+  int32 id = 1;
+  string name = 2;
+}
+
+message RepresentationTypesResponse {
+  repeated RepresentationTypeDto types = 1;
+}
+
+message ResponseDto {
+  bool is_successed = 1;
+  string message = 2;
+  string object = 3;
+  repeated ValidationError errors = 4;
+}
+
+message ValidationError {
+  string property_name = 1;
+  string error_message = 2;
+} 

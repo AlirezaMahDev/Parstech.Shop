@@ -1,38 +1,38 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.Application.DTOs.FormCredit;
+using Parstech.Shop.Shared.Protos.FormCredit;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Paging;
-using Shop.Application.Features.FormCredit.Requests.Queries;
+using Shop.Application.DTOs.Response;
 
 namespace Shop.Web.Pages.Admin.Requests
 {
     public class CreditRequestsModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly FormCreditGrpcClient _formCreditClient;
 
-        public CreditRequestsModel(IMediator mediator)
+        public CreditRequestsModel(FormCreditGrpcClient formCreditClient)
         {
-            _mediator = mediator;
+            _formCreditClient = formCreditClient;
         }
 
         #endregion
 
         #region Properties
 
-        //paging parameter
+        // Paging parameter
         [BindProperty]
         public ParameterDto Parameter { get; set; } = new ParameterDto();
 
-
-
-        //products
+        // Credit requests
         [BindProperty]
         public List<FormCreditDto> List { get; set; }
 
-
+        // Response for operations
+        [BindProperty]
+        public ResponseDto Response { get; set; } = new ResponseDto();
 
         #endregion
 
@@ -40,26 +40,56 @@ namespace Shop.Web.Pages.Admin.Requests
 
         public async Task<IActionResult> OnGet()
         {
-
             return Page();
         }
 
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostData(int skip)
+        public async Task<IActionResult> OnPostData(int skip, string filter = "", string fromDate = "", string toDate = "")
         {
-            //Parameter.CurrentPage = 1;
-
-            Parameter.Skip = skip;
-            List = await _mediator.Send(new PagingFormCreditsQueryReq(Parameter));
-
-            return new JsonResult(List);
+            try
+            {
+                Parameter.TakePage = 30; // Default page size
+                
+                // Use the new paged method
+                var result = await _formCreditClient.GetPagedFormCreditsAsync(
+                    skip, 
+                    Parameter.TakePage, 
+                    filter, 
+                    fromDate, 
+                    toDate);
+                
+                List = result.Items;
+                Response.IsSuccessed = true;
+                Response.Object = List;
+                Response.Object2 = new { 
+                    TotalCount = result.TotalCount, 
+                    PageCount = result.PageCount 
+                };
+                
+                return new JsonResult(Response);
+            }
+            catch (Exception ex)
+            {
+                Response.IsSuccessed = false;
+                Response.Message = $"Error loading credit requests: {ex.Message}";
+                return new JsonResult(Response);
+            }
         }
 
-
-        public async Task<IActionResult> OnPostChangeStatus(int Id, string Type)
+        public async Task<IActionResult> OnPostChangeStatus(int id, string type)
         {
-            var result = await _mediator.Send(new ChangeStatusFormCreditQueryReq(Id, Type));
-            return new JsonResult(result);
+            try
+            {
+                // Use gRPC client to change status
+                var result = await _formCreditClient.ChangeFormCreditStatusAsync(id, type);
+                return new JsonResult(result);
+            }
+            catch (Exception ex)
+            {
+                Response.IsSuccessed = false;
+                Response.Message = $"Error changing status: {ex.Message}";
+                return new JsonResult(Response);
+            }
         }
         #endregion
     }

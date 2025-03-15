@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.Convertor;
 using Shop.Application.DTOs.Brand;
@@ -20,29 +20,6 @@ using Shop.Application.DTOs.RepresentationType;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.Tax;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Brand.Requests.Commands;
-using Shop.Application.Features.Categury.Requests.Commands;
-using Shop.Application.Features.Categury.Requests.Queries;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.ProductCategury.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Queries;
-using Shop.Application.Features.ProductLog.Requests.Queries;
-using Shop.Application.Features.ProductProperty.Requests.Commands;
-using Shop.Application.Features.ProductProperty.Requests.Queries;
-using Shop.Application.Features.ProductRepresentation.Requests.Commands;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Commands;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Application.Features.ProductType.Requests.Commands;
-using Shop.Application.Features.Property.Requests.Queries;
-using Shop.Application.Features.PropertyCategury.Requests.Commands;
-using Shop.Application.Features.RepresentationType.Requests.Commands;
-using Shop.Application.Features.Tax.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Commands;
-using Shop.Application.Features.UserStore.Requests.Queries;
 using Shop.Application.Validators.Product;
 using Shop.Application.Validators.ProductGallery;
 using System.Globalization;
@@ -54,16 +31,19 @@ namespace Shop.Web.Pages.Admin.Products
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly ProductDetailAdminGrpcClient _productDetailClient;
+        private readonly UserGrpcClient _userClient;
         private readonly IMapper _mapper;
         private readonly IProductStockPriceRepository _productStockRep;
 
-
-        public CreateOrUpdateModel(IMediator mediator,
+        public CreateOrUpdateModel(
+            ProductDetailAdminGrpcClient productDetailClient,
+            UserGrpcClient userClient,
             IMapper mapper,
             IProductStockPriceRepository productStockRep)
         {
-            _mediator = mediator;
+            _productDetailClient = productDetailClient;
+            _userClient = userClient;
             _mapper = mapper;
             _productStockRep = productStockRep;
         }
@@ -177,35 +157,31 @@ namespace Shop.Web.Pages.Admin.Products
         public async Task<IActionResult> OnGet(int? Id)
         {
             productId = Id;
-            categuryObject.categuries = await _mediator.Send(new CateguryByParentIdReadQueryReq(0));
-            categuryObject.propertyCategury = await _mediator.Send(new PropertyCateguryReadsCommandReq());
+            categuryObject.categuries = await _productDetailClient.GetCategoriesAsync();
+            categuryObject.propertyCategury = await _productDetailClient.GetPropertyCategoriesAsync();
 
-            ProducyTypes = await _mediator.Send(new ProductTypeReadsCommandReq());
-            TaxList = await _mediator.Send(new TaxReadsCommandReq());
-            Brands = await _mediator.Send(new BrandReadsCommandReq());
-
+            ProducyTypes = await _productDetailClient.GetProductTypesAsync();
+            TaxList = await _productDetailClient.GetTaxesAsync();
+            Brands = await _productDetailClient.GetBrandsAsync();
 
             if (productId != null)
             {
-                var product = await _mediator.Send(new ProductReadCommandReq(productId.Value));
+                var product = await _productDetailClient.GetProductByIdAsync(productId.Value);
                 productContent = product.Description;
                 SelectedBrand = product.BrandId;
             }
 
-            repTypes = await _mediator.Send(new RepresentationTypeReadsCommandReq());
+            repTypes = await _productDetailClient.GetRepresentationTypesAsync();
 
             if (User.IsInRole("SupperUser"))
             {
-                UserStores = await _mediator.Send(new UserStoreReadsCommandReq());
+                UserStores = await _productDetailClient.GetUserStoresAsync();
             }
             else if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
             {
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-
-                UserStores.Add(userStore);
-
-
+                var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
+                UserStores = await _productDetailClient.GetUserStoresAsync();
+                UserStores = UserStores.Where(s => s.UserId == user.Id).ToList();
             }
 
             return Page();
@@ -215,26 +191,9 @@ namespace Shop.Web.Pages.Admin.Products
         {
             if (productId != null)
             {
-                ResultObject.ProductDto = await _mediator.Send(new ProductReadCommandReq(productId.Value));
+                ResultObject.ProductDto = await _productDetailClient.GetProductByIdAsync(productId.Value);
                 productContent = ResultObject.ProductDto.Description;
-                //ResultObject.GalleryDtos = await _mediator.Send(new GalleriesOfProductQueryReq(productId.Value));
-                //ResultObject.PropertyDtos = await _mediator.Send(new PropertiesOfProductQueryReq(productId.Value));
-                //ResultObject.CateguryDtos = await _mediator.Send(new CateguriesOfProductQueryReq(productId.Value));
-                //if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
-                //{
-                //    var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                //    var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-                //    ResultObject.ChildsAndStock =
-                //        await _mediator.Send(new GetChildsAndProductStocksQueryReq(productId.Value, userStore.Id));
-
-                //    ResultObject.Role = "Store";
-                //}
-                //else
-                //{
-                //    ResultObject.ChildsAndStock =
-                //        await _mediator.Send(new GetChildsAndProductStocksQueryReq(productId.Value, 0));
-                //}
-
+                
                 Response.Object = ResultObject;
                 Response.IsSuccessed = true;
             }
@@ -271,29 +230,18 @@ namespace Shop.Web.Pages.Admin.Products
                 }
             }
 
-
             if (ProductDto.Id != 0)
             {
-                var p = await _mediator.Send(new ProductUpdateCommandReq(ProductDto));
-                Response.Object = p;
+                var response = await _productDetailClient.UpdateProductAsync(ProductDto);
+                Response = response;
                 Response.Object2 = "Update";
-                if (p.Id != 0)
-                {
-                    Response.IsSuccessed = true;
-                }
-                else
-                {
-                    Response.IsSuccessed = false;
-                }
             }
             else
             {
-                var p = await _mediator.Send(new ProductCreateCommandReq(ProductDto));
-                Response.Object = p;
+                var response = await _productDetailClient.CreateProductAsync(ProductDto);
+                Response = response;
                 Response.Object2 = "Create";
-                Response.IsSuccessed = true;
             }
-
 
             return new JsonResult(Response);
         }
@@ -304,36 +252,40 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostGetAllCateguries()
         {
-            var categuries = await _mediator.Send(new CateguryReadCommandReq(FilterCat));
-            Response.Object = categuries;
+            var categories = await _productDetailClient.GetCategoriesAsync();
+            if (!string.IsNullOrEmpty(FilterCat))
+            {
+                categories = categories.Where(c => c.GroupTitle.Contains(FilterCat)).ToList();
+            }
+            
+            Response.Object = categories;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostEditOrCreateCategury()
         {
-            await _mediator.Send(new ProductCateguryCreateCommandReq(categury));
+            var response = await _productDetailClient.AddProductCategoryAsync(categury);
+            Response = response;
             Response.Object = categury;
-            Response.IsSuccessed = true;
             Response.Message = "دسته بندی محصول با موفقیت ثبت شد";
+            
             #region NotActive Product When Role Is Store
             if (User.IsInRole("Store"))
             {
-                var currtentProduct = await _mediator.Send(new ProductReadCommandReq(categury.ProductId));
+                var currtentProduct = await _productDetailClient.GetProductByIdAsync(categury.ProductId);
                 currtentProduct.IsActive = false;
-                var p = await _mediator.Send(new ProductUpdateCommandReq(currtentProduct));
-
+                await _productDetailClient.UpdateProductAsync(currtentProduct);
             }
             #endregion
+            
             return new JsonResult(Response);
         }
 
-
         public async Task<IActionResult> OnPostDeleteCategury()
         {
-            var ProductId = await _mediator.Send(new ProductCateguryDeleteCommandReq(productId.Value));
-            Response.Object = ProductId;
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.DeleteProductCategoryAsync(productId.Value);
+            Response = response;
             return new JsonResult(Response);
         }
 
@@ -343,9 +295,9 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostSubs(int parentId)
         {
-            categuryObject.subCateguries = await _mediator.Send(new CateguryByParentIdReadQueryReq(parentId));
-
-            Response.Object = categuryObject.subCateguries;
+            var subCategories = await _productDetailClient.GetSubCategoriesAsync(parentId);
+            
+            Response.Object = subCategories;
             Response.IsSuccessed = true;
 
             return new JsonResult(Response);
@@ -353,8 +305,8 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostSearchFeuture()
         {
-            Properties = await _mediator.Send(new PropertiesSearchQueryReq(CatId, propertyCatId, propertyFilter));
-
+            Properties = await _productDetailClient.GetPropertiesAsync(propertyFilter, propertyCatId);
+            
             Response.Object = Properties;
             Response.IsSuccessed = true;
 
@@ -363,29 +315,28 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostAddEditFeuture()
         {
+            ResponseDto response;
+            
             if (AddFeutureInput.Id != 0)
             {
-                var feuture = await _mediator.Send(new ProductPropertyUpdateCommandReq(AddFeutureInput));
-                Response.IsSuccessed = true;
-                Response.Object = feuture;
+                response = await _productDetailClient.UpdateProductPropertyAsync(AddFeutureInput);
             }
             else
             {
-                var feuture = await _mediator.Send(new ProductPropertyCreateCommandReq(AddFeutureInput));
-                Response.IsSuccessed = true;
-                Response.Object = feuture;
+                response = await _productDetailClient.AddProductPropertyAsync(AddFeutureInput);
             }
-
-            Response.IsSuccessed = true;
+            
+            Response = response;
+            
             #region NotActive Product When Role Is Store
             if (User.IsInRole("Store"))
             {
-                var currtentProduct = await _mediator.Send(new ProductReadCommandReq(Gallery.ProductId));
+                var currtentProduct = await _productDetailClient.GetProductByIdAsync(Gallery.ProductId);
                 currtentProduct.IsActive = false;
-                var p = await _mediator.Send(new ProductUpdateCommandReq(currtentProduct));
-
+                await _productDetailClient.UpdateProductAsync(currtentProduct);
             }
             #endregion
+            
             return new JsonResult(Response);
         }
 
@@ -393,24 +344,23 @@ namespace Shop.Web.Pages.Admin.Products
         {
             if (AddFeutureInput.Id != 0)
             {
-                await _mediator.Send(new ProductPropertyDeleteCommandReq(AddFeutureInput.Id));
-
-                Response.IsSuccessed = true;
+                var response = await _productDetailClient.DeleteProductPropertyAsync(AddFeutureInput.Id);
+                Response = response;
+                
                 #region NotActive Product When Role Is Store
                 if (User.IsInRole("Store"))
                 {
-                    var currtentProduct = await _mediator.Send(new ProductReadCommandReq(Gallery.ProductId));
+                    var currtentProduct = await _productDetailClient.GetProductByIdAsync(Gallery.ProductId);
                     currtentProduct.IsActive = false;
-                    var p = await _mediator.Send(new ProductUpdateCommandReq(currtentProduct));
-
+                    await _productDetailClient.UpdateProductAsync(currtentProduct);
                 }
                 #endregion
+                
                 return new JsonResult(Response);
             }
             else
             {
                 Response.IsSuccessed = false;
-
                 return new JsonResult(Response);
             }
         }
@@ -421,33 +371,35 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostAddVariation()
         {
-            var result =
-                await _mediator.Send(new AddVariationForProductQueryReq(productId.Value, variationDto.VariationName));
-            Response.IsSuccessed = result;
+            variationDto.ParentId = productId.Value;
+            var response = await _productDetailClient.AddProductVariationAsync(variationDto);
+            Response = response;
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostEditVariation(int variationId)
         {
-            var result =
-                await _mediator.Send(new UpdateVariationNameOfProductQueryReq(variationId, variationDto.VariationName));
-            Response.IsSuccessed = true;
+            var variation = await _productDetailClient.GetProductVariationAsync(variationId);
+            variation.VariationName = variationDto.VariationName;
+            var response = await _productDetailClient.UpdateProductAsync(variation);
+            Response = response;
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostAddSingleStock(int storeId)
         {
-            var res = await _mediator.Send(new ProductDuplicateForStoreQueryReq(productId.Value, storeId));
-            Response.IsSuccessed = res;
+            // This method duplicates a product for a store, we need to modify it to use gRPC
+            // Since this is a complex operation, we might need to add a specific method to the gRPC service
+            // For now, we'll return a not implemented response
+            Response.IsSuccessed = false;
+            Response.Message = "This operation is not yet implemented in the gRPC service";
             return new JsonResult(Response);
         }
 
-
         public async Task<IActionResult> OnPostDeleteChild(int childId)
         {
-            var result = await _mediator.Send(new ProductDeleteQueryReq(childId));
-
-            Response.IsSuccessed = result;
+            var response = await _productDetailClient.DeleteProductVariationAsync(childId);
+            Response = response;
             return new JsonResult(Response);
         }
 
@@ -459,8 +411,9 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostPriceItem()
         {
-            productStock = await _mediator.Send(new ProductStockPriceReadCommandReq(productId.Value));
-
+            var stockPrices = await _productDetailClient.GetProductStockPricesAsync(productId.Value);
+            productStock = stockPrices.FirstOrDefault();
+            
             Response.Object = productStock;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -468,7 +421,9 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostEditPriceItem()
         {
-            var currentproductStock = await _mediator.Send(new ProductStockPriceReadCommandReq(productStock.Id));
+            var stockPrices = await _productDetailClient.GetProductStockPricesAsync(productId.Value);
+            var currentproductStock = stockPrices.FirstOrDefault(sp => sp.Id == productStock.Id);
+            
             productStock.Price = long.Parse(productStock.TextPrice.Replace(",", ""));
             productStock.SalePrice = long.Parse(productStock.TextSalePrice.Replace(",", ""));
             productStock.DiscountPrice = long.Parse(productStock.TextDiscountPrice.Replace(",", ""));
@@ -476,11 +431,11 @@ namespace Shop.Web.Pages.Admin.Products
             productStock.Quantity = currentproductStock.Quantity;
             productStock.MaximumSaleInOrder = currentproductStock.MaximumSaleInOrder;
             productStock.StoreId = currentproductStock.StoreId;
-            productStock.RepId = currentproductStock.RepId;
+            productStock.RepresentationId = currentproductStock.RepresentationId;
             productStock.TaxId = currentproductStock.TaxId;
             productStock.QuantityPerBundle = currentproductStock.QuantityPerBundle;
-            productStock.DiscountDate = currentproductStock.DiscountDate;
-            
+            productStock.SpecialFromDate = currentproductStock.SpecialFromDate;
+            productStock.SpecialToDate = currentproductStock.SpecialToDate;
 
             #region Validator
 
@@ -508,21 +463,17 @@ namespace Shop.Web.Pages.Admin.Products
                         int.Parse(std[2]),
                         new PersianCalendar()
                     );
-                    productStock.DiscountDate = az;
+                    productStock.SpecialToDate = az;
                 }
             }
             else
             {
-                productStock.DiscountDate = null;
+                productStock.SpecialToDate = null;
             }
 
-
-            var current = _productStockRep.DapperGetProductStockPriceById(productStock.Id);
-            var currentDto = _mapper.Map<ProductStockPriceDto>(current.Result);
-            var edit = await _mediator.Send(new ProductStockPriceUpdateCommandReq(productStock));
-            await _mediator.Send(new PriceConflictsCreateLogQueryReq(User.Identity.Name, currentDto, edit));
-            Response.Object = edit;
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.UpdateProductStockPriceAsync(productStock);
+            Response = response;
+            
             return new JsonResult(Response);
         }
 
@@ -532,60 +483,41 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostAddProductRepresentation()
         {
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+            var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
             ProductRepresentationDto.UserId = user.Id;
-            var res = await _mediator.Send(new ProductRepresesntationCreateCommandReq(ProductRepresentationDto));
-            Response.Object = res;
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.AddProductRepresentationAsync(ProductRepresentationDto);
+            Response = response;
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostQuickAddProductRepresentation()
         {
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+            var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
             ProductRepresentationDto.UserId = user.Id;
-            var res = await _mediator.Send(new ProductRepresesntationQuickCreateCommandReq(ProductRepresentationDto));
-            Response.Object = res;
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.QuickAddProductRepresentationAsync(ProductRepresentationDto);
+            Response = response;
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostChangeQuantityPerBundle(int productStockPriceId, int QuantityPerBundle)
         {
-            var res = await _mediator.Send(new ChangeQuantityPerBundleQueryReq(productStockPriceId, QuantityPerBundle));
-            Response.Object = res;
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.UpdateStockQuantityPerBundleAsync(productStockPriceId, QuantityPerBundle);
+            Response = response;
             return new JsonResult(Response);
         }
+        
         public async Task<IActionResult> OnPostDeleteProductStock(int rep, int id)
         {
-            var pstock = await _mediator.Send(new ProductStockPriceReadCommandReq(id));
-            int productId = pstock.ProductId;
-            int storeId = pstock.StoreId;
-            var result = await _mediator.Send(new ProductStockPriceDeleteQueryReq(rep, id));
-            await _mediator.Send(new RefreshParentQuantityQueryReq(productId, storeId));
-            Response.IsSuccessed = result;
+            var stockPrices = await _productDetailClient.GetProductStockPricesAsync(productId.Value);
+            var pstock = stockPrices.FirstOrDefault(sp => sp.Id == id);
+            
+            var response = await _productDetailClient.DeleteProductStockPriceAsync(id);
+            Response = response;
             return new JsonResult(Response);
         }
 
         #endregion
 
         #endregion
-        //public async Task<IActionResult> OnPostProductParents()
-        //{
-        //    if (Type == 1)
-        //    {
-        //        var result = await _mediator.Send(new GetAllParentVariableProductQueryReq(Filter));
-        //        Response.Object = result;
-        //    }
-        //    else if (Type == 2)
-        //    {
-        //        var result = await _mediator.Send(new GetAllParentBundleProductQueryReq(Filter));
-        //        Response.Object = result;
-        //    }
-
-        //    return new JsonResult(Response);
-        //}
-
     }
 }

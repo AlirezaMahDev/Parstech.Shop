@@ -82,6 +82,7 @@ app.MapGrpcService<TorobGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<ProductGrpcService>().EnableGrpcWeb();
 
 // Map new gRPC services
+app.MapGrpcService<OrderGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<OrderCheckoutService>().EnableGrpcWeb();
 app.MapGrpcService<CouponGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<WalletGrpcService>().EnableGrpcWeb();
@@ -94,6 +95,21 @@ app.MapGrpcService<SectionGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserProductGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<SiteSettingGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserAuthGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<FormCreditGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<RahkaranGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<BrandAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<CategoryAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<CouponAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<StoreAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<SectionAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductDetailAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<RepresentationAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<PropertyAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ConfigAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<UserAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<SettingsAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<FinancialAdminGrpcService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();

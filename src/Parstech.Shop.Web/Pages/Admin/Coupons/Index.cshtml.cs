@@ -1,15 +1,14 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.DTOs.Coupon;
 using Shop.Application.DTOs.CouponType;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Coupon.Requests.Commands;
-using Shop.Application.Features.Coupon.Requests.Queries;
-using Shop.Application.Features.CouponType.Requests.Commands;
 using Shop.Application.Validators.Coupon;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.Protos.CouponAdmin;
+using System.Linq;
 
 namespace Shop.Web.Pages.Admin.Coupons
 {
@@ -18,10 +17,11 @@ namespace Shop.Web.Pages.Admin.Coupons
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
-        public IndexModel(IMediator mediator)
+        private readonly CouponAdminGrpcClient _couponAdminClient;
+        
+        public IndexModel(CouponAdminGrpcClient couponAdminClient)
         {
-            _mediator = mediator;
+            _couponAdminClient = couponAdminClient;
         }
 
         #endregion
@@ -50,10 +50,17 @@ namespace Shop.Web.Pages.Admin.Coupons
         public int CouponId { get; set; }
 
         #endregion
+        
         #region Get
+        
         public async Task<IActionResult> OnGet()
         {
-            couponTypes = await _mediator.Send(new CouponTypeReadCommandReq());
+            // Use gRPC client to get coupon types
+            var couponTypesResponse = await _couponAdminClient.GetCouponTypesAsync();
+            
+            // Map gRPC response to application DTO
+            couponTypes = couponTypesResponse.Types.Select(t => MapToCouponTypeDto(t)).ToList();
+            
             return Page();
         }
 
@@ -61,12 +68,21 @@ namespace Shop.Web.Pages.Admin.Coupons
         {
             Parameter.CurrentPage = 1;
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new CouponPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get coupon paging data
+            var couponsResponse = await _couponAdminClient.GetCouponsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(couponsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
 
             return new JsonResult(Response);
         }
+        
         #endregion
 
         #region Search Paging
@@ -75,31 +91,53 @@ namespace Shop.Web.Pages.Admin.Coupons
         {
             Parameter.CurrentPage = 1;
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new CouponPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get coupon paging data
+            var couponsResponse = await _couponAdminClient.GetCouponsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(couponsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
+            
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostPaging()
         {
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new CouponPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get coupon paging data
+            var couponsResponse = await _couponAdminClient.GetCouponsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(couponsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
+            
             return new JsonResult(Response);
         }
 
         #endregion
+        
         #region Create Update Delete
 
         public async Task<IActionResult> OnPostGetCoupon()
         {
-            couponDto = await _mediator.Send(new CouponGetByIdCommandReq(CouponId));
+            // Use gRPC client to get coupon by ID
+            var coupon = await _couponAdminClient.GetCouponByIdAsync(CouponId);
+            
+            // Map gRPC response to application DTO
+            couponDto = MapToCouponDto(coupon);
             Response.Object = couponDto;
             return new JsonResult(Response);
         }
-
 
         public async Task<IActionResult> OnPostUpdateAndCreateCoupon()
         {
@@ -115,39 +153,52 @@ namespace Shop.Web.Pages.Admin.Coupons
 
             if (couponDto.Id == 0)
             {
-
-                await _mediator.Send(new CreateCouponCommandReq(couponDto));
+                // Map application DTO to gRPC DTO
+                var couponGrpc = MapToGrpcCouponDto(couponDto);
+                
+                // Use gRPC client to create coupon
+                var response = await _couponAdminClient.CreateCouponAsync(couponGrpc);
+                
                 Response.Object = couponDto;
-                Response.IsSuccessed = true;
-                Response.Message = "کوپن با موفقیت ثبت شد";
+                Response.IsSuccessed = response.IsSuccessed;
+                Response.Message = response.Message;
+                
+                if (response.Errors.Count > 0)
+                {
+                    Response.Errors = response.Errors.Select(e => new FluentValidation.Results.ValidationFailure(e.PropertyName, e.ErrorMessage)).ToList();
+                }
+                
                 return new JsonResult(Response);
             }
             else
             {
-                await _mediator.Send(new UpdateCouponCommandReq(couponDto));
+                // Map application DTO to gRPC DTO
+                var couponGrpc = MapToGrpcCouponDto(couponDto);
+                
+                // Use gRPC client to update coupon
+                var response = await _couponAdminClient.UpdateCouponAsync(couponGrpc);
+                
                 Response.Object = couponDto;
-                Response.IsSuccessed = true;
-                Response.Message = "کوپن با موفقیت ویرایش شد";
+                Response.IsSuccessed = response.IsSuccessed;
+                Response.Message = response.Message;
+                
+                if (response.Errors.Count > 0)
+                {
+                    Response.Errors = response.Errors.Select(e => new FluentValidation.Results.ValidationFailure(e.PropertyName, e.ErrorMessage)).ToList();
+                }
+                
                 return new JsonResult(Response);
             }
-
         }
+        
         public async Task<IActionResult> OnPostDeleteCoupon()
         {
-
-            var result = await _mediator.Send(new DeleteCouponCommandReq(CouponId));
-            if (!result)
-            {
-                Response.Object = couponDto;
-                Response.IsSuccessed = false;
-                Response.Message = "به دلیل وجود سفارشی با این کوپن امکان حذف وجود ندارد";
-            }
-            else
-            {
-                Response.Object = couponDto;
-                Response.IsSuccessed = true;
-                Response.Message = "کوپن با موفقیت حذف شد";
-            }
+            // Use gRPC client to delete coupon
+            var response = await _couponAdminClient.DeleteCouponAsync(CouponId);
+            
+            Response.IsSuccessed = response.IsSuccessed;
+            Response.Message = response.Message;
+            
             return new JsonResult(Response);
         }
 
@@ -155,9 +206,77 @@ namespace Shop.Web.Pages.Admin.Coupons
 
         public async Task<IActionResult> OnPostTest()
         {
-
-
             return Page();
         }
+        
+        #region Mapping Methods
+        
+        private PagingDto MapToPagingDto(Parstech.Shop.Shared.Protos.CouponAdmin.CouponPageingDto dto)
+        {
+            var result = new PagingDto
+            {
+                CurrentPage = dto.CurrentPage,
+                PageCount = dto.PageCount
+            };
+            
+            result.List = dto.List.Select(MapToCouponDto).ToList();
+            
+            return result;
+        }
+        
+        private CouponDto MapToCouponDto(Parstech.Shop.Shared.Protos.CouponAdmin.CouponDto dto)
+        {
+            return new CouponDto
+            {
+                Id = dto.Id,
+                Code = dto.Code,
+                Amount = dto.Amount,
+                Persent = dto.Persent,
+                MinPrice = dto.MinPrice,
+                MaxPrice = dto.MaxPrice,
+                LimitUse = dto.LimitUse,
+                LimitEachUser = dto.LimitEachUser,
+                CouponTypeId = dto.CouponTypeId,
+                ExpireDateShamsi = dto.ExpireDateShamsi,
+                Categury = dto.Categury,
+                Products = dto.Products,
+                Users = dto.Users,
+                TwoUseSameTime = dto.TwoUseSameTime,
+                JustNewUser = dto.JustNewUser
+            };
+        }
+        
+        private Parstech.Shop.Shared.Protos.CouponAdmin.CouponDto MapToGrpcCouponDto(CouponDto coupon)
+        {
+            return new Parstech.Shop.Shared.Protos.CouponAdmin.CouponDto
+            {
+                Id = coupon.Id,
+                Code = coupon.Code ?? string.Empty,
+                Amount = coupon.Amount,
+                Persent = coupon.Persent,
+                MinPrice = coupon.MinPrice,
+                MaxPrice = coupon.MaxPrice,
+                LimitUse = coupon.LimitUse,
+                LimitEachUser = coupon.LimitEachUser,
+                CouponTypeId = coupon.CouponTypeId,
+                ExpireDateShamsi = coupon.ExpireDateShamsi ?? string.Empty,
+                Categury = coupon.Categury ?? string.Empty,
+                Products = coupon.Products ?? string.Empty,
+                Users = coupon.Users ?? string.Empty,
+                TwoUseSameTime = coupon.TwoUseSameTime,
+                JustNewUser = coupon.JustNewUser
+            };
+        }
+        
+        private CouponTypeDto MapToCouponTypeDto(Parstech.Shop.Shared.Protos.CouponAdmin.CouponTypeDto dto)
+        {
+            return new CouponTypeDto
+            {
+                Id = dto.Id,
+                Type = dto.Type
+            };
+        }
+        
+        #endregion
     }
 }

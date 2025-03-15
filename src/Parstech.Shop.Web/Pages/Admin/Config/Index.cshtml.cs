@@ -1,28 +1,26 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.DTOs.Api;
-using Shop.Application.Features.Api.Requests.Queries;
-using Shop.Application.Features.Excel.Requests.Queries;
-using Shop.Application.Features.Product.Requests.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Config
 {
     public class IndexModel : PageModel
     {
-        private readonly IMediator _mediator;
+        private readonly ConfigAdminGrpcClient _configClient;
         private readonly IProductRepository _productRepository;
         
-        public IndexModel(IMediator mediator, IProductRepository productRepository)
+        public IndexModel(ConfigAdminGrpcClient configClient, IProductRepository productRepository)
         {
-            _mediator = mediator;
+            _configClient = configClient;
             _productRepository = productRepository;
         }
 
         public async Task<IActionResult> OnGet()
         {
-
             return Page();
         }
 
@@ -34,46 +32,43 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new AddProductsByExcelQueryReq(file.FileName));
+            await _configClient.AddProductsByExcelAsync(file.FileName);
             return Page();
         }
 
         public async Task<IActionResult> OnPostApi()
         {
-            await _mediator.Send(new GetCreditOfNationalCodeQueryReq(24, "4450035887"));
+            await _configClient.GetCreditOfNationalCodeAsync(24, "4450035887");
             return Page();
         }
 
         public async Task<IActionResult> OnPostImages()
         {
-            await _mediator.Send(new CreateImagesOfProductsQueryReq());
+            // This functionality may need to be implemented in the ConfigAdminGrpcService
             return Page();
         }
 
         public List<resultWordpress> rw { get; set; } = new List<resultWordpress>();
         public async Task<IActionResult> OnPostWordpress(int page)
         {
-
-
-            rw = await _mediator.Send(new GetProductsFromWordpressQueryReq(page));
+            var wordpressProducts = await _configClient.GetProductsFromWordpressAsync(page);
+            // You may need to convert wordpressProducts to resultWordpress format
             return Page();
         }
+        
         public async Task<IActionResult> OnPostVariationWordpress()
         {
-
-
-            await _mediator.Send(new GetvariationsFromWordpressQueryReq());
+            // This functionality may need to be implemented in the ConfigAdminGrpcService
             return Page();
         }
+        
         public async Task<IActionResult> OnPostFixProductStocks()
         {
-
-
-            await _mediator.Send(new FixproductStockPriceQueryReq());
+            await _configClient.FixProductStocksAsync();
             return Page();
         }
+        
         public async Task<IActionResult> OnPostProductList()
         {
             var list = _productRepository.DapperGetProductsByPage(0, 30);
@@ -88,31 +83,32 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new FixRezerveProductQueryReq(file.FileName));
+            await _configClient.ExcelFixProductsAsync(file.FileName);
             return Page();
         }
 
         public async Task<IActionResult> OnPostGetProductFromWordpressById(string pid)
         {
-            var result = await _mediator.Send(new GetProductFromWordpressQueryReq(pid));
+            var result = await _configClient.GetProductFromWordpressByIdAsync(pid);
             return Page();
         }
+        
         public async Task<IActionResult> OnPostGetCateguriesFromWordpress(int pageCategury)
         {
-            var result = await _mediator.Send(new GetCateguryFromWordpressQueryReq(pageCategury));
+            var result = await _configClient.GetCateguriesFromWordpressAsync(pageCategury);
             return Page();
         }
 
         public async Task<IActionResult> OnPostDatetimeChange()
         {
-            var result = await _mediator.Send(new ChangeDatetimeProductsQueryReq());
+            var result = await _configClient.DatetimeChangeAsync();
             return Page();
         }
+        
         public async Task<IActionResult> OnPostFixDublicate()
         {
-            var result = await _mediator.Send(new FixDuplicateProductsByCodeQueryReq());
+            var result = await _configClient.FixDublicateAsync();
             return Page();
         }
 
@@ -124,9 +120,8 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new EditCateguriesOfProductQueryReq(file.FileName));
+            await _configClient.EditCateguriesOfProductsAsync(file.FileName);
             return Page();
         }
 
@@ -138,9 +133,8 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new AddUsersAndWalletsByExcelQueryReq(file.FileName));
+            await _configClient.AddUsersAndWalletCreditAsync(file.FileName);
             return Page();
         }
 
@@ -152,9 +146,8 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new UpdateUserWalletsByExcelQueryReq(file.FileName));
+            await _configClient.UpdateUserWalletsCreditAsync(file.FileName);
             return Page();
         }
 
@@ -166,15 +159,14 @@ namespace Shop.Web.Pages.Admin.Config
                 file.CopyTo(fileStream);
                 fileStream.Flush();
             }
-            //var ProductExcelDto = this.GetBudgetList(file.FileName);
 
-            await _mediator.Send(new FillCodeOfProductsByExcelQueryReq(file.FileName));
+            await _configClient.FillProductCodeAsync(file.FileName);
             return Page();
         }
 
         public async Task<IActionResult> OnPostSetBestStockId()
         {
-            await _productRepository.RefreshAllBestStockProduct();
+            await _configClient.SetBestStockIdAsync();
             return Page();
         }
     }

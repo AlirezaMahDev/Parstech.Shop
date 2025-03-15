@@ -1,6 +1,10 @@
 using Parstech.Shop.Web;
 using Parstech.Shop.Web.Components;
 using Parstech.Shop.Web.Services.GrpcClients;
+using System;
+using Grpc.Net.Client;
+using Grpc.Net.ClientFactory;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +39,19 @@ builder.Services.AddSingleton<ProductGalleryGrpcClient>();
 builder.Services.AddSingleton<UserStoreGrpcClient>();
 builder.Services.AddSingleton<CategoryGrpcClient>();
 builder.Services.AddSingleton<BrandGrpcClient>();
-builder.Services.AddSingleton<SiteSettingGrpcClient>();
-builder.Services.AddSingleton<UserAuthGrpcClient>();
+builder.Services.AddSingleton<ProductAdminGrpcClient>();
+builder.Services.AddSingleton<BrandAdminGrpcClient>();
+builder.Services.AddSingleton<CategoryAdminGrpcClient>();
+builder.Services.AddSingleton<CouponAdminGrpcClient>();
+builder.Services.AddSingleton<StoreAdminGrpcClient>();
+builder.Services.AddSingleton<SectionAdminGrpcClient>();
+builder.Services.AddSingleton<ProductDetailAdminGrpcClient>();
+builder.Services.AddSingleton<RepresentationAdminGrpcClient>();
+builder.Services.AddSingleton<PropertyAdminGrpcClient>();
+builder.Services.AddSingleton<ConfigAdminGrpcClient>();
+builder.Services.AddSingleton<UserAdminGrpcClient>();
+builder.Services.AddSingleton<SettingsAdminGrpcClient>();
+builder.Services.AddSingleton<FinancialAdminGrpcClient>();
 
 // Add gRPC clients
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.OrderCheckout.OrderCheckoutService.OrderCheckoutServiceClient>(options =>
@@ -128,6 +143,82 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserAuth.UserAuthServ
 {
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.FormCredit.FormCreditService.FormCreditServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.Rahkaran.RahkaranService.RahkaranServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.BrandAdmin.BrandAdminService.BrandAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.CategoryAdmin.CategoryAdminService.CategoryAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.CouponAdmin.CouponAdminService.CouponAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductAdmin.ProductAdminService.ProductAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.StoreAdmin.StoreAdminService.StoreAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.SectionAdmin.SectionAdminService.SectionAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductDetailAdmin.ProductDetailAdminService.ProductDetailAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.RepresentationAdmin.RepresentationAdminService.RepresentationAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.PropertyAdmin.PropertyAdminService.PropertyAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+});
+
+builder.Services.AddGrpcClient<UserService.UserServiceClient>(
+    options => options.Address = new Uri(builder.Configuration["GrpcSettings:ApiUrl"])
+);
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.FinancialAdmin.FinancialAdminService.FinancialAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+
+builder.Services.AddScoped<UserGrpcClient>();
+builder.Services.AddScoped<CouponAdminGrpcClient>();
+builder.Services.AddScoped<StoreAdminGrpcClient>();
+builder.Services.AddScoped<SectionAdminGrpcClient>();
+builder.Services.AddScoped<ProductDetailAdminGrpcClient>();
+builder.Services.AddScoped<RepresentationAdminGrpcClient>();
+builder.Services.AddScoped<PropertyAdminGrpcClient>();
+builder.Services.AddScoped<ConfigAdminGrpcClient>();
+builder.Services.AddScoped<UserAdminGrpcClient>();
+builder.Services.AddScoped<SettingsAdminGrpcClient>();
+builder.Services.AddScoped<FinancialAdminGrpcClient>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

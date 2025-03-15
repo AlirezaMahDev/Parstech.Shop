@@ -1,32 +1,25 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.OrderDetail;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.User;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Order.Requests.Queries;
-using Shop.Application.Features.OrderDetail.Requests.Queries;
-using Shop.Application.Features.OrderStatus.Requests.Queries;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Commands;
-using Shop.Application.Features.UserStore.Requests.Queries;
 
 namespace Shop.Web.Pages.Admin.Store
 {
-
-
-
     [Authorize(Roles = "SupperUser,Finanicial,Sale,Store")]
     public class SalesModel : PageModel
     {
+        #region Constructor
+        private readonly StoreAdminGrpcClient _storeAdminClient;
+        private readonly UserGrpcClient _userClient;
 
-        #region Constractor
-        private readonly IMediator _mediator;
-        public SalesModel(IMediator mediator)
+        public SalesModel(StoreAdminGrpcClient storeAdminClient, UserGrpcClient userClient)
         {
-            _mediator = mediator;
+            _storeAdminClient = storeAdminClient;
+            _userClient = userClient;
         }
         #endregion
 
@@ -39,13 +32,12 @@ namespace Shop.Web.Pages.Admin.Store
         [BindProperty]
         public List<UserStoreDto> UserStores { get; set; } = new List<UserStoreDto>();
 
-
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
         #endregion
+
         public async Task<IActionResult> OnGet()
         {
-
             return Page();
         }
 
@@ -56,78 +48,86 @@ namespace Shop.Web.Pages.Admin.Store
             parameters.TakePage = 100;
             if (User.IsInRole("SupperUser"))
             {
-                result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, true));
-                UserStores = await _mediator.Send(new UserStoreReadsCommandReq());
+                result = await _storeAdminClient.GetSalesForStoreAsync(parameters, true);
+                UserStores = await _storeAdminClient.GetUserStoresAsync();
             }
             else if (User.IsInRole("Store"))
             {
+                var user = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
+                var userStores = await _storeAdminClient.GetUserStoresAsync();
+                var userStore = userStores.FirstOrDefault(us => us.UserId == user.Id);
 
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-
-                UserStores.Add(userStore);
-                parameters.StoreId = userStore.Id;
-                result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, false));
-
+                if (userStore != null)
+                {
+                    UserStores.Add(userStore);
+                    parameters.StoreId = userStore.Id;
+                    result = await _storeAdminClient.GetSalesForStoreAsync(parameters, false);
+                }
             }
 
-            result.StoresSelect = UserStores.ToArray();
+            if (result != null)
+            {
+                result.StoresSelect = UserStores.ToArray();
+            }
             return new JsonResult(result);
         }
+
         public async Task<IActionResult> OnPostSearch()
         {
             parameters.TakePage = 100;
             if (User.IsInRole("SupperUser"))
             {
-                result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, true));
-                UserStores = await _mediator.Send(new UserStoreReadsCommandReq());
+                result = await _storeAdminClient.GetSalesForStoreAsync(parameters, true);
+                UserStores = await _storeAdminClient.GetUserStoresAsync();
             }
             else if (User.IsInRole("Store"))
             {
+                var user = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
+                var userStores = await _storeAdminClient.GetUserStoresAsync();
+                var userStore = userStores.FirstOrDefault(us => us.UserId == user.Id);
 
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-
-                UserStores.Add(userStore);
-                parameters.StoreId = userStore.Id;
-                result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, false));
-
+                if (userStore != null)
+                {
+                    UserStores.Add(userStore);
+                    parameters.StoreId = userStore.Id;
+                    result = await _storeAdminClient.GetSalesForStoreAsync(parameters, false);
+                }
             }
             return new JsonResult(result);
         }
-        #region Get Statuses
 
+        #region Get Statuses
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostGetStatuses(int OrderId)
         {
-
-            var list = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(OrderId));
+            var list = await _storeAdminClient.GetOrderStatusesAsync(OrderId);
             Response.Object = list;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
-
         #endregion
+
         #region Contract
         public async Task<IActionResult> OnPostGetContract(int OrderId)
         {
-
             if (User.IsInRole("SupperUser") || User.IsInRole("Sale") || User.IsInRole("Finanicial"))
             {
-                var res = await _mediator.Send(new ContractOrderQueryReq(OrderId, "All"));
+                var res = await _storeAdminClient.GetContractForOrderAsync(OrderId, "All");
                 return new JsonResult(res);
             }
             else if (User.IsInRole("Store"))
             {
+                var user = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
+                var userStores = await _storeAdminClient.GetUserStoresAsync();
+                var userStore = userStores.FirstOrDefault(us => us.UserId == user.Id);
 
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-
-                var res = await _mediator.Send(new ContractOrderQueryReq(OrderId, userStore.LatinStoreName));
-                return new JsonResult(res);
+                if (userStore != null)
+                {
+                    var res = await _storeAdminClient.GetContractForOrderAsync(OrderId, userStore.LatinName);
+                    return new JsonResult(res);
+                }
             }
-            else { return new JsonResult(Response); }
-
+            return new JsonResult(Response);
         }
         #endregion
     }

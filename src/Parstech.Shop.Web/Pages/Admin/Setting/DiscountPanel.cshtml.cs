@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Product;
@@ -31,10 +32,17 @@ namespace Shop.Web.Pages.Admin.Setting
         #region Constractor
 
         private readonly IMediator _mediator;
+        private readonly IRepresentationAdminGrpcClient _representationClient;
+        private readonly IUserGrpcClient _userClient;
 
-        public DiscountPanelModel(IMediator mediator)
+        public DiscountPanelModel(
+            IMediator mediator,
+            IRepresentationAdminGrpcClient representationClient,
+            IUserGrpcClient userClient)
         {
-            _mediator = mediator; 
+            _mediator = mediator;
+            _representationClient = representationClient;
+            _userClient = userClient;
         }
 
         #endregion
@@ -111,23 +119,21 @@ namespace Shop.Web.Pages.Admin.Setting
             Parameter.CurrentPage = 1;
             if (User.IsInRole("SupperUser"))
             {
-                Representations = await _mediator.Send(new RepresentationReadsCommandReq());
+                Representations = await _representationClient.GetRepresentationsAsync(new RepresentationParameterDto { CurrentPage = 1, TakePage = 100 });
             }
             else if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
             {
-                var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-                var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
-                var rep = await _mediator.Send(new RepresentationReadCommandReq(userStore.RepId));
+                var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
+                var userStore = await _userClient.GetUserStoreByUserIdAsync(user.Id);
+                var rep = await _representationClient.GetRepresentationByIdAsync(userStore.RepId);
                 Representations.Add(rep);
-
-
             }
             else
             {
-                Representations = await _mediator.Send(new RepresentationReadsCommandReq());
+                Representations = await _representationClient.GetRepresentationsAsync(new RepresentationParameterDto { CurrentPage = 1, TakePage = 100 });
             }
 
-            repTypes = await _mediator.Send(new RepresentationTypeReadsCommandReq());
+            repTypes = await _representationClient.GetRepresentationTypesAsync();
             return Page();
         }
 

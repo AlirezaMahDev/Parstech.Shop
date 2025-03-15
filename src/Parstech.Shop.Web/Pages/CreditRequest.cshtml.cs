@@ -1,36 +1,31 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.Application.DTOs.FormCredit;
+using Parstech.Shop.Shared.Protos.FormCredit;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.FormCredit.Requests.Commands;
 using Shop.Application.Validators.Coupon;
 
 namespace Shop.Web.Pages
 {
     public class CreditRequest : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly FormCreditGrpcClient _formCreditClient;
 
-        public CreditRequest(IMediator mediator)
+        public CreditRequest(FormCreditGrpcClient formCreditClient)
         {
-            _mediator = mediator;
+            _formCreditClient = formCreditClient;
         }
 
         #endregion
 
         #region Properties
 
-
         [BindProperty]
         public FormCreditDto formCredit { get; set; }
 
         public ResponseDto Response { get; set; } = new ResponseDto();
-
-
-
 
         #endregion
 
@@ -38,10 +33,8 @@ namespace Shop.Web.Pages
 
         public async Task<IActionResult> OnGet()
         {
-
             return Page();
         }
-
 
         #endregion
 
@@ -49,7 +42,6 @@ namespace Shop.Web.Pages
 
         public async Task<IActionResult> OnPost()
         {
-
             #region Validator
             var validator = new FormCreditDtoValidator();
             var valid = validator.Validate(formCredit);
@@ -62,8 +54,13 @@ namespace Shop.Web.Pages
                 return new JsonResult(Response);
             }
             #endregion
+            
+            // Convert request price from text format
             formCredit.RequestPrice = long.Parse(formCredit.TextRequestPrice.Replace(",", ""));
-            Response = await _mediator.Send(new CreateFormCreditCommandReq(formCredit));
+            
+            // Use gRPC client instead of MediatR
+            Response = await _formCreditClient.CreateFormCreditAsync(formCredit);
+            
             return new JsonResult(Response);
         }
         #endregion

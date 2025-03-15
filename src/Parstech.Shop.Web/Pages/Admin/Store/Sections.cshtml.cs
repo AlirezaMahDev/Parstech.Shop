@@ -1,15 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.Section;
 using Shop.Application.DTOs.SectionDetail;
-using Shop.Application.Features.Section.Requests.Commands;
-using Shop.Application.Features.Section.Requests.Queries;
-using Shop.Application.Features.SectionDetail.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Queries;
 
 namespace Shop.Web.Pages.Admin.Store
 {
@@ -18,11 +13,13 @@ namespace Shop.Web.Pages.Admin.Store
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly SectionAdminGrpcClient _sectionAdminClient;
+        private readonly UserGrpcClient _userClient;
 
-        public SectionsModel(IMediator mediator)
+        public SectionsModel(SectionAdminGrpcClient sectionAdminClient, UserGrpcClient userClient)
         {
-            _mediator = mediator;
+            _sectionAdminClient = sectionAdminClient;
+            _userClient = userClient;
         }
 
         #endregion
@@ -56,27 +53,20 @@ namespace Shop.Web.Pages.Admin.Store
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
+            var user = await _userClient.GetCurrentUserAsync(User.Identity.Name);
+            var userStores = await _userClient.GetUserStoresAsync(user.Id);
             StoreId = null;
-            if (userStore != null)
+            if (userStores != null && userStores.Any())
             {
-                StoreId = userStore.Id;
+                StoreId = userStores.First().Id;
             }
-            List = await _mediator.Send(new SectionAndDetailsReadsQueryReq(StoreId));
+            List = await _sectionAdminClient.GetSectionsAndDetailsAsync(StoreId);
             return Page();
         }
 
-        //public async Task<IActionResult> OnPostGetAgain()
-        //{
-        //    List = await _mediator.Send(new SectionAndDetailsReadQueryReq());
-        //    Response.Object = List;
-        //    return new JsonResult(Response);
-        //}
-
         public async Task<IActionResult> OnPostSection()
         {
-            Section = await _mediator.Send(new SectionReadCommandReq(SectionId));
+            Section = await _sectionAdminClient.GetSectionByIdAsync(SectionId);
             Response.Object = Section;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -84,7 +74,7 @@ namespace Shop.Web.Pages.Admin.Store
 
         public async Task<IActionResult> OnPostSectionDetail()
         {
-            SectionDetail = await _mediator.Send(new SectionDetailReadCommandReq(SectionDeatilId));
+            SectionDetail = await _sectionAdminClient.GetSectionDetailByIdAsync(SectionDeatilId);
             Response.Object = SectionDetail;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -98,44 +88,35 @@ namespace Shop.Web.Pages.Admin.Store
         {
             if (SectionId != 0)
             {
-                var result = await _mediator.Send(new SectionUpdateCommandReq(Section));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "ویرایش با موفقیت انجام شد";
+                Section.Id = SectionId;
+                var result = await _sectionAdminClient.UpdateSectionAsync(Section);
+                Response = result;
                 return new JsonResult(Response);
             }
             else
             {
-                var result = await _mediator.Send(new SectionCreateCommandReq(Section));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم جدید با موفقیت افزوده شد";
+                var result = await _sectionAdminClient.CreateSectionAsync(Section);
+                Response = result;
                 return new JsonResult(Response);
             }
-
         }
 
         public async Task<IActionResult> OnPostCreateUpdateSectionDetail()
         {
-
             if (SectionDeatilId != 0)
             {
-                var result = await _mediator.Send(new SectionDetailUpdateCommandReq(SectionDetail));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "ویرایش با موفقیت انجام شد";
+                SectionDetail.Id = SectionDeatilId;
+                var result = await _sectionAdminClient.UpdateSectionDetailAsync(SectionDetail);
+                Response = result;
                 return new JsonResult(Response);
             }
             else
             {
                 SectionDetail.SectionId = SectionId;
-                var result = await _mediator.Send(new SectionDetailCreateCommandReq(SectionDetail));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم جدید با موفقیت افزوده شد";
+                var result = await _sectionAdminClient.CreateSectionDetailAsync(SectionDetail);
+                Response = result;
                 return new JsonResult(Response);
             }
-
         }
 
         #endregion
@@ -145,11 +126,11 @@ namespace Shop.Web.Pages.Admin.Store
 
         public async Task<IActionResult> OnPostDeleteSection()
         {
-            if (await _mediator.Send(new SectionCheckQueryReq(SectionId)))
+            var canDelete = await _sectionAdminClient.CheckSectionCanBeDeletedAsync(SectionId);
+            if (canDelete)
             {
-                await _mediator.Send(new SectionDeleteCommandReq(SectionId));
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم با موفقیت حذف شد";
+                var result = await _sectionAdminClient.DeleteSectionAsync(SectionId);
+                Response = result;
                 return new JsonResult(Response);
             }
             else
@@ -158,19 +139,15 @@ namespace Shop.Web.Pages.Admin.Store
                 Response.Message = "تا زمانی که قسمت اصلی سایت دارای زیر مجموعه باشد امکان حذف آن وجود ندارد";
                 return new JsonResult(Response);
             }
-
-
         }
 
         public async Task<IActionResult> OnPostDeleteSectionDetail()
         {
-            var result = await _mediator.Send(new SectionDetailDeleteCommandReq(SectionDeatilId));
-            Response.IsSuccessed = true;
-            Response.Message = "آیتم با موفقیت حذف شد";
+            var result = await _sectionAdminClient.DeleteSectionDetailAsync(SectionDeatilId);
+            Response = result;
             return new JsonResult(Response);
         }
 
         #endregion
-
     }
 }

@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.SiteSetting;
-using Shop.Application.Features.SiteSeting.Requests.Commands;
 using Shop.Application.Validators.SiteSetting;
 
 namespace Shop.Web.Pages.Admin.Setting
@@ -12,28 +11,27 @@ namespace Shop.Web.Pages.Admin.Setting
     [Authorize(Roles = "SupperUser")]
     public class SiteModel : PageModel
     {
+        private readonly ISettingsAdminGrpcClient _settingsClient;
 
-        private readonly IMediator _mediator;
-
-        public SiteModel(IMediator mediator)
+        public SiteModel(ISettingsAdminGrpcClient settingsClient)
         {
-            _mediator = mediator;
+            _settingsClient = settingsClient;
         }
+        
         [BindProperty]
         public SiteDto Input { get; set; }
 
-
-        [BindProperty] public ResponseDto Response { get; set; } = new ResponseDto();
+        [BindProperty]
+        public ResponseDto Response { get; set; } = new ResponseDto();
 
         public async Task<IActionResult> OnGet()
         {
-            Input = await _mediator.Send(new SiteSettingReadCommandReq(1));
+            Input = await _settingsClient.GetSiteSettingsAsync(1);
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-
             #region Validator
             var validator = new SiteDtoValidator();
             var valid = validator.Validate(Input);
@@ -46,12 +44,7 @@ namespace Shop.Web.Pages.Admin.Setting
             }
             #endregion
 
-
-            await _mediator.Send(new SiteSettingUpdateCommandReq(1, Input));
-            Response.IsSuccessed = true;
-            Response.Message = "ویرایش اطلاعات با موفقیت انجام شد";
-            Response.Object = Input;
-
+            Response = await _settingsClient.UpdateSiteSettingsAsync(1, Input);
             return new JsonResult(Response);
         }
     }

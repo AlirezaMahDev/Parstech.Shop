@@ -1,27 +1,27 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.DTOs.ProductRepresentation;
 using Shop.Application.DTOs.Representation;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Application.Features.Representation.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Queries;
 
 namespace Shop.Web.Pages.Admin.Representations
 {
     public class TestquickModel : PageModel
     {
         #region Constractor 
-        private readonly IMediator _mediator;
+        private readonly IRepresentationAdminGrpcClient _representationClient;
+        private readonly IUserGrpcClient _userClient;
         private readonly IProductRepresesntationRepository _productRepresesntationRep;
 
-        public TestquickModel(IMediator mediator, IProductRepresesntationRepository productRepresesntationRep)
+        public TestquickModel(
+            IRepresentationAdminGrpcClient representationClient,
+            IUserGrpcClient userClient,
+            IProductRepresesntationRepository productRepresesntationRep)
         {
-            _mediator = mediator;
+            _representationClient = representationClient;
+            _userClient = userClient;
             _productRepresesntationRep = productRepresesntationRep;
         }
         #endregion
@@ -41,8 +41,6 @@ namespace Shop.Web.Pages.Admin.Representations
             return Page();
         }
 
-
-
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostGetData()
         {
@@ -52,8 +50,8 @@ namespace Shop.Web.Pages.Admin.Representations
                 parameters.CurrentPage = 1;
             }
 
-            var user = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
-            var userStore = await _mediator.Send(new UserStoreOfUserReadQueryReq(user.Id));
+            var user = await _userClient.GetUserByUserNameAsync(User.Identity.Name);
+            var userStore = await _userClient.GetUserStoreByUserIdAsync(user.Id);
             if (userStore == null)
             {
                 response.Object = null;
@@ -61,20 +59,49 @@ namespace Shop.Web.Pages.Admin.Representations
                 return new JsonResult(response);
             }
 
-            var rep = await _mediator.Send(new RepresentationReadCommandReq(userStore.RepId));
+            var rep = await _representationClient.GetRepresentationByIdAsync(userStore.RepId);
             parameters.RepId = rep.Id;
-            list = await _mediator.Send(new ProductRepresentaionPagingQueryReq(parameters));
+            
+            var pagingResult = await _representationClient.GetProductRepresentationsAsync(parameters.ProductId);
+            list = new ProductRepresentationPagingDto
+            {
+                List = pagingResult,
+                CurrentPage = parameters.CurrentPage,
+                PageCount = (int)Math.Ceiling(pagingResult.Count / (double)parameters.TakePage),
+                RowCount = pagingResult.Count
+            };
+            
             response.Object = list;
             response.IsSuccessed = true;
             return new JsonResult(response);
         }
         #endregion
+        
         #region SaveChanges
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostSaveChanges([FromBody] List<QuickEditDto> list)
         {
-
-            var response = await _mediator.Send(new QuickEditProductStockPricesQueryReq(User.Identity.Name, list));
+            // Assuming there's a method in the client for quick editing
+            var response = new ResponseDto();
+            
+            foreach (var item in list)
+            {
+                var productRep = await _representationClient.GetProductRepresentationByIdAsync(item.Id);
+                if (productRep != null)
+                {
+                    productRep.Value = item.Value;
+                    var updateResult = await _representationClient.UpdateProductRepresentationAsync(productRep);
+                    if (!updateResult.IsSuccessed)
+                    {
+                        response.IsSuccessed = false;
+                        response.Message = updateResult.Message;
+                        return new JsonResult(response);
+                    }
+                }
+            }
+            
+            response.IsSuccessed = true;
+            response.Message = "تغییرات با موفقیت اعمال شد";
             return new JsonResult(response);
         }
         #endregion

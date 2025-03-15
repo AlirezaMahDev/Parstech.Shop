@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package brand_admin;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.BrandAdmin";
+
+service BrandAdminService {
+  rpc GetBrandsForAdmin (BrandParameterRequest) returns (BrandPageingDto);
+  rpc GetBrand (BrandRequest) returns (BrandDto);
+  rpc CreateBrand (BrandDto) returns (ResponseDto);
+  rpc UpdateBrand (BrandDto) returns (ResponseDto);
+  rpc DeleteBrand (BrandRequest) returns (ResponseDto);
+}
+
+message BrandParameterRequest {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  string filter = 3;
+}
+
+message BrandRequest {
+  int32 brand_id = 1;
+}
+
+message BrandPageingDto {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 row_count = 3;
+  repeated BrandDto list = 4;
+}
+
+message BrandDto {
+  int32 brand_id = 1;
+  string brand_title = 2;
+  string latin_brand_title = 3;
+  string brand_image = 4;
+  string brand_file = 5;
+  string change_by_user_name = 6;
+  string last_change_time = 7;
+  bool is_delete = 8;
+}
+
+message ResponseDto {
+  bool is_successed = 1;
+  string message = 2;
+  string object = 3;
+} 

@@ -17,6 +17,12 @@ using Shop.Application.Features.OrderPay.Request.Queries;
 using Shop.Application.Features.OrderShipping.Request.Queries;
 using Shop.Application.Features.OrderStatus.Requests.Commands;
 using Shop.Application.Features.OrderStatus.Requests.Queries;
+using Microsoft.Extensions.Configuration;
+using Parstech.Shop.Shared.Protos.Order;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using System.Linq;
 
 namespace Shop.Web.Pages.Admin.Orders
 {
@@ -27,10 +33,12 @@ namespace Shop.Web.Pages.Admin.Orders
         #region Constractor
 
         private readonly IMediator _mediator;
+        private readonly OrderGrpcClient _orderGrpcClient;
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(IMediator mediator, OrderGrpcClient orderGrpcClient)
         {
             _mediator = mediator;
+            _orderGrpcClient = orderGrpcClient;
         }
 
         #endregion
@@ -87,23 +95,23 @@ namespace Shop.Web.Pages.Admin.Orders
         public async Task<IActionResult> OnGet()
 
         {
+            string storeName = null;
             if (User.IsInRole("Store"))
             {
-                orderFilterDto = await _mediator.Send(new OrdersFilterDataQueryReq(User.Identity.Name));
-
-            }
-            else
-            {
-                orderFilterDto = await _mediator.Send(new OrdersFilterDataQueryReq(null));
+                storeName = User.Identity.Name;
             }
 
+            // Use gRPC client
+            var filters = await _orderGrpcClient.GetOrderFiltersAsync(storeName);
+            
+            // Map gRPC response to application DTOs
+            orderFilterDto = MapFromOrderFilterGrpc(filters);
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostData()
         {
-
             Parameter.TakePage = 30;
             if (User.IsInRole("Store"))
             {
@@ -112,17 +120,20 @@ namespace Shop.Web.Pages.Admin.Orders
             else
             {
                 Parameter.store = null;
-
             }
 
-            List = await _mediator.Send(new OrderPagingQueryReq(Parameter));
+            // Use gRPC client
+            var parameterGrpc = MapToParameterGrpc(Parameter);
+            var pagingResult = await _orderGrpcClient.GetOrdersPagingAsync(parameterGrpc);
+            
+            // Map gRPC response to application DTOs
+            List = MapFromPagingDtoGrpc(pagingResult);
+            
             Response.Object = List;
             Response.IsSuccessed = true;
 
             return new JsonResult(Response);
         }
-
-
 
         #endregion
         #region Search Paging
@@ -137,9 +148,15 @@ namespace Shop.Web.Pages.Admin.Orders
             else
             {
                 Parameter.store = null;
-
             }
-            List = await _mediator.Send(new OrderPagingQueryReq(Parameter));
+            
+            // Use gRPC client
+            var parameterGrpc = MapToParameterGrpc(Parameter);
+            var pagingResult = await _orderGrpcClient.GetOrdersPagingAsync(parameterGrpc);
+            
+            // Map gRPC response to application DTOs
+            List = MapFromPagingDtoGrpc(pagingResult);
+            
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -155,9 +172,15 @@ namespace Shop.Web.Pages.Admin.Orders
             else
             {
                 Parameter.store = null;
-
             }
-            List = await _mediator.Send(new OrderPagingQueryReq(Parameter));
+            
+            // Use gRPC client
+            var parameterGrpc = MapToParameterGrpc(Parameter);
+            var pagingResult = await _orderGrpcClient.GetOrdersPagingAsync(parameterGrpc);
+            
+            // Map gRPC response to application DTOs
+            List = MapFromPagingDtoGrpc(pagingResult);
+            
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -169,8 +192,12 @@ namespace Shop.Web.Pages.Admin.Orders
 
         public async Task<IActionResult> OnPostShowOrderDetail()
         {
-            OrderDetailShowDto = await _mediator.Send(new OrderDetailShowQueryReq(OrderId));
-
+            // Use gRPC client
+            var orderDetail = await _orderGrpcClient.GetOrderDetailsAsync(OrderId);
+            
+            // Map gRPC response to application DTOs
+            OrderDetailShowDto = MapFromOrderDetailShowGrpc(orderDetail);
+            
             Response.Object = OrderDetailShowDto;
             return new JsonResult(Response);
         }
@@ -183,7 +210,37 @@ namespace Shop.Web.Pages.Admin.Orders
             OrderStatusDto.CreateDate = DateTime.Now;
             OrderStatusDto.CreateBy = User.Identity.Name;
             OrderStatusDto.File = file;
-            Response = await _mediator.Send(new OrderStatusCreatCommandReq(OrderStatusDto));
+            
+            // Use gRPC client
+            var orderStatusGrpc = new Parstech.Shop.Shared.Protos.Order.OrderStatusDto
+            {
+                Id = OrderStatusDto.Id,
+                OrderId = OrderStatusDto.OrderId,
+                StatusId = OrderStatusDto.StatusId,
+                Description = OrderStatusDto.Description ?? string.Empty,
+                CreateBy = OrderStatusDto.CreateBy ?? string.Empty,
+                CreateDate = Timestamp.FromDateTime(DateTime.UtcNow)
+            };
+            
+            byte[] fileData = null;
+            if (file != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await file.CopyToAsync(ms);
+                    fileData = ms.ToArray();
+                }
+            }
+            
+            var response = await _orderGrpcClient.CreateOrderStatusAsync(orderStatusGrpc, fileData);
+            
+            // Map gRPC response to application DTO
+            Response.IsSuccessed = response.IsSucceeded;
+            Response.Message = response.Message;
+            if (response.Object != null)
+            {
+                Response.Object = response.Object.Value;
+            }
 
             return new JsonResult(Response);
         }
@@ -194,10 +251,25 @@ namespace Shop.Web.Pages.Admin.Orders
 
         public async Task<IActionResult> OnPostOrderShippingChange()
         {
-
-            var orderId = await _mediator.Send(new OrderShippingChangeQueryReq("Change", UserShippingId, OrderId, 0));
-            Response.Object = orderId;
-            Response.IsSuccessed = true;
+            // Use gRPC client
+            var request = new OrderShippingChangeRequest
+            {
+                Type = "Change",
+                UserShippingId = UserShippingId,
+                OrderId = OrderId,
+                OrderShippingId = 0
+            };
+            
+            var response = await _orderGrpcClient.ChangeOrderShippingAsync(request);
+            
+            // Map gRPC response to application DTO
+            Response.IsSuccessed = response.IsSucceeded;
+            Response.Message = response.Message;
+            if (response.Object != null)
+            {
+                Response.Object = response.Object.Value;
+            }
+            
             return new JsonResult(Response);
         }
 
@@ -205,53 +277,10 @@ namespace Shop.Web.Pages.Admin.Orders
         #region Word File
         public async Task<IActionResult> OnPostOrderWord()
         {
-            OrderDetailShowDto = await _mediator.Send(new OrderDetailShowQueryReq(OrderId));
-            var word = await _mediator.Send(new OrderWordFileQueryReq(OrderDetailShowDto));
-
-
-            //Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
-
-
-            //object oMissing = System.Reflection.Missing.Value;
-
-
-            //DirectoryInfo dirInfo = new DirectoryInfo("/wwwroot/Shared/Factors");
-            //FileInfo[] wordFiles = dirInfo.GetFiles("*.docx");
-
-            //word.Visible = false;
-            //word.ScreenUpdating = false;
-
-            //foreach (FileInfo wordFile in wordFiles)
-            //{
-
-            //    Object filename2 = (Object)wordFile.FullName;
-
-
-            //    Microsoft.Office.Interop.Word.Document doc2 = word.Documents.Open(ref filename2, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing);
-            //    doc2.Activate();
-
-            //    object outputFileName = wordFile.FullName.Replace(".doc", ".pdf");
-            //    object fileFormat = WdSaveFormat.wdFormatPDF;
-
-
-            //    doc2.SaveAs(ref outputFileName,
-            //        ref fileFormat, ref oMissing, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-            //        ref oMissing, ref oMissing, ref oMissing, ref oMissing);
-
-
-            //    object saveChanges = WdSaveOptions.wdDoNotSaveChanges;
-            //    ((_Document)doc2).Close(ref saveChanges, ref oMissing, ref oMissing);
-            //    doc2 = null;
-            //}
-            //((_Application)word).Quit(ref oMissing, ref oMissing, ref oMissing);
-            //word = null;
-
-            return Redirect("/" + word);
+            // Use gRPC client
+            var wordFile = await _orderGrpcClient.GenerateOrderWordFileAsync(OrderId);
+            
+            return Redirect("/" + wordFile.FilePath);
         }
         #endregion
 
@@ -260,9 +289,21 @@ namespace Shop.Web.Pages.Admin.Orders
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostGetStatuses(int OrderId)
         {
-
-            var list = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(OrderId));
-            Response.Object = list;
+            // Use gRPC client
+            var statusesResponse = await _orderGrpcClient.GetOrderStatusesAsync(OrderId);
+            
+            // Map gRPC response to application DTOs
+            var statuses = statusesResponse.Statuses.Select(s => new OrderStatusDto
+            {
+                Id = s.Id,
+                OrderId = s.OrderId,
+                StatusId = s.StatusId,
+                Description = s.Description,
+                CreateBy = s.CreateBy,
+                CreateDate = s.CreateDate?.ToDateTime()
+            }).ToList();
+            
+            Response.Object = statuses;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
@@ -271,28 +312,271 @@ namespace Shop.Web.Pages.Admin.Orders
         #region CompleteOrder
         public async Task<IActionResult> OnPostComplete(int orderId, string typeName, int? month)
         {
-            var res = await _mediator.Send(new CompleteOrderByAdminQueryReq(orderId, typeName, month));
-            return new JsonResult(res);
-
-
+            // Use gRPC client
+            var completeResponse = await _orderGrpcClient.CompleteOrderByAdminAsync(orderId, typeName, month);
+            
+            // Map gRPC response to application DTO
+            var responseDto = new ResponseDto
+            {
+                IsSuccessed = completeResponse.IsSucceeded,
+                Message = completeResponse.Message
+            };
+            
+            if (completeResponse.Object != null)
+            {
+                responseDto.Object = completeResponse.Object.Value;
+            }
+            
+            return new JsonResult(responseDto);
         }
 
         public async Task<IActionResult> OnPostOrderPays(int orderId)
         {
-            var res = await _mediator.Send(new OrderPaysOfOrderQueryReq(orderId));
-            return new JsonResult(res);
+            // Use gRPC client
+            var paysResponse = await _orderGrpcClient.GetOrderPaysAsync(orderId);
+            
+            // Map gRPC response to application DTOs
+            var orderPays = paysResponse.Payments.Select(p => new OrderPayDto
+            {
+                Id = p.Id,
+                OrderId = p.OrderId,
+                PayTypeId = p.PayTypeId,
+                Amount = p.Amount,
+                RefId = p.RefId,
+                Description = p.Description,
+                CreateBy = p.CreateBy,
+                CreateDate = p.CreateDate?.ToDateTime()
+            }).ToList();
+            
+            return new JsonResult(orderPays);
         }
+        
         public async Task<IActionResult> OnPostAddOrderPay()
         {
-            var res = await _mediator.Send(new OrderPayCreateCommandReq(orderPayDto));
-            return new JsonResult(res);
+            // Use gRPC client
+            var orderPayGrpc = new Parstech.Shop.Shared.Protos.Order.OrderPayDto
+            {
+                Id = orderPayDto.Id,
+                OrderId = orderPayDto.OrderId,
+                PayTypeId = orderPayDto.PayTypeId,
+                Amount = orderPayDto.Amount,
+                RefId = orderPayDto.RefId ?? string.Empty,
+                Description = orderPayDto.Description ?? string.Empty,
+                CreateBy = orderPayDto.CreateBy ?? string.Empty
+            };
+            
+            if (orderPayDto.CreateDate.HasValue)
+            {
+                orderPayGrpc.CreateDate = Timestamp.FromDateTime(orderPayDto.CreateDate.Value.ToUniversalTime());
+            }
+            
+            var response = await _orderGrpcClient.AddOrderPayAsync(orderPayGrpc);
+            
+            // Map gRPC response to application DTO
+            var responseDto = new ResponseDto
+            {
+                IsSuccessed = response.IsSucceeded,
+                Message = response.Message
+            };
+            
+            if (response.Object != null)
+            {
+                responseDto.Object = response.Object.Value;
+            }
+            
+            return new JsonResult(responseDto);
         }
 
         public async Task<IActionResult> OnPostDeleteOrderPay(int id)
         {
-            var res = await _mediator.Send(new OrderPayDeleteCommandReq(id));
-            return new JsonResult(res);
+            // Use gRPC client
+            var response = await _orderGrpcClient.DeleteOrderPayAsync(id);
+            
+            // Map gRPC response to application DTO
+            var responseDto = new ResponseDto
+            {
+                IsSuccessed = response.IsSucceeded,
+                Message = response.Message
+            };
+            
+            if (response.Object != null)
+            {
+                responseDto.Object = response.Object.Value;
+            }
+            
+            return new JsonResult(responseDto);
         }
+        #endregion
+        
+        #region Mapping Methods
+        
+        private Parstech.Shop.Shared.Protos.Order.ParameterDto MapToParameterGrpc(Shop.Application.DTOs.Paging.ParameterDto parameter)
+        {
+            return new Parstech.Shop.Shared.Protos.Order.ParameterDto
+            {
+                CurrentPage = parameter.CurrentPage,
+                TakePage = parameter.TakePage,
+                SearchKey = parameter.SearchKey ?? string.Empty,
+                StatusKey = parameter.StatusKey ?? string.Empty,
+                PayTypeKey = parameter.PayTypeKey ?? string.Empty,
+                StoreKey = parameter.StoreKey ?? string.Empty,
+                CodeKey = parameter.CodeKey ?? string.Empty,
+                CustomerKey = parameter.CustomerKey ?? string.Empty,
+                FromDate = parameter.FromDate ?? string.Empty,
+                ToDate = parameter.ToDate ?? string.Empty,
+                Store = parameter.store ?? string.Empty
+            };
+        }
+        
+        private Shop.Application.DTOs.Paging.PagingDto MapFromPagingDtoGrpc(Parstech.Shop.Shared.Protos.Order.PagingDto pagingDto)
+        {
+            var result = new Shop.Application.DTOs.Paging.PagingDto
+            {
+                TotalCount = pagingDto.TotalCount,
+                PageCount = pagingDto.PageCount,
+                CurrentPage = pagingDto.CurrentPage,
+                TakePage = pagingDto.TakePage,
+                Items = new List<Shop.Application.DTOs.Order.OrderDto>()
+            };
+            
+            foreach (var item in pagingDto.Items)
+            {
+                result.Items.Add(new Shop.Application.DTOs.Order.OrderDto
+                {
+                    OrderId = item.OrderId,
+                    UserId = item.UserId,
+                    UserName = item.UserName,
+                    Costumer = item.Costumer,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    CreateDate = item.CreateDate?.ToDateTime(),
+                    CreateDateShamsi = item.CreateDateShamsi,
+                    OrderCode = item.OrderCode,
+                    OrderSum = item.OrderSum,
+                    Shipping = item.Shipping,
+                    Tax = item.Tax,
+                    Discount = item.Discount,
+                    Total = item.Total,
+                    IsFinaly = item.IsFinaly,
+                    IntroCode = item.IntroCode?.Value,
+                    IntroCoin = item.IntroCoin,
+                    ConfirmPayment = item.ConfirmPayment?.Value,
+                    FactorFile = item.FactorFile?.Value,
+                    IsDelete = item.IsDelete,
+                    TaxId = item.TaxId,
+                    Status = item.Status,
+                    StatusIcon = item.StatusIcon,
+                    PayType = item.PayType,
+                    TypeName = item.TypeName,
+                    StatusName = item.StatusName
+                });
+            }
+            
+            return result;
+        }
+        
+        private Shop.Application.DTOs.OrderDetail.OrderDetailShowDto MapFromOrderDetailShowGrpc(Parstech.Shop.Shared.Protos.Order.OrderDetailShow orderDetailShow)
+        {
+            // Create a basic mapping - expand based on your needs
+            var result = new Shop.Application.DTOs.OrderDetail.OrderDetailShowDto();
+            
+            if (orderDetailShow.Order != null)
+            {
+                result.Order = new Shop.Application.DTOs.Order.OrderDto
+                {
+                    OrderId = orderDetailShow.Order.OrderId,
+                    UserId = orderDetailShow.Order.UserId,
+                    UserName = orderDetailShow.Order.UserName,
+                    // Map other properties as needed
+                };
+            }
+            
+            // Map other properties and collections as needed
+            
+            return result;
+        }
+        
+        private Shop.Application.DTOs.Order.OrderFilterDto MapFromOrderFilterGrpc(Parstech.Shop.Shared.Protos.Order.OrderFilter filter)
+        {
+            var result = new Shop.Application.DTOs.Order.OrderFilterDto
+            {
+                Stores = new List<Shop.Application.DTOs.Order.StoreFilterDto>(),
+                Statuses = new List<Shop.Application.DTOs.Order.StatusFilterDto>(),
+                Pays = new List<Shop.Application.DTOs.Order.PayFilterDto>(),
+                OrderCodes = new List<Shop.Application.DTOs.Order.OrdercodeFilterDto>(),
+                Customers = new List<Shop.Application.DTOs.Order.CustomerFilterDto>()
+            };
+            
+            // Map stores
+            if (filter.Stores != null)
+            {
+                foreach (var store in filter.Stores)
+                {
+                    result.Stores.Add(new Shop.Application.DTOs.Order.StoreFilterDto
+                    {
+                        StoreName = store.StoreName,
+                        UserStoreId = store.UserStoreId,
+                        UserId = store.UserId
+                    });
+                }
+            }
+            
+            // Map statuses
+            if (filter.Statuses != null)
+            {
+                foreach (var status in filter.Statuses)
+                {
+                    result.Statuses.Add(new Shop.Application.DTOs.Order.StatusFilterDto
+                    {
+                        Id = status.Id,
+                        StatusName = status.StatusName,
+                        UserName = status.UserName
+                    });
+                }
+            }
+            
+            // Map pays
+            if (filter.Pays != null)
+            {
+                foreach (var pay in filter.Pays)
+                {
+                    result.Pays.Add(new Shop.Application.DTOs.Order.PayFilterDto
+                    {
+                        Id = pay.Id,
+                        TypeName = pay.TypeName
+                    });
+                }
+            }
+            
+            // Map order codes
+            if (filter.Ordercodes != null)
+            {
+                foreach (var code in filter.Ordercodes)
+                {
+                    result.OrderCodes.Add(new Shop.Application.DTOs.Order.OrdercodeFilterDto
+                    {
+                        OrderCode = code.OrderCode
+                    });
+                }
+            }
+            
+            // Map customers
+            if (filter.Customers != null)
+            {
+                foreach (var customer in filter.Customers)
+                {
+                    result.Customers.Add(new Shop.Application.DTOs.Order.CustomerFilterDto
+                    {
+                        Id = customer.Id,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName
+                    });
+                }
+            }
+            
+            return result;
+        }
+        
         #endregion
     }
 }

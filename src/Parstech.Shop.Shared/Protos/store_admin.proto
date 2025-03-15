@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package store_admin;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.StoreAdmin";
+
+import "google/protobuf/timestamp.proto";
+
+service StoreAdminService {
+  // Get sales data for store
+  rpc GetSalesForStore (SalesParameterRequest) returns (SalesPagingDto);
+  
+  // Get all user stores
+  rpc GetUserStores (EmptyRequest) returns (UserStoresResponse);
+  
+  // Get order statuses by order ID
+  rpc GetOrderStatuses (OrderStatusRequest) returns (OrderStatusesResponse);
+  
+  // Get contract for order
+  rpc GetContractForOrder (ContractOrderRequest) returns (ContractResponse);
+}
+
+// Request messages
+message SalesParameterRequest {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  string filter = 3;
+  string from_date = 4;
+  string to_date = 5;
+  int32 store_id = 6;
+  bool is_admin = 7;
+}
+
+message EmptyRequest {
+}
+
+message OrderStatusRequest {
+  int32 order_id = 1;
+}
+
+message ContractOrderRequest {
+  int32 order_id = 1;
+  string store_name = 2;
+}
+
+// Response messages
+message SalesPagingDto {
+  int32 current_page = 1;
+  int32 page_count = 2;
+  int32 row_count = 3;
+  repeated SalesDto list = 4;
+  repeated UserStoreDto stores_select = 5;
+}
+
+message SalesDto {
+  int32 id = 1;
+  int32 order_id = 2;
+  string order_number = 3;
+  string product_name = 4;
+  int32 product_id = 5;
+  int32 count = 6;
+  int64 price = 7;
+  int64 sum_price = 8;
+  int32 store_id = 9;
+  string store_name = 10;
+  string latin_store_name = 11;
+  string user_name = 12;
+  string full_name = 13;
+  google.protobuf.Timestamp create_date = 14;
+  string create_date_shamsi = 15;
+  int32 order_status_id = 16;
+  string order_status_title = 17;
+}
+
+message UserStoreDto {
+  int32 id = 1;
+  string user_id = 2;
+  string name = 3;
+  string latin_name = 4;
+  string mobile = 5;
+  string logo = 6;
+  string address = 7;
+  bool is_active = 8;
+}
+
+message UserStoresResponse {
+  repeated UserStoreDto stores = 1;
+}
+
+message OrderStatusDto {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 status_id = 3;
+  string status_title = 4;
+  string description = 5;
+  string file = 6;
+  google.protobuf.Timestamp create_date = 7;
+  string create_date_shamsi = 8;
+}
+
+message OrderStatusesResponse {
+  repeated OrderStatusDto statuses = 1;
+}
+
+message ContractResponse {
+  bool is_successed = 1;
+  string message = 2;
+  string contract_html = 3;
+} 

@@ -64,6 +64,8 @@ message OrderResponse {
   bool status = 1;
   string message = 2;
   int64 discount = 3;
+  google.protobuf.StringValue object = 4;
+  bool is_succeeded = 5;
 }
 
 // OrderFilterDto
@@ -107,6 +109,63 @@ message OrdercodeFilter {
   string order_code = 1;
 }
 
+// Parameter DTO for pagination and filtering
+message ParameterDto {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  string search_key = 3;
+  string status_key = 4;
+  string pay_type_key = 5;
+  string store_key = 6;
+  string code_key = 7;
+  string customer_key = 8;
+  string from_date = 9;
+  string to_date = 10;
+  string store = 11;
+}
+
+// Paging DTO for order results
+message PagingDto {
+  repeated Order items = 1;
+  int32 total_count = 2;
+  int32 page_count = 3;
+  int32 current_page = 4;
+  int32 take_page = 5;
+}
+
+// Status change DTO
+message OrderStatusDto {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 status_id = 3;
+  string description = 4;
+  string create_by = 5;
+  google.protobuf.Timestamp create_date = 6;
+  bytes file = 7;
+  string file_extension = 8;
+  string file_name = 9;
+}
+
+// OrderShippingChangeDto
+message OrderShippingChangeDto {
+  string type = 1;
+  int32 user_shipping_id = 2;
+  int32 order_id = 3;
+  int32 order_shipping_id = 4;
+}
+
+// OrderPayDto
+message OrderPayDto {
+  int32 id = 1;
+  int32 order_id = 2;
+  int32 pay_type_id = 3;
+  int64 amount = 4;
+  string ref_id = 5;
+  string description = 6;
+  string create_by = 7;
+  google.protobuf.Timestamp create_date = 8;
+}
+
 // Forward declarations for imported types
 message OrderDetail {}
 message UserBilling {}
@@ -135,6 +194,33 @@ service OrderService {
   
   // Get order filters
   rpc GetOrderFilters(OrderFiltersRequest) returns (OrderFilter);
+  
+  // Get paginated orders
+  rpc GetOrdersPaging(ParameterDto) returns (PagingDto);
+  
+  // Get order statuses by order ID
+  rpc GetOrderStatuses(OrderRequest) returns (OrderStatusesResponse);
+  
+  // Create order status
+  rpc CreateOrderStatus(OrderStatusRequest) returns (OrderResponse);
+  
+  // Change order shipping
+  rpc ChangeOrderShipping(OrderShippingChangeRequest) returns (OrderResponse);
+  
+  // Generate order word file
+  rpc GenerateOrderWordFile(OrderRequest) returns (OrderWordFileResponse);
+  
+  // Complete order by admin
+  rpc CompleteOrderByAdmin(CompleteOrderRequest) returns (OrderResponse);
+  
+  // Get order payments
+  rpc GetOrderPays(OrderRequest) returns (OrderPaysResponse);
+  
+  // Add order payment
+  rpc AddOrderPay(OrderPayRequest) returns (OrderResponse);
+  
+  // Delete order payment
+  rpc DeleteOrderPay(OrderPayDeleteRequest) returns (OrderResponse);
 }
 
 // Request message types
@@ -165,5 +251,43 @@ message UpdateOrderStatusRequest {
 }
 
 message OrderFiltersRequest {
-  // Empty request or add filter parameters if needed
+  string store_name = 1;
+}
+
+message OrderStatusRequest {
+  OrderStatusDto order_status = 1;
+  bytes file_data = 2;
+}
+
+message OrderStatusesResponse {
+  repeated OrderStatusDto statuses = 1;
+}
+
+message OrderShippingChangeRequest {
+  string type = 1;
+  int32 user_shipping_id = 2;
+  int32 order_id = 3;
+  int32 order_shipping_id = 4;
+}
+
+message OrderWordFileResponse {
+  string file_path = 1;
+}
+
+message CompleteOrderRequest {
+  int32 order_id = 1;
+  string type_name = 2;
+  google.protobuf.Int32Value month = 3;
+}
+
+message OrderPaysResponse {
+  repeated OrderPayDto payments = 1;
+}
+
+message OrderPayRequest {
+  OrderPayDto order_pay = 1;
+}
+
+message OrderPayDeleteRequest {
+  int32 id = 1;
 }

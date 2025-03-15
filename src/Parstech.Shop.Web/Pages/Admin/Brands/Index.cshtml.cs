@@ -1,26 +1,24 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.DTOs.Brand;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Brand.Requests.Commands;
-using Shop.Application.Features.Brand.Requests.Queries;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.Protos.BrandAdmin;
 
 namespace Shop.Web.Pages.Admin.Brands
 {
-
     [Authorize(Roles = "SupperUser,Sale")]
     public class IndexModel : PageModel
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly BrandAdminGrpcClient _brandAdminClient;
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(BrandAdminGrpcClient brandAdminClient)
         {
-            _mediator = mediator;
+            _brandAdminClient = brandAdminClient;
         }
 
         #endregion
@@ -46,8 +44,6 @@ namespace Shop.Web.Pages.Admin.Brands
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
 
-
-
         #endregion
 
         #region Get
@@ -59,9 +55,16 @@ namespace Shop.Web.Pages.Admin.Brands
 
         public async Task<IActionResult> OnPostData()
         {
-
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new BrandsPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get brand paging data
+            var brandsResponse = await _brandAdminClient.GetBrandsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(brandsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
 
@@ -76,27 +79,50 @@ namespace Shop.Web.Pages.Admin.Brands
         {
             Parameter.CurrentPage = 1;
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new BrandsPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get brand paging data
+            var brandsResponse = await _brandAdminClient.GetBrandsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(brandsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
+            
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostPaging()
         {
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new BrandsPagingQueryReq(Parameter));
+            
+            // Use gRPC client to get brand paging data
+            var brandsResponse = await _brandAdminClient.GetBrandsForAdminAsync(
+                Parameter.CurrentPage,
+                Parameter.TakePage,
+                Parameter.Filter);
+                
+            // Map gRPC response to application DTO
+            List = MapToPagingDto(brandsResponse);
             Response.Object = List;
             Response.IsSuccessed = true;
+            
             return new JsonResult(Response);
         }
 
         #endregion
+        
         #region Add Or EditCategury
 
         public async Task<IActionResult> OnPostItem()
         {
-            BrandDto = await _mediator.Send(new BrandReadCommandReq(BrandId));
+            // Use gRPC client to get brand by ID
+            var brand = await _brandAdminClient.GetBrandAsync(BrandId);
+            
+            // Map gRPC response to application DTO
+            BrandDto = MapToBrandDto(brand);
             Response.Object = BrandDto;
             return new JsonResult(Response);
         }
@@ -108,10 +134,16 @@ namespace Shop.Web.Pages.Admin.Brands
                 BrandDto.ChangeByUserName = User.Identity.Name;
                 BrandDto.LastChangeTime = DateTime.Now;
                 BrandDto.IsDelete = false;
-                await _mediator.Send(new BrandUpdateCommandReq(BrandDto));
+                
+                // Map application DTO to gRPC DTO
+                var brandGrpc = MapToGrpcBrandDto(BrandDto);
+                
+                // Use gRPC client to update brand
+                var response = await _brandAdminClient.UpdateBrandAsync(brandGrpc);
+                
                 Response.Object = BrandDto;
-                Response.IsSuccessed = true;
-                Response.Message = "برند با موفقیت ویرایش شد";
+                Response.IsSuccessed = response.IsSuccessed;
+                Response.Message = response.Message;
                 return new JsonResult(Response);
             }
             else
@@ -119,13 +151,66 @@ namespace Shop.Web.Pages.Admin.Brands
                 BrandDto.ChangeByUserName = User.Identity.Name;
                 BrandDto.LastChangeTime = DateTime.Now;
                 BrandDto.IsDelete = false;
-                await _mediator.Send(new BrandCreateCommandReq(BrandDto));
+                
+                // Map application DTO to gRPC DTO
+                var brandGrpc = MapToGrpcBrandDto(BrandDto);
+                
+                // Use gRPC client to create brand
+                var response = await _brandAdminClient.CreateBrandAsync(brandGrpc);
+                
                 Response.Object = BrandDto;
-                Response.IsSuccessed = true;
-                Response.Message = "برند با موفقیت ثبت شد";
+                Response.IsSuccessed = response.IsSuccessed;
+                Response.Message = response.Message;
                 return new JsonResult(Response);
             }
         }
+        
+        #endregion
+        
+        #region Mapping Methods
+        
+        private PagingDto MapToPagingDto(Parstech.Shop.Shared.Protos.BrandAdmin.BrandPageingDto dto)
+        {
+            var result = new PagingDto
+            {
+                CurrentPage = dto.CurrentPage,
+                PageCount = dto.PageCount
+            };
+            
+            result.List = dto.List.Select(MapToBrandDto).ToList();
+            
+            return result;
+        }
+        
+        private BrandDto MapToBrandDto(Parstech.Shop.Shared.Protos.BrandAdmin.BrandDto dto)
+        {
+            return new BrandDto
+            {
+                BrandId = dto.BrandId,
+                BrandTitle = dto.BrandTitle,
+                LatinBrandTitle = dto.LatinBrandTitle,
+                BrandImage = dto.BrandImage,
+                ChangeByUserName = dto.ChangeByUserName,
+                LastChangeTime = !string.IsNullOrEmpty(dto.LastChangeTime) ? 
+                    DateTime.Parse(dto.LastChangeTime) : DateTime.Now,
+                IsDelete = dto.IsDelete
+            };
+        }
+        
+        private Parstech.Shop.Shared.Protos.BrandAdmin.BrandDto MapToGrpcBrandDto(BrandDto brand)
+        {
+            return new Parstech.Shop.Shared.Protos.BrandAdmin.BrandDto
+            {
+                BrandId = brand.BrandId,
+                BrandTitle = brand.BrandTitle ?? string.Empty,
+                LatinBrandTitle = brand.LatinBrandTitle ?? string.Empty,
+                BrandImage = brand.BrandImage ?? string.Empty,
+                ChangeByUserName = brand.ChangeByUserName ?? string.Empty,
+                LastChangeTime = brand.LastChangeTime.ToString(),
+                IsDelete = brand.IsDelete
+            };
+        }
+        
         #endregion
     }
 }

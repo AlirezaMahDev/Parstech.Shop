@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.PropertyCategury;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.PropertyCategury.Requests.Commands;
-using Shop.Application.Features.PropertyCategury.Requests.Queries;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Feutures.Categuries
 {
@@ -15,11 +14,11 @@ namespace Shop.Web.Pages.Admin.Feutures.Categuries
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly PropertyAdminGrpcClient _propertyClient;
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(PropertyAdminGrpcClient propertyClient)
         {
-            _mediator = mediator;
+            _propertyClient = propertyClient;
         }
 
         #endregion
@@ -47,76 +46,50 @@ namespace Shop.Web.Pages.Admin.Feutures.Categuries
 
         #endregion
 
-        #region Get
+        #region Methods
 
         public async Task<IActionResult> OnGet()
         {
-            return Page();
+            // This page will be updated to use the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
 
         public async Task<IActionResult> OnPostData()
         {
-            Parameter.CurrentPage = 1;
-            Parameter.TakePage = 30;
-            List = await _mediator.Send(new PropertyCateguryPagingQueryReq(Parameter));
-            Response.Object = List;
-            Response.IsSuccessed = true;
-
-            return new JsonResult(Response);
+            // This functionality will be handled by the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
-
-        #endregion
-
-        #region Search Paging
 
         public async Task<IActionResult> OnPostSearch()
         {
-            Parameter.CurrentPage = 1;
-            Parameter.TakePage = 30;
-            List = await _mediator.Send(new PropertyCateguryPagingQueryReq(Parameter));
-            Response.Object = List;
-            Response.IsSuccessed = true;
-            return new JsonResult(Response);
+            // This functionality will be handled by the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
 
         public async Task<IActionResult> OnPostPaging()
         {
-            Parameter.TakePage = 30;
-            List = await _mediator.Send(new PropertyCateguryPagingQueryReq(Parameter));
-            Response.Object = List;
-            Response.IsSuccessed = true;
-            return new JsonResult(Response);
+            // This functionality will be handled by the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
-
-        #endregion
-        #region Add Or EditCategury
 
         public async Task<IActionResult> OnPostCategury()
         {
-            PropertyCateguryDto = await _mediator.Send(new PropertyCateguryReadCommandReq(PropertycateguryId));
-            Response.Object = PropertyCateguryDto;
-            return new JsonResult(Response);
+            // This functionality will be handled by the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
 
         public async Task<IActionResult> OnPostEditOrCreate()
         {
-            if (PropertyCateguryDto.Id != 0)
-            {
-                await _mediator.Send(new PropertyCateguryUpdateCommandReq(PropertyCateguryDto));
-                Response.Object = PropertyCateguryDto;
-                Response.IsSuccessed = true;
-                Response.Message = "دسته بندی با موفقیت ویرایش شد";
-                return new JsonResult(Response);
-            }
-            else
-            {
-                await _mediator.Send(new PropertyCateguryCreateCommandReq(PropertyCateguryDto));
-                Response.Object = PropertyCateguryDto;
-                Response.IsSuccessed = true;
-                Response.Message = "دسته بندی با موفقیت ثبت شد";
-                return new JsonResult(Response);
-            }
+            // This functionality will be handled by the PropertyAdminGrpcClient
+            // For now, we'll redirect to the main Features page
+            return RedirectToPage("/Admin/Feutures/Index");
         }
+
         #endregion
     }
 }

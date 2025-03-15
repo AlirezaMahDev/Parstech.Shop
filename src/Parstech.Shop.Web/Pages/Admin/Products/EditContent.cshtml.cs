@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Categury;
 using Shop.Application.DTOs.Product;
 using Shop.Application.DTOs.ProductGallery;
@@ -27,11 +27,11 @@ namespace Shop.Web.Pages.Admin.Products
     {
         #region Constractor
 
-        private readonly IMediator _mediator;
+        private readonly ProductDetailAdminGrpcClient _productDetailClient;
 
-        public EditContentModel(IMediator mediator)
+        public EditContentModel(ProductDetailAdminGrpcClient productDetailClient)
         {
-            _mediator = mediator;
+            _productDetailClient = productDetailClient;
         }
 
         #endregion
@@ -123,18 +123,18 @@ namespace Shop.Web.Pages.Admin.Products
         public async Task<IActionResult> OnGet(int Id)
         {
             productId = Id;
-            categuryObject.categuries = await _mediator.Send(new CateguryByParentIdReadQueryReq(0));
-            categuryObject.propertyCategury = await _mediator.Send(new PropertyCateguryReadsCommandReq());
-            var product = await _mediator.Send(new ProductReadCommandReq(productId));
+            categuryObject.categuries = await _productDetailClient.GetCategoriesAsync();
+            categuryObject.propertyCategury = await _productDetailClient.GetPropertyCategoriesAsync();
+            var product = await _productDetailClient.GetProductByIdAsync(productId);
             productContent = product.Description;
             return Page();
         }
 
         public async Task<IActionResult> OnPostData()
         {
-            ResultObject.ProductDto = await _mediator.Send(new ProductReadCommandReq(productId));
-            ResultObject.GalleryDtos = await _mediator.Send(new GalleriesOfProductQueryReq(productId));
-            ResultObject.PropertyDtos = await _mediator.Send(new PropertiesOfProductQueryReq(productId));
+            ResultObject.ProductDto = await _productDetailClient.GetProductByIdAsync(productId);
+            ResultObject.GalleryDtos = await _productDetailClient.GetProductGalleryAsync(productId);
+            ResultObject.PropertyDtos = await _productDetailClient.GetProductPropertiesAsync(productId);
 
             Response.Object = ResultObject;
             Response.IsSuccessed = true;
@@ -160,19 +160,18 @@ namespace Shop.Web.Pages.Admin.Products
             }
             #endregion
 
-
-            await _mediator.Send(new ProductGalleryCreateCommandReq(Gallery));
-            Response.IsSuccessed = true;
-            Response.Message = "تصویر محصول با موفقیت بارگذاری گردید.";
+            var response = await _productDetailClient.AddProductGalleryAsync(Gallery);
+            Response = response;
             Response.Object = Gallery;
+            Response.Message = "تصویر محصول با موفقیت بارگذاری گردید.";
 
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostDeleteGallery()
         {
-            await _mediator.Send(new ProductGalleryDeleteCommandReq(GalleryId));
-            Response.IsSuccessed = true;
+            var response = await _productDetailClient.DeleteProductGalleryAsync(GalleryId);
+            Response = response;
             Response.Message = "تصویر محصول با موفقیت حذف گردید.";
             Response.Object = Gallery;
 
@@ -185,8 +184,7 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostSubs(int parentId)
         {
-
-            categuryObject.subCateguries = await _mediator.Send(new CateguryByParentIdReadQueryReq(parentId));
+            categuryObject.subCateguries = await _productDetailClient.GetSubCategoriesAsync(parentId);
 
             Response.Object = categuryObject.subCateguries;
             Response.IsSuccessed = true;
@@ -196,7 +194,7 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostSearchFeuture()
         {
-            Properties = await _mediator.Send(new PropertiesSearchQueryReq(CatId, propertyCatId, null));
+            Properties = await _productDetailClient.GetPropertiesAsync(null, propertyCatId);
 
             Response.Object = Properties;
             Response.IsSuccessed = true;
@@ -206,50 +204,54 @@ namespace Shop.Web.Pages.Admin.Products
 
         public async Task<IActionResult> OnPostAddEditFeuture()
         {
+            ResponseDto response;
+            
             if (AddFeutureInput.Id != 0)
             {
-                var feuture = await _mediator.Send(new ProductPropertyUpdateCommandReq(AddFeutureInput));
-                Response.Object = feuture;
+                response = await _productDetailClient.UpdateProductPropertyAsync(AddFeutureInput);
             }
             else
             {
-                var feuture = await _mediator.Send(new ProductPropertyCreateCommandReq(AddFeutureInput));
-                Response.Object = feuture;
+                response = await _productDetailClient.AddProductPropertyAsync(AddFeutureInput);
             }
-
-            Response.IsSuccessed = true;
+            
+            Response = response;
+            Response.Object = AddFeutureInput;
 
             return new JsonResult(Response);
         }
+        
         public async Task<IActionResult> OnPostDeleteFeuture()
         {
             if (AddFeutureInput.Id != 0)
             {
-                await _mediator.Send(new ProductPropertyDeleteCommandReq(AddFeutureInput.Id));
-
-                Response.IsSuccessed = true;
+                var response = await _productDetailClient.DeleteProductPropertyAsync(AddFeutureInput.Id);
+                Response = response;
 
                 return new JsonResult(Response);
             }
             else
             {
                 Response.IsSuccessed = false;
-
                 return new JsonResult(Response);
             }
-
         }
 
         #endregion
 
         public async Task<IActionResult> OnPostSave()
         {
-
-            var p = await _mediator.Send(new ProductEditContentQueryReq(productId, productContent));
-
-            Response.Object = p;
-            Response.IsSuccessed = true;
-
+            // Get the current product
+            var product = await _productDetailClient.GetProductByIdAsync(productId);
+            
+            // Update the description
+            product.Description = productContent;
+            
+            // Save the product
+            var response = await _productDetailClient.UpdateProductAsync(product);
+            
+            Response = response;
+            Response.Object = product;
             return new JsonResult(Response);
         }
     }
