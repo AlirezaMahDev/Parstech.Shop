@@ -1,26 +1,26 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
+using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.Section;
 using Shop.Application.DTOs.SectionDetail;
-using Shop.Application.Features.Section.Requests.Commands;
-using Shop.Application.Features.Section.Requests.Queries;
-using Shop.Application.Features.SectionDetail.Requests.Commands;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Setting
 {
     [Authorize(Roles = "SupperUser")]
     public class SectionsModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly ISettingsAdminGrpcClient _settingsAdminClient;
 
-        public SectionsModel(IMediator mediator)
+        public SectionsModel(ISettingsAdminGrpcClient settingsAdminClient)
         {
-            _mediator = mediator;
+            _settingsAdminClient = settingsAdminClient;
         }
 
         #endregion
@@ -51,28 +51,52 @@ namespace Shop.Web.Pages.Admin.Setting
 
         public async Task<IActionResult> OnGet()
         {
-            List = await _mediator.Send(new SectionAndDetailsReadsQueryReq(null));
+            // Get all sections using the gRPC client
+            var parameter = new ParameterDto { PageId = 1, Take = 50 }; // Get all sections
+            var sectionsResponse = await _settingsAdminClient.GetSectionsAsync(parameter);
+            
+            // Convert to the format expected by the page
+            List = sectionsResponse.Data.Select(s => new SectionAndDetailsDto
+            {
+                Id = s.Id,
+                Title = s.Title,
+                Order = s.Order,
+                SectionDetails = s.SectionDetails ?? new List<SectionDetailDto>()
+            }).ToList();
+            
             return Page();
         }
 
-        //public async Task<IActionResult> OnPostGetAgain()
-        //{
-        //    List = await _mediator.Send(new SectionAndDetailsReadQueryReq());
-        //    Response.Object = List;
-        //    return new JsonResult(Response);
-        //}
+        #endregion
+
+        #region Section
 
         public async Task<IActionResult> OnPostSection()
         {
-            Section = await _mediator.Send(new SectionReadCommandReq(SectionId));
+            // Get section by ID using the gRPC client
+            var parameter = new ParameterDto { PageId = 1, Take = 50 };
+            var sectionsResponse = await _settingsAdminClient.GetSectionsAsync(parameter);
+            
+            Section = sectionsResponse.Data.FirstOrDefault(s => s.Id == SectionId);
+            
             Response.Object = Section;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
 
+        #endregion
+
+        #region SectionDetails
+
         public async Task<IActionResult> OnPostSectionDetail()
         {
-            SectionDetail = await _mediator.Send(new SectionDetailReadCommandReq(SectionDeatilId));
+            // Get section by ID using the gRPC client
+            var parameter = new ParameterDto { PageId = 1, Take = 50 };
+            var sectionsResponse = await _settingsAdminClient.GetSectionsAsync(parameter);
+            
+            var section = sectionsResponse.Data.FirstOrDefault(s => s.Id == SectionId);
+            SectionDetail = section?.SectionDetails?.FirstOrDefault(sd => sd.Id == SectionDeatilId);
+            
             Response.Object = SectionDetail;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -80,85 +104,144 @@ namespace Shop.Web.Pages.Admin.Setting
 
         #endregion
 
-        #region Create and Update
+        #region Create Or Update Section
 
         public async Task<IActionResult> OnPostCreateUpdateSection()
         {
-            if (SectionId != 0)
+            ResponseDto result;
+            
+            if (Section.Id != 0)
             {
-                var result = await _mediator.Send(new SectionUpdateCommandReq(Section));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "ویرایش با موفقیت انجام شد";
-                return new JsonResult(Response);
+                // Update section
+                result = await _settingsAdminClient.UpdateSectionAsync(Section);
+                Response.Message = "بخش با موفقیت ویرایش شد";
             }
             else
             {
-                var result = await _mediator.Send(new SectionCreateCommandReq(Section));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم جدید با موفقیت افزوده شد";
-                return new JsonResult(Response);
+                // Create section
+                result = await _settingsAdminClient.CreateSectionAsync(Section);
+                Response.Message = "بخش با موفقیت افزوده شد";
             }
-
-        }
-
-        public async Task<IActionResult> OnPostCreateUpdateSectionDetail()
-        {
-
-            if (SectionDeatilId != 0)
+            
+            Response.IsSuccessed = result.IsSuccessed;
+            if (!result.IsSuccessed)
             {
-                var result = await _mediator.Send(new SectionDetailUpdateCommandReq(SectionDetail));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "ویرایش با موفقیت انجام شد";
-                return new JsonResult(Response);
+                Response.Message = result.Message;
             }
-            else
-            {
-                SectionDetail.SectionId = SectionId;
-                var result = await _mediator.Send(new SectionDetailCreateCommandReq(SectionDetail));
-                Response.Object = result;
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم جدید با موفقیت افزوده شد";
-                return new JsonResult(Response);
-            }
-
-        }
-
-        #endregion
-
-
-        #region Delete
-
-        public async Task<IActionResult> OnPostDeleteSection()
-        {
-            if (await _mediator.Send(new SectionCheckQueryReq(SectionId)))
-            {
-                await _mediator.Send(new SectionDeleteCommandReq(SectionId));
-                Response.IsSuccessed = true;
-                Response.Message = "آیتم با موفقیت حذف شد";
-                return new JsonResult(Response);
-            }
-            else
-            {
-                Response.IsSuccessed = false;
-                Response.Message = "تا زمانی که قسمت اصلی سایت دارای زیر مجموعه باشد امکان حذف آن وجود ندارد";
-                return new JsonResult(Response);
-            }
-
-
-        }
-
-        public async Task<IActionResult> OnPostDeleteSectionDetail()
-        {
-            var result = await _mediator.Send(new SectionDetailDeleteCommandReq(SectionDeatilId));
-            Response.IsSuccessed = true;
-            Response.Message = "آیتم با موفقیت حذف شد";
+            
             return new JsonResult(Response);
         }
 
         #endregion
 
+        #region Create Or Update SectionDetail
+
+        public async Task<IActionResult> OnPostCreateUpdateSectionDetail()
+        {
+            // Since the gRPC client doesn't have methods for section details directly,
+            // we need to get the section first, update its details, and save the whole section
+            var parameter = new ParameterDto { PageId = 1, Take = 50 };
+            var sectionsResponse = await _settingsAdminClient.GetSectionsAsync(parameter);
+            
+            var section = sectionsResponse.Data.FirstOrDefault(s => s.Id == SectionDetail.SectionId);
+            if (section == null)
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "بخش مورد نظر یافت نشد";
+                return new JsonResult(Response);
+            }
+            
+            if (section.SectionDetails == null)
+            {
+                section.SectionDetails = new List<SectionDetailDto>();
+            }
+            
+            if (SectionDetail.Id != 0)
+            {
+                // Update existing detail
+                var existingDetail = section.SectionDetails.FirstOrDefault(sd => sd.Id == SectionDetail.Id);
+                if (existingDetail != null)
+                {
+                    existingDetail.Title = SectionDetail.Title;
+                    existingDetail.Order = SectionDetail.Order;
+                    existingDetail.Link = SectionDetail.Link;
+                    existingDetail.Description = SectionDetail.Description;
+                    existingDetail.Image = SectionDetail.Image;
+                }
+                
+                var result = await _settingsAdminClient.UpdateSectionAsync(section);
+                Response.IsSuccessed = result.IsSuccessed;
+                Response.Message = result.IsSuccessed ? "جزئیات بخش با موفقیت ویرایش شد" : result.Message;
+            }
+            else
+            {
+                // Add new detail
+                // Note: In a real scenario, you would need to generate a new ID for the detail
+                // or the backend should handle this
+                SectionDetail.Id = section.SectionDetails.Any() ? 
+                    section.SectionDetails.Max(sd => sd.Id) + 1 : 1;
+                
+                section.SectionDetails.Add(SectionDetail);
+                
+                var result = await _settingsAdminClient.UpdateSectionAsync(section);
+                Response.IsSuccessed = result.IsSuccessed;
+                Response.Message = result.IsSuccessed ? "جزئیات بخش با موفقیت افزوده شد" : result.Message;
+            }
+            
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region Delete Section
+
+        public async Task<IActionResult> OnPostDeleteSection()
+        {
+            var result = await _settingsAdminClient.DeleteSectionAsync(SectionId);
+            
+            Response.IsSuccessed = result.IsSuccessed;
+            Response.Message = result.IsSuccessed ? "بخش با موفقیت حذف شد" : result.Message;
+            
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region Delete SectionDetail
+
+        public async Task<IActionResult> OnPostDeleteSectionDetail()
+        {
+            // Since the gRPC client doesn't have methods for section details directly,
+            // we need to get the section first, remove the detail, and save the whole section
+            var parameter = new ParameterDto { PageId = 1, Take = 50 };
+            var sectionsResponse = await _settingsAdminClient.GetSectionsAsync(parameter);
+            
+            var section = sectionsResponse.Data.FirstOrDefault(s => s.Id == SectionId);
+            if (section == null || section.SectionDetails == null)
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "بخش مورد نظر یافت نشد";
+                return new JsonResult(Response);
+            }
+            
+            var detailToRemove = section.SectionDetails.FirstOrDefault(sd => sd.Id == SectionDeatilId);
+            if (detailToRemove != null)
+            {
+                section.SectionDetails.Remove(detailToRemove);
+                
+                var result = await _settingsAdminClient.UpdateSectionAsync(section);
+                Response.IsSuccessed = result.IsSuccessed;
+                Response.Message = result.IsSuccessed ? "جزئیات بخش با موفقیت حذف شد" : result.Message;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "جزئیات بخش مورد نظر یافت نشد";
+            }
+            
+            return new JsonResult(Response);
+        }
+
+        #endregion
     }
 }

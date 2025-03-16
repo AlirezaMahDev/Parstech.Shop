@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package Parstech.Shop.Shared.Protos.ProductInventoryAdmin;
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.ProductInventoryAdmin";
+
+service ProductInventoryAdminService {
+  // Get stock/price info for a product
+  rpc GetProductStockPrice (ProductStockPriceRequest) returns (ProductStockPriceResponse);
+  
+  // Get all stock/price entries for a product
+  rpc GetProductStockPrices (ProductIdRequest) returns (ProductStockPriceListResponse);
+  
+  // Create a new stock/price entry
+  rpc CreateProductStockPrice (ProductStockPriceRequest) returns (ResponseDto);
+  
+  // Update an existing stock/price entry
+  rpc UpdateProductStockPrice (ProductStockPriceRequest) returns (ResponseDto);
+  
+  // Delete a stock/price entry
+  rpc DeleteProductStockPrice (ProductStockPriceIdRequest) returns (ResponseDto);
+  
+  // Quick edit a stock/price entry
+  rpc QuickEditProductStockPrice (QuickEditRequest) returns (ResponseDto);
+  
+  // Get product inventory by store
+  rpc GetProductInventoryByStore (StoreIdRequest) returns (ProductStockPriceListResponse);
+  
+  // Get store inventory summary
+  rpc GetStoreInventorySummary (StoreIdRequest) returns (StoreInventorySummaryResponse);
+}
+
+message ProductStockPriceRequest {
+  ProductStockPriceDto stock_price = 1;
+  string user_name = 2; // Optional username for tracking changes
+}
+
+message ProductStockPriceIdRequest {
+  int32 stock_price_id = 1;
+}
+
+message ProductIdRequest {
+  int32 product_id = 1;
+}
+
+message StoreIdRequest {
+  int32 store_id = 1;
+}
+
+message ProductStockPriceResponse {
+  bool is_success = 1;
+  string message = 2;
+  ProductStockPriceDto stock_price = 3;
+}
+
+message ProductStockPriceListResponse {
+  bool is_success = 1;
+  string message = 2;
+  repeated ProductStockPriceDto stock_prices = 3;
+}
+
+message StoreInventorySummaryResponse {
+  bool is_success = 1;
+  string message = 2;
+  int32 store_id = 3;
+  string store_name = 4;
+  int32 total_products = 5;
+  int32 total_quantity = 6;
+  double total_value = 7;
+  repeated ProductStockPriceDto top_products = 8;
+}
+
+message QuickEditRequest {
+  int32 id = 1;
+  double price = 2;
+  double sale_price = 3;
+  int32 quantity = 4;
+  string user_name = 5;
+}
+
+message ProductStockPriceDto {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 store_id = 3;
+  string store_name = 4;
+  int32 rep_id = 5;
+  string rep_name = 6;
+  int32 quantity = 7;
+  double price = 8;
+  double sale_price = 9;
+  double special_price = 10;
+  string expire_date = 11;
+  string stock_number = 12;
+  string special_date = 13;
+}
+
+message ResponseDto {
+  bool is_successed = 1;
+  string message = 2;
+} 

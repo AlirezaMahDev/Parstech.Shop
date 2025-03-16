@@ -1,13 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.User;
-using Shop.Application.Features.User.Requests.Queries;
 using Shop.Application.Validators.Coupon;
 using Shop.Application.Validators.User;
 using Shop.Domain.Models;
@@ -21,14 +20,13 @@ namespace Shop.Web.Pages.Auth
     {
         private readonly ISixLaborsCaptchaModule sixLaborsCaptcha;
         private readonly IDistributedCache distributedCache;
-        private readonly IMediator _mediator;
+        private readonly IAuthAdminGrpcClient _authClient;
         
-        public RegisterModel(ISixLaborsCaptchaModule sixLaborsCaptcha, IDistributedCache distributedCache, IMediator mediator)
+        public RegisterModel(ISixLaborsCaptchaModule sixLaborsCaptcha, IDistributedCache distributedCache, IAuthAdminGrpcClient authClient)
         {
             this.sixLaborsCaptcha = sixLaborsCaptcha;
             this.distributedCache = distributedCache;
-            _mediator = mediator;
-            
+            _authClient = authClient;
         }
         public record CaptchaResponse(string Id, string Image);
         public ResponseDto Response { get; set; } = new ResponseDto();
@@ -87,7 +85,7 @@ namespace Shop.Web.Pages.Auth
             input.Address = Inputs.Address;
             input.Mobile = Inputs.Mobile;
 
-            var result = await _mediator.Send(new UserRegisterQueryReq(input));
+            var result = await _authClient.RegisterUserAsync(input);
 
             return new JsonResult(result);
         }

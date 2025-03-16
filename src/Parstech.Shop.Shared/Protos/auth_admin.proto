@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.AuthAdmin";
+
+package authAdmin;
+
+service AuthAdminService {
+  // Auth operations
+  rpc LoginOrRegisterRequest (LoginMobileRequest) returns (ResponseDto);
+  rpc LoginByActiveCode (LoginActiveCodeRequest) returns (ResponseDto);
+  rpc LoginByPassword (LoginPasswordRequest) returns (ResponseDto);
+  rpc RegisterUser (RegisterUserRequest) returns (ResponseDto);
+}
+
+// Request message types
+message LoginMobileRequest {
+  string mobile = 1;
+}
+
+message LoginActiveCodeRequest {
+  string mobile = 1;
+  string active_code = 2;
+}
+
+message LoginPasswordRequest {
+  string mobile = 1;
+  string password = 2;
+}
+
+message RegisterUserRequest {
+  string user_name = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string national_code = 4;
+  string country = 5;
+  string state = 6;
+  string city = 7;
+  string address = 8;
+  string mobile = 9;
+}
+
+// Common message types
+message ResponseDto {
+  bool is_successed = 1;
+  string message = 2;
+  string token = 3;
+  string refresh_token = 4;
+  bool need_register = 5;
+  bool need_active_code = 6;
+  bool need_password = 7;
+  bool need_resend_active_code = 8;
+  string active_register = 9;
+  google.protobuf.Any object = 10;
+}
+
+// Import for Any type
+import "google/protobuf/any.proto"; 

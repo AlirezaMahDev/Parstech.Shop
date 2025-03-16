@@ -1,10 +1,8 @@
 using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Parstech.Shop.Web.Services.GrpcClients;
-using Shop.Application.Contracts.Persistance;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Product;
 using Shop.Application.DTOs.ProductLog;
@@ -13,36 +11,31 @@ using Shop.Application.DTOs.ProductStockPrice;
 using Shop.Application.DTOs.Representation;
 using Shop.Application.DTOs.RepresentationType;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Commands;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Application.Features.ProductStockPriceSection.Requests.Commands;
-using Shop.Application.Features.ProductStockPriceSection.Requests.Queries;
-using Shop.Application.Features.Representation.Requests.Commands;
-using Shop.Application.Features.RepresentationType.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Queries;
-using Shop.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Setting
 {
     [Authorize(Roles = "SupperUser,Inventory,Store")]
     public class DiscountPanelModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
         private readonly IRepresentationAdminGrpcClient _representationClient;
         private readonly IUserGrpcClient _userClient;
+        private readonly IProductAdminGrpcClient _productAdminClient;
+        private readonly IProductDetailAdminGrpcClient _productDetailClient;
 
         public DiscountPanelModel(
-            IMediator mediator,
             IRepresentationAdminGrpcClient representationClient,
-            IUserGrpcClient userClient)
+            IUserGrpcClient userClient,
+            IProductAdminGrpcClient productAdminClient,
+            IProductDetailAdminGrpcClient productDetailClient)
         {
-            _mediator = mediator;
             _representationClient = representationClient;
             _userClient = userClient;
+            _productAdminClient = productAdminClient;
+            _productDetailClient = productDetailClient;
         }
 
         #endregion
@@ -139,49 +132,47 @@ namespace Shop.Web.Pages.Admin.Setting
 
         public async Task<IActionResult> OnPostData()
         {
-
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new DiscountProductListPagingQueryReq(Parameter));
+            List = await _productAdminClient.GetDiscountProductsAsync(Parameter);
             Response.Object = List;
             Response.IsSuccessed = true;
             
             return new JsonResult(Response);
         }
-
         
         #endregion
+        
         public async Task<IActionResult> OnPostGetSetionsOfProductStockPrice(int productStockPriceId)
         {
-          var response= await _mediator.Send(new GetSectionOfProductStockPriceQueryReq(productStockPriceId));
-            return new JsonResult(response);
+            var sections = await _productDetailClient.GetSectionsOfProductStockPriceAsync(productStockPriceId);
+            return new JsonResult(sections);
         }
-        public async Task<IActionResult> OnPostDeleteSetionsOfProductStockPrice(int ProductStockPriceSectionId,int ProductStockPriceId)
+        
+        public async Task<IActionResult> OnPostDeleteSetionsOfProductStockPrice(int ProductStockPriceSectionId, int ProductStockPriceId)
         {
-          await _mediator.Send(new DeleteProdcutStockPriceSectionCommandReq(ProductStockPriceSectionId));
-            var response = await _mediator.Send(new GetSectionOfProductStockPriceQueryReq(ProductStockPriceId));
-            return new JsonResult(response);
+            await _productDetailClient.DeleteProductStockPriceSectionAsync(ProductStockPriceSectionId);
+            var sections = await _productDetailClient.GetSectionsOfProductStockPriceAsync(ProductStockPriceId);
+            return new JsonResult(sections);
         }
-        public async Task<IActionResult> OnPostChangeShowInDiscountPanel(int ProductStockPriceSectionId,int isShow)
+        
+        public async Task<IActionResult> OnPostChangeShowInDiscountPanel(int ProductStockPriceSectionId, int isShow)
         {
-            var item =await _mediator.Send(new ProductStockPriceReadCommandReq(ProductStockPriceSectionId));
-            switch (isShow)
+            var stockPrice = await _representationClient.GetProductStockPriceAsync(ProductStockPriceSectionId);
+            if (stockPrice != null)
             {
-                case 0:
-                    item.ShowInDiscountPanels = false; break;
-                case 1:
-                    item.ShowInDiscountPanels = true; break;
+                stockPrice.ShowInDiscountPanels = isShow == 1;
+                var response = await _productDetailClient.UpdateProductStockPriceAsync(stockPrice);
+                return new JsonResult(response);
             }
             
-          var response= await _mediator.Send(new ProductStockPriceUpdateCommandReq(item));
-            return new JsonResult(response);
+            return new JsonResult(new ResponseDto { IsSuccessed = false, Message = "محصول یافت نشد" });
         }
 
         public async Task<IActionResult> OnPostAddProductStockPriceSection(int ProductStockPriceSectionId, int sectionId)
         {
-            await _mediator.Send(new CreateProdcutStockPriceSectionCommandReq(ProductStockPriceSectionId,sectionId));
-            var response = await _mediator.Send(new GetSectionOfProductStockPriceQueryReq(ProductStockPriceSectionId));
-            return new JsonResult(response);
-            
+            var result = await _productDetailClient.AddProductStockPriceSectionAsync(ProductStockPriceSectionId, sectionId);
+            var sections = await _productDetailClient.GetSectionsOfProductStockPriceAsync(ProductStockPriceSectionId);
+            return new JsonResult(sections);
         }
     }
 }

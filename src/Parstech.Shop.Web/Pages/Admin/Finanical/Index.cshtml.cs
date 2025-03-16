@@ -1,29 +1,29 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Paging;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.User;
 using Shop.Application.DTOs.WalletTransaction;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.Wallet.Requests.Queries;
-using Shop.Application.Features.WalletTransaction.Requests.Commands;
-using Shop.Application.Features.WalletTransaction.Requests.Queries;
 using Shop.Application.Validators.WalletTransaction;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Shop.Web.Pages.Admin.Finanical
 {
     [Authorize(Roles = "SupperUser,Finanicial,Store,Sale")]
     public class IndexModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly IFinancialAdminGrpcClient _financialClient;
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(IFinancialAdminGrpcClient financialClient)
         {
-            _mediator = mediator;
+            _financialClient = financialClient;
         }
 
         #endregion
@@ -78,16 +78,14 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnGet()
         {
-            UserFilterDtos = await _mediator.Send(new UserFilterDataQueryReq());
+            UserFilterDtos = await _financialClient.GetUserFiltersAsync();
             return Page();
         }
 
         public async Task<IActionResult> OnPostData()
         {
-
-
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new WalletPagingQueryReq(Parameter));
+            List = await _financialClient.GetWalletsPagingAsync(Parameter);
             Response.Object = List;
             Response.IsSuccessed = true;
 
@@ -100,9 +98,8 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnPostSearch()
         {
-
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new WalletPagingQueryReq(Parameter));
+            List = await _financialClient.GetWalletsPagingAsync(Parameter);
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -111,7 +108,7 @@ namespace Shop.Web.Pages.Admin.Finanical
         public async Task<IActionResult> OnPostPaging()
         {
             Parameter.TakePage = 30;
-            List = await _mediator.Send(new WalletPagingQueryReq(Parameter));
+            List = await _financialClient.GetWalletsPagingAsync(Parameter);
             Response.Object = List;
             Response.IsSuccessed = true;
             return new JsonResult(Response);
@@ -121,11 +118,10 @@ namespace Shop.Web.Pages.Admin.Finanical
         #region Transactions
         public async Task<IActionResult> OnPostDataTransactions()
         {
-
             WTParameter.TakePage = 30;
             WTParameter.WalletId = walletId;
             WTParameter.Type = walletType;
-            TransactionList = await _mediator.Send(new WalletTransactionsPagingQueryReq(WTParameter));
+            TransactionList = await _financialClient.GetWalletTransactionsPagingAsync(WTParameter);
             Response.Object = TransactionList;
             Response.IsSuccessed = true;
 
@@ -153,8 +149,10 @@ namespace Shop.Web.Pages.Admin.Finanical
             Transaction.Price = int.Parse(inputPrice);
             Transaction.Start = false;
             Transaction.Description = "ثبت تسهیلات جدید";
-            var result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
-            if (result.isSuccessed)
+            
+            var result = await _financialClient.CreateWalletTransactionAsync(Transaction);
+            
+            if (result.IsSuccessed)
             {
                 Response.IsSuccessed = true;
             }
@@ -165,18 +163,21 @@ namespace Shop.Web.Pages.Admin.Finanical
             }
             return new JsonResult(Response);
         }
+        
         public async Task<IActionResult> OnPostCreateFecilities()
         {
-            //var result =await _mediator.Send(new CreateAghsatQueryReq(Fecilities));
-            //if (result)
-            //{
-            //    Response.IsSuccessed = true;
-            //}
-            //else
-            //{
-            //    Response.IsSuccessed = false;
-            //    Response.Message = "تا زمانی که تسهیلات کاربر تسویه نگردد امکان ثبت تسهیلات جدید وجود ندارد.";
-            //}
+            var result = await _financialClient.CreateFacilitiesAsync(Fecilities);
+            
+            if (result.IsSuccessed)
+            {
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = result.Message ?? "تا زمانی که تسهیلات کاربر تسویه نگردد امکان ثبت تسهیلات جدید وجود ندارد.";
+            }
+            
             return new JsonResult(Response);
         }
 
@@ -185,7 +186,8 @@ namespace Shop.Web.Pages.Admin.Finanical
         #region Block Or Unblock
         public async Task<IActionResult> OnPostBlockOrUnblock()
         {
-            await _mediator.Send(new WalletBlockOrUnblockQueryReq(block, walletId));
+            var result = await _financialClient.BlockOrUnblockWalletAsync(block, walletId);
+            Response.IsSuccessed = result;
             return new JsonResult(Response);
         }
         #endregion
@@ -194,7 +196,7 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnPostTransactionDetail()
         {
-            transactionDto = await _mediator.Send(new WalletTransactionDetailShowQueryReq(transactionId));
+            transactionDto = await _financialClient.GetWalletTransactionDetailAsync(transactionId);
             Response.Object = transactionDto;
             return new JsonResult(Response);
         }
@@ -205,8 +207,7 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnPostTasviyeGhest(int transactionId)
         {
-            Response = await _mediator.Send(new GhestPaymentQueryReq(transactionId));
-
+            Response = await _financialClient.PayInstallmentAsync(transactionId);
             return new JsonResult(Response);
         }
 
@@ -216,8 +217,7 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnPostRegistrationFecilities(string type, IFormFile file)
         {
-            Response = await _mediator.Send(new FacilityRegistrationByExcelQueryReq(type, file));
-
+            Response = await _financialClient.RegisterFacilitiesByExcelAsync(type, file);
             return new JsonResult(Response);
         }
 
@@ -227,8 +227,7 @@ namespace Shop.Web.Pages.Admin.Finanical
 
         public async Task<IActionResult> OnPostPaymentFecilities(IFormFile file)
         {
-            Response = await _mediator.Send(new FacilityPaymentByExcelQueryReq(file));
-
+            Response = await _financialClient.ProcessFacilityPaymentsByExcelAsync(file);
             return new JsonResult(Response);
         }
 

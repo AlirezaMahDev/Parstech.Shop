@@ -1,22 +1,20 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.User;
-using Shop.Application.Features.Security.Requests.Queries;
-using Shop.Application.Features.User.Requests.Queries;
 
 namespace Shop.Web.Pages.Auth
 {
     public class LoginRegisterModel : PageModel
     {
-        private readonly IMediator _mediator;
+        private readonly IAuthAdminGrpcClient _authClient;
 
         private readonly SignInManager<IdentityUser> _signInManager;
-        public LoginRegisterModel(IMediator mediator, SignInManager<IdentityUser> signInManager)
+        public LoginRegisterModel(IAuthAdminGrpcClient authClient, SignInManager<IdentityUser> signInManager)
         {
-            _mediator = mediator;
+            _authClient = authClient;
             _signInManager = signInManager;
         }
 
@@ -30,8 +28,7 @@ namespace Shop.Web.Pages.Auth
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> OnPostLoginRequest(string loginmobile)
         {
-
-            var result = await _mediator.Send(new LoginOrRegisterRequestQueryReq(loginmobile));
+            var result = await _authClient.LoginOrRegisterRequestAsync(loginmobile);
             Response = result;
             return new JsonResult(Response);
         }
@@ -41,7 +38,7 @@ namespace Shop.Web.Pages.Auth
         {
             if (ActiveRegister == null)
             {
-                var result = await _mediator.Send(new LoginByActiveCodeQueryReq(loginmobile, loginactiveCode));
+                var result = await _authClient.LoginByActiveCodeAsync(loginmobile, loginactiveCode);
                 Response = result;
                 return new JsonResult(Response);
             }
@@ -49,74 +46,25 @@ namespace Shop.Web.Pages.Auth
             {
                 if (loginactiveCode == ActiveRegister)
                 {
-                    UserRegisterDto input = new UserRegisterDto();
-                    input.UserName = loginmobile;
-                    input.FirstName = " ";
-                    input.LastName = " ";
-                    input.NationalCode = " ";
-                    input.Country = "ایران";
-                    input.State = "تهران";
-                    input.City = "تهران";
-                    input.Address = "-";
-                    input.Mobile = loginmobile;
-                    input.ActiveCode = loginactiveCode;
-
-
-                    var result = await _mediator.Send(new UserRegisterQueryReq(input));
-                    var result2 = await _mediator.Send(new LoginByActiveCodeQueryReq(loginmobile, loginactiveCode));
-                    Response = result2;
+                    var result = await _authClient.LoginByActiveCodeAsync(loginmobile, loginactiveCode);
+                    Response = result;
                     return new JsonResult(Response);
-
                 }
                 else
                 {
+                    Response = new ResponseDto();
                     Response.IsSuccessed = false;
-                    Response.Message = "کد تائید وارد شده نادرست است";
+                    Response.Message = "کد تایید نادرست است";
                     return new JsonResult(Response);
                 }
-
-
-
             }
-
         }
 
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> OnPostPasswordLogin(string loginmobile, string loginpassword)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginmobile, loginpassword, true, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                //var user=await _userRep.GetUserByUserName(Input.UserName);
-                //user.LastLoginDate = DateTime.Now;
-                //await _mediator.Send(new UserUpdateCommandReq(_mapper.Map<UserDto>(user)));
-                Response.IsSuccessed = true;
-                Response.Message = "ورود با موفقیت انجام شد . در حال انتقال به پنل";
-                if (User.IsInRole("Customer"))
-                {
-                    Response.Object = "/Panel";
-                }
-                else
-                {
-                    Response.Object = "/Admin";
-                }
-                Response.Object2 = await _mediator.Send(new DataProtectQueryReq(loginmobile, "protect"));
-            }
-            else
-            {
-                Response.IsSuccessed = false;
-                Response.Message = "کاربری با مشخصات وارد شده یافت نشد";
-            }
-            if (result.IsLockedOut)
-            {
-                Response.IsSuccessed = false;
-                Response.Message = "حساب شما تا تاریخ فلان مسدود شده است.";
-
-            }
-
-
-
-
+            var result = await _authClient.LoginByPasswordAsync(loginmobile, loginpassword);
+            Response = result;
             return new JsonResult(Response);
         }
     }

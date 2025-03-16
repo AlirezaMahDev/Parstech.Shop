@@ -52,6 +52,7 @@ builder.Services.AddSingleton<ConfigAdminGrpcClient>();
 builder.Services.AddSingleton<UserAdminGrpcClient>();
 builder.Services.AddSingleton<SettingsAdminGrpcClient>();
 builder.Services.AddSingleton<FinancialAdminGrpcClient>();
+builder.Services.AddSingleton<ReportsAdminGrpcClient>();
 
 // Add gRPC clients
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.OrderCheckout.OrderCheckoutService.OrderCheckoutServiceClient>(options =>
@@ -169,9 +170,19 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.CouponAdmin.CouponAdm
     options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
 });
 
-builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductAdmin.ProductAdminService.ProductAdminServiceClient>(options =>
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductAdmin.ProductAdminService.ProductAdminServiceClient>(o =>
 {
-    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+    o.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:ProductAddress"));
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductComponentsAdmin.ProductComponentsAdminService.ProductComponentsAdminServiceClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:ProductAddress"));
+});
+
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ProductInventoryAdmin.ProductInventoryAdminService.ProductInventoryAdminServiceClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:ProductAddress"));
 });
 
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.StoreAdmin.StoreAdminService.StoreAdminServiceClient>(options =>
@@ -196,7 +207,7 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.RepresentationAdmin.R
 
 builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.PropertyAdmin.PropertyAdminService.PropertyAdminServiceClient>(options =>
 {
-    options.Address = new Uri(builder.Configuration["GrpcServer:Url"]);
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
 });
 
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(
@@ -208,6 +219,46 @@ builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.FinancialAdmin.Financ
     options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
 });
 
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ReportsAdmin.ReportsAdminService.ReportsAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+
+// Register gRPC clients
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ConfigAdmin.ConfigAdminService.ConfigAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.UserAdmin.UserAdminService.UserAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.SettingsAdmin.SettingsAdminService.SettingsAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.RepresentationAdmin.RepresentationAdminService.RepresentationAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.FinancialAdmin.FinancialAdminService.FinancialAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.ReportsAdmin.ReportsAdminService.ReportsAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.OrderAdmin.OrderAdminService.OrderAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+builder.Services.AddGrpcClient<Parstech.Shop.Shared.Protos.RoleAdmin.RoleAdminService.RoleAdminServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["ApiServiceUrl"]);
+});
+
+// Register scoped clients
 builder.Services.AddScoped<UserGrpcClient>();
 builder.Services.AddScoped<CouponAdminGrpcClient>();
 builder.Services.AddScoped<StoreAdminGrpcClient>();
@@ -219,6 +270,30 @@ builder.Services.AddScoped<ConfigAdminGrpcClient>();
 builder.Services.AddScoped<UserAdminGrpcClient>();
 builder.Services.AddScoped<SettingsAdminGrpcClient>();
 builder.Services.AddScoped<FinancialAdminGrpcClient>();
+builder.Services.AddScoped<ReportsAdminGrpcClient>();
+builder.Services.AddScoped<ProductAdminGrpcClient>();
+builder.Services.AddScoped<RoleAdminGrpcClient>();
+builder.Services.AddScoped<DashboardAdminGrpcClient>();
+builder.Services.AddScoped<SelectionsAdminGrpcClient>();
+builder.Services.AddScoped<AuthAdminGrpcClient>();
+
+// Register gRPC client services
+builder.Services.AddScoped<IConfigAdminGrpcClient, ConfigAdminGrpcClient>();
+builder.Services.AddScoped<IUserAdminGrpcClient, UserAdminGrpcClient>();
+builder.Services.AddScoped<ISettingsAdminGrpcClient, SettingsAdminGrpcClient>();
+builder.Services.AddScoped<IPropertyAdminGrpcClient, PropertyAdminGrpcClient>();
+builder.Services.AddScoped<IRepresentationAdminGrpcClient, RepresentationAdminGrpcClient>();
+builder.Services.AddScoped<IFinancialAdminGrpcClient, FinancialAdminGrpcClient>();
+builder.Services.AddScoped<IReportsAdminGrpcClient, ReportsAdminGrpcClient>();
+builder.Services.AddScoped<IOrderAdminGrpcClient, OrderAdminGrpcClient>();
+builder.Services.AddScoped<IProductAdminGrpcClient, ProductAdminGrpcClient>();
+builder.Services.AddScoped<IRoleAdminGrpcClient, RoleAdminGrpcClient>();
+builder.Services.AddScoped<IStoreAdminGrpcClient, StoreAdminGrpcClient>();
+builder.Services.AddScoped<IDashboardAdminGrpcClient, DashboardAdminGrpcClient>();
+builder.Services.AddScoped<ISelectionsAdminGrpcClient, SelectionsAdminGrpcClient>();
+builder.Services.AddScoped<IAuthAdminGrpcClient, AuthAdminGrpcClient>();
+builder.Services.AddScoped<IProductComponentsAdminGrpcClient, ProductComponentsAdminGrpcClient>();
+builder.Services.AddScoped<IProductInventoryAdminGrpcClient, ProductInventoryAdminGrpcClient>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

@@ -3,10 +3,12 @@ using Shop.Application.DTOs.OrderDetail;
 using Shop.Application.DTOs.OrderStatus;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.UserStore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Parstech.Shop.Web.Services.GrpcClients
 {
-    public class StoreAdminGrpcClient
+    public class StoreAdminGrpcClient : IStoreAdminGrpcClient
     {
         private readonly StoreAdminService.StoreAdminServiceClient _client;
 
@@ -89,31 +91,96 @@ namespace Parstech.Shop.Web.Services.GrpcClients
                 Object = response.ContractHtml
             };
         }
+        
+        /// <summary>
+        /// Get a store by ID
+        /// </summary>
+        public async Task<UserStoreDto> GetStoreByIdAsync(int storeId)
+        {
+            var request = new StoreRequest { StoreId = storeId };
+            var response = await _client.GetStoreByIdAsync(request);
+            return MapToUserStoreDto(response);
+        }
+        
+        /// <summary>
+        /// Create a new store
+        /// </summary>
+        public async Task<ResponseDto> CreateStoreAsync(UserStoreDto storeDto)
+        {
+            var request = new UserStoreProtoDto
+            {
+                Name = storeDto.Name,
+                LatinName = storeDto.LatinName,
+                UserId = storeDto.UserId,
+                Mobile = storeDto.Mobile,
+                Logo = storeDto.Logo,
+                Address = storeDto.Address,
+                IsActive = storeDto.IsActive
+            };
+            
+            var response = await _client.CreateStoreAsync(request);
+            return new ResponseDto
+            {
+                IsSuccessed = response.Status,
+                Message = response.Message,
+                Code = response.Code
+            };
+        }
+        
+        /// <summary>
+        /// Update an existing store
+        /// </summary>
+        public async Task<ResponseDto> UpdateStoreAsync(UserStoreDto storeDto)
+        {
+            var request = new UserStoreProtoDto
+            {
+                Id = storeDto.Id,
+                Name = storeDto.Name,
+                LatinName = storeDto.LatinName,
+                UserId = storeDto.UserId,
+                Mobile = storeDto.Mobile,
+                Logo = storeDto.Logo,
+                Address = storeDto.Address,
+                IsActive = storeDto.IsActive
+            };
+            
+            var response = await _client.UpdateStoreAsync(request);
+            return new ResponseDto
+            {
+                IsSuccessed = response.Status,
+                Message = response.Message,
+                Code = response.Code
+            };
+        }
+        
+        /// <summary>
+        /// Delete a store
+        /// </summary>
+        public async Task<ResponseDto> DeleteStoreAsync(int storeId)
+        {
+            var request = new StoreRequest { StoreId = storeId };
+            var response = await _client.DeleteStoreAsync(request);
+            return new ResponseDto
+            {
+                IsSuccessed = response.Status,
+                Message = response.Message,
+                Code = response.Code
+            };
+        }
 
         #region Mapping Methods
 
         private SalesPagingDto MapToSalesPagingDto(Shared.Protos.StoreAdmin.SalesPagingDto source)
         {
-            var result = new SalesPagingDto
+            return new SalesPagingDto
             {
                 CurrentPage = source.CurrentPage,
-                PageCount = source.PageCount,
-                RowCount = source.RowCount,
-                List = new List<SalesDto>(),
-                StoresSelect = new UserStoreDto[source.StoresSelect.Count]
+                IsSuccessed = source.IsSuccessed,
+                Message = source.Message,
+                Sales = source.Sales.Select(s => MapToSalesDto(s)).ToList(),
+                TakePage = source.TakePage,
+                TotalRow = source.TotalRow
             };
-
-            for (int i = 0; i < source.List.Count; i++)
-            {
-                result.List.Add(MapToSalesDto(source.List[i]));
-            }
-
-            for (int i = 0; i < source.StoresSelect.Count; i++)
-            {
-                result.StoresSelect[i] = MapToUserStoreDto(source.StoresSelect[i]);
-            }
-
-            return result;
         }
 
         private SalesDto MapToSalesDto(Shared.Protos.StoreAdmin.SalesDto source)
@@ -121,22 +188,14 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             return new SalesDto
             {
                 Id = source.Id,
-                OrderId = source.OrderId,
-                OrderNumber = source.OrderNumber,
-                ProductName = source.ProductName,
-                ProductId = source.ProductId,
-                Count = source.Count,
-                Price = source.Price,
-                SumPrice = source.SumPrice,
-                StoreId = source.StoreId,
+                PayDate = source.PayDate,
+                IsFinaly = source.IsFinaly,
+                OrderCount = source.OrderCount,
                 StoreName = source.StoreName,
-                LatinStoreName = source.LatinStoreName,
-                UserName = source.UserName,
-                FullName = source.FullName,
-                CreateDate = source.CreateDate?.ToDateTime(),
-                CreateDateShamsi = source.CreateDateShamsi,
-                OrderStatusId = source.OrderStatusId,
-                OrderStatusTitle = source.OrderStatusTitle
+                TotalPrice = source.TotalPrice,
+                TotalPriceGold = source.TotalPriceGold,
+                UserFullName = source.UserFullName,
+                UserId = source.UserId
             };
         }
 
@@ -145,9 +204,9 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             return new UserStoreDto
             {
                 Id = source.Id,
-                UserId = source.UserId,
                 Name = source.Name,
                 LatinName = source.LatinName,
+                UserId = source.UserId,
                 Mobile = source.Mobile,
                 Logo = source.Logo,
                 Address = source.Address,
@@ -160,13 +219,10 @@ namespace Parstech.Shop.Web.Services.GrpcClients
             return new OrderStatusDto
             {
                 Id = source.Id,
-                OrderId = source.OrderId,
-                StatusId = source.StatusId,
-                StatusTitle = source.StatusTitle,
+                Title = source.Title,
                 Description = source.Description,
-                File = source.File,
-                CreateDate = source.CreateDate?.ToDateTime(),
-                CreateDateShamsi = source.CreateDateShamsi
+                Status = source.Status,
+                CreateDate = source.CreateDate
             };
         }
 

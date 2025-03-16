@@ -1,53 +1,40 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Shared.Protos.ProductComponentsAdmin;
+using Parstech.Shop.Web.GrpcClients;
 using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductCategury;
-using Shop.Application.DTOs.ProductGallery;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Categury.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.ProductCategury.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Commands;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Domain.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-
 
 namespace Shop.Web.Pages.Admin.Products.CreateOrUpdateAjax
 {
     public class CateguriesModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
+        private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
         private readonly IProductStockPriceRepository _productStockRep;
 
-
-        public CateguriesModel(IMediator mediator,
-            IMapper mapper,
+        public CateguriesModel(
+            IProductComponentsAdminGrpcClient productComponentsClient,
             IProductStockPriceRepository productStockRep)
         {
-            _mediator = mediator;
-            _mapper = mapper;
+            _productComponentsClient = productComponentsClient;
             _productStockRep = productStockRep;
         }
 
         #endregion
+        
         //id
         [BindProperty] public int? productId { get; set; }
 
-
         //product
-        [BindProperty] public List<ProductCateguryDto> Categuries { get; set; }
+        [BindProperty] public List<ProductCategoryDto> Categuries { get; set; } = new List<ProductCategoryDto>();
 
-        [BindProperty] public ProductCateguryDto categury { get; set; }
+        [BindProperty] public ProductCategoryDto categury { get; set; }
 
-        [BindProperty] public List<ProductCateguryDto> categuries { get; set; }
+        [BindProperty] public List<ProductCategoryDto> categuries { get; set; } = new List<ProductCategoryDto>();
 
         //result
         [BindProperty] public ResponseDto Response { get; set; } = new ResponseDto();
@@ -59,46 +46,81 @@ namespace Shop.Web.Pages.Admin.Products.CreateOrUpdateAjax
             productId = id;
             if (productId != null)
             {
-                Categuries = await _mediator.Send(new CateguriesOfProductQueryReq(productId.Value));
+                var response = await _productComponentsClient.GetCategoriesOfProductAsync(productId.Value);
+                if (response.IsSuccess)
+                {
+                    Categuries = response.Categories.ToList();
+                }
             }
         }
 
-
-
-        #region Categury
+        #region Category
 
         public async Task<IActionResult> OnPostGetAllCateguries()
         {
-            var categuries = await _mediator.Send(new CateguryReadCommandReq(FilterCat));
-            Response.Object = categuries;
-            Response.IsSuccessed = true;
+            var response = await _productComponentsClient.GetAllCategoriesAsync(FilterCat);
+            if (response.IsSuccess)
+            {
+                Response.Object = response.Categories;
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "Failed to retrieve categories";
+            }
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostCateguries()
         {
-            categuries = await _mediator.Send(new CateguriesOfProductQueryReq(productId.Value));
-            Response.Object = categuries;
+            var response = await _productComponentsClient.GetCategoriesOfProductAsync(productId.Value);
+            if (response.IsSuccess)
+            {
+                categuries = response.Categories.ToList();
+                Response.Object = categuries;
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "Failed to retrieve product categories";
+            }
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostCategury()
         {
-            categury = await _mediator.Send(new CateguryOfProductQueryReq(productId.Value));
-            Response.Object = categury;
+            var response = await _productComponentsClient.GetCategoryOfProductAsync(productId.Value);
+            if (response.IsSuccess)
+            {
+                categury = response.Category;
+                Response.Object = categury;
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "Failed to retrieve product category";
+            }
             return new JsonResult(Response);
         }
 
         public async Task<IActionResult> OnPostDeleteCategury()
         {
-            var ProductId = await _mediator.Send(new ProductCateguryDeleteCommandReq(productId.Value));
-            Response.Object = ProductId;
-            Response.IsSuccessed = true;
+            var response = await _productComponentsClient.DeleteProductCategoryAsync(productId.Value);
+            if (response.IsSuccess)
+            {
+                Response.Object = response.ProductId;
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "Failed to delete product category";
+            }
             return new JsonResult(Response);
         }
-
-
-        
 
         #endregion
     }

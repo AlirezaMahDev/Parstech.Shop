@@ -1,23 +1,23 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Reports;
 using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Counts.Requests.Queries;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin
 {
     [Authorize(Roles = "SupperUser,Inventory,Sale,Finanicial,Store")]
     public class IndexModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly IDashboardAdminGrpcClient _dashboardClient;
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(IDashboardAdminGrpcClient dashboardClient)
         {
-            _mediator = mediator;
+            _dashboardClient = dashboardClient;
         }
 
         #endregion
@@ -34,21 +34,18 @@ namespace Shop.Web.Pages.Admin
 
         }
 
-
         #endregion
 
         #region Data
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostGetData()
         {
-            IndexReport = await _mediator.Send(new IndexCountsQueryReq());
+            IndexReport = await _dashboardClient.GetDashboardCountsAsync();
             Response.IsSuccessed = true;
             Response.Object = IndexReport;
             return new JsonResult(Response);
         }
 
         #endregion
-
-
     }
 }

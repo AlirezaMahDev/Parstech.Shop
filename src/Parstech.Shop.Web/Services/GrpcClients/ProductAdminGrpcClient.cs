@@ -1,10 +1,12 @@
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Parstech.Shop.Shared.Protos.ProductAdmin;
+using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace Parstech.Shop.Web.Services.GrpcClients
 {
-    public class ProductAdminGrpcClient : GrpcClientBase
+    public class ProductAdminGrpcClient : GrpcClientBase, IProductAdminGrpcClient
     {
         private readonly ProductAdminService.ProductAdminServiceClient _client;
         

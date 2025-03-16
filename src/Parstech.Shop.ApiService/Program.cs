@@ -110,6 +110,13 @@ app.MapGrpcService<ConfigAdminGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<UserAdminGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<SettingsAdminGrpcService>().EnableGrpcWeb();
 app.MapGrpcService<FinancialAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ReportsAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<OrderAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<DashboardAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<SelectionsAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<AuthAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductComponentsAdminGrpcService>().EnableGrpcWeb();
+app.MapGrpcService<ProductInventoryAdminGrpcService>().EnableGrpcWeb();
 
 app.MapDefaultEndpoints();
 app.MapStaticAssets();

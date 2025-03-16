@@ -1,27 +1,27 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Product;
-using Shop.Application.Features.Product.Requests.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Components
 {
     public class GetProductsSelectModel : PageModel
     {
-        #region Constractor
-        private readonly IMediator _mediator;
+        #region Constructor
+        private readonly ISelectionsAdminGrpcClient _selectionsClient;
 
-        public GetProductsSelectModel(IMediator mediator)
+        public GetProductsSelectModel(ISelectionsAdminGrpcClient selectionsClient)
         {
-            _mediator = mediator;
+            _selectionsClient = selectionsClient;
         }
         #endregion
 
         public List<ProductSelectDto> list { get; set; }
         public async Task OnGet()
         {
-
-            list = await _mediator.Send(new ProductSelectListQueryReq());
+            list = await _selectionsClient.GetProductsSelectAsync();
         }
     }
 }

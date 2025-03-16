@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Shared.Protos.ProductAdmin;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Brand;
 using Shop.Application.DTOs.Product;
 using Shop.Application.DTOs.ProductCategury;
@@ -14,38 +15,22 @@ using Shop.Application.DTOs.ProductType;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.Tax;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Brand.Requests.Commands;
-using Shop.Application.Features.Categury.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.ProductCategury.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Queries;
-using Shop.Application.Features.ProductProperty.Requests.Commands;
-using Shop.Application.Features.ProductProperty.Requests.Queries;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
-using Shop.Application.Features.ProductType.Requests.Commands;
-using Shop.Application.Features.Tax.Requests.Commands;
-using Shop.Application.Features.UserStore.Requests.Commands;
-using Parstech.Shop.Web.Services.GrpcClients;
-using Parstech.Shop.Shared.Protos.ProductAdmin;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Products
 {
-
     [Authorize(Roles = "SupperUser,Sale,Store")]
     public class IndexModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly ProductAdminGrpcClient _productAdminClient;
+        private readonly IProductAdminGrpcClient _productAdminClient;
 
-        public IndexModel(IMediator mediator, IMapper mapper, ProductAdminGrpcClient productAdminClient)
+        public IndexModel(IMapper mapper, IProductAdminGrpcClient productAdminClient)
         {
-            _mediator = mediator;
             _mapper = mapper;
             _productAdminClient = productAdminClient;
         }

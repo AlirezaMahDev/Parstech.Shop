@@ -1,39 +1,36 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.Application.Contracts.Persistance;
+using Parstech.Shop.Web.Services.GrpcClients;
 using Shop.Application.DTOs.Representation;
 using Shop.Application.DTOs.Response;
 using Shop.Application.DTOs.State;
 using Shop.Application.DTOs.User;
 using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.Representation.Requests.Commands;
-using Shop.Application.Features.State.Requests.Commands;
-using Shop.Application.Features.User.Requests.Queries;
-using Shop.Application.Features.UserStore.Requests.Commands;
-using Shop.Application.Features.UserStore.Requests.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Users
 {
     [Authorize(Roles = "SupperUser")]
     public class StoresModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
-        private readonly IUserStoreRepository _userStorerRep;
+        private readonly IStoreAdminGrpcClient _storeAdminClient;
+        private readonly IUserAdminGrpcClient _userAdminClient;
 
-        public StoresModel(IMediator mediator, IUserStoreRepository userStorerRep)
+        public StoresModel(
+            IStoreAdminGrpcClient storeAdminClient,
+            IUserAdminGrpcClient userAdminClient)
         {
-            _mediator = mediator;
-            _userStorerRep = userStorerRep;
+            _storeAdminClient = storeAdminClient;
+            _userAdminClient = userAdminClient;
         }
 
         #endregion
 
         #region Properties
-
 
         public List<UserDto> Users { get; set; }
         public List<SteteDto> stetes { get; set; }
@@ -44,16 +41,14 @@ namespace Shop.Web.Pages.Admin.Users
         [BindProperty]
         public RepresentationDto RepInput { get; set; }
 
-
         [BindProperty]
         public List<UserStoreDto> List { get; set; }
 
-
-        [BindProperty]
-        public int Id { get; set; }
-
         [BindProperty]
         public ResponseDto Response { get; set; } = new ResponseDto();
+
+        [BindProperty]
+        public int StoreId { get; set; }
 
         #endregion
 
@@ -61,52 +56,102 @@ namespace Shop.Web.Pages.Admin.Users
 
         public async Task<IActionResult> OnGet()
         {
-            Users = await _mediator.Send(new UsersGetByRoleQueryReq("Store"));
-            stetes = await _mediator.Send(new StatesReadsCommandReq());
-            List = await _mediator.Send(new StoreListQueryReq());
+            // Get all stores
+            List = await _storeAdminClient.GetUserStoresAsync();
+            
+            // Get user data if needed
+            var userParameter = new UserParameterDto { PageId = 1, Take = 1000 }; // Get all users
+            var userResponse = await _userAdminClient.GetUsersAsync(userParameter);
+            if (userResponse != null)
+            {
+                Users = userResponse.Items;
+            }
+            
             return Page();
         }
-        public async Task<IActionResult> OnGetData()
-        {
-            Input = await _mediator.Send(new UserStoreReadCommandReq(Id));
-            return Page();
-        }
+
         #endregion
 
-        #region Add
+        #region GetData
+
+        public async Task<IActionResult> OnGetData()
+        {
+            List = await _storeAdminClient.GetUserStoresAsync();
+            Response.Object = List;
+            Response.IsSuccessed = true;
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region PostData
 
         public async Task<IActionResult> OnPostData()
         {
-            Input = await _mediator.Send(new UserStoreReadCommandReq(Id));
-            Response.Object = Input;
+            List = await _storeAdminClient.GetUserStoresAsync();
+            Response.Object = List;
+            Response.IsSuccessed = true;
             return new JsonResult(Response);
         }
+
+        #endregion
+
+        #region UpdateAndCreate
 
         public async Task<IActionResult> OnPostUpdateAndCreate()
         {
             if (Input.Id != 0)
             {
-                var result = await _mediator.Send(new UserStoreUpdateCommandReq(Input));
-                Response.IsSuccessed = true;
-                Response.Message = "اطلاعات تامین کننده با موفقیت ویرایش شد";
-                Response.IsSuccessed = true;
-                Response.Object = result;
-                return new JsonResult(Response);
+                // Update existing store
+                var result = await _storeAdminClient.UpdateStoreAsync(Input);
+                Response.IsSuccessed = result.IsSuccessed;
+                Response.Message = result.IsSuccessed ? "فروشگاه با موفقیت ویرایش شد" : result.Message;
             }
             else
             {
-                var rep = await _mediator.Send(new RepresentationCreateCommandReq(RepInput));
-                Input.RepId = rep.Id;
-                Input = await _mediator.Send(new UserStoreCreateCommandReq(Input));
-                Response.IsSuccessed = true;
-                Response.Message = "اطلاعات تامین کننده با موفقیت ثبت شد";
-                Response.IsSuccessed = true;
-                Response.Object = Input;
-                return new JsonResult(Response);
+                // Create new store
+                var result = await _storeAdminClient.CreateStoreAsync(Input);
+                Response.IsSuccessed = result.IsSuccessed;
+                Response.Message = result.IsSuccessed ? "فروشگاه با موفقیت ایجاد شد" : result.Message;
             }
-
-            return Page();
+            
+            return new JsonResult(Response);
         }
+
+        #endregion
+
+        #region Store
+
+        public async Task<IActionResult> OnPostStore()
+        {
+            if (StoreId != 0)
+            {
+                Input = await _storeAdminClient.GetStoreByIdAsync(StoreId);
+                Response.Object = Input;
+                Response.IsSuccessed = true;
+            }
+            else
+            {
+                Response.IsSuccessed = false;
+                Response.Message = "فروشگاه یافت نشد";
+            }
+            
+            return new JsonResult(Response);
+        }
+
+        #endregion
+
+        #region Delete
+
+        public async Task<IActionResult> OnPostDelete()
+        {
+            var result = await _storeAdminClient.DeleteStoreAsync(StoreId);
+            Response.IsSuccessed = result.IsSuccessed;
+            Response.Message = result.IsSuccessed ? "فروشگاه با موفقیت حذف شد" : result.Message;
+            
+            return new JsonResult(Response);
+        }
+
         #endregion
     }
 }

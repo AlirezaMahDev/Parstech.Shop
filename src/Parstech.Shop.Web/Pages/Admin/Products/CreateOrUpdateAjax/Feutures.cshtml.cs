@@ -1,7 +1,7 @@
-using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Shared.Protos.ProductComponentsAdmin;
+using Parstech.Shop.Web.GrpcClients;
 using Shop.Application.Contracts.Persistance;
 using Shop.Application.DTOs.ProductGallery;
 using Shop.Application.DTOs.ProductProperty;
@@ -11,40 +11,44 @@ using Shop.Application.Features.ProductGallery.Requests.Queries;
 using Shop.Application.Features.ProductProperty.Requests.Queries;
 using Shop.Application.Features.PropertyCategury.Requests.Commands;
 using Shop.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Products.Detail
 {
     public class FeuturesModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
-        
+        private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
         private readonly IProductStockPriceRepository _productStockRep;
 
-
-        public FeuturesModel(IMediator mediator,
-           
+        public FeuturesModel(
+            IProductComponentsAdminGrpcClient productComponentsClient,
             IProductStockPriceRepository productStockRep)
         {
-            _mediator = mediator;
-           
+            _productComponentsClient = productComponentsClient;
             _productStockRep = productStockRep;
         }
 
         #endregion
+        
         //id
         [BindProperty] public int? productId { get; set; }
 
         [BindProperty]
-        public List<ProductPropertyDto> PropertyDtos { get; set; }
+        public List<ProductPropertyDto> PropertyDtos { get; set; } = new List<ProductPropertyDto>();
 
         public async Task OnGet(int? id)
         {
             productId = id;
             if (productId != null)
             {
-                PropertyDtos = await _mediator.Send(new PropertiesOfProductQueryReq(productId.Value));
+                var response = await _productComponentsClient.GetPropertiesOfProductAsync(productId.Value);
+                if (response.IsSuccess)
+                {
+                    PropertyDtos = response.Properties.ToList();
+                }
             }
         }
     }

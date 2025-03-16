@@ -1,22 +1,23 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.DTOs.IRole;
-using Shop.Application.Features.IRole.Requests.Commands;
+using Parstech.Shop.Web.Services.GrpcClients;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages.Admin.Users
 {
     [Authorize(Roles = "SupperUser")]
     public class PermissionModel : PageModel
     {
-        #region Constractor
+        #region Constructor
 
-        private readonly IMediator _mediator;
+        private readonly IRoleAdminGrpcClient _roleAdminClient;
 
-        public PermissionModel(IMediator mediator)
+        public PermissionModel(IRoleAdminGrpcClient roleAdminClient)
         {
-            _mediator = mediator;
+            _roleAdminClient = roleAdminClient;
         }
 
         #endregion
@@ -36,7 +37,7 @@ namespace Shop.Web.Pages.Admin.Users
 
         public async Task<IActionResult> OnGet()
         {
-            List = await _mediator.Send(new IRoleReadAllCommandReq());
+            List = await _roleAdminClient.GetAllRolesAsync();
             return Page();
         }
 
@@ -45,12 +46,10 @@ namespace Shop.Web.Pages.Admin.Users
         #region Add
         public async Task<IActionResult> OnPost()
         {
-            await _mediator.Send(new IRoleCreateCommandReq(Input));
+            await _roleAdminClient.CreateRoleAsync(Input);
             return Redirect("/Admin/Users/Permission");
         }
 
-
         #endregion
-
     }
 }
