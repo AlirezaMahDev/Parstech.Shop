@@ -10,7 +10,8 @@
 
 ### [View the Live Demo](http://www.mattboldt.com/demos/typed-js/) | [View All Demos](http://www.mattboldt.com/typed.js) | [View Full Docs](http://www.mattboldt.com/typed.js/docs) | [mattboldt.com](http://www.mattboldt.com)
 
-Typed.js is a library that types. Enter in any string, and watch it type at the speed you've set, backspace what it's typed, and begin a new sentence for however many strings you've set.
+Typed.js is a library that types. Enter in any string, and watch it type at the speed you've set, backspace what it's
+typed, and begin a new sentence for however many strings you've set.
 
 ---
 
@@ -89,6 +90,7 @@ http://jessejohnson.github.io/
 ---
 
 ### Strings from static HTML (SEO Friendly)
+
 Rather than using the `strings` array to insert strings, you can place an HTML `div` on the page and read from it.
 This allows bots and search engines, as well as users with JavaScript disabled, to see your text on the page.
 
@@ -132,7 +134,7 @@ var typed = new Typed(".element", {
 
 ### Bulk Typing
 
-The following example would emulate how a terminal acts when typing a command and seeing its result. 
+The following example would emulate how a terminal acts when typing a command and seeing its result.
 
 ~~~ javascript
 var typed = new Typed(".element", {
@@ -145,6 +147,7 @@ var typed = new Typed(".element", {
 ### CSS
 
 CSS animations are built upon initialzation in JavaScript. But, you can customize them at your will! These classes are:
+
 ```css
 /* Cursor */
 .typed-cursor {}
@@ -311,7 +314,6 @@ var typed = new Typed(".element", {
   onDestroy: (self) => {}
 });
 ~~~
-
 
 ## Contributing
 

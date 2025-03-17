@@ -1,33 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
-namespace ZarinPal
+﻿namespace Parstech.Shop.ApiService.Application.Dargah.ZarrinPal.Models;
+
+public class PaymentRequest
 {
+    public string MerchantID { get; set; }
+    public string CallbackURL { get; set; }
+    public string Description { get; set; }
+    public long Amount { get; set; }
+    public string Mobile { get; set; }
+    public string Email { get; set; }
 
 
-    public class PaymentRequest
+    public PaymentRequest(string MerchantID, long Amount, string CallbackURL, string Description)
     {
-
-        public String MerchantID { get; set; }
-        public String CallbackURL { get; set; }
-        public String Description { get; set; }
-        public long Amount { get; set; }
-        public String Mobile { get; set; }
-        public String Email { get; set; }
-
-
-        public PaymentRequest(String MerchantID, long Amount, String CallbackURL, String Description)
-        {
-            this.MerchantID = MerchantID;
-            this.Amount = Amount;
-            this.CallbackURL = CallbackURL;
-            this.Description = Description;
-        }
-
-
+        this.MerchantID = MerchantID;
+        this.Amount = Amount;
+        this.CallbackURL = CallbackURL;
+        this.Description = Description;
     }
-    
 }

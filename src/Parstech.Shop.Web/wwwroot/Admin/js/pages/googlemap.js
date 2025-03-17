@@ -1,4 +1,5 @@
 var map;
+
 function initMap() {
     // Simple map
     map = new google.maps.Map(document.getElementById("map"), {
@@ -20,7 +21,7 @@ function initMap() {
     infowindow.setContent("<p>&nbsp; &nbsp; ایران، تهران ...</p>");
 
     var marker = new google.maps.Marker({map: map, position: center});
-    marker.addListener("click", function() {
+    marker.addListener("click", function () {
         infowindow.open(map, marker);
     });
 }

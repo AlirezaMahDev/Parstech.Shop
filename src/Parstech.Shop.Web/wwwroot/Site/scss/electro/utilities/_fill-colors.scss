@@ -3,12 +3,12 @@
 ------------------------------------*/
 
 .fill {
-	&-none {
-  	fill: none !important;
+  &-none {
+    fill: none !important;
   }
 
-	&-white {
-  	fill: $white !important;
+  &-white {
+    fill: $white !important;
   }
 
   &-dark {
@@ -19,16 +19,16 @@
     fill: $primary !important;
 
     &-lighter {
-  	 fill: $primary-lighter !important;
+      fill: $primary-lighter !important;
     }
 
     &-darker {
-     fill: $primary-darker !important;
+      fill: $primary-darker !important;
     }
   }
 
   &-success {
-  	fill: $success !important;
+    fill: $success !important;
 
     &-lighter {
       fill: $success-lighter !important;
@@ -40,7 +40,7 @@
   }
 
   &-danger {
-  	fill: $danger !important;
+    fill: $danger !important;
 
     &-lighter {
       fill: $danger-lighter !important;
@@ -48,15 +48,15 @@
   }
 
   &-warning {
-  	fill: $warning !important;
+    fill: $warning !important;
 
-  	&-lighter {
+    &-lighter {
       fill: $warning-lighter !important;
     }
 
     &-darker {
-  		fill: $warning-darker !important;
-  	}
+      fill: $warning-darker !important;
+    }
   }
 
   &-gray {

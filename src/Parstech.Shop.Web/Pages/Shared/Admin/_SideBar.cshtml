@@ -1,4 +1,5 @@
-﻿<div id="sidebar">
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<div id="sidebar">
     <div class="sidebar-top">
         @* <div class="search-box">
         <form class="search-form" action="#" method="GET">
@@ -12,7 +13,7 @@
         </div>
         </form>
         </div><!-- /.search-box -->*@
-        <partial name="Shared/_UserNamePartialSideBar" />
+        <partial name="Shared/_UserNamePartialSideBar"/>
         <!-- /.user-box -->
     </div><!-- /.sidebar-top -->
     <div class="side-menu-container">

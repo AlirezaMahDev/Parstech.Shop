@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.ProductStockPrice.Commands;
 
-namespace Shop.Application.Dapper.ProductStockPrice.Commands
+public interface IProductStockPriceCommand
 {
-    public interface IProductStockPriceCommand
-    {
-        string GetProductStockPriceById { get; }
-    }
+    string GetProductStockPriceById { get; }
 }

@@ -1,24 +1,19 @@
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
-using System.Net.Http;
 
-namespace Parstech.Shop.Web.Services.GrpcClients
+namespace Parstech.Shop.Web.Services.GrpcClients;
+
+public abstract class GrpcClientBase
 {
-    public abstract class GrpcClientBase
+    protected readonly GrpcChannel Channel;
+
+    protected GrpcClientBase(IConfiguration configuration)
     {
-        protected readonly GrpcChannel Channel;
+        string? apiServiceUrl = configuration["ApiServiceUrl"] ?? "https://localhost:7156";
 
-        protected GrpcClientBase(IConfiguration configuration)
-        {
-            var apiServiceUrl = configuration["ApiServiceUrl"] ?? "https://localhost:7156";
+        HttpClientHandler? httpClientHandler = new();
+        GrpcWebHandler grpcWebHandler = new(GrpcWebMode.GrpcWeb, httpClientHandler);
 
-            var httpClientHandler = new HttpClientHandler();
-            var grpcWebHandler = new GrpcWebHandler(GrpcWebMode.GrpcWeb, httpClientHandler);
-
-            Channel = GrpcChannel.ForAddress(apiServiceUrl, new GrpcChannelOptions
-            {
-                HttpClient = new HttpClient(grpcWebHandler)
-            });
-        }
+        Channel = GrpcChannel.ForAddress(apiServiceUrl, new() { HttpClient = new(grpcWebHandler) });
     }
 }

@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
-using Shop.Application.DTOs.Brand;
-using Shop.Application.DTOs.ProductStockPriceSection;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class ProductStockPriceSectionMapping : Profile
 {
-    public class ProductStockPriceSectionMapping:Profile
+    public ProductStockPriceSectionMapping()
     {
-        public ProductStockPriceSectionMapping()
-        {
-            CreateMap<ProductStockPriceSection, SectionDto>().ReverseMap();
-        }
+        CreateMap<ProductStockPriceSection, SectionDto>().ReverseMap();
     }
 }

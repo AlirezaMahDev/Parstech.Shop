@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.IRole;
-using Shop.Application.DTOs.Section;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class IRoleMapping : Profile
 {
-    public class IRoleMapping:Profile
+    public IRoleMapping()
     {
-        public IRoleMapping()
-        {
-            CreateMap<Irole, IRoleDto>().ReverseMap();
-        }
+        CreateMap<Irole, IRoleDto>().ReverseMap();
     }
 }

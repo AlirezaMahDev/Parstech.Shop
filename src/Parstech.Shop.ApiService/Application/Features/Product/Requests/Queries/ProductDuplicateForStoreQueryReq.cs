@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Product.Requests.Queries
-{
-    public record ProductDuplicateForStoreQueryReq(int productId,int storeId):IRequest<bool>;
-    public record ProductDuplicateQueryReq(int productId) : IRequest<Unit>;
+namespace Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 
-}
+public record ProductDuplicateForStoreQueryReq(int productId, int storeId) : IRequest<bool>;
+
+public record ProductDuplicateQueryReq(int productId) : IRequest<Unit>;

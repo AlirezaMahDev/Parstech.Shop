@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.Setting.Queries;
 
-namespace Shop.Application.Dapper.Setting.Queries
+public interface ISettingQuery
 {
-    public interface ISettingQuery
-    {
-        string GetSiteSetting { get; }
-    }
+    string GetSiteSetting { get; }
 }

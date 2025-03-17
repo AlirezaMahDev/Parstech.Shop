@@ -1,4 +1,4 @@
-@color-from:   #0d6632;
+@color-from: #0d6632;
 @color-to: #f4c01a;
 
 body {
@@ -26,7 +26,10 @@ h1, h2, h3, h4, h5, h6 {
 
   .flag {
     position: absolute;
-    top: 0; bottom: 0; right: 0; left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -47,20 +50,22 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   font-size: 16px;
   color: #fff;
-  color: rgba(255,255,255,.75);
+  color: rgba(255, 255, 255, .75);
   text-align: center;
   border-radius: 0;
   padding-bottom: 80px;
   background: linear-gradient(to right, @color-from, @color-to);
+
   h1 {
     margin-bottom: 15px;
     font-weight: 300;
     letter-spacing: -1px;
     color: #fff;
   }
+
   iframe {
-    width: 100px!important;
-    height: 20px!important;
+    width: 100px !important;
+    height: 20px !important;
     border: none;
     overflow: hidden;
     margin: 2px;
@@ -79,9 +84,11 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 0;
     list-style: none;
     font-size: 14px;
+
     li {
       display: inline;
     }
+
     li + li {
       margin-left: 20px;
     }
@@ -106,8 +113,9 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff; /* redeclare to override the `.jumbotron a` */
   background-color: transparent;
   border-color: #fff;
-  border-color: rgba(255,255,255,.5);
+  border-color: rgba(255, 255, 255, .5);
   transition: all .1s ease-in-out;
+
   &:hover,
   &:active {
     color: @color-from;
@@ -118,18 +126,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .how-to {
   padding: 20px;
+
   h2 {
     text-align: center;
   }
+
   li {
     font-size: 21px;
     line-height: 1.7;
     margin-top: 20px;
+
     p {
       font-size: 16px;
       color: #555;
     }
   }
+
   code {
     font-size: 85%;
     word-wrap: break-word;
@@ -145,6 +157,7 @@ footer {
 
   a {
     color: #fff;
+
     &:hover {
       color: #fff;
     }
@@ -155,6 +168,7 @@ footer {
   margin: 0;
   list-style: none;
   padding-left: 0;
+
   li {
     display: inline;
     padding: 0 10px;

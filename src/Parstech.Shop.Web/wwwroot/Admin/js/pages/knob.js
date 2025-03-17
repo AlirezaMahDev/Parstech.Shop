@@ -1,10 +1,10 @@
 $(".knob").knob();
 
 
-$('.knob-animate').each(function() {
+$('.knob-animate').each(function () {
     var $this = $(this);
     var val = $this.attr("rel");
-    
+
     $this.knob();
 
     $({
@@ -14,7 +14,7 @@ $('.knob-animate').each(function() {
     }, {
         duration: 2000,
         easing: 'swing',
-        step: function() {
+        step: function () {
             $this.val(Math.ceil(this.value)).trigger('change');
         }
     })

@@ -4,7 +4,7 @@
 
 function OnCompleteSectionDelete(xhr) {
     Response = xhr.responseJSON;
-   // console.log(xhr);
+    // console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
     }
@@ -12,10 +12,9 @@ function OnCompleteSectionDelete(xhr) {
     if (Response.isSuccessed) {
         ToastSuccess(Response.message)
         $('#DeleteSectionModal').modal('hide');
-        
+
         setTimeout(Refresh, 2000);
-    }
-    else {
+    } else {
         ToastError(Response.message);
     }
 }
@@ -25,15 +24,13 @@ function OnErrorSectionDelete() {
 }
 
 
-
-
 function OnLoadingSectionDetailDelete() {
 
 }
 
 function OnCompleteSectionDetailDelete(xhr) {
     Response = xhr.responseJSON;
-   // console.log(xhr);
+    // console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
     }
@@ -42,8 +39,7 @@ function OnCompleteSectionDetailDelete(xhr) {
         ToastSuccess(Response.message)
         $('#DeleteSectionDetailModal').modal('hide');
         setTimeout(Refresh, 2000);
-    }
-    else {
+    } else {
         ToastError(Response.message);
     }
 }

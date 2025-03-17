@@ -2,6 +2,7 @@ var MapData = [];
 $(document).ready(function () {
     $("#GetDataForm").submit();
 });
+
 function refresh() {
     Clean();
     $("#GetDataForm").submit();
@@ -21,19 +22,21 @@ var Time = document.getElementById("Time");
 
 
 function Clean() {
-   /* Time.insertAdjacentHTML = null;*/
+    /* Time.insertAdjacentHTML = null;*/
     MapData = [];
     RepCount = [];
 }
+
 function OnLoading() {
 
     ToastSuccess("در حال به روزرسانی اطلاعات سامانه");
-    
+
 }
+
 function OnComplete(xhr) {
     ROW.classList.replace("hidden", "show");
     ToastSuccess("به روزرسانی اطلاعات با موفقیت انجام شد");
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
 
     Users.setAttribute("data-value", Data.userCount);
@@ -72,8 +75,6 @@ function OnComplete(xhr) {
         RepCount.push(data);
     });
 
-    
-
 
     console.log(RepCount);
     CreateChartRep(RepCount);
@@ -86,7 +87,14 @@ function OnComplete(xhr) {
         var item = element.representationName + ' : ' + element.representationSells + ' ریال ';
 
         var longitudePlus = element.longitude + longitude;
-        const data = { svgPath: targetSVG, zoomLevel: 5, scale: 0.5, title: item, latitude: element.latitude, longitude: longitudePlus };
+        const data = {
+            svgPath: targetSVG,
+            zoomLevel: 5,
+            scale: 0.5,
+            title: item,
+            latitude: element.latitude,
+            longitude: longitudePlus
+        };
         MapData.push(data);
         longitude += 0.1500;
     });
@@ -101,7 +109,7 @@ function OnComplete(xhr) {
 
     CreateMap(MapData);
 
-    $(".counter-down").incrementalCounter({ digits: 'auto' });
+    $(".counter-down").incrementalCounter({digits: 'auto'});
     $('.knob-animate').each(function () {
         var $this = $(this);
         var val = $this.val();
@@ -120,23 +128,18 @@ function OnComplete(xhr) {
         });
     });
 
-    
-        
-    
+
 }
+
 function OnError() {
 
 }
 
 
-
-
-
-
-
 //map
 var map;
 var targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
+
 function CreateMap(data) {
     map = new AmCharts.AmMap();
     map.imagesSettings = {
@@ -161,6 +164,7 @@ function CreateMap(data) {
 
 //Chart
 var RepCount = [];
+
 function CreateChartRep(data) {
     console.log(data);
     Morris.Donut({
@@ -172,29 +176,18 @@ function CreateChartRep(data) {
         //    '#13a2a6',
         //    '#14B9D6'
         //],
-        formatter: function (x, data) { return data.formatted; },
+        formatter: function (x, data) {
+            return data.formatted;
+        },
         resize: true
     });
 }
 
 
-
-
-
-
-
 // Countdown
 
 
-
-
 // Realtime moris chart
-
-
-
-
-
-
 
 
 // Knob with swing animation

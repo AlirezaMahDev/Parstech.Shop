@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.IRole;
-using Shop.Domain.Models;
+﻿using MediatR;
 
-namespace Shop.Application.Features.IRole.Requests.Commands
-{
-    public record IRoleCreateCommandReq(IRoleDto roleDto) : IRequest<Irole>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Features.IRole.Requests.Commands;
+
+public record IRoleCreateCommandReq(IRoleDto roleDto) : IRequest<Irole>;

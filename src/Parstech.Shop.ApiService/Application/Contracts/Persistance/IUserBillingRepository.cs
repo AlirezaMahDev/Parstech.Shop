@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Application.DTOs.User;
-using Shop.Domain.Models;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IUserBillingRepository : IGenericRepository<UserBilling>
 {
-    public interface IUserBillingRepository:IGenericRepository<UserBilling>
-    {
-        Task<UserBilling?> GetUserBillingByUserId(int userId);
-        Task<int> ExistBillingForPersonalId(string EconomicCode);
-        
-    }
+    Task<UserBilling?> GetUserBillingByUserId(int userId);
+    Task<int> ExistBillingForPersonalId(string EconomicCode);
 }

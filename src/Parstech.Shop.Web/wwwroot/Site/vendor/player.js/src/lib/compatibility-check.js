@@ -1,4 +1,4 @@
-import { isNode } from './functions';
+import {isNode} from './functions';
 
 const arrayIndexOfSupport = typeof Array.prototype.indexOf !== 'undefined';
 const postMessageSupport = typeof window !== 'undefined' && typeof window.postMessage !== 'undefined';

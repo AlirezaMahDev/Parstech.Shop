@@ -5,9 +5,9 @@ $(".has-persian-datepicker").pDatepicker({
     observer: true,
     autoClose: true,
     navigator: {text: {btnNextText: "«", btnPrevText: "»"}},
-    onSelect: function(unix) {
+    onSelect: function (unix) {
         var date = new persianDate(unix).toLocale("en").format("YYYY/MM/DD");
-        console.log(date); 
+        console.log(date);
     }
 });
 
@@ -37,14 +37,13 @@ $(".has-time-picker").pDatepicker({
 });
 
 
-
 $(".has-gregorian-datepicker").pDatepicker({
     format: "YYYY-MM-DD",
     observer: true,
     autoClose: true,
     calendarType: "gregorian",
     navigator: {text: {btnNextText: "«", btnPrevText: "»"}},
-    onSelect: function(unix) {
+    onSelect: function (unix) {
         var date = new persianDate(unix).toLocale("en").format("YYYY-MM-DD");
         console.log(date);
     }

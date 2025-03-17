@@ -1,58 +1,31 @@
 using Grpc.Core;
-using MediatR;
-using Parstech.Shop.Shared.Protos.Brand;
-using Shop.Application.Features.Brand.Requests.Queries;
 
-namespace Shop.ApiService.Services
+using MediatR;
+
+using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Services;
+
+public class BrandGrpcService : BrandService.BrandServiceBase
 {
-    public class BrandGrpcService : BrandService.BrandServiceBase
+    private readonly IMediator _mediator;
+
+    public BrandGrpcService(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-        
-        public BrandGrpcService(IMediator mediator)
+        _mediator = mediator;
+    }
+
+    public override async Task<BrandResponse> GetBrands(BrandsRequest request, ServerCallContext context)
+    {
+        try
         {
-            _mediator = mediator;
-        }
-        
-        public override async Task<BrandResponse> GetBrands(BrandsRequest request, ServerCallContext context)
-        {
-            try
+            void brands = await _mediator.Send(new BrandsQueryReq());
+
+            var response = new BrandResponse();
+            foreach (var brand in brands)
             {
-                var brands = await _mediator.Send(new BrandsQueryReq());
-                
-                var response = new BrandResponse();
-                foreach (var brand in brands)
-                {
-                    response.Brands.Add(new Brand
-                    {
-                        Id = brand.Id,
-                        Name = brand.Name ?? string.Empty,
-                        LatinName = brand.LatinName ?? string.Empty,
-                        Description = brand.Description ?? string.Empty,
-                        Image = brand.Image ?? string.Empty,
-                        IsActive = brand.IsActive,
-                        Order = brand.Order,
-                        Logo = brand.Logo ?? string.Empty,
-                        Website = brand.Website ?? string.Empty,
-                        Country = brand.Country ?? string.Empty
-                    });
-                }
-                
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
-            }
-        }
-        
-        public override async Task<Brand> GetBrandById(BrandByIdRequest request, ServerCallContext context)
-        {
-            try
-            {
-                var brand = await _mediator.Send(new BrandReadCommandReq(request.Id));
-                
-                return new Brand
+                response.Brands.Add(new Brand
                 {
                     Id = brand.Id,
                     Name = brand.Name ?? string.Empty,
@@ -64,12 +37,40 @@ namespace Shop.ApiService.Services
                     Logo = brand.Logo ?? string.Empty,
                     Website = brand.Website ?? string.Empty,
                     Country = brand.Country ?? string.Empty
-                };
+                });
             }
-            catch (Exception ex)
-            {
-                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
-            }
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new RpcException(new(StatusCode.Internal, ex.Message));
         }
     }
-} 
+
+    public override async Task<Brand> GetBrandById(BrandByIdRequest request, ServerCallContext context)
+    {
+        try
+        {
+            void brand = await _mediator.Send(new BrandReadCommandReq(request.Id));
+
+            return new Brand
+            {
+                Id = brand.Id,
+                Name = brand.Name ?? string.Empty,
+                LatinName = brand.LatinName ?? string.Empty,
+                Description = brand.Description ?? string.Empty,
+                Image = brand.Image ?? string.Empty,
+                IsActive = brand.IsActive,
+                Order = brand.Order,
+                Logo = brand.Logo ?? string.Empty,
+                Website = brand.Website ?? string.Empty,
+                Country = brand.Country ?? string.Empty
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new RpcException(new(StatusCode.Internal, ex.Message));
+        }
+    }
+}

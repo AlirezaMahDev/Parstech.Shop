@@ -1,5 +1,4 @@
-
-AmCharts.ready(function() {
+AmCharts.ready(function () {
     // Create global AmMap object
     var map = new AmCharts.AmMap();
     var dataProvider = {
@@ -15,8 +14,8 @@ AmCharts.ready(function() {
     };
     map.smallMap = new AmCharts.SmallMap();
     map.write("global-map");
-    
-    
+
+
     // Create Iran AmMap object
     var map = new AmCharts.AmMap();
     var dataProvider = {
@@ -32,8 +31,8 @@ AmCharts.ready(function() {
     };
     map.smallMap = new AmCharts.SmallMap();
     map.write("fa-iran-map");
-    
-    
+
+
     // Create En global AmMap object
     var map = new AmCharts.AmMap();
     var dataProvider = {

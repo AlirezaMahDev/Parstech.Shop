@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Categury;
-using Shop.Application.DTOs.Status;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Status.Requests.Commands
-{
-    public record StatusReadCommandReq() : IRequest<List<StatusDto>>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.Status.Requests.Commands;
+
+public record StatusReadCommandReq() : IRequest<List<StatusDto>>;

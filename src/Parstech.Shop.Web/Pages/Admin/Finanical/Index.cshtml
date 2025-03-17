@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Finanical.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Finanical.IndexModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -12,18 +13,27 @@
                         <i class="icon-settings"></i>
                         لیست حساب کاربران
                     </h3>
-                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#RegistrationFecilitiesModal">
+                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()"
+                            data-bs-toggle="modal" data-bs-target="#RegistrationFecilitiesModal">
                         ثبت تسهیلات توسط اکسل
                     </button>
-                    <button class="btn btn-sm btn-success btn-round hover-blue" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#PaymentFecilitiesModal">
+                    <button class="btn btn-sm btn-success btn-round hover-blue" onclick="CleanItem()"
+                            data-bs-toggle="modal" data-bs-target="#PaymentFecilitiesModal">
                         تسویه اقساط توسط اکسل
                     </button>
                 </div>
                 <div class="buttons-box">
-                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddOrEditCateguryModal">
+                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()"
+                            data-bs-toggle="modal" data-bs-target="#AddOrEditCateguryModal">
                         <i class="icon-plus"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
-                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background" style="opacity: 0.0088;"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
 
 
@@ -48,7 +58,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -65,7 +76,8 @@
                             <option value="">انتخاب نشده</option>
                             @foreach (var item in Model.UserFilterDtos)
                             {
-                                <option value=@item.Id>@item.UserName | @item.FirstName @item.LastName | @item.EconomicCode | @item.NationalCode | @item.Mobile</option>
+                                <option
+                                    value=@item.Id>@item.UserName | @item.FirstName @item.LastName | @item.EconomicCode | @item.NationalCode | @item.Mobile</option>
                             }
                         </select>
                         <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
@@ -84,12 +96,12 @@
                     <table class="table table-bordered table-hover table-striped" id="data-table">
 
                         <thead>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
 
                         </tbody>
 
@@ -111,8 +123,8 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="Parameter.UserId" id="Parameter_UserId" />
-    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+    <input type="hidden" asp-for="Parameter.UserId" id="Parameter_UserId"/>
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
 </form>
 <form method="post" id="DataTransactionsForm" asp-page-handler="DataTransactions"
       data-ajax="true"
@@ -120,10 +132,10 @@
       data-ajax-begin="OnLoadingDataTransactions"
       data-ajax-complete="OnCompleteDataTransactions"
       data-ajax-failure="OnErrorDataTransactions">
-    <input type="hidden" asp-for="WTParameter.Filter" id="WTParameter_Filter" />
-    <input type="hidden" asp-for="WTParameter.CurrentPage" id="WTParameter_CurrentPage" />
-    <input type="hidden" asp-for="walletType" id="walletType" />
-    <input type="hidden" asp-for="walletId" class="walletId" />
+    <input type="hidden" asp-for="WTParameter.Filter" id="WTParameter_Filter"/>
+    <input type="hidden" asp-for="WTParameter.CurrentPage" id="WTParameter_CurrentPage"/>
+    <input type="hidden" asp-for="walletType" id="walletType"/>
+    <input type="hidden" asp-for="walletId" class="walletId"/>
 </form>
 <form method="post" id="BlockOrUnblockForm" asp-page-handler="BlockOrUnblock"
       data-ajax="true"
@@ -131,16 +143,17 @@
       data-ajax-begin="OnLoadingBlockOrUnblock"
       data-ajax-complete="OnCompleteBlockOrUnblock"
       data-ajax-failure="OnErrorBlockOrUnblock">
-    <input type="hidden" asp-for="block" id="Block" />
-    <input type="hidden" asp-for="walletId" class="walletId" />
+    <input type="hidden" asp-for="block" id="Block"/>
+    <input type="hidden" asp-for="walletId" class="walletId"/>
 </form>
-<form method="post" id="TransactionDetail" asp-page-handler="TransactionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
+<form method="post" id="TransactionDetail" asp-page-handler="TransactionDetail" class="form-horizontal" role="form"
+      enctype="multipart/form-data"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-begin="OnLoadingTransactionDetail"
       data-ajax-complete="OnCompleteTransactionDetail"
       data-ajax-failure="OnErrorTransactionDetail">
-    <input type="hidden" asp-for="transactionId" id="transactionId" />
+    <input type="hidden" asp-for="transactionId" id="transactionId"/>
 </form>
 
 
@@ -172,12 +185,12 @@
                             <table class="table table-bordered table-hover table-striped" id="Tdata-table">
 
                                 <thead>
-                                    <tr>
-                                    </tr>
+                                <tr>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                    </tr>
+                                <tr>
+                                </tr>
 
                                 </tbody>
 
@@ -207,31 +220,29 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="CreateTransaction" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="CreateTransaction" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingFecilities"
                           data-ajax-complete="OnCompleteFecilities">
 
-                        <input type="hidden" asp-for="Transaction.WalletId" class="walletId" />
-
-
-
-
-
+                        <input type="hidden" asp-for="Transaction.WalletId" class="walletId"/>
 
 
                         <div class="row">
                             <div class="col-12  m-auto m-b-10">
                                 <label>مبلغ تسهیلات(تومان):</label>
                                 <div class="form-group round m-auto">
-                                    <input asp-for="Transaction.InputPrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                    <input asp-for="Transaction.InputPrice" type="text" class="form-control"
+                                           onkeyup="javascript:this.value=itpro(this.value);">
                                 </div>
                             </div>
                             <div class="col-6  m-auto m-b-10">
                                 <label>نوع اعتبار:</label>
                                 <div class="form-group round m-auto">
-                                    <select asp-for="Transaction.Type" id="" type="text" class="has-persian-datepicker form-control">
+                                    <select asp-for="Transaction.Type" id="" type="text"
+                                            class="has-persian-datepicker form-control">
                                         <option value="Fecilities">تسهیلات عادی</option>
                                         <option value="OrgCredit">اعتبار سازمانی</option>
                                     </select>
@@ -240,9 +251,10 @@
                             <div class="col-6  m-auto m-b-10">
                                 <label>نوع تراکنش:</label>
                                 <div class="form-group round m-auto">
-                                    <select asp-for="Transaction.TypeId" id="" type="text" class="has-persian-datepicker form-control">
-                                        <option value=1>واریز</option>
-                                        <option value=2>برداشت</option>
+                                    <select asp-for="Transaction.TypeId" id="" type="text"
+                                            class="has-persian-datepicker form-control">
+                                        <option value="1">واریز</option>
+                                        <option value="2">برداشت</option>
 
                                     </select>
                                 </div>
@@ -266,12 +278,13 @@
 
                             <div class="col-6  m-auto m-b-10">
                                 <label>تسهیلات فعال جهت استفاده مشتری</label>
-                                <span class="badge bg-red">جهت اجازه به استفاده کاربر از تسهیلات این گزینه فعال شود </span>
+                                <span
+                                    class="badge bg-red">جهت اجازه به استفاده کاربر از تسهیلات این گزینه فعال شود </span>
                                 <div class="form-group round m-auto">
 
                                     <select asp-for="Transaction.Active" class="form-control">
-                                        <option value=true>فعال</option>
-                                        <option value=false>غیرفعال</option>
+                                        <option value="true">فعال</option>
+                                        <option value="false">غیرفعال</option>
                                     </select>
 
                                 </div>
@@ -297,7 +310,6 @@
                             </div><!-- /.col-md-8 -->
                         </div>
                     </form>
-
 
 
                 </div><!-- /col-lg-12 -->
@@ -344,12 +356,12 @@
                 <h4 class="modal-title">ثبت تسهیلات برای کاربران به صورت اکسل</h4>
 
             </div>
-            <form method="post" asp-page-handler="RegistrationFecilities" class="form-horizontal" role="form" enctype="multipart/form-data"
+            <form method="post" asp-page-handler="RegistrationFecilities" class="form-horizontal" role="form"
+                  enctype="multipart/form-data"
                   data-ajax="true"
                   data-ajax-method="POST"
                   data-ajax-complete="OnCompleteRegister">
                 <div class="modal-body">
-
 
 
                     <div class="col-12  m-auto m-b-10">
@@ -388,7 +400,7 @@
                     <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
                 </div>
                 <div class="modal-footer" id="ErrorRegistrationSection">
-">
+                    ">
                 </div>
             </form>
         </div>
@@ -403,7 +415,8 @@
                 <h4 class="modal-title">ثبت تسویه اقساط برای کاربران به صورت اکسل</h4>
 
             </div>
-            <form method="post" asp-page-handler="PaymentFecilities" class="form-horizontal" role="form" enctype="multipart/form-data"
+            <form method="post" asp-page-handler="PaymentFecilities" class="form-horizontal" role="form"
+                  enctype="multipart/form-data"
                   data-ajax="true"
                   data-ajax-method="POST"
                   data-ajax-complete="OnCompletePayment">
@@ -435,7 +448,7 @@
                     <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
                 </div>
                 <div class="modal-footer" id="ErrorPaymentSection">
-">
+                    ">
                 </div>
             </form>
         </div>
@@ -443,18 +456,21 @@
 </div>
 
 
-<form id="TasviyeGhestForm" method="post" asp-page-handler="TasviyeGhest" class="form-horizontal" role="form" enctype="multipart/form-data"
+<form id="TasviyeGhestForm" method="post" asp-page-handler="TasviyeGhest" class="form-horizontal" role="form"
+      enctype="multipart/form-data"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteTasviyeGhest">
 
-    <input type="hidden" name="transactionId" id="TasviyeGhestId" />
+    <input type="hidden" name="transactionId" id="TasviyeGhestId"/>
 </form>>
 <!--End Excel Registration Fecilities-->
+
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
-    }
+}
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>
@@ -467,4 +483,4 @@
     <script src="~/shared/lib/admin/finanical/fecilities.js"></script>
 
 
-    }
+}

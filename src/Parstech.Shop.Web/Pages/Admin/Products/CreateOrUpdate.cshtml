@@ -1,14 +1,13 @@
 ﻿@page "{Id?}"
-@using Shop.Application.Enum
-@model Shop.Web.Pages.Admin.Products.CreateOrUpdateModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Products.CreateOrUpdateModel
 @{
     Layout = "Shared/Admin_Layout";
 }
 
 
-<input type="hidden" asp-for="productId" id="productId" />
+<input type="hidden" asp-for="productId" id="productId"/>
 <div class="row">
-
 
 
     <div class="col-12">
@@ -19,13 +18,14 @@
                         <i class="icon-bag Orange"></i>
                         اطلاعات محصول
                     </h3>
-                   
+
                 </div>
 
             </div>
             <div class="portlet-body">
                 <div class="portlet-body">
-                    <form method="post" id="SaveForm" asp-page-handler="Save" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" id="SaveForm" asp-page-handler="Save" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingSave"
@@ -40,7 +40,8 @@
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
                                 <label>شناسه سامانه</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Id" class="ProductId" type="text" class="form-control" disabled>
+                                    <input asp-for="ProductDto.Id" class="ProductId" type="text" class="form-control"
+                                           disabled>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
@@ -59,23 +60,26 @@
                             <div class="col-md-12 col-lg-12 m-auto m-b-10">
                                 <label> عنوان محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Name" id="ProductDto_Name" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Name" id="ProductDto_Name" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-12 m-auto m-b-10">
                                 <label> عنوان لاتین محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.LatinName" id="ProductDto_LatinName" type="text" class="form-control">
+                                    <input asp-for="ProductDto.LatinName" id="ProductDto_LatinName" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 m-auto m-b-10">
                                 <label>کد محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Code" id="ProductDto_Code" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Code" id="ProductDto_Code" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 m-auto m-b-10">
-                                <label>نوع محصول<br /> <small class="text-warning" id="ParentText"></small></label>
+                                <label>نوع محصول<br/> <small class="text-warning" id="ParentText"></small></label>
                                 <div class="form-group round">
                                     @* <select class="form-control" asp-for="ProductDto.TypeId" id="ProductDto_TypeId">
 
@@ -97,19 +101,21 @@
                                 <label>برند</label>
                                 <div class="form-group">
 
-                                    <select asp-for="ProductDto.BrandId" id="ProductDto_BrandId" class="form-control select2">
+                                    <select asp-for="ProductDto.BrandId" id="ProductDto_BrandId"
+                                            class="form-control select2">
                                         <option value="">انتخاب نشده</option>
                                         @foreach (var item in Model.Brands)
                                         {
                                             if (item.BrandId == Model.SelectedBrand)
                                             {
-                                                <option selected="selected" value="@item.BrandId">@item.BrandTitle @item.LatinBrandTitle</option>
+                                                <option selected="selected"
+                                                        value="@item.BrandId">@item.BrandTitle @item.LatinBrandTitle</option>
                                             }
                                             else
                                             {
-                                                <option value="@item.BrandId">@item.BrandTitle @item.LatinBrandTitle</option>
+                                                <option
+                                                    value="@item.BrandId">@item.BrandTitle @item.LatinBrandTitle</option>
                                             }
-
                                         }
                                     </select>
 
@@ -119,16 +125,17 @@
                             </div>
                             <div id="BundleSection" class="hidden">
                                 <div class="col-md-6 col-lg-6 m-auto m-b-10">
-                                    <label>فروش تکی<br /> <small class="text-warning" id="ParentText"></small></label>
+                                    <label>فروش تکی<br/> <small class="text-warning" id="ParentText"></small></label>
                                     <div class="form-group round">
                                         <small class="Orange">در صورت انتخاب نوع محصول (زیرمجموعه باندل)</small>
-                                        <select class="form-control" asp-for="ProductDto.SingleSale" id="ProductDto_SingleSale">
+                                        <select class="form-control" asp-for="ProductDto.SingleSale"
+                                                id="ProductDto_SingleSale">
                                             <option value="true">محصول به صورت تکی هم فروخته شود</option>
                                             <option value="false">فروش فقط به صورت باندل</option>
                                         </select>
                                     </div>
                                 </div>
-                                
+
 
                             </div>
                             @* <div id="VariationSection" class="hidden">
@@ -173,12 +180,13 @@
                                             <option value="@item.Id">@item.TaxName</option>
                                         }
                                     </select>
-                                     </div>
+                                </div>
                             </div>
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
                                 <label>امتیاز</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Score" id="ProductDto_Score" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Score" id="ProductDto_Score" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
 
@@ -186,27 +194,30 @@
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
                                 <label>شناسه مالیاتی</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.TaxCode" id="ProductDto_TaxCode" type="text" class="form-control">
-                                    </div>
+                                    <input asp-for="ProductDto.TaxCode" id="ProductDto_TaxCode" type="text"
+                                           class="form-control">
+                                </div>
                             </div>
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
                                 <label>کلمات کلیدی</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Keywords" id="ProductDto_Keywords" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Keywords" id="ProductDto_Keywords" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-lg-12 m-auto m-b-10">
                                 <label>توضیح کوتاه</label>
                                 <div class="form-group round">
-                                    <textarea asp-for="ProductDto.ShortDescription" id="ProductDto_ShortDescription" type="text" class="form-control"></textarea>
+                                    <textarea asp-for="ProductDto.ShortDescription" id="ProductDto_ShortDescription"
+                                              type="text" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-12 m-auto m-b-10">
                                 <label>توضیحات</label>
                                 <div class="form-group round">
                                     
-                                    <textarea asp-for="ProductDto.Description" id="ProductDto_Description" >
+                                    <textarea asp-for="ProductDto.Description" id="ProductDto_Description">
                                         
                                     </textarea>
                                 </div>
@@ -236,7 +247,7 @@
     <div class="col-12" id="GalleryData"></div>
     <div class="col-12" id="FeuturesData"></div>
     <div class="col-12" id="ChildAndStockData"></div>
-    
+
 </div>
 
 
@@ -255,14 +266,17 @@
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteAddCat">
-                        <input type="hidden" asp-for="categury.ProductId" class="ProductId" />
+                        <input type="hidden" asp-for="categury.ProductId" class="ProductId"/>
 
                         <div class="form-group">
                             <label>جستجوی دسته بندی</label>
                             <div class="input-group">
-                                <input type="text" class="form-control " id="SearchCatText" placeholder="عنوان دسته بندی را جستجو نمایید">
+                                <input type="text" class="form-control " id="SearchCatText"
+                                       placeholder="عنوان دسته بندی را جستجو نمایید">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" onclick="SearchCat()" type="button">جستجو<div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div></button>
+                                    <button class="btn btn-primary" onclick="SearchCat()" type="button">جستجو<div
+                                            class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div></button>
                                 </span>
                             </div>
                         </div>
@@ -272,7 +286,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">ثبت </button>
+                            <button type="submit" class="btn btn-primary">ثبت</button>
                         </div>
 
                     </form>
@@ -288,14 +302,14 @@
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteGetAllCat">
-    <input type="hidden" asp-for="productId" class="ProductId" />
-    <input type="hidden" asp-for="FilterCat" id="FilterCatForm" />
+    <input type="hidden" asp-for="productId" class="ProductId"/>
+    <input type="hidden" asp-for="FilterCat" id="FilterCatForm"/>
 </form>
 <form method="post" id="DeleteCatForm" asp-page-handler="DeleteCategury"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteDeleteCat">
-    <input type="hidden" asp-for="productId" class="ProductId" />
+    <input type="hidden" asp-for="productId" class="ProductId"/>
 </form>
 <!--Categury-->
 
@@ -310,7 +324,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="SearchFeuture" id="SearchFeutureForm" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="SearchFeuture" id="SearchFeutureForm" class="form-horizontal"
+                          role="form" enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteFeuture">
@@ -318,9 +333,12 @@
                         <div class="form-group">
                             <label>جستجوی دسته بندی</label>
                             <div class="input-group">
-                                <input type="text" class="form-control " id="SearchCatText2" placeholder="عنوان دسته بندی را جستجو نمایید">
+                                <input type="text" class="form-control " id="SearchCatText2"
+                                       placeholder="عنوان دسته بندی را جستجو نمایید">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" onclick="SearchCat2()" type="button">جستجو<div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div></button>
+                                    <button class="btn btn-primary" onclick="SearchCat2()" type="button">جستجو<div
+                                            class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div></button>
                                 </span>
                             </div>
                         </div>
@@ -344,7 +362,7 @@
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>جستجوی نام ویژگی</label>
                             <div class="form-group round">
-                                <input class="form-control" asp-for="propertyFilter" />
+                                <input class="form-control" asp-for="propertyFilter"/>
 
                             </div>
                         </div>
@@ -368,12 +386,12 @@
                         <table class="table table-bordered table-hover table-striped" id="data-table2">
 
                             <thead>
-                                <tr>
-                                </tr>
+                            <tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                </tr>
+                            <tr>
+                            </tr>
 
                             </tbody>
 
@@ -396,7 +414,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddEditFeuture" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddEditFeuture" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteAEFeuture">
@@ -404,7 +423,6 @@
                         <input type="hidden" asp-for="AddFeutureInput.ProductId" class="ProductId">
                         <input type="hidden" asp-for="AddFeutureInput.Id" id="AddFeutureInput_Id">
                         <input type="hidden" asp-for="AddFeutureInput.PropertyId" id="AddFeutureInput_PropertyId">
-
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
@@ -444,7 +462,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="DeleteFeuture" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="DeleteFeuture" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteDeleteFeuture">
@@ -480,8 +499,8 @@
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteGetAllCat2">
-    <input type="hidden" asp-for="productId" class="ProductId" />
-    <input type="hidden" asp-for="FilterCat" id="FilterCatForm2" />
+    <input type="hidden" asp-for="productId" class="ProductId"/>
+    <input type="hidden" asp-for="FilterCat" id="FilterCatForm2"/>
 </form>
 <form method="post" id="GetSubsForm" asp-page-handler="Subs"
       data-ajax="true"
@@ -489,7 +508,7 @@
       data-ajax-begin="OnLoadingSub"
       data-ajax-complete="OnCompleteSub"
       data-ajax-failure="OnErrorSub">
-    <input type="hidden" name="parentId" id="parentId" />
+    <input type="hidden" name="parentId" id="parentId"/>
 </form>
 <!--Feutures-->
 
@@ -505,19 +524,21 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddVariation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddVariation" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteAddVariation">
-                        <input type="hidden" asp-for="productId" class="ProductId" />
-                        <input type="hidden" asp-for="variationDto.ParentId" class="ProductId" />
+                        <input type="hidden" asp-for="productId" class="ProductId"/>
+                        <input type="hidden" asp-for="variationDto.ParentId" class="ProductId"/>
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>نام مختصر متغیر</label>
                             <small class="Red">راهنما(رنگ محصول متغیر )</small>
                             <div class="form-group round">
-                                <input asp-for="variationDto.VariationName" id="variationDto_VariationName" type="text" class="form-control">
+                                <input asp-for="variationDto.VariationName" id="variationDto_VariationName" type="text"
+                                       class="form-control">
                             </div>
                         </div>
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
@@ -549,18 +570,20 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="EditVariation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="EditVariation" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteEditVariation">
-                        <input type="hidden" name="variationId" id="variationId" />
+                        <input type="hidden" name="variationId" id="variationId"/>
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>نام مختصر متغیر</label>
                             <small class="Red">راهنما(رنگ محصول متغیر )</small>
                             <div class="form-group round">
-                                <input asp-for="variationDto.VariationName" id="variationDto_VariationName" type="text" class="form-control">
+                                <input asp-for="variationDto.VariationName" id="variationDto_VariationName" type="text"
+                                       class="form-control">
                             </div>
                         </div>
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
@@ -596,8 +619,7 @@
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteAddSingleStock">
-                        <input type="hidden" asp-for="productId" id="dublicateProductId" class="ProductId" />
-
+                        <input type="hidden" asp-for="productId" id="dublicateProductId" class="ProductId"/>
 
 
                         <div class="form-group">
@@ -611,7 +633,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">ثبت </button>
+                            <button type="submit" class="btn btn-primary">ثبت</button>
                         </div>
 
                     </form>
@@ -628,7 +650,7 @@
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteDeleteChild">
 
-    <input type="hidden" name="childId" id="childId" />
+    <input type="hidden" name="childId" id="childId"/>
 
 </form>
 <!--Variations-->
@@ -644,69 +666,81 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="EditPriceItem" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="EditPriceItem" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteEditPrice">
 
-                        <input type="hidden" asp-for="productStock.Id" class="ProductStockId" />
-                        <input type="hidden" asp-for="productStock.ProductId" id="product_ProductId" />
-                        <input type="hidden" asp-for="productStock.RepId" id="product_RepId" />
-                        <input type="hidden" asp-for="productStock.StoreId" id="product_StoreId" />
-                        <input type="hidden" asp-for="productStock.StockStatus" id="product_StockStatus" />
-                        <input type="hidden" asp-for="productStock.Quantity" id="product_Quantity" />
+                        <input type="hidden" asp-for="productStock.Id" class="ProductStockId"/>
+                        <input type="hidden" asp-for="productStock.ProductId" id="product_ProductId"/>
+                        <input type="hidden" asp-for="productStock.RepId" id="product_RepId"/>
+                        <input type="hidden" asp-for="productStock.StoreId" id="product_StoreId"/>
+                        <input type="hidden" asp-for="productStock.StockStatus" id="product_StockStatus"/>
+                        <input type="hidden" asp-for="productStock.Quantity" id="product_Quantity"/>
 
 
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label> قیمت خام</label>
                             <div class="form-group round">
-                                <input asp-for="productStock.TextBasePrice" id="product_BasePrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                <input asp-for="productStock.TextBasePrice" id="product_BasePrice" type="text"
+                                       class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>قیمت خرید</label>
                             <div class="form-group round">
-                                <input asp-for="productStock.TextPrice" id="product_Price" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                <input asp-for="productStock.TextPrice" id="product_Price" type="text"
+                                       class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>قیمت فروش</label>
                             <div class="form-group round">
-                                <input asp-for="productStock.TextSalePrice" id="product_SalePrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                <input asp-for="productStock.TextSalePrice" id="product_SalePrice" type="text"
+                                       class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>قیمت شگفت انگیز</label>
                             <div class="form-group round">
-                                <input asp-for="productStock.TextDiscountPrice" id="product_DiscountPrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                <input asp-for="productStock.TextDiscountPrice" id="product_DiscountPrice" type="text"
+                                       class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>تاریخ انقضا قیمت شگفت انگیز</label>
                             <strong class="text-red" id="productStock_DiscountDate"></strong>
                             <div class="form-group round">
-                                <input asp-for="productStock.DiscountDateShamsi" id="product_DiscountDateShamsi" type="text" value="null" class=" has-persian-datepicker form-control">
+                                <input asp-for="productStock.DiscountDateShamsi" id="product_DiscountDateShamsi"
+                                       type="text" value="null" class=" has-persian-datepicker form-control">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>دسته بندی کاربران</label>
 
                             <div class="form-group round">
-                                <select asp-for="productStock.CateguryOfUserId" id="product_CateguryOfUserId" type="text" class="form-control" data-val="true">
-                                    <option value=null>انتخاب نشده</option>
-                                    <option value=1>همکاران بانک ملی ایران</option>
-                                   
+                                <select asp-for="productStock.CateguryOfUserId" id="product_CateguryOfUserId"
+                                        type="text" class="form-control" data-val="true">
+                                    <option value="null">انتخاب نشده</option>
+                                    <option value="1">همکاران بانک ملی ایران</option>
+
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>نوع مشاهده محصول برای دسته بندی کاربران</label>
-                            
+
                             <div class="form-group round">
-                                <select asp-for="productStock.CateguryOfUserType" id="product_CateguryOfUserType" type="text" class="form-control" data-val="true">
-                                    <option value=null>انتخاب نشده</option>
-                                    <option value="@CateguryOfUserType.ShowDiscoutProductForUserCategury">مشاهده تخفیف برای دسته بندی کاربران</option>
-                                    <option value="@CateguryOfUserType.ShowProductJustForUserCategury">مشاهده محصول برای دسته بندی کاربران</option>
+                                <select asp-for="productStock.CateguryOfUserType" id="product_CateguryOfUserType"
+                                        type="text" class="form-control" data-val="true">
+                                    <option value="null">انتخاب نشده</option>
+                                    <option value="@CateguryOfUserType.ShowDiscoutProductForUserCategury">مشاهده تخفیف
+                                        برای دسته بندی کاربران
+                                    </option>
+                                    <option value="@CateguryOfUserType.ShowProductJustForUserCategury">مشاهده محصول برای
+                                        دسته بندی کاربران
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -739,24 +773,29 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddProductRepresentation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddProductRepresentation" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteAddPr">
-                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId" class="ProductStockId" />
-                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId" />
+                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId"
+                               class="ProductStockId"/>
+                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId"/>
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>کد اختصاصی درخواست انبار</label>
-                            <small class="Red">در صورتی که این مقدار خالی ثبت شود کد اختصاصی به صورت خودکار درج خواهد شد</small>
+                            <small class="Red">در صورتی که این مقدار خالی ثبت شود کد اختصاصی به صورت خودکار درج خواهد
+                                شد</small>
                             <div class="form-group round">
-                                <input asp-for="ProductRepresentationDto.UniqeCode" id="ProductRepresentationDto_UniqeCode" type="text" class="form-control">
+                                <input asp-for="ProductRepresentationDto.UniqeCode"
+                                       id="ProductRepresentationDto_UniqeCode" type="text" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>نوع درخواست انبار</label>
                             <div class="form-group round">
-                                <select asp-for="ProductRepresentationDto.TypeId" id="ProductRepresentationDto_TypeId" type="text" class="form-control">
+                                <select asp-for="ProductRepresentationDto.TypeId" id="ProductRepresentationDto_TypeId"
+                                        type="text" class="form-control">
                                     <option>انتخاب کنید</option>
                                     @foreach (var item in Model.repTypes)
                                     {
@@ -769,7 +808,8 @@
                             <label>تعداد مورد نظر</label>
 
                             <div class="form-group round">
-                                <input asp-for="ProductRepresentationDto.Quantity" id="ProductRepresentationDto.Quantity" type="number" class="form-control">
+                                <input asp-for="ProductRepresentationDto.Quantity"
+                                       id="ProductRepresentationDto.Quantity" type="number" class="form-control">
                             </div>
                         </div>
 
@@ -777,13 +817,16 @@
                             <label> تعداد در هر پک باندل</label>
 
                             <div class="form-group round">
-                                <input asp-for="ProductRepresentationDto.QuantityPerBundle" type="number" class="form-control">
+                                <input asp-for="ProductRepresentationDto.QuantityPerBundle" type="number"
+                                       class="form-control">
                             </div>
                         </div>
 
 
                         <div class="form-group relative">
-                            <input type="file" class="form-control" data-val="true" data-val-required="The LogoFile field is required." asp-for="ProductRepresentationDto.File" id="ProductRepresentationDto_File">
+                            <input type="file" class="form-control" data-val="true"
+                                   data-val-required="The LogoFile field is required."
+                                   asp-for="ProductRepresentationDto.File" id="ProductRepresentationDto_File">
                             <label>پیوست فایل(رسید انبار)</label>
                             <div class="input-group round">
                                 <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
@@ -795,7 +838,8 @@
                                             <div class="paper-ripple__background"></div>
                                             <div class="paper-ripple__waves"></div>
                                         </div>
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -831,25 +875,24 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="QuickAddProductRepresentation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="QuickAddProductRepresentation" class="form-horizontal"
+                          role="form" enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteQuickAddPr">
-                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId" class="ProductStockId" />
-                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId" />
+                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId"
+                               class="ProductStockId"/>
+                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId"/>
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>تعداد مورد نظر</label>
 
                             <div class="form-group round">
-                                <input asp-for="ProductRepresentationDto.Quantity" id="ProductRepresentationDto.Quantity" type="number" class="form-control">
+                                <input asp-for="ProductRepresentationDto.Quantity"
+                                       id="ProductRepresentationDto.Quantity" type="number" class="form-control">
                             </div>
                         </div>
-
-
-
-
 
 
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
@@ -881,17 +924,19 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="ChangeQuantityPerBundle" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="ChangeQuantityPerBundle" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteChangeQuantityPerBundle">
-                        <input type="hidden" name="productStockPriceId" id="productStockPriceId" />
+                        <input type="hidden" name="productStockPriceId" id="productStockPriceId"/>
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label> تعداد در هر پک باندل</label>
 
                             <div class="form-group round">
-                                <input name="QuantityPerBundle" id="QuantityPerBundle" type="number" class="form-control">
+                                <input name="QuantityPerBundle" id="QuantityPerBundle" type="number"
+                                       class="form-control">
                             </div>
                         </div>
 
@@ -918,14 +963,14 @@
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteGetPrice">
-    <input type="hidden" asp-for="productId" class="ProductStockId" />
+    <input type="hidden" asp-for="productId" class="ProductStockId"/>
 </form>
 <form method="post" id="DeleteProductStockPrice" asp-page-handler="DeleteProductStock"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteDeleteProductStock">
-    <input type="hidden" name="rep" id="repId" />
-    <input type="hidden" name="id" id="pspId" />
+    <input type="hidden" name="rep" id="repId"/>
+    <input type="hidden" name="id" id="pspId"/>
 
 </form>
 <!--Stocks-->
@@ -945,7 +990,9 @@
                 <div class="col-lg-12">
 
                     <div>
-                        <button type="button" class="btn btn-xs btn-success hover-green" onclick="showAddCatModal()">افزودن دسته بندی</button>
+                        <button type="button" class="btn btn-xs btn-success hover-green" onclick="showAddCatModal()">
+                            افزودن دسته بندی
+                        </button>
                     </div>
 
                 </div><!-- /col-lg-12 -->
@@ -956,15 +1003,15 @@
         </div>
     </div>
 </div>
-<input type="hidden" asp-for="productId" id="PId" />
+<input type="hidden" asp-for="productId" id="PId"/>
 
 <form method="post" id="ProductParentsForm" asp-page-handler="ProductParents"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-begin="OnLoadingProductParents"
       data-ajax-complete="OnCompleteProductParents">
-    <input type="hidden" asp-for="Type" id="Type" />
-    <input type="hidden" asp-for="Filter" id="FilterParrents" />
+    <input type="hidden" asp-for="Type" id="Type"/>
+    <input type="hidden" asp-for="Filter" id="FilterParrents"/>
 </form>
 
 <form method="post" id="GetDataForm" asp-page-handler="Data"
@@ -973,7 +1020,7 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="productId" class="ProductId" />
+    <input type="hidden" asp-for="productId" class="ProductId"/>
 </form>
 
 
@@ -981,8 +1028,9 @@
 
 
 <!--FORMS-->
+
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
@@ -994,6 +1042,7 @@
     </style>
 
 }
+
 @section Scripts {
     <script src="~/admin/ckeditor5/ckeditor.js"></script>
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
@@ -1008,11 +1057,11 @@
     <script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
     <script src="~/Admin/js/pages/calendar.js"></script>
 
-   
+
     <script src="~/shared/lib/admin/Products/CreateOrUpdate.js"></script>
     <script src="~/shared/lib/admin/Products/CreateOrUpdateAjax/Categury.js"></script>
     <script src="~/shared/lib/admin/products/CreateOrUpdateAjax/Galleries.js"></script>
-    
+
     <script src="~/shared/lib/admin/Products/CreateOrUpdateAjax/Feuture.js"></script>
     <script src="~/shared/lib/admin/Products/CreateOrUpdateAjax/Variations.js"></script>
     <script src="~/shared/lib/admin/Products/CreateOrUpdateAjax/Stocks.js"></script>

@@ -8,7 +8,6 @@ the developers managing and developing this open source project. In return,
 they should reciprocate that respect in addressing your issue or assessing
 patches and features.
 
-
 ## Using the issue tracker
 
 The issue tracker is the preferred channel for [bug reports](#bug-reports),
@@ -20,7 +19,6 @@ respect the following restrictions:
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
-
 
 ## Bug reports
 
@@ -41,7 +39,9 @@ Guidelines for bug reports:
 4. **Create an isolated and reproducible test case.** Create a [reduced test
    case](https://css-tricks.com/reduced-test-cases/).
 
-5. **Include a live example.** Use [this Plunker debugging template](https://developer.snapappointments.com/bootstrap-select/playground/) to share your isolated test cases. You can also make use of [jsFiddle](https://jsfiddle.net/) or [JS Bin](https://jsbin.com/).
+5. **Include a live example.**
+   Use [this Plunker debugging template](https://developer.snapappointments.com/bootstrap-select/playground/) to share
+   your isolated test cases. You can also make use of [jsFiddle](https://jsfiddle.net/) or [JS Bin](https://jsbin.com/).
 
 A good bug report shouldn't leave others needing to chase you up for more
 information. Please try to be as detailed as possible in your report. What is
@@ -67,7 +67,6 @@ Example:
 > causing the bug, and potential solutions (and your opinions on their
 > merits).
 
-
 ## Feature requests
 
 Feature requests are welcome. But take a moment to find out whether your idea
@@ -89,7 +88,8 @@ code as deemed necessary.
   to the issue on the tracker, as a team member may be working on the issue in
   a branch or fork.
 * Non-trivial changes should be discussed in an issue first
-* When modifying files, please do not edit the generated or minified files in the dist/ directory. Please edit the original files.
+* When modifying files, please do not edit the generated or minified files in the dist/ directory. Please edit the
+  original files.
 * If possible, add relevant tests to cover the change
 * Write a convincing description of your PR and why we should land it
 
@@ -102,11 +102,11 @@ This means that you must setup a local development environment:
 2. Install the grunt CLI: `npm install -g grunt-cli`
 3. Install the project's development dependencies: `npm install`
 4. Run the various grunt tasks as needed:
-   - `grunt`: clean the distribution files and re-build them
-   - `grunt dist`: build the distribution files
-   - `grunt clean`: clean the distribution files
-   - `grunt dist-css`: build the css distribution files
-   - `grunt dist-js`: build the javascript distribution files
-   - `grunt watch`: watch for changes in the source files and build the
-     distribution files as needed
+    - `grunt`: clean the distribution files and re-build them
+    - `grunt dist`: build the distribution files
+    - `grunt clean`: clean the distribution files
+    - `grunt dist-css`: build the css distribution files
+    - `grunt dist-js`: build the javascript distribution files
+    - `grunt watch`: watch for changes in the source files and build the
+      distribution files as needed
 

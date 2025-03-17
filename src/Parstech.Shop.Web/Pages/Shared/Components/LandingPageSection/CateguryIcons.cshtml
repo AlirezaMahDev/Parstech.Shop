@@ -1,14 +1,15 @@
 ﻿@model Parstech.Shop.Shared.Protos.Section.SectionWithDetailsResponse
 <div class="mb-5">
     <div class="position-relative">
-        <div class="js-slick-carousel u-slick u-slick--gutters-0 position-static overflow-hidden u-slick-overflow-visble pb-5 pt-2 px-1"
-             data-arrows-classes="d-none d-xl-block u-slick__arrow-normal u-slick__arrow-centered--y rounded-circle text-black font-size-30 z-index-2"
-             data-arrow-left-classes="fa fa-angle-left u-slick__arrow-inner--left left-n16"
-             data-arrow-right-classes="fa fa-angle-right u-slick__arrow-inner--right right-n20"
-             data-pagi-classes="d-xl-none text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-3 pt-1"
-             data-slides-show="10"
-             data-slides-scroll="1"
-             data-responsive='[{
+        <div
+            class="js-slick-carousel u-slick u-slick--gutters-0 position-static overflow-hidden u-slick-overflow-visble pb-5 pt-2 px-1"
+            data-arrows-classes="d-none d-xl-block u-slick__arrow-normal u-slick__arrow-centered--y rounded-circle text-black font-size-30 z-index-2"
+            data-arrow-left-classes="fa fa-angle-left u-slick__arrow-inner--left left-n16"
+            data-arrow-right-classes="fa fa-angle-right u-slick__arrow-inner--right right-n20"
+            data-pagi-classes="d-xl-none text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-3 pt-1"
+            data-slides-show="10"
+            data-slides-scroll="1"
+            data-responsive='[{
                               "breakpoint": 1400,
                               "settings": {
                                 "slidesToShow": 8
@@ -34,17 +35,18 @@
                                 "slidesToShow": 2
                               }
                             }]'>
-            @foreach(var item in Model.SectionDetails)
+            @foreach (var item in Model.SectionDetails)
             {
                 <div class="js-slide">
                     <a href="@item.Link" class="d-block text-center bg-on-hover width-122 mx-auto MyBtn">
-                        <div class="bg pt-4 rounded-circle width-122 height-122" style="background-image: url(/shared/images/@item.BackgroundImage); background-size:cover;">
+                        <div class="bg pt-4 rounded-circle width-122 height-122"
+                             style="background-image: url(/shared/images/@item.BackgroundImage); background-size:cover;">
                             @*<i class="@item.Image font-size-40"></i>*@
                             @if (item.Image != null)
                             {
-                                <img src="~/shared/images/@item.Image" width="90" />
+                                <img src="~/shared/images/@item.Image" width="90"/>
                             }
-                            
+
                         </div>
                         <div class="bg-white px-2 pt-2 width-122">
                             <h6 class="font-weight-semi-bold font-size-14 text-gray-90 mb-0 text-lh-1dot2">@item.Caption</h6>
@@ -52,15 +54,7 @@
                     </a>
                 </div>
             }
-            
-           
-           
-            
-           
-           
-           
-           
-           
+
 
         </div>
     </div>

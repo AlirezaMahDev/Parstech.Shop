@@ -3,5 +3,5 @@
 ------------------------------------*/
 
 .progress-bar {
-    @include border-radius($progress-border-radius);
+  @include border-radius($progress-border-radius);
 }

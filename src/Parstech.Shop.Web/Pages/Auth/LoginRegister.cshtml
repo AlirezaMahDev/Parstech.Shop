@@ -1,5 +1,5 @@
 ﻿@page
-@model Shop.Web.Pages.Auth.LoginRegisterModel
+@model Parstech.Shop.Web.Pages.Auth.LoginRegisterModel
 
 @{
     Layout = "Shared/SiteAuth_Layout";
@@ -17,7 +17,8 @@
             <div class="col-xl-4 col-lg-5 col-md-7 col-12 mx-auto">
                 <div class="logo-area text-center mb-3 ">
 
-                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;" alt="logo"></a>
+                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;"
+                                     alt="logo"></a>
 
                 </div>
 
@@ -32,20 +33,22 @@
                         <div id="Error">
                         </div>
 
-                        
-                        
+
+
 
                         <div id="smsSection" class="show">
                             <div class="form-row-title">
                                 <h3>شماره موبایل</h3>
                             </div>
                             <div class="form-row with-icon">
-                                <input type="text" id="loginmobile" class="input-ui pr-2" placeholder="شماره موبایل خود را وارد نمایید">
+                                <input type="text" id="loginmobile" class="input-ui pr-2"
+                                       placeholder="شماره موبایل خود را وارد نمایید">
                                 <i class="mdi mdi-account-circle-outline"></i>
                             </div>
 
                             <div class="form-row mt-3">
-                                <button id="SubmitButton" onclick="LoginReqUser()" class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
+                                <button id="SubmitButton" onclick="LoginReqUser()"
+                                        class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
                                     <i class="mdi mdi-login-variant"></i>
                                     ورود با کد یکبار مصرف
                                 </button>
@@ -57,27 +60,33 @@
                             <div class="form-group d-flex ltr">
                                 <label class="sr-only">کدتائید</label>
 
-                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="firstInput" maxlength="1">
-                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="secondInput" maxlength="1">
-                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="thirdInput" maxlength="1">
-                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="forthInput" maxlength="1">
+                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="firstInput"
+                                       maxlength="1">
+                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="secondInput"
+                                       maxlength="1">
+                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="thirdInput"
+                                       maxlength="1">
+                                <input class="form-control m-2 auth-code ltr text-center font-size-2" id="forthInput"
+                                       maxlength="1">
 
                             </div>
 
                             <div class="form-row mt-3">
-                                <button onclick="LoginUser()" id="SubmitButton" class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
+                                <button onclick="LoginUser()" id="SubmitButton"
+                                        class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
                                     <i class="mdi mdi-login-variant"></i>
                                     تائید و ورود به فروشگاه
                                 </button>
                             </div>
-                            
+
                         </div>
 
                         <div class="form-row-title">
                             <h3>رمز عبور</h3>
                         </div>
                         <div class="form-row with-icon">
-                            <input type="password"  id="loginPassword" class="input-ui pr-2" placeholder="رمز عبور خود را وارد نمایید">
+                            <input type="password" id="loginPassword" class="input-ui pr-2"
+                                   placeholder="رمز عبور خود را وارد نمایید">
                             <i class="mdi mdi-lock-open-variant-outline"></i>
                         </div>
                         @* <div class="form-row mt-2">
@@ -89,7 +98,8 @@
                             </div>
                         </div> *@
                         <div class="form-row mt-3">
-                            <button onclick="PasswordLoginUser()" class="btn-primary-cm btn pointer  BgSormei btn-with-icon mx-auto w-100">
+                            <button onclick="PasswordLoginUser()"
+                                    class="btn-primary-cm btn pointer  BgSormei btn-with-icon mx-auto w-100">
                                 <i class="mdi mdi-login-variant"></i>
                                 ورود با کلمه عبور
                             </button>
@@ -109,16 +119,17 @@
 </main>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 
-    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet" />
-    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet" />
-    <link href="~/site/productdetail/main.css" rel="stylesheet" />
+    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/main.css" rel="stylesheet"/>
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

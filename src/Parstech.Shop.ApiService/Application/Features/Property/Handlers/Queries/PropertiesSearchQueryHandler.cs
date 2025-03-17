@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Property;
-using Shop.Application.Features.Property.Requests.Queries;
 
-namespace Shop.Application.Features.Property.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Property.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Property.Handlers.Queries;
+
+public class PropertiesSearchQueryHandler : IRequestHandler<PropertiesSearchQueryReq, List<PropertyDto>>
 {
-    public class PropertiesSearchQueryHandler : IRequestHandler<PropertiesSearchQueryReq, List<PropertyDto>>
-    {
-        private readonly IPropertyRepository _propertyRep;
-        private readonly IMapper _mapper;
+    private readonly IPropertyRepository _propertyRep;
+    private readonly IMapper _mapper;
 
-        public PropertiesSearchQueryHandler(IPropertyRepository propertyRep, IMapper mapper)
-        {
-            _propertyRep = propertyRep;
-            _mapper = mapper;
-        }
-        public async Task<List<PropertyDto>> Handle(PropertiesSearchQueryReq request, CancellationToken cancellationToken)
-        {
-            var list =await _propertyRep.GetPropertyBySearch(request.categuryId, request.PropertCateguriId,request.Filter);
-            return _mapper.Map<List<PropertyDto>>(list);
-        }
+    public PropertiesSearchQueryHandler(IPropertyRepository propertyRep, IMapper mapper)
+    {
+        _propertyRep = propertyRep;
+        _mapper = mapper;
+    }
+
+    public async Task<List<PropertyDto>> Handle(PropertiesSearchQueryReq request, CancellationToken cancellationToken)
+    {
+        List<Domain.Models.Property>? list =
+            await _propertyRep.GetPropertyBySearch(request.categuryId, request.PropertCateguriId, request.Filter);
+        return _mapper.Map<List<PropertyDto>>(list);
     }
 }

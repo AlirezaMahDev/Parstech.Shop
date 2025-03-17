@@ -5,13 +5,6 @@ var Parameter_Filter = document.getElementById("Parameter_Filter");
 var paging = document.getElementById("paging");
 
 
-
-
-
-
-
-
-
 $(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
@@ -22,7 +15,6 @@ $(document).ready(function () {
     $("#GetDataForm").submit();
 
 });
-
 
 
 function Filter() {
@@ -46,8 +38,7 @@ function FillDataSet(Data) {
         if (element.show) {
             show = "نمایش"
             showColor = "Green";
-        }
-        else {
+        } else {
             show = "عدم نمایش";
             showColor = "Red";
         }
@@ -78,7 +69,8 @@ function FillDataSet(Data) {
                         "<button onclick='GetCategurySubmit(" + element.groupId + ")' class='btn btn-sm btn-block btn-success curve m-1'>ویرایش </button><button onclick='DeleteCat(" + element.groupId + ")' class='btn btn-sm btn-block btn-danger curve m-1'>حذف</button>",
                         "<h5 class=''>" + element.parentTitle + "</h5>",
                     ];
-                dataSet.push(data2); break;
+                dataSet.push(data2);
+                break;
             case 3:
                 const data3 =
                     [
@@ -106,14 +98,13 @@ function FillDataSet(Data) {
                         "<button onclick='GetCategurySubmit(" + element.groupId + ")' class='btn btn-sm btn-block btn-success curve m-1'>ویرایش </button><button onclick='DeleteCat(" + element.groupId + ")' class='btn btn-sm btn-block btn-danger curve m-1'>حذف</button>",
                         "<h5 class=''>" + element.parentTitle + "</h5>",
                     ];
-                dataSet.push(data4); break;
-            case 5: break;
-            case 6: break;
+                dataSet.push(data4);
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
         }
-
-
-
-
 
 
     });
@@ -163,19 +154,18 @@ function OnCompleteData(xhr) {
     FillDataSet(Data);
 
 
-
     tableMain = $('#data-table').DataTable({
         "searching": false,
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'سطح یک' },
-            { title: 'سطح دو' },
-            { title: 'سطح سه' },
-            { title: 'سطح چهار' },
-            { title: 'منو' },
-            { title: 'عملیات' },
-            { title: 'ارث بری' },
+            {title: 'سطح یک'},
+            {title: 'سطح دو'},
+            {title: 'سطح سه'},
+            {title: 'سطح چهار'},
+            {title: 'منو'},
+            {title: 'عملیات'},
+            {title: 'ارث بری'},
 
         ],
 
@@ -213,7 +203,6 @@ var CateguryDto_IsParnet = document.getElementById("CateguryDto_IsParnet");
 var CateguryDto_Row = document.getElementById("CateguryDto_Row");
 
 
-
 function CleanItem() {
 
     CateguryDto_GroupId.value = null;
@@ -224,10 +213,11 @@ function CleanItem() {
     CateguryDto_Row.value = null;
     CateguryDto_ParentId.innerHTML = null;
 
-    
+
     $("#GetAllCatForm").submit();
-    
+
 }
+
 function FillItem(element) {
     $("#GetAllCatForm").submit();
     console.log(element);
@@ -250,40 +240,37 @@ function FillItem(element) {
     }
     CateguryDto_IsParnet.value = element.isParnet;
     CateguryDto_Row.value = element.row;
-    
+
 }
 
 function OnLoadingGetItem() {
     //CleanProduct();
 }
+
 function OnCompleteGetItem(xhr) {
     // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#AddOrEditCateguryModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     var cpId = document.getElementById("cpId");
-    
+
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#AddOrEditCateguryModal").modal("hide");
 
@@ -303,10 +290,6 @@ function OnErrorAE() {
 }
 
 
-
-
-
-
 var cats = document.getElementById("cats");
 var SearchCatText = document.getElementById("SearchCatText");
 
@@ -315,10 +298,10 @@ var FilterCatForm = document.getElementById("FilterCatForm");
 function OnCompleteGetAllCat(xhr) {
     var Data = xhr.responseJSON.object;
     //console.log(Data);
-    
+
 
     cats.innerHTML = null;
-    
+
     cats.insertAdjacentHTML("beforeend", "<select class='form-control'  id='cpId'></select >");
 
 
@@ -327,14 +310,12 @@ function OnCompleteGetAllCat(xhr) {
     Data.forEach(function (element) {
         if (CateguryDto_ParentId.value == element.groupId) {
             active = "selected";
-        }
-        else {
+        } else {
             active = "";
         }
         if (element.isParnet) {
             cpId.insertAdjacentHTML("beforeend", "<option  value='" + element.groupId + "' " + active + ">دسته بندی اصلی (" + element.groupTitle + ")</option>")
-        }
-        else {
+        } else {
             cpId.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "' " + active + ">" + element.groupTitle + "</option>")
         }
 
@@ -354,8 +335,6 @@ function SearchCat() {
 }
 
 
-
-
 //Delete Ctaegury
 
 
@@ -369,16 +348,14 @@ function OnCompleteDeleteItem(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (response.isSuccessed) {
             ToastSuccess(response.message);
             ToastSuccess("صفحه را مجدد فراخوانی کنید");
-            
-        }
-        else {
+
+        } else {
             ToastError(response.message);
-        }  
+        }
     }
 
 }

@@ -1,34 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.UserStore;
-using Shop.Application.Features.UserStore.Requests.Commands;
-using Shop.Application.Features.UserStore.Requests.Queries;
 
-namespace Shop.Application.Features.UserStore.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.UserStore.Handlers.Queries;
+
+public class UserStoreOfUserReadQueryHandler : IRequestHandler<UserStoreOfUserReadQueryReq, UserStoreDto>
 {
-    public class UserStoreOfUserReadQueryHandler : IRequestHandler<UserStoreOfUserReadQueryReq, UserStoreDto>
+    private IUserStoreRepository _userStoreRep;
+    private IMapper _mapper;
+    private IMediator _madiiator;
+
+    public UserStoreOfUserReadQueryHandler(IUserStoreRepository userStoreRep, IMapper mapper, IMediator madiiator)
     {
-        private IUserStoreRepository _userStoreRep;
-        private IMapper _mapper;
-        private IMediator _madiiator;
+        _userStoreRep = userStoreRep;
+        _mapper = mapper;
+        _madiiator = madiiator;
+    }
 
-        public UserStoreOfUserReadQueryHandler(IUserStoreRepository userStoreRep, IMapper mapper, IMediator madiiator)
-        {
-            _userStoreRep = userStoreRep;
-            _mapper = mapper;
-            _madiiator = madiiator;
-        }
-
-        public async Task<UserStoreDto> Handle(UserStoreOfUserReadQueryReq request, CancellationToken cancellationToken)
-        {
-            var user = await _userStoreRep.GetStoreOfUser(request.userId);
-            return _mapper.Map<UserStoreDto>(user);
-        }
+    public async Task<UserStoreDto> Handle(UserStoreOfUserReadQueryReq request, CancellationToken cancellationToken)
+    {
+        Domain.Models.UserStore? user = await _userStoreRep.GetStoreOfUser(request.userId);
+        return _mapper.Map<UserStoreDto>(user);
     }
 }

@@ -32,13 +32,13 @@
   .u-search-slide-down__input {
     opacity: 0;
     transform: translateY(-2rem);
-    transition: transform $transition-timing cubic-bezier(.37,.41,.55,.98), opacity $transition-timing-sm;
+    transition: transform $transition-timing cubic-bezier(.37, .41, .55, .98), opacity $transition-timing-sm;
   }
 
   .u-search-slide-down__suggestions {
     opacity: 0;
     transform: translateY(-3rem);
-    transition: transform $transition-timing-md cubic-bezier(.37,.41,.55,.98), opacity $transition-timing-sm;
+    transition: transform $transition-timing-md cubic-bezier(.37, .41, .55, .98), opacity $transition-timing-sm;
   }
 
   &.active .u-search-slide-down__input,

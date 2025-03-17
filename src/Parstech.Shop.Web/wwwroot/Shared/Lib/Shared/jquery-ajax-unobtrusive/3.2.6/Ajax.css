@@ -1,8 +1,8 @@
 ﻿
 * {
-     margin: 0;
-     padding: 0;
- }
+    margin: 0;
+    padding: 0;
+}
 
 .container {
     margin: 0 auto;
@@ -39,6 +39,7 @@
     border-radius: 4px;
     box-shadow: 0 0 10px #ffd700;
 }
+
 .swal-overlay {
     background-color: #ff000000 !important;
 }

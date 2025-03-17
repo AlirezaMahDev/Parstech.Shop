@@ -1,39 +1,33 @@
-﻿namespace Shop.Web.CountryCheck
+﻿namespace Parstech.Shop.Web.CountryCheck;
+
+public class CountryCheckMiddleware
 {
-    public class CountryCheckMiddleware
+    private readonly RequestDelegate _next;
+
+
+    public CountryCheckMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        //string userIP = context.Connection.RemoteIpAddress.ToString();
+        string userIP = "5.52.34.96";
 
 
-        public CountryCheckMiddleware(RequestDelegate next)
+        ;
+
+        try
         {
-            _next = next;
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions
+            context.Response.Redirect("/ErrorPages/IpError");
+            return;
         }
 
-        public async Task Invoke(HttpContext context)
-        {
-            //string userIP = context.Connection.RemoteIpAddress.ToString();
-            string userIP = "5.52.34.96";
-
-
-            ;
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions
-                context.Response.Redirect("/ErrorPages/IpError");
-                return;
-            }
-
-            await _next(context);
-        }
+        await _next(context);
     }
 }
-
-
-
-

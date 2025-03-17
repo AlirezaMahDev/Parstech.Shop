@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.User.Queries;
 
-namespace Shop.Application.Dapper.User.Queries
+public interface IUserQueries
 {
-    public interface IUserQueries
-    {
-        string GetAllUsers{get;}
-    }
+    string GetAllUsers { get; }
 }

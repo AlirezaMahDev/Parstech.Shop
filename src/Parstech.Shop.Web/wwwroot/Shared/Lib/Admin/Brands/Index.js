@@ -6,14 +6,6 @@ var FilterInput = document.getElementById("FilterInput");
 var Parameter_CurrentPage = document.getElementById("Parameter_CurrentPage");
 
 
-
-
-
-
-
-
-
-
 $(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
@@ -23,7 +15,6 @@ $(document).ready(function () {
     Parameter_CurrentPage.value = 1;
     $("#GetDataForm").submit();
 });
-
 
 
 function Filter() {
@@ -40,10 +31,10 @@ function Filter() {
 
 function FillDataSet(Data) {
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
-                "<h5 class=''> <img src='/Shared/Images/Products/"+ element.brandImage + "'width='50'/></h5>",
+                "<h5 class=''> <img src='/Shared/Images/Products/" + element.brandImage + "'width='50'/></h5>",
                 "<h5 class=''>" + element.brandTitle + "</h5>",
                 "<h5 class=''>" + element.latinBrandTitle + "</h5>",
                 "<button onclick='GetBrandSubmit(" + element.brandId + ")' class='btn btn-sm btn-block btn-success curve m-1'>ویرایش </button>"
@@ -73,6 +64,7 @@ function FillDataSet(Data) {
     paging.insertAdjacentHTML("beforeend", "<button onclick='RunPaging(" + first + ")' class='btn cart-Blue btn-xs font-weight-bold ml-2'>اولین صفحه<i class=' fas fa-circle-arrow-right p-1'></i></button><button onclick='RunPaging(" + privious + ")' class='btn cart-Green btn-xs font-weight-bold ml-2'><i class=' fas fa-arrow-right p-1'></i></button><button onclick='RunPaging(" + next + ")' class='btn cart-Green btn-xs font-weight-bold ml-2'><i class=' fas fa-arrow-left p-1'></i></button><button onclick='RunPaging(" + last + ")' class='btn cart-Blue btn-xs font-weight-bold ml-2'><i class=' fas fa-circle-arrow-left p-1'></i>آخرین صفحه</button> <h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
 
 }
+
 function RunPaging(page) {
     tableMain
         .clear()
@@ -90,10 +82,9 @@ function OnLoadingData() {
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -101,10 +92,10 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'تصویر برند' },
-            { title: 'نام برند' },
-            { title: 'نام برند' },
-            { title: 'عملیات' },
+            {title: 'تصویر برند'},
+            {title: 'نام برند'},
+            {title: 'نام برند'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 0,
@@ -142,15 +133,15 @@ var BrandImage = document.getElementById("BrandImage");
 var BrandDto_LatinBrandTitle = document.getElementById("BrandDto_LatinBrandTitle");
 
 
-
 function CleanItem() {
 
     BrandDto_BrandId.value = null;
     BrandDto_BrandTitle.value = null;
     BrandDto_BrandImage.innerHTML = null;
     BrandDto_LatinBrandTitle.innerHTML = null;
-   
+
 }
+
 function FillItem(element) {
     BrandDto_BrandId.value = element.brandId;
     BrandDto_BrandTitle.value = element.brandTitle;
@@ -163,32 +154,29 @@ function FillItem(element) {
 function OnLoadingGetItem() {
     //CleanProduct();
 }
+
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#AddOrEditModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#AddOrEditModal").modal("hide");
 

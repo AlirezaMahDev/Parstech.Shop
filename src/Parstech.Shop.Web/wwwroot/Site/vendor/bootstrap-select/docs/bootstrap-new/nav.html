@@ -21,24 +21,25 @@
             {%- block site_nav %}
             <!-- Main navigation -->
             <ul class="nav navbar-nav">
-            {% for nav_item in nav %}
-            {% if nav_item.children %}
+                {% for nav_item in nav %}
+                {% if nav_item.children %}
                 <li class="dropdown{% if nav_item.active %} active{% endif %}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ nav_item.title }} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ nav_item.title }} <b
+                            class="caret"></b></a>
                     <ul class="dropdown-menu">
-                    {% for nav_item in nav_item.children %}
-                        <li {% if nav_item.active %}class="active"{% endif %}>
+                        {% for nav_item in nav_item.children %}
+                        <li {% if nav_item.active %}class="active" {% endif %}>
                             <a href="{{ nav_item.url }}">{{ nav_item.title }}</a>
                         </li>
-                    {% endfor %}
+                        {% endfor %}
                     </ul>
                 </li>
-            {% else %}
-                <li {% if nav_item.active %}class="active"{% endif %}>
+                {% else %}
+                <li {% if nav_item.active %}class="active" {% endif %}>
                     <a href="{{ nav_item.url }}">{{ nav_item.title }}</a>
                 </li>
-            {% endif %}
-            {% endfor %}
+                {% endif %}
+                {% endfor %}
             </ul>
             {%- endblock %}
 
@@ -48,16 +49,16 @@
 
                 {%- block next_prev %}
                 {%- if page and (page.next_page or page.previous_page) %}
-                    <li {% if not page.previous_page %}class="disabled"{% endif %}>
-                        <a rel="next" {% if page.previous_page %}href="{{ page.previous_page.url }}"{% endif %}>
-                            <i class="fas fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li {% if not page.next_page %}class="disabled"{% endif %}>
-                        <a rel="prev" {% if page.next_page %}href="{{ page.next_page.url }}"{% endif %}>
-                            Next <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </li>
+                <li {% if not page.previous_page %}class="disabled" {% endif %}>
+                    <a rel="next" {% if page.previous_page %}href="{{ page.previous_page.url }}" {% endif %}>
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li {% if not page.next_page %}class="disabled" {% endif %}>
+                    <a rel="prev" {% if page.next_page %}href="{{ page.next_page.url }}" {% endif %}>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </a>
+                </li>
                 {%- endif %}
                 {%- endblock %}
 
@@ -66,9 +67,9 @@
                 <li>
                     <a href="{{ config.repo_url }}">
                         {% if config.repo_name == 'GitHub' %}
-                            <i class="fas fa-github"></i>
+                        <i class="fas fa-github"></i>
                         {% elif config.repo_name == 'Bitbucket' %}
-                            <i class="fas fa-bitbucket"></i>
+                        <i class="fas fa-bitbucket"></i>
                         {% endif %}
                         {{ config.repo_name }}
                     </a>

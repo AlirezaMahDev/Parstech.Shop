@@ -7,78 +7,78 @@
  *
  */
 ;(function ($) {
-  'use strict';
+    'use strict';
 
-  function formatData(option) {
-    if (!option.id) {
-      return option.text;
+    function formatData(option) {
+        if (!option.id) {
+            return option.text;
+        }
+
+        var result = option.element.dataset.optionTemplate ? option.element.dataset.optionTemplate : '<span>' + option.text + '</span>';
+
+        return $.parseHTML(result);
     }
 
-    var result = option.element.dataset.optionTemplate ? option.element.dataset.optionTemplate : '<span>' + option.text + '</span>';
+    $.HSCore.components.HSFileAttach = {
+        /**
+         *
+         *
+         * @var Object _baseConfig
+         */
+        _baseConfig: {},
 
-    return $.parseHTML(result);
-  }
+        /**
+         *
+         *
+         * @var jQuery pageCollection
+         */
+        pageCollection: $(),
 
-  $.HSCore.components.HSFileAttach = {
-    /**
-     *
-     *
-     * @var Object _baseConfig
-     */
-    _baseConfig: {},
+        /**
+         * Initialization of File attach wrapper.
+         *
+         * @param String selector (optional)
+         * @param Object config (optional)
+         *
+         * @return jQuery pageCollection - collection of initialized items.
+         */
+        init: function (selector, config) {
+            this.collection = selector && $(selector).length ? $(selector) : $();
+            if (!$(selector).length) return;
 
-    /**
-     *
-     *
-     * @var jQuery pageCollection
-     */
-    pageCollection: $(),
+            this.config = config && $.isPlainObject(config) ?
+                $.extend({}, this._baseConfig, config) : this._baseConfig;
 
-    /**
-     * Initialization of File attach wrapper.
-     *
-     * @param String selector (optional)
-     * @param Object config (optional)
-     *
-     * @return jQuery pageCollection - collection of initialized items.
-     */
-    init: function (selector, config) {
-      this.collection = selector && $(selector).length ? $(selector) : $();
-      if (!$(selector).length) return;
+            this.config.itemSelector = selector;
 
-      this.config = config && $.isPlainObject(config) ?
-        $.extend({}, this._baseConfig, config) : this._baseConfig;
+            this.initFileAttach();
 
-      this.config.itemSelector = selector;
+            return this.pageCollection;
+        },
 
-      this.initFileAttach();
+        initFileAttach: function () {
+            //Variables
+            var $self = this,
+                config = $self.config,
+                collection = $self.pageCollection;
 
-      return this.pageCollection;
-    },
+            //Actions
+            this.collection.each(function (i, el) {
+                //Variables
+                var $this = $(el),
+                    thisResultTextTarget = $this.data('result-text-target');
 
-    initFileAttach: function () {
-      //Variables
-      var $self = this,
-        config = $self.config,
-        collection = $self.pageCollection;
+                $this.on('change', function () {
+                    var thisVal = $(this).val();
 
-      //Actions
-      this.collection.each(function (i, el) {
-        //Variables
-        var $this = $(el),
-          thisResultTextTarget = $this.data('result-text-target');
+                    console.log(thisVal.replace(/.+[\\\/]/, ''));
 
-        $this.on('change', function () {
-          var thisVal = $(this).val();
+                    $(thisResultTextTarget).text(thisVal.replace(/.+[\\\/]/, ''));
+                });
 
-          console.log(thisVal.replace(/.+[\\\/]/, ''));
-
-          $(thisResultTextTarget).text(thisVal.replace(/.+[\\\/]/, ''));
-        });
-
-        //Actions
-        collection = collection.add($this);
-      });
+                //Actions
+                collection = collection.add($this);
+            });
+        }
     }
-  }
 })(jQuery);

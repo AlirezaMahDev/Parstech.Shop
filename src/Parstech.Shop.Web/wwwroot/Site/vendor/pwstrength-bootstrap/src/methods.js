@@ -24,7 +24,9 @@ var methods = {};
             verdictLevel,
             score;
 
-        if (options === undefined) { return; }
+        if (options === undefined) {
+            return;
+        }
 
         options.instances.errors = [];
         if (word.length === 0) {
@@ -34,7 +36,9 @@ var methods = {};
                 userInputs = [];
                 $.each(options.common.userInputs.concat([options.common.usernameField]), function (idx, selector) {
                     var value = $(selector).val();
-                    if (value) { userInputs.push(value); }
+                    if (value) {
+                        userInputs.push(value);
+                    }
                 });
                 userInputs = userInputs.concat(options.common.zxcvbnTerms);
                 score = zxcvbn(word, userInputs).guesses;
@@ -128,7 +132,7 @@ var methods = {};
 
     methods.forceUpdate = function () {
         this.each(function (idx, el) {
-            var event = { target: el };
+            var event = {target: el};
             onKeyUp(event);
         });
     };
@@ -187,7 +191,7 @@ var methods = {};
         } else if (typeof method === "object" || !method) {
             result = methods.init.apply(this, arguments);
         } else {
-            $.error("Method " +  method + " does not exist on jQuery.pwstrength-bootstrap");
+            $.error("Method " + method + " does not exist on jQuery.pwstrength-bootstrap");
         }
 
         return result;

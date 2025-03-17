@@ -26,10 +26,9 @@ function OnCompleteCreditRequest(xhr) {
     if (Response.isSuccessed) {
         ToastSuccess(Response.message);
         CleanForm();
-    }
-    else {
+    } else {
 
-        
+
         xhr.responseJSON.errors.forEach(function (element) {
             ToastError(element.errorMessage);
         });

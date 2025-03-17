@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Rahkaran.Requests.Queries
-{
-    public record RahkaranSendOrderToApiQueryReq(int orderId):IRequest<ResponseDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Queries;
+
+public record RahkaranSendOrderToApiQueryReq(int orderId) : IRequest<ResponseDto>;

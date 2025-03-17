@@ -3,24 +3,24 @@
 ------------------------------------*/
 
 .link {
-    &__icon {
-        i {
-            color: $white;
-            margin-top: 2px;
-            font-size: 0.938rem;
-        }
+  &__icon {
+    i {
+      color: $white;
+      margin-top: 2px;
+      font-size: 0.938rem;
     }
+  }
 }
 
 .link-hover {
-    &__brand {
-        display: block;
-        opacity: .5;
-        filter: grayscale(1);
+  &__brand {
+    display: block;
+    opacity: .5;
+    filter: grayscale(1);
 
-        &:hover {
-            filter: none;
-            opacity: 1;
-        }
+    &:hover {
+      filter: none;
+      opacity: 1;
     }
+  }
 }

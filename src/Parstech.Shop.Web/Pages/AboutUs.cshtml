@@ -1,5 +1,6 @@
 @page
-@model Shop.Web.Pages.AboutUs
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.AboutUs
 @{
     ViewData["Title"] = "AboutUs";
 }
@@ -9,9 +10,6 @@
     <div class="row m-2">
         <div
             class="col-md-6 bg-gray-7  col-lg-12 col-xl-12  mb-md-0 border-width-2 border-color-1 productImageBackRadius">
-
-
-
 
 
             <div class="productImage m-3">
@@ -26,7 +24,8 @@
             class="col-md-6 bg-gray-7  col-lg-3 col-xl-3 mt-2 mb-md-0 border-width-2 border-color-1 productImageBackRadius">
             <div class="productImage m-1 mt-3">
                 <h3><img width="100" src="~/Shared/Images/aboutUs-Safe.png"/></h3>
-                <h5 class="font-weight-bold text-center">کالای دیجیتال خودتان را از یک فروشگاه با اعتبار؛ با خیال راحت خرید کنید
+                <h5 class="font-weight-bold text-center">کالای دیجیتال خودتان را از یک فروشگاه با اعتبار؛ با خیال راحت
+                    خرید کنید
                 </h5>
             </div>
 
@@ -34,7 +33,7 @@
         <div
             class="col-md-6 bg-gray-7  col-lg-3 col-xl-3 mt-2 mb-md-0 border-width-2 border-color-1 productImageBackRadius">
             <div class="productImage m-1 mt-3">
-                 <h3><img width="100" src="~/Shared/Images/aboutUs-Branch.png"/></h3>
+                <h3><img width="100" src="~/Shared/Images/aboutUs-Branch.png"/></h3>
                 <h5 class="font-weight-bold text-center">شرکت پارس تکنولوژی سداد در سراسر کشور نمایندگی دارد</h5>
             </div>
 
@@ -42,8 +41,9 @@
         <div
             class="col-md-6 bg-gray-7  col-lg-3 col-xl-3 mt-2 mb-md-0 border-width-2 border-color-1 productImageBackRadius">
             <div class="productImage m-1 mt-3">
-                 <h3><img width="70" src="~/Shared/Images/MeliLogo.png"/></h3>
-                <h5 class="font-weight-bold text-center">فروشگاه اینترنتی پارس تک متعلق به شرکت پارس تکنولوژی سداد بانک ملی ایران
+                <h3><img width="70" src="~/Shared/Images/MeliLogo.png"/></h3>
+                <h5 class="font-weight-bold text-center">فروشگاه اینترنتی پارس تک متعلق به شرکت پارس تکنولوژی سداد بانک
+                    ملی ایران
                     است</h5>
             </div>
 
@@ -51,7 +51,7 @@
         <div
             class="col-md-6 bg-gray-7  col-lg-3 col-xl-3 mt-2 mb-md-0 border-width-2 border-color-1 productImageBackRadius">
             <div class="productImage m-1 mt-3">
-                 <h3><img width="100" src="~/Shared/Images/aboutUs-Brand.png"/></h3>
+                <h3><img width="100" src="~/Shared/Images/aboutUs-Brand.png"/></h3>
                 <h5 class="font-weight-bold text-center">نمایندگی رسمی برندهای معتبر در حوزه کالای دیجیتال می باشد</h5>
             </div>
 
@@ -59,7 +59,8 @@
         <div
             class="rtl col-md-6 bg-gray-7  col-lg-12 col-xl-12 mt-2 mb-md-0 border-width-2 border-color-1 productImageBackRadius">
             <div class="p-5">
-                <p class="font-size-17" style="text-align: justify;"> دنیای پارس تک با هدف ارائه خدمات نوین فناوری اطلاعات به سازمان ها ؛
+                <p class="font-size-17" style="text-align: justify;"> دنیای پارس تک با هدف ارائه خدمات نوین فناوری
+                    اطلاعات به سازمان ها ؛
                     افراد حقیقی و حقوقی در سراسر
                     کشور رونمایی شده و خدمات نوین خود را با استفاده از تمام ظرفیت های شرکت پارس تکنولوژی سداد، به
                     مشتریان وفادار و بزرگ خود از جمله بانک ملی ایران، سایر بانکها و همچنین مردم شریف ایران ارائه خواهد
@@ -77,23 +78,24 @@
                 <h5 class="font-size-21 font-weight-bold">
                     وب سایت های زیر مجموعه دنیای پارس تک
                 </h5>
-                <p class="font-size-17">وبسایت دنیای پارس تک به آدرس parstech.co <br />
-                    فروش سازمانی بانک ملی ایران به آدرس org.parstech.co <br />
+                <p class="font-size-17">وبسایت دنیای پارس تک به آدرس parstech.co <br/>
+                    فروش سازمانی بانک ملی ایران به آدرس org.parstech.co <br/>
                     فروشگاه اینترنتی بانک دی به آدرس day.parstech.co</p>
 
                 <h5 class="font-size-21 font-weight-bold">
                     افتخارات پارس تک </h5>
-                <p class="font-size-17">کسب رتبه یک شورای عالی انفورماتیک در ۶ رشته تخصصی <br />
+                <p class="font-size-17">کسب رتبه یک شورای عالی انفورماتیک در ۶ رشته تخصصی <br/>
                     دارای مجوز فعالیت در حوزه خدمات عملیاتی افتا با گرایش امن سازی و مقاوم سازی سامانه ها، زیر ساخت ها و
-                    سرویس ها<br />
-                   ۸۰۰ کارشناس متخصص در بیش از۳۶ نمایندگی و۱۳۰ دفاتر استانی در سطح کشور با توان انجام پروژه های بزرگ <br />
-                    تجربه انجام پروژه های موفق در سیستم بانکی کشور <br />
-                    نوآوری در ارائه راهکار های بانکداری و پرداخت الکترونیک <br />
-                    تجربه همکاری با شرکت های بزرگ بین المللی <br />
-                    آشنایی کامل با نیاز های سازمان ها در حوزه فناوری اطلاعات <br />
-                    انجام کسب و کارمبتنی بر دانش و تجربه <br />
-                    توانایی اجرای پروژه های برون مرزی <br />
-                    قابل اطمینان،متخصص و چابک <br />
+                    سرویس ها<br/>
+                    ۸۰۰ کارشناس متخصص در بیش از۳۶ نمایندگی و۱۳۰ دفاتر استانی در سطح کشور با توان انجام پروژه های بزرگ
+                    <br/>
+                    تجربه انجام پروژه های موفق در سیستم بانکی کشور <br/>
+                    نوآوری در ارائه راهکار های بانکداری و پرداخت الکترونیک <br/>
+                    تجربه همکاری با شرکت های بزرگ بین المللی <br/>
+                    آشنایی کامل با نیاز های سازمان ها در حوزه فناوری اطلاعات <br/>
+                    انجام کسب و کارمبتنی بر دانش و تجربه <br/>
+                    توانایی اجرای پروژه های برون مرزی <br/>
+                    قابل اطمینان،متخصص و چابک <br/>
                     جامع بودن خدمات در حوزه برندینگ دیجیتال به سازمان ها </p>
             </div>
 

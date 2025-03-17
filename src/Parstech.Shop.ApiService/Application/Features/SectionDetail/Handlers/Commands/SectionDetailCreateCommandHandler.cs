@@ -1,110 +1,106 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Azure;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Section;
-using Shop.Application.DTOs.SectionDetail;
-using Shop.Application.Features.Section.Requests.Commands;
-using Shop.Application.Features.SectionDetail.Requests.Commands;
-using Shop.Application.Generator;
 
-namespace Shop.Application.Features.SectionDetail.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.SectionDetail.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Generator;
+
+namespace Parstech.Shop.ApiService.Application.Features.SectionDetail.Handlers.Commands;
+
+public class SectionDetailCreateCommandHandler : IRequestHandler<SectionDetailCreateCommandReq, SectionDetailDto>
 {
-    public class SectionDetailCreateCommandHandler : IRequestHandler<SectionDetailCreateCommandReq, SectionDetailDto>
+    private ISectionDetailRepository _sectionDetailRep;
+    private IMapper _mapper;
+    private IMediator _madiiator;
+
+    public SectionDetailCreateCommandHandler(ISectionDetailRepository sectionDetailRep,
+        IMapper mapper,
+        IMediator madiiator)
     {
-        private ISectionDetailRepository _sectionDetailRep;
-        private IMapper _mapper;
-        private IMediator _madiiator;
+        _sectionDetailRep = sectionDetailRep;
+        _mapper = mapper;
+        _madiiator = madiiator;
+    }
 
-        public SectionDetailCreateCommandHandler(ISectionDetailRepository sectionDetailRep, IMapper mapper, IMediator madiiator)
+    public async Task<SectionDetailDto> Handle(SectionDetailCreateCommandReq request,
+        CancellationToken cancellationToken)
+    {
+        if (request.SectionDetailDto.ImageFile != null)
         {
-            _sectionDetailRep = sectionDetailRep;
-            _mapper = mapper;
-            _madiiator = madiiator;
-        }
-        public async Task<SectionDetailDto> Handle(SectionDetailCreateCommandReq request, CancellationToken cancellationToken)
-        {
-            
-            if (request.SectionDetailDto.ImageFile != null)
+            try
             {
-
-                try
-                {
-                    // 2. بررسی فرمت فایل
-                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-                    var fileExtension = Path.GetExtension(request.SectionDetailDto.ImageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileExtension))
-                    {
-                        
-                        return null;
-
-                    }
-
-                    // 3. بررسی اندازه فایل (مثلاً حداکثر 5 مگابایت)
-                    int maxFileSize = 5 * 1024 * 1024; // 5 MB
-                    if (request.SectionDetailDto.ImageFile.Length > maxFileSize)
-                    {
-                       
-                        return null;
-
-                    }
-                    request.SectionDetailDto.Image = NameGenerator.GenerateUniqCode() + Path.GetExtension(request.SectionDetailDto.ImageFile.FileName);
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Shared/Images", request.SectionDetailDto.Image);
-                    using (var stream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        request.SectionDetailDto.ImageFile.CopyTo(stream);
-                    }
-
-                }
-                catch (Exception e)
+                // 2. بررسی فرمت فایل
+                string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                string fileExtension = Path.GetExtension(request.SectionDetailDto.ImageFile.FileName).ToLower();
+                if (!allowedExtensions.Contains(fileExtension))
                 {
                     return null;
                 }
+
+                // 3. بررسی اندازه فایل (مثلاً حداکثر 5 مگابایت)
+                int maxFileSize = 5 * 1024 * 1024; // 5 MB
+                if (request.SectionDetailDto.ImageFile.Length > maxFileSize)
+                {
+                    return null;
+                }
+
+                request.SectionDetailDto.Image = NameGenerator.GenerateUniqCode() +
+                                                 Path.GetExtension(request.SectionDetailDto.ImageFile.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot/Shared/Images",
+                    request.SectionDetailDto.Image);
+                using (FileStream stream = new(imagePath, FileMode.Create))
+                {
+                    request.SectionDetailDto.ImageFile.CopyTo(stream);
+                }
             }
-            if (request.SectionDetailDto.BackgroundImageFile != null)
+            catch (Exception e)
             {
+                return null;
+            }
+        }
 
-                try
+        if (request.SectionDetailDto.BackgroundImageFile != null)
+        {
+            try
+            {
+                // 2. بررسی فرمت فایل
+                string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                string fileExtension =
+                    Path.GetExtension(request.SectionDetailDto.BackgroundImageFile.FileName).ToLower();
+                if (!allowedExtensions.Contains(fileExtension))
                 {
-                    // 2. بررسی فرمت فایل
-                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-                    var fileExtension = Path.GetExtension(request.SectionDetailDto.BackgroundImageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileExtension))
-                    {
-
-                        return null;
-
-                    }
-
-                    // 3. بررسی اندازه فایل (مثلاً حداکثر 5 مگابایت)
-                    int maxFileSize = 5 * 1024 * 1024; // 5 MB
-                    if (request.SectionDetailDto.BackgroundImageFile.Length > maxFileSize)
-                    {
-
-                        return null;
-
-                    }
-                    request.SectionDetailDto.BackgroundImage = NameGenerator.GenerateUniqCode() + Path.GetExtension(request.SectionDetailDto.BackgroundImageFile.FileName);
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Shared/Images", request.SectionDetailDto.BackgroundImage);
-                    using (var stream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        request.SectionDetailDto.BackgroundImageFile.CopyTo(stream);
-                    }
-
+                    return null;
                 }
-                catch (Exception e)
+
+                // 3. بررسی اندازه فایل (مثلاً حداکثر 5 مگابایت)
+                int maxFileSize = 5 * 1024 * 1024; // 5 MB
+                if (request.SectionDetailDto.BackgroundImageFile.Length > maxFileSize)
                 {
+                    return null;
+                }
+
+                request.SectionDetailDto.BackgroundImage = NameGenerator.GenerateUniqCode() +
+                                                           Path.GetExtension(request.SectionDetailDto
+                                                               .BackgroundImageFile.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot/Shared/Images",
+                    request.SectionDetailDto.BackgroundImage);
+                using (FileStream stream = new(imagePath, FileMode.Create))
+                {
+                    request.SectionDetailDto.BackgroundImageFile.CopyTo(stream);
                 }
             }
-            var sectionDetail = _mapper.Map<Domain.Models.SectionDetail>(request.SectionDetailDto);
-            await _sectionDetailRep.AddAsync(sectionDetail);
-            var result = await _madiiator.Send(new SectionDetailReadCommandReq(sectionDetail.Id));
-            return result;
+            catch (Exception e)
+            {
+            }
         }
+
+        Domain.Models.SectionDetail? sectionDetail = _mapper.Map<Domain.Models.SectionDetail>(request.SectionDetailDto);
+        await _sectionDetailRep.AddAsync(sectionDetail);
+        SectionDetailDto result = await _madiiator.Send(new SectionDetailReadCommandReq(sectionDetail.Id));
+        return result;
     }
 }

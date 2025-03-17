@@ -12,8 +12,12 @@
 
 function itpro(Number) {
     Number += '';
-    Number = Number.replace(',', ''); Number = Number.replace(',', ''); Number = Number.replace(',', '');
-    Number = Number.replace(',', ''); Number = Number.replace(',', ''); Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
+    Number = Number.replace(',', '');
     x = Number.split('.');
     y = x[0];
     z = x.length > 1 ? '.' + x[1] : '';

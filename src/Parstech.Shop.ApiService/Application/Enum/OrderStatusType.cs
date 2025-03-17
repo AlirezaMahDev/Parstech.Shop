@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Enum;
 
-namespace Shop.Application.Enum
+public enum OrderStatusType
 {
-    public enum OrderStatusType
-    {
-        OrderRegister,
-        OrderDoing,
-        OrderReview,
-        OrderAwaitingPayment,
-        CancellationOrderPayment,
-        OrderCanceled,
-        OrderCompleted,
-        OrderReturned,
-        SendToCustomer
-    }
+    OrderRegister,
+    OrderDoing,
+    OrderReview,
+    OrderAwaitingPayment,
+    CancellationOrderPayment,
+    OrderCanceled,
+    OrderCompleted,
+    OrderReturned,
+    SendToCustomer
 }

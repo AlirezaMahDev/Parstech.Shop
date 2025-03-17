@@ -9,7 +9,7 @@
  *
  * Licensed under the MIT license.
  */
- 'use strict';
+'use strict';
 
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
@@ -135,8 +135,8 @@
     var _window = window || undefined,
         _doc = _window.document,
         _now = (function () {
-        return _window.performance && _window.performance.now ? _window.performance.now.bind(_window.performance) : Date.now;
-    })();
+            return _window.performance && _window.performance.now ? _window.performance.now.bind(_window.performance) : Date.now;
+        })();
 
     var PaperWave = (function () {
         function PaperWave(_ref3) {
@@ -192,9 +192,9 @@
                     containerCenter = this.containerRect.center,
                     currentPos = this.currentPosition,
                     deltaPos = {
-                    x: currentPos.x - containerCenter.x,
-                    y: currentPos.y - containerCenter.y
-                };
+                        x: currentPos.x - containerCenter.x,
+                        y: currentPos.y - containerCenter.y
+                    };
                 this.$wave.style.opacity = this.opacity;
                 cssString = 'translate(' + deltaPos.x + 'px, ' + deltaPos.y + 'px)';
                 this.$.style.webkitTransform = cssString;

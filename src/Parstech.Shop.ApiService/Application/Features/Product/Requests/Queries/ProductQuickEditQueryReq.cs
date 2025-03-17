@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Product;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Product.Requests.Queries
-{
-    public record ProductQuickEditQueryReq(ProductQuickEditDto ProductQuickEditDto) : IRequest<ProductDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+
+public record ProductQuickEditQueryReq(ProductQuickEditDto ProductQuickEditDto) : IRequest<ProductDto>;

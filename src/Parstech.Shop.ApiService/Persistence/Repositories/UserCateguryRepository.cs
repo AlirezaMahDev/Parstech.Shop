@@ -1,36 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class UserCateguryRepository : GenericRepository<UserCategury>, IUserCateguryRepository
 {
-    public class UserCateguryRepository: GenericRepository<UserCategury>,IUserCateguryRepository
+    private readonly DatabaseContext _context;
+
+    public UserCateguryRepository(DatabaseContext context) : base(context)
     {
-        private readonly DatabaseContext _context;
-        public UserCateguryRepository(DatabaseContext context):base(context)
+        _context = context;
+    }
+
+    public async Task<bool> ExistUserInCategury(int userId)
+    {
+        if (await _context.UserCateguries.AnyAsync(u => u.CateguryId == 1 && u.UserId == userId))
         {
-            _context = context;
-            
+            return true;
         }
 
-        public async Task<bool> ExistUserInCategury(int userId)
-        {
-            if (await _context.UserCateguries.AnyAsync(u => u.CateguryId == 1 && u.UserId == userId)){
-                return true;
-            }
-            return false;
-        }
+        return false;
+    }
 
-        public async Task<UserCategury> GetUserCateguryByUserId(int userId)
-        {
-            
-            return await _context.UserCateguries.FirstOrDefaultAsync(u => u.CateguryId == 1 && u.UserId == userId);
-        }
+    public async Task<UserCategury> GetUserCateguryByUserId(int userId)
+    {
+        return await _context.UserCateguries.FirstOrDefaultAsync(u => u.CateguryId == 1 && u.UserId == userId);
     }
 }

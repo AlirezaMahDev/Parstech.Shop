@@ -1,11 +1,11 @@
-$(".cropper-container>img").cropper({aspectRatio:1});
+$(".cropper-container>img").cropper({aspectRatio: 1});
 
 
-$(".aspectratio-4-3>img").cropper({aspectRatio: 4/3});
+$(".aspectratio-4-3>img").cropper({aspectRatio: 4 / 3});
 
 
 $(".cropper-box>img").cropper({
-    crop: function(e) {
+    crop: function (e) {
         $("#crop-x").val(e.x);
         $("#crop-y").val(e.y);
         $("#crop-width").val(e.width);
@@ -17,15 +17,15 @@ $(".cropper-box>img").cropper({
 var $image = $(".cropper-for-modal>img");
 var cropBoxData;
 var canvasData;
-$("#cropper-modal").on("shown.bs.modal", function() {
+$("#cropper-modal").on("shown.bs.modal", function () {
     $image.cropper({
         autoCropArea: 0.5,
-        built: function() {
+        built: function () {
             $image.cropper("setCanvasData", canvasData);
             $image.cropper("setCropBoxData", cropBoxData);
         }
     });
-}).on("hidden.bs.modal", function() {
+}).on("hidden.bs.modal", function () {
     cropBoxData = $image.cropper("getCropBoxData");
     canvasData = $image.cropper("getCanvasData");
     $image.cropper("destroy");

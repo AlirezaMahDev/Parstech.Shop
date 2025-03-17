@@ -12,16 +12,19 @@ function GetTransaction() {
     Parameter_CurrentPage.value = 1;
     $("#GetDataForm").submit();
 }
+
 function GetAghsat() {
     walletType.value = "Fecilities";
     Parameter_CurrentPage.value = 1;
     $("#GetDataForm").submit();
 }
+
 function GetCoins() {
     walletType.value = "Coin";
     Parameter_CurrentPage.value = 1;
     $("#GetDataForm").submit();
 }
+
 function GetOrgCredit() {
     walletType.value = "OrgCredit";
     Parameter_CurrentPage.value = 1;
@@ -43,7 +46,7 @@ $(document).ready(function () {
 function FillDataSet(Data) {
 
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
                 "<h6>" + separate(element.price) + "</h6>",
@@ -71,10 +74,10 @@ function FillDataSet(Data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -88,7 +91,6 @@ function RunPaging(page) {
 }
 
 
-
 function OnLoading() {
     if (dataSet.length > 0) {
         tableMain
@@ -100,7 +102,7 @@ function OnLoading() {
 }
 
 function OnComplete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
     tableMain = $('#data-table').DataTable({
@@ -108,12 +110,12 @@ function OnComplete(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'مبلغ' },
-            { title: 'نوع تراکنش' },
-            { title: 'تاریخ ایجاد' },
-            { title: 'مهلت پرداخت' },
-            { title: 'کد پیگیری' },
-            { title: 'عملیات' },
+            {title: 'مبلغ'},
+            {title: 'نوع تراکنش'},
+            {title: 'تاریخ ایجاد'},
+            {title: 'مهلت پرداخت'},
+            {title: 'کد پیگیری'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 5,
@@ -153,8 +155,9 @@ function FillItem(Data) {
 function OnLoadingTransactionDetail() {
     CleanItem();
 }
+
 function OnCompleteTransactionDetail(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#TransactionDetailModal").modal("show");
 }

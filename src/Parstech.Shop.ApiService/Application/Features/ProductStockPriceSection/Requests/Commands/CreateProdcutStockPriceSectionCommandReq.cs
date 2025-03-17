@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.ProductStockPriceSection.Requests.Commands
-{
+using Parstech.Shop.ApiService.Application.DTOs;
 
-    public record CreateProdcutStockPriceSectionCommandReq(int productStockPriceId,int sectionId) : IRequest<ResponseDto>;
-}
+namespace Parstech.Shop.ApiService.Application.Features.ProductStockPriceSection.Requests.Commands;
+
+public record CreateProdcutStockPriceSectionCommandReq(int productStockPriceId, int sectionId) : IRequest<ResponseDto>;

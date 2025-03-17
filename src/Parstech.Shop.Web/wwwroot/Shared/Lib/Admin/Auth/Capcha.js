@@ -2,6 +2,7 @@
 let capchKey;
 let CapchaSection = document.getElementById("CapchaSection");
 let CaptchaKeyInput = document.getElementById("CaptchaKey");
+
 function GetCapcha() {
     $.ajax({
         type: "POST",

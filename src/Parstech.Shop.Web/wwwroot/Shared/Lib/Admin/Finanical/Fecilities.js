@@ -6,13 +6,12 @@
 function OnLoadingFecilities() {
 
 }
+
 function OnCompleteFecilities(xhr) {
     console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
-    }
-
-    else if (xhr.responseJSON.isSuccessed) {
+    } else if (xhr.responseJSON.isSuccessed) {
         ToastSuccess("عملیات با موفقیت انجام شد");
 
         $("#FecilitiesModal").modal("hide");
@@ -23,9 +22,8 @@ function OnCompleteFecilities(xhr) {
         dataSet = [];
         $("#GetDataForm").submit();
 
-        
-    }
-    else {
+
+    } else {
         console.log(xhr.responseJSON.errors);
         ToastError(xhr.responseJSON.message);
         if (xhr.responseJSON.errors != null) {
@@ -33,10 +31,11 @@ function OnCompleteFecilities(xhr) {
                 ToastError(element.errorMessage);
             });
         }
-        
+
         //$("#FecilitiesModal").modal("hide");
     }
 }
+
 function OnErrorFecilities() {
 
 }

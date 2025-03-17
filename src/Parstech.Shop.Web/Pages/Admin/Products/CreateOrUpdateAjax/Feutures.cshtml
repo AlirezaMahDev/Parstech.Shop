@@ -1,9 +1,9 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Products.Detail.FeuturesModel
+@model Parstech.Shop.Web.Pages.Admin.Products.Detail.FeuturesModel
 @{
     Layout = null;
 }
-<input type="hidden" id="productId" value="@Model.productId" />
+<input type="hidden" id="productId" value="@Model.productId"/>
 
 <div class="portlet box border shadow">
     <div class="portlet-heading">
@@ -13,8 +13,9 @@
                 ویژگی محصول
             </h3>
         </div><!-- /.portlet-title -->
-        <div class="buttons-box" >
-            <button class='btn btn-sm btn-success btn-round hover-green' onclick='CleanProduct()' data-bs-toggle='modal' data-bs-target='#SearchFeutureModal'><i class='icon-plus'></i></button>
+        <div class="buttons-box">
+            <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanProduct()" data-bs-toggle="modal"
+                    data-bs-target="#SearchFeutureModal"><i class="icon-plus"></i></button>
         </div>
     </div><!-- /.portlet-heading -->
     <div class="portlet-body" style="">
@@ -30,28 +31,30 @@
                             <button class="btn btn-orange text-white font-weight-bold">فیلتر دسترسی ها</button>*@
                 </div>
                 <thead>
-                    <tr>
-                        <th>ویژگی </th>
-                        <th>مقدار</th>
-                        <th>عملیات</th>
-                    </tr>
+                <tr>
+                    <th>ویژگی</th>
+                    <th>مقدار</th>
+                    <th>عملیات</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.PropertyDtos)
-                    {
-                        <tr>
-                            <td><h5 class=''>@item.PropertyName</h5></td>
-                            <td><h5 class=''>@item.Value</h5></td>
-                            <td>
-                                <div class='btn-group'>
-                                    <button onclick='OpenAddEditModal(@item.PropertyId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-pen Orange m-1'></i>تغییر مقدار</button>
-                                    <button onclick='OpenDeleteFeuture(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                </div>
-                            </td>
-                        </tr>
-
-
-                    }
+                @foreach (var item in Model.PropertyDtos)
+                {
+                    <tr>
+                        <td><h5 class=''>@item.PropertyName</h5></td>
+                        <td><h5 class=''>@item.Value</h5></td>
+                        <td>
+                            <div class='btn-group'>
+                                <button onclick='OpenAddEditModal(@item.PropertyId,@item.Id)' type='button'
+                                        class='btn btn-default'><i class='fas fa-pen Orange m-1'></i>تغییر مقدار
+                                </button>
+                                <button onclick='OpenDeleteFeuture(@item.Id)' type='button' class='btn btn-default'><i
+                                        class='fas fa-trash Red m-1'></i>حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
 
                 </tbody>
 

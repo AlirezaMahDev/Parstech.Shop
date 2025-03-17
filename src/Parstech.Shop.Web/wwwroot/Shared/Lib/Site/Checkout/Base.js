@@ -6,6 +6,7 @@ $(document).ready(function () {
     GetData();
 
 });
+
 function GetData() {
     $.ajax({
         type: "POST",
@@ -15,14 +16,13 @@ function GetData() {
                 $('input:hidden[name="__RequestVerificationToken"]').val());
 
         },
-        data: { "Filter": SearchFilter.value },
+        data: {"Filter": SearchFilter.value},
         success: function (response) {
             console.log(response);
             DataSection.innerHTML = null;
             if (response.object.order != null) {
                 FillData(response);
-            }
-            else {
+            } else {
                 EmptyData();
             }
             GetCountOfOpenOrder();
@@ -38,6 +38,7 @@ function GetData() {
 
 
 var DataSection = document.getElementById("DataSection");
+
 function FillData(response) {
 
     Response = response;
@@ -47,7 +48,6 @@ function FillData(response) {
     var Shipping = response.object.orderShipping;
 
 
-
     DataSection.insertAdjacentHTML("beforeend", "<div class='col-lg-4 order-lg-2 mb-7 mb-lg-0'><div class='pl-lg-3 '><div class='bg-gray-1 rounded-lg'><div class='p-4 mb-4 checkout-table'><div id='OrderSection' class='border-bottom border-color-1 mb-5'><h3 class='section-title mb-0 pb-2 font-size-25'><i class='font-size-22 ec ec-shopping-bag'></i>جزئیات سفارش</h3><small class='Gray'>تمامی مبالغ به تومان می باشد</small></div><button onclick='showComplete()' class='pointer btn btn-Custom BgOrange btn-block  font-size-15 mb-3 py-2 White'>ثبت و پرداخت سفارش</button></div></div></div></div>");
     var OrderSection = document.getElementById("OrderSection");
     OrderSection.insertAdjacentHTML("beforeend", "<table class='table'><thead></thead><tbody></tbody><tfoot><tr><th><i class='  fab fa-first-order p-2 Blue'></i>مجموع محصولات</th><td>" + separate(Order.orderSum) + "</td></tr></tr><tr><th><i class='  fab fa-first-order p-2 Green'></i>مالیات بر ارزش افزوده 9%</th><td>" + separate(Order.tax) + "</td></tr><tr><th><i class='  fab fa-first-order p-2 Red'></i>تخفیف سبد خرید</th><td>" + separate(Order.discount) + "</td></tr><tr><th><i class='  fab fa-first-order p-2 Red'></i>تخفیف کل</th><td>" + separate(OrderCoupon.discountPrice) + "<br><small class='Red font-size-19 font-weight-bold'>" + OrderCoupon.couponType + "</small></td></tr><tr class='shipping'><th><i class='ec ec-transport p-2 Orange'></i>هزینه ارسال  <br /> <small class='Orange'>" + Shipping.shippingType + "</small></th><td data-title='Shipping rtl'><span class='amount'> " + separate(Order.shipping) + "<strong></strong></span><div class='mt-1'><a href='#' onclick='ShowShippingModal()' class='font-size-12 text-gray-90  underline-on-hover font-weight-bold mb-3 d-inline-block' role='button'><i class='ec ec-transport mr-1 Orange'></i> تغییر آدرس حمل و نقل</a></div></td><tr><th><i class='  fab fa-first-order p-2 Blue'></i>مجموع نهایی</th><td><strong>" + separate(Order.total) + "</strong></td></tr></tfoot></table>");
@@ -55,7 +55,6 @@ function FillData(response) {
     var DetailSection = document.getElementById("DetailSection");
     Details.forEach(function (element) {
         var count = element.count;
-        
 
 
         DetailSection.insertAdjacentHTML("beforeend", "<div class= 'row m-2  cart-table productImage' style = 'flex-direction: row !important;' ><div class='col-lg-4 order-lg-1 rtl' ><a onclick='DeleteDetail(" + element.id + ")' href='#' class='text-gray-32 font-size-26'><i class='fa-classic fa-solid fa-square-xmark fa-fw Red'></i></a><a href='#'><img class='img-fluid max-width-19 p-1 border border-color-1 productImageBackRadius' src='/Shared/Images/Products/" + element.image + "' alt='ALT'></a></div><div class='col-lg-6 order-lg-1 rtl'><a href='#' class='text-gray-90  font-size-17 font-weight-bold'>" + element.productName + "</a><br /><span class='sr-only mt-2'>Quantity</span><div class='mt-3 border rounded-pill py-1 width-122 w-xl-30 px-3 border-color-1'><div class='js-quantity row align-items-center'><div class='col-auto pr-1'><small class='font-weight-bold pr-3  pl-3 border-0'>" + element.count + "</small><a onclick='ChangeCount(" + element.id + ",1000)' class='js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0' href='javascript:;'><small class='fas fa-minus btn-icon__inner'></small></a><a onclick='ChangeCount(" + element.id + ",1001)' class='js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0' href='javascript:;'><small class='fas fa-plus btn-icon__inner'></small></a></div></div></div></div><div class='col-lg-2 order-lg-1 rtl'><span class='font-weight-bold text-red'>" + separate(element.discount) + "</span><br /><span class='font-weight-bold font-size-17'>" + separate(element.total) + " تومان</span></div></div > ");
@@ -68,19 +67,18 @@ function FillData(response) {
             var pay = response.object.orderPay;
             if (element.id == pay.id) {
                 DetailSection.insertAdjacentHTML("beforeend", "<div onclick='SetOrderPay(" + element.id + ")'  class='pointer border-top border-width-3 border-color-1 pt-3 mb-5'><div'><div class='border-bottom border-color-1 border-dotted-bottom'><div class='p-3'><div ' class='custom-control custom-radio'><label class='pointer form-label font-size-16' for='" + element.id + "' data-toggle='collapse' data-target='#basicsCollapse" + element.id + "' aria-expanded='false' aria-controls='basicsCollapse" + element.id + "'> <i class=' fas fa-circle-check p-2 font-size-17 Green'></i>" + element.typeName + " <span class='Gray'>(" + element.description + ")</span><br /> <small class='Green font-size-19 font-weight-bold'>انتخاب شده</small></label></div></div>");
-            }
-            else {
+            } else {
                 DetailSection.insertAdjacentHTML("beforeend", "<div onclick='SetOrderPay(" + element.id + ")'  class='pointer border-top border-width-3 border-color-1 pt-3 mb-3'><div><div class='border-bottom border-color-1 border-dotted-bottom'><div class='p-3' id='basicsHeading" + element.id + "'><div onclick='SetOrderPay(" + element.id + ")' class='custom-control custom-radio'><label class='pointer form-label font-size-16' for='" + element.id + "' data-toggle='collapse' data-target='#basicsCollapse" + element.id + "' aria-expanded='false' aria-controls='basicsCollapse" + element.id + "'> <i class='ml-2 fa-classic fa-regular fa-circle fa-fw'></i>" + element.typeName + "  <span class='Gray'>(" + element.description + ")</span></label></div></div>");
 
             }
-        }
-        else {
+        } else {
             DetailSection.insertAdjacentHTML("beforeend", "<div onclick='SetOrderPay(" + element.id + ")'  class='pointer border-top border-width-3 border-color-1 pt-3 mb-3'><div><div class='border-bottom border-color-1 border-dotted-bottom'><div class='p-3' id='basicsHeading" + element.id + "'><div onclick='SetOrderPay(" + element.id + ")' class='custom-control custom-radio'><label class='pointer form-label font-size-16' for='" + element.id + "' data-toggle='collapse' data-target='#basicsCollapse" + element.id + "' aria-expanded='false' aria-controls='basicsCollapse" + element.id + "'> <i class='ml-2 fa-classic fa-regular fa-circle fa-fw'></i>" + element.typeName + "  <span class='Gray'>(" + element.description + ")</span></label></div></div>");
 
         }
     });
 
 }
+
 function EmptyData() {
     DataSection.insertAdjacentHTML("beforeend", "<div class='alert alert-secondery border Gray font-weight-bold text-center font-size-17'><i class=' fas fa-basket-shopping'></i>هیچ محصولی در سبد خرید وجود ندارد</div>");
 }
@@ -95,7 +93,7 @@ function ChangeCount(detailId, count) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "detailId": detailId, "count": count },
+        data: {"detailId": detailId, "count": count},
         success: function (response) {
             console.log(response);
             ToastSuccess(response.object.message);
@@ -118,7 +116,7 @@ function DeleteDetail(detailId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "id": detailId },
+        data: {"id": detailId},
         success: function (response) {
             console.log(response);
             ToastSuccess(response.message);
@@ -135,12 +133,6 @@ function DeleteDetail(detailId) {
 }
 
 
-
-
-
-
-
-
 //use Coupon
 function UseCoupon(orderId) {
     //var couponCode = document.getElementById("couponCode");
@@ -152,7 +144,7 @@ function UseCoupon(orderId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "orderId": orderId, "code": $("#couponCode").val() },
+        data: {"orderId": orderId, "code": $("#couponCode").val()},
         success: function (response) {
             console.log(response);
             ToastSuccess(response.object.message);
@@ -166,6 +158,7 @@ function UseCoupon(orderId) {
         }
     });
 }
+
 function SetOrderPay(id) {
     console.log(id);
     Response.object.orderPay = Response.object.payTypes.find(obj => obj.id === id);
@@ -180,6 +173,7 @@ var CompleteInfo = document.getElementById("CompleteInfo");
 
 var Data;
 var ActiveTransaction;
+
 function showComplete() {
     //var test = $("input[name=Pay" + 3 + "]").val();
     console.log(Response);
@@ -189,10 +183,9 @@ function showComplete() {
     Data = Response.object;
 
 
-    if (Data.orderPay.id == 1 || Data.orderPay.id == 5||Data.orderPay.id == 6) {
+    if (Data.orderPay.id == 1 || Data.orderPay.id == 5 || Data.orderPay.id == 6) {
         ShowComplete2(null);
-    }
-    else {
+    } else {
         $.ajax({
             type: "POST",
             url: "/checkout?handler=GetWallet",
@@ -201,7 +194,7 @@ function showComplete() {
                     $('input:hidden[name="__RequestVerificationToken"]').val());
 
             },
-            data: { "userId": Data.order.userId, "type": Data.orderPay.id },
+            data: {"userId": Data.order.userId, "type": Data.orderPay.id},
             success: function (response) {
                 console.log(Data.orderPay.id);
                 console.log(response);
@@ -237,10 +230,6 @@ function showComplete() {
     }
 
 
-
-
-
-
 }
 
 function ShowComplete2(WalletPrice) {
@@ -250,8 +239,7 @@ function ShowComplete2(WalletPrice) {
     if (Data.orderShipping.firstName != null && Data.orderShipping.lastName != null) {
         CompleteInfo.insertAdjacentHTML("beforeend", "<div class='row'><div class='col-6'><label class=' control-label'>نام خریدار : <strong>" + Data.costumer.firstName + "" + Data.costumer.lastName + "</strong></label></div><div class='col-6'><label class=' control-label'>شماره موبایل : <strong>" + Data.costumer.mobile + "</strong></label></div>")
         CompleteInfo.insertAdjacentHTML("beforeend", "<div class='row'><div class='col-6'><label class=' control-label'>تحویل گیرنده : <strong>" + Data.orderShipping.firstName + "" + Data.orderShipping.lastName + "</strong></label><br><label class=' control-label'>کد پستی : <strong>" + Data.orderShipping.postCode + "</strong></label></div><div class='col-6'><label class=' control-label'>شماره موبایل : <strong>" + Data.orderShipping.mobile + "</strong></label><br><label class=' control-label'>شماره تماس : <strong>" + Data.orderShipping.phone + "</strong></label></div><div class='col-12'><label class=' control-label'>آدرس : <strong>" + Data.orderShipping.fullAddress + "</strong></label></div></div>")
-    }
-    else {
+    } else {
         CompleteInfo.insertAdjacentHTML("beforeend", "<div class='col-6'><label class=' control-label'><small class='Red font-weight-bold'> انتخاب نشده است</small><strong></strong></label></dv>")
 
     }
@@ -261,10 +249,9 @@ function ShowComplete2(WalletPrice) {
 
         CompleteInfo.insertAdjacentHTML("beforeend", "<hr /><h5 class='title'> <i class='fas fa-credit-card p-2 Green'></i> <b>روش پرداخت</b> </h5></div><div class='row'><div class='col-12'><div class='form-group'><label class=' control-label'>نحوه پرداخت صورتحساب : <strong>" + Data.orderPay.typeName + "(<small>" + Data.orderPay.description + "</small>)</strong></label><br/></div></div>")
         console.log(Data.orderPay);
-        if (Data.orderPay.id != 1 && Data.orderPay.id != 5 && Data.orderPay.id !=6) {
+        if (Data.orderPay.id != 1 && Data.orderPay.id != 5 && Data.orderPay.id != 6) {
             CompleteInfo.insertAdjacentHTML("beforeend", "<span>موجودی حساب شما: <strong class='Orange'>" + separate(WalletPrice) + "تومان</strong></span>")
         }
-
 
 
         if (ActiveTransaction != null) {
@@ -282,8 +269,7 @@ function ShowComplete2(WalletPrice) {
                     break;
             }
         }
-    }
-    else {
+    } else {
         CompleteInfo.insertAdjacentHTML("beforeend", "<hr /><h5 class='title'> <i class='fas fa-credit-card p-2 Green'></i> <b>روش پرداخت</b> </h5></div><div class='row'><div class='col-12'><div class='form-group'><label class=' control-label'>نحوه پرداخت صورتحساب : <small class='Red font-weight-bold'> انتخاب نشده است</small></strong></label></div></div>")
 
     }
@@ -291,7 +277,6 @@ function ShowComplete2(WalletPrice) {
     if (Data.orderCoupon.couponCode != null) {
         CompleteInfo.insertAdjacentHTML("beforeend", "<div class='col-12'><label class=' control-label'>کد تخفیف استفاده شده : <strong>" + Data.orderCoupon.couponCode + "</strong></label></div><div class='col-12'><label class=' control-label'>نحوه اعمال تخفیف : <strong>" + Data.orderCoupon.couponType + "</strong></label></div><div class='col-12'><label class=' control-label'>میزان مبلغ تخفیف : <strong>" + separate(Data.orderCoupon.discountPrice) + " تومان</strong></label></div>")
     }
-
 
 
     switch (Data.orderPay.id) {
@@ -306,8 +291,7 @@ function ShowComplete2(WalletPrice) {
         case 3:
             if (ActiveTransaction != null) {
                 CompleteInfo.insertAdjacentHTML("beforeend", "<button type='button' class='pointer btn BgGreen White btn-block btn-round' onclick='CalculateAghsat()'>ثبت درخواست استفاده از تسهیلات</button>")
-            }
-            else {
+            } else {
                 CompleteInfo.insertAdjacentHTML("beforeend", "<button type='button' class='btn BgRed White btn-block btn-round'>تسهیلات فعالی برای شما در سیستم ثبت نشده است</button>")
 
             }
@@ -315,8 +299,7 @@ function ShowComplete2(WalletPrice) {
         case 4:
             if (ActiveTransaction != null) {
                 CompleteInfo.insertAdjacentHTML("beforeend", "<button type='button' class='pointer btn BgGreen White btn-block btn-round' onclick='CalculateAghsat()'>ثبت درخواست استفاده از تسهیلات</button>")
-            }
-            else {
+            } else {
                 CompleteInfo.insertAdjacentHTML("beforeend", "<button type='button' class='pointer btn BgRed White btn-block btn-round'>تسهیلات فعالی برای شما در سیستم ثبت نشده است</button>")
 
             }
@@ -341,6 +324,7 @@ function closeModal() {
     $("#Shippings").modal('hide');
 
 }
+
 function closeAghsatModal() {
     $("#AghsatComplete").modal('hide');
 
@@ -358,6 +342,7 @@ function ShowShippingModal() {
     });
     $("#Shippings").modal('show');
 }
+
 function SetShipping(id) {
     //var orderShipping = Response.object.orderShipping;
     //var userShipping = Response.object.userShippingList[id];
@@ -378,7 +363,7 @@ function SetShipping(id) {
                 $('input:hidden[name="__RequestVerificationToken"]').val());
 
         },
-        data: { "userShippingId": id, "orderId": Response.object.order.orderId },
+        data: {"userShippingId": id, "orderId": Response.object.order.orderId},
         success: function (response) {
             console.log(response);
             ToastSuccess(response.message);
@@ -406,8 +391,7 @@ function CalculateAghsat() {
 
     if (WalletPrice < Response.object.order.total) {
         price = WalletPrice;
-    }
-    else {
+    } else {
         price = Response.object.order.total;
     }
 
@@ -435,14 +419,14 @@ function CalculateAghsat() {
         }
     });
 }
+
 function ShowAghsat(response) {
     var AghsatSection = document.getElementById("AghsatSection");
     AghsatSection.innerHTML = null;
     console.log(response);
     if (!response.isSuccessed) {
         ToastError(response.message);
-    }
-    else {
+    } else {
 
         ToastSuccess(response.message);
         var object = response.object;
@@ -451,8 +435,6 @@ function ShowAghsat(response) {
         $("#AghsatComplete").modal('show');
     }
 }
-
-
 
 
 function SubmitOrder() {
@@ -494,13 +476,13 @@ function SubmitOrder() {
         }
     });
 }
+
 function CheckComplete(response) {
     console.log(response);
     if (response.object != null) {
         ToastSuccess(response.message);
         setTimeout(RedirectToDargah(response.object), 3000);
-    }
-    else if (response.isSuccessed) {
+    } else if (response.isSuccessed) {
         swal({
             title: response.message,
             type: 'question',
@@ -516,9 +498,7 @@ function CheckComplete(response) {
                 window.location.href = "/Checkout";
             }
         }).catch(swal.noop);
-    }
-
-    else {
+    } else {
         ToastError(response.message);
     }
 }
@@ -526,6 +506,7 @@ function CheckComplete(response) {
 function RedirectComplete() {
     window.location.href = "/Panel/Orders";
 }
+
 function RedirectToDargah(object) {
     window.location.href = object;
 }

@@ -1,51 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
-using Shop.Application.DTOs.Auth;
+﻿using FluentValidation;
 
-namespace Shop.Application.Validators.Auth
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Validators.Auth;
+
+public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
-    public class LoginDtoValidator:AbstractValidator<LoginDto>
+    public LoginDtoValidator()
     {
-        public LoginDtoValidator()
-        {
-            RuleFor(u => u.UserName)
-                .NotEmpty().WithMessage("لطفا نام کاربری را وارد نمایید")
-                .MaximumLength(50).WithMessage("طول نام کاربری وترد شده بیش از حد مجاز است.");
+        RuleFor(u => u.UserName)
+            .NotEmpty()
+            .WithMessage("لطفا نام کاربری را وارد نمایید")
+            .MaximumLength(50)
+            .WithMessage("طول نام کاربری وترد شده بیش از حد مجاز است.");
 
-            RuleFor(u => u.Password)
-                .NotEmpty().WithMessage("لطفا کلمه عبور خود را وارد نمایید")
-                .MaximumLength(50).WithMessage("طول کلمه عبور وارد شده بیش از حد مجاز است");
-
-        }
-        
+        RuleFor(u => u.Password)
+            .NotEmpty()
+            .WithMessage("لطفا کلمه عبور خود را وارد نمایید")
+            .MaximumLength(50)
+            .WithMessage("طول کلمه عبور وارد شده بیش از حد مجاز است");
     }
-    public class ChangePasswordDtoValidator:AbstractValidator<ChangePasswordDto>
+}
+
+public class ChangePasswordDtoValidator : AbstractValidator<ChangePasswordDto>
+{
+    public ChangePasswordDtoValidator()
     {
-        public ChangePasswordDtoValidator()
-        {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+        CascadeMode = CascadeMode.StopOnFirstFailure;
 
-           
-            RuleFor(u => u.old)
-                .NotEmpty().WithMessage("لطفا کلمه عبور را وارد نمایید");
 
-            RuleFor(u => u.newPassword)
-                .NotEmpty().WithMessage("لطفا کلمه عبور جدید  خود را وارد نمایید");
-            
-            RuleFor(u => u.renewPassword)
-                .NotEmpty().WithMessage("لطفا تکرار کلمه عبور جدید خود را وارد نمایید");
-            RuleFor(x => x).Custom((x, context) =>
+        RuleFor(u => u.old)
+            .NotEmpty()
+            .WithMessage("لطفا کلمه عبور را وارد نمایید");
+
+        RuleFor(u => u.newPassword)
+            .NotEmpty()
+            .WithMessage("لطفا کلمه عبور جدید  خود را وارد نمایید");
+
+        RuleFor(u => u.renewPassword)
+            .NotEmpty()
+            .WithMessage("لطفا تکرار کلمه عبور جدید خود را وارد نمایید");
+        RuleFor(x => x)
+            .Custom((x, context) =>
             {
                 if (x.newPassword != x.renewPassword)
                 {
                     context.AddFailure(nameof(x.renewPassword), "کلمات عبور وارد شده یکسان نمی باشد");
                 }
             });
-        }
-
     }
 }

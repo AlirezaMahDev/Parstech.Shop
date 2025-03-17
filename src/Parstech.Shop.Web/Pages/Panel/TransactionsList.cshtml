@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Panel.TransactionsListModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Panel.TransactionsListModel
 @{
 }
 <main id="content" role="main">
@@ -8,9 +9,8 @@
     <div class="container">
 
 
-
         <div class="row">
-            <partial name="Site/_PanelSideBar" />
+            <partial name="Site/_PanelSideBar"/>
 
             <div class="col-lg-9 order-lg-1">
                 <div class="pb-7 mb-7">
@@ -30,10 +30,30 @@
                         <div class="panel-body rtl">
 
                             <div class="row">
-                                <div class="col-lg-3 col-6"><button onclick="GetTransaction()" type="button" class="btn w-100 btn-xs cart-Green cart-Hover font-weight-bold m-1"><i class="fas fa-money-bill-transfer Green m-1"></i>تراکنشات کیف پول</button></div>
-                                <div class="col-lg-3 col-6"><button onclick="GetCoins()" type="button" class="btn w-100 btn-xs cart-Orange cart-Hover font-weight-bold m-1"><i class=" fas fa-coins Yellow m-1"></i>لیست امتیازات</button></div>
-                                <div class="col-lg-3 col-6"><button onclick="GetAghsat()" type="button" class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i class="fas fa-circle-info Blue m-1"></i>اقساط تسهیلات</button></div>
-                                <div class="col-lg-3 col-6"><button onclick="GetOrgCredit()" type="button" class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i class="fas fa-circle-info Blue m-1"></i>اعتبار سازمانی</button></div>
+                                <div class="col-lg-3 col-6">
+                                    <button onclick="GetTransaction()" type="button"
+                                            class="btn w-100 btn-xs cart-Green cart-Hover font-weight-bold m-1"><i
+                                            class="fas fa-money-bill-transfer Green m-1"></i>تراکنشات کیف پول
+                                    </button>
+                                </div>
+                                <div class="col-lg-3 col-6">
+                                    <button onclick="GetCoins()" type="button"
+                                            class="btn w-100 btn-xs cart-Orange cart-Hover font-weight-bold m-1"><i
+                                            class=" fas fa-coins Yellow m-1"></i>لیست امتیازات
+                                    </button>
+                                </div>
+                                <div class="col-lg-3 col-6">
+                                    <button onclick="GetAghsat()" type="button"
+                                            class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i
+                                            class="fas fa-circle-info Blue m-1"></i>اقساط تسهیلات
+                                    </button>
+                                </div>
+                                <div class="col-lg-3 col-6">
+                                    <button onclick="GetOrgCredit()" type="button"
+                                            class="btn w-100 btn-xs cart-Blue cart-Hover font-weight-bold m-1"><i
+                                            class="fas fa-circle-info Blue m-1"></i>اعتبار سازمانی
+                                    </button>
+                                </div>
                             </div>
                             <div class="d-flex mb-2" id="pagingHeader">
                             </div>
@@ -42,12 +62,12 @@
                                 <table class="table " id="data-table">
 
                                     <thead>
-                                        <tr>
-                                        </tr>
+                                    <tr>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                        </tr>
+                                    <tr>
+                                    </tr>
 
                                     </tbody>
 
@@ -59,8 +79,6 @@
                         </div><!-- /.panel-body -->
                     </div>
                     <!-- End Title -->
-
-
 
 
                 </div>
@@ -109,22 +127,25 @@
       data-ajax-begin="OnLoading"
       data-ajax-complete="OnComplete"
       data-ajax-failure="OnError">
-    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
-    <input type="hidden" asp-for="Type" id="walletType" />
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
+    <input type="hidden" asp-for="Type" id="walletType"/>
 </form>
-<form method="post" id="TransactionDetail" asp-page-handler="TransactionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
+<form method="post" id="TransactionDetail" asp-page-handler="TransactionDetail" class="form-horizontal" role="form"
+      enctype="multipart/form-data"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-begin="OnLoadingTransactionDetail"
       data-ajax-complete="OnCompleteTransactionDetail"
       data-ajax-failure="OnErrorTransactionDetail">
-    <input type="hidden" asp-for="transactionId" id="transactionId" />
+    <input type="hidden" asp-for="transactionId" id="transactionId"/>
 </form>
 <!--End FORMS-->
+
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

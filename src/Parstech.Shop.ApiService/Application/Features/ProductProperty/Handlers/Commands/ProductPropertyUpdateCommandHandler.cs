@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductProperty;
-using Shop.Application.Features.ProductProperty.Requests.Commands;
 
-namespace Shop.Application.Features.ProductProperty.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductProperty.Handlers.Commands;
+
+public class ProductPropertyUpdateCommandHandler : IRequestHandler<ProductPropertyUpdateCommandReq, ProductPropertyDto>
 {
-    public class ProductPropertyUpdateCommandHandler : IRequestHandler<ProductPropertyUpdateCommandReq, ProductPropertyDto>
-    {
-        private readonly IProductPropertyRepository _productPropertyRep;
-        private readonly IMapper _mapper;
+    private readonly IProductPropertyRepository _productPropertyRep;
+    private readonly IMapper _mapper;
 
-        public ProductPropertyUpdateCommandHandler(IProductPropertyRepository productPropertyRep, IMapper mapper)
-        {
-            _productPropertyRep = productPropertyRep;
-            _mapper = mapper;
-        }
-        public async Task<ProductPropertyDto> Handle(ProductPropertyUpdateCommandReq request, CancellationToken cancellationToken)
-        {
-            var pproperty = _mapper.Map<Domain.Models.ProductProperty>(request.ProductPropertyDto);
-           var result=await _productPropertyRep.UpdateAsync(pproperty);
-           return _mapper.Map<ProductPropertyDto>(result);
-        }
+    public ProductPropertyUpdateCommandHandler(IProductPropertyRepository productPropertyRep, IMapper mapper)
+    {
+        _productPropertyRep = productPropertyRep;
+        _mapper = mapper;
+    }
+
+    public async Task<ProductPropertyDto> Handle(ProductPropertyUpdateCommandReq request,
+        CancellationToken cancellationToken)
+    {
+        Domain.Models.ProductProperty? pproperty =
+            _mapper.Map<Domain.Models.ProductProperty>(request.ProductPropertyDto);
+        Domain.Models.ProductProperty? result = await _productPropertyRep.UpdateAsync(pproperty);
+        return _mapper.Map<ProductPropertyDto>(result);
     }
 }

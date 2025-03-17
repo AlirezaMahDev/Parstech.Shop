@@ -1,11 +1,13 @@
-using Shop.Persistence.Context;
-using Shop.Application;
-using Shop.Infrastructure;
-using Shop.Persistence;
 using Parstech.Shop.ApiService.Services;
 using Parstech.Shop.ApiService.MapperProfiles;
+using Parstech.Shop.ApiService.Application;
+using Parstech.Shop.ApiService.Persistence;
+using Parstech.Shop.ApiService.Infrastructure;
+using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.ApiService.Services.GrpcServices;
+using Parstech.Shop.ServiceDefaults;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigurePersistenceService(builder.Configuration);
 builder.Services.ConfigureInfrustructureService();
@@ -27,7 +29,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSqlServer<DatabaseContext>("database");
 
 // Add AutoMapper profiles
-builder.Services.AddAutoMapper(config => 
+builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile<GrpcMapper>();
     // Apply extensions
@@ -46,7 +48,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 app.UseExceptionHandler();
 app.UseHttpsRedirection();

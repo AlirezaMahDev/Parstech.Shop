@@ -1,40 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductProperty;
-using Shop.Application.Features.ProductProperty.Requests.Queries;
 
-namespace Shop.Application.Features.ProductProperty.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductProperty.Handlers.Queries;
+
+public class PropertiesOfProductQueryHandler : IRequestHandler<PropertiesOfProductQueryReq, List<ProductPropertyDto>>
 {
-    public class PropertiesOfProductQueryHandler : IRequestHandler<PropertiesOfProductQueryReq, List<ProductPropertyDto>>
-    {
-        private readonly IProductPropertyRepository _productPropertyRep;
-        private readonly IPropertyRepository _propertyRep;
-        private readonly IMapper _mapper;
+    private readonly IProductPropertyRepository _productPropertyRep;
+    private readonly IPropertyRepository _propertyRep;
+    private readonly IMapper _mapper;
 
-        public PropertiesOfProductQueryHandler(IProductPropertyRepository productPropertyRep, IPropertyRepository propertyRep, IMapper mapper)
+    public PropertiesOfProductQueryHandler(IProductPropertyRepository productPropertyRep,
+        IPropertyRepository propertyRep,
+        IMapper mapper)
+    {
+        _productPropertyRep = productPropertyRep;
+        _propertyRep = propertyRep;
+        _mapper = mapper;
+    }
+
+    public async Task<List<ProductPropertyDto>> Handle(PropertiesOfProductQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        List<Domain.Models.ProductProperty>? list = await _productPropertyRep.GetPropertiesByProduct(request.productId);
+        List<ProductPropertyDto> Result = new();
+        foreach (Domain.Models.ProductProperty productProperty in list)
         {
-            _productPropertyRep = productPropertyRep;
-            _propertyRep = propertyRep;
-            _mapper = mapper;
+            Domain.Models.Property? property = await _propertyRep.GetAsync(productProperty.PropertyId);
+            ProductPropertyDto? producPropertyDto = _mapper.Map<ProductPropertyDto>(productProperty);
+            producPropertyDto.PropertyName = property.Caption;
+            Result.Add(producPropertyDto);
         }
-        public async Task<List<ProductPropertyDto>> Handle(PropertiesOfProductQueryReq request, CancellationToken cancellationToken)
-        {
-            var list =await _productPropertyRep.GetPropertiesByProduct(request.productId);
-            List<ProductPropertyDto> Result = new List<ProductPropertyDto>();
-            foreach (var productProperty in list)
-            {
-                var property =await _propertyRep.GetAsync(productProperty.PropertyId);
-                var producPropertyDto = _mapper.Map<ProductPropertyDto>(productProperty);
-                producPropertyDto.PropertyName = property.Caption;
-                Result.Add(producPropertyDto);
-            }
-            return Result;
-        }
+
+        return Result;
     }
 }

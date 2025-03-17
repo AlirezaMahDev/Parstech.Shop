@@ -1,11 +1,11 @@
 ## flatpickr - javascript datetime picker
+
 [![Build Status](https://circleci.com/gh/flatpickr/flatpickr/tree/master.svg?style=svg)](https://circleci.com/gh/flatpickr/flatpickr/tree/master)
 
 [![Coverage](https://coveralls.io/repos/github/chmln/flatpickr/badge.svg?branch=master)](https://coveralls.io/github/chmln/flatpickr)
 [![npm version](https://badge.fury.io/js/flatpickr.svg)](https://www.npmjs.com/package/flatpickr)
 [![CDNJS](https://img.shields.io/cdnjs/v/flatpickr.svg)](https://cdnjs.com/libraries/flatpickr)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=plastic)](https://raw.githubusercontent.com/chmln/flatpickr/master/LICENSE.md)
-
 
 ![blue](https://cloud.githubusercontent.com/assets/11352152/14549371/3cbb65da-028d-11e6-976d-a6f63f32061f.PNG)
 ![green](https://cloud.githubusercontent.com/assets/11352152/14549373/3cbe975a-028d-11e6-9192-43975f0146da.PNG)
@@ -14,9 +14,12 @@
 ![default](https://cloud.githubusercontent.com/assets/11352152/14549370/3cadb750-028d-11e6-818d-c6a1bc6349fc.PNG)
 ![dark](https://cloud.githubusercontent.com/assets/11352152/14549372/3cbc8514-028d-11e6-8daf-ec1ba01c9d7e.PNG)
 
-
 ## Motivation
-Almost every large SPA or project involves date and time input. Browser's native implementations of those are inconsistent and limited in functionality. Most other libraries require you to pull in heavy dependencies like jQuery, Bootstrap, and moment.js. I wanted something that was good-looking out of the box, dependency-free, powerful, and extensible.
+
+Almost every large SPA or project involves date and time input. Browser's native implementations of those are
+inconsistent and limited in functionality. Most other libraries require you to pull in heavy dependencies like jQuery,
+Bootstrap, and moment.js. I wanted something that was good-looking out of the box, dependency-free, powerful, and
+extensible.
 
 Feature overview:
 
@@ -39,6 +42,7 @@ Feature overview:
 flatpickr provides more functionality at a fraction of the size of other libraries.
 
 ## Compatibility
+
 IE9 and up, Edge, iOS Safari 6+, Chrome 8+, Firefox 6+
 
 ## Install & Use
@@ -46,6 +50,7 @@ IE9 and up, Edge, iOS Safari 6+, Chrome 8+, Firefox 6+
 Demos and documentation: https://flatpickr.github.io/
 
 See also:
+
 * [React Component](https://github.com/coderhaoxin/react-flatpickr)
 * [ember-flatpickr addon](https://www.npmjs.com/package/ember-flatpickr)
 * [angularJS-flatpickr addon](https://www.npmjs.com/package/angular-flatpickr)
@@ -57,6 +62,7 @@ See also:
 
 flatpickr will never change its license, pester users for donations, or engage in other user-hostile behavior.
 
-Nevertheless, if you enjoyed working with this library or if its made your life easier, you can buy me a cup of coffee :)
+Nevertheless, if you enjoyed working with this library or if its made your life easier, you can buy me a cup of
+coffee :)
 
 <a href='https://ko-fi.com/A3381DJ9' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

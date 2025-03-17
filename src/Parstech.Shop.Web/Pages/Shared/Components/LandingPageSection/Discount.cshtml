@@ -5,8 +5,10 @@
 <div class="mb-4">
     <!-- Nav nav-pills -->
     <div class="position-relative z-index-2">
-        <div class=" d-flex justify-content-between border-bottom border-color-1 flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 mb-4 rtl">
-            <div class="  justify-content-between border-bottom border-color-1 flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 rtl">
+        <div
+            class=" d-flex justify-content-between border-bottom border-color-1 flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 mb-4 rtl">
+            <div
+                class="  justify-content-between border-bottom border-color-1 flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 rtl">
                 <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">@Model.Name </h3>
 
             </div>
@@ -14,7 +16,7 @@
         <div class="row">
             @{
                 var panelCount = Model.ProductCateguries.Count / 10;
-                if ((panelCount * 10) < Model.ProductCateguries.Count)
+                if (panelCount * 10 < Model.ProductCateguries.Count)
                 {
                     panelCount++;
                 }
@@ -27,7 +29,8 @@
                     <div class="p-3 border border-width-2 border-primary borders-radius-20 bg-white min-width-370">
                         <div class="d-flex justify-content-between align-items-center m-1 ml-2">
                             @*<h3 class="font-size-22 mb-0 font-weight-normal text-lh-28">محصول ویژه</h3>*@
-                            <div class="d-flex align-items-center flex-column justify-content-center Bg-Red rounded-pill height-75 width-75 text-lh-1">
+                            <div
+                                class="d-flex align-items-center flex-column justify-content-center Bg-Red rounded-pill height-75 width-75 text-lh-1">
                                 <span class="font-size-12 text-white">محصول</span>
                                 <div class="font-size-20 text-white font-weight-bold"> ویژه</div>
                             </div>
@@ -36,19 +39,19 @@
                             <div class="js-slick-carousel u-slick">
                                 <a href="@detail.Link">
                                     <div class="js-slide">
-                                        <div class="bg-img-hero height-560-xl m-1 listProductBox" style=" background-image: url(/shared/images/@detail.BackgroundImage);">
+                                        <div class="bg-img-hero height-560-xl m-1 listProductBox"
+                                             style=" background-image: url(/shared/images/@detail.BackgroundImage);">
                                             <div class="row  mx-0 align-items-center mobile-height-410">
                                                 <div class="col-md-12 mt-6 mt-md-0 mb-4 mb-md-0">
                                                     <div class="text-white text-center">
                                                         @if (detail.Image != null)
                                                         {
-                                                            <img width="100%" src="~/shared/images/@detail.Image" alt="">
+                                                            <img width="100%" src="~/shared/images/@detail.Image"
+                                                                 alt="">
                                                         }
                                                         else
                                                         {
-
                                                         }
-
 
 
                                                     </div>
@@ -70,14 +73,15 @@
                 <div class="col col-md-7 col-xl-8 col-wd-8gdot7">
                     <!-- Tab Content -->
                     <div class="tab-content" id="Bpills-tabContent">
-                        <div class="tab-pane fade show active" id="Bpills-one-example1" role="tabpanel" aria-labelledby="Bpills-one-example1-tab">
-                            <div class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-1 pb-6 px-1"
-                                 data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4">
+                        <div class="tab-pane fade show active" id="Bpills-one-example1" role="tabpanel"
+                             aria-labelledby="Bpills-one-example1-tab">
+                            <div
+                                class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-1 pb-6 px-1"
+                                data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4">
 
 
                                 @for (var i = 0; i < panelCount; i++)
                                 {
-
                                     var take = 10;
                                     var skip = i * take;
                                     <div class="js-slide">
@@ -89,61 +93,84 @@
 
                                                         @if (item.DiscountDate != null)
                                                         {
-
-
                                                             <div class="rtl">
-                                                                <input type="hidden" id="date-@item.Id" value="@item.DiscountDate" />
-                                                                <input type="hidden" value="@item.Id" class="Discount" />
+                                                                <input type="hidden" id="date-@item.Id"
+                                                                       value="@item.DiscountDate"/>
+                                                                <input type="hidden" value="@item.Id" class="Discount"/>
                                                                 <div id="@item.ProductStockPriceId">
                                                                 </div>
                                                             </div>
-
                                                         }
 
 
                                                         <div class="product-item__body pb-xl-2">
 
-                                                            <div class="mb-2"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="font-size-12 text-gray-5">@item.CateguryName</a></div>
-                                                            <div class="mb-2">
-                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="d-block text-center"><img class="img-fluid" src="~/Shared/Images/Products/@item.Image" alt=""></a>
+                                                            <div class="mb-2"><a
+                                                                    href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                    class="font-size-12 text-gray-5">@item.CateguryName</a>
                                                             </div>
-                                                            <h6 class="font-size-12 mb-1 product-item__title"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class=" font-weight-bold">@item.Name</a></h6>
+                                                            <div class="mb-2">
+                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                   class="d-block text-center"><img class="img-fluid"
+                                                                                                    src="~/Shared/Images/Products/@item.Image"
+                                                                                                    alt=""></a>
+                                                            </div>
+                                                            <h6 class="font-size-12 mb-1 product-item__title"><a
+                                                                    href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                    class=" font-weight-bold">@item.Name</a></h6>
 
                                                             <div class="flex-center-between mt-4 mb-1">
 
 
-                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                <div
+                                                                    class="prodcut-price d-flex align-items-center position-relative">
                                                                     @if (item.Quantity > 0)
                                                                     {
                                                                         @if (item.DiscountPrice > 0)
                                                                         {
-                                                                            <ins class="font-size-15 font-weight-bold text-red text-decoration-none d-flex"><img src="~/shared/toman.svg" /> @item.DiscountPrice.ToString("#,0") </ins>
+                                                                            <ins
+                                                                                class="font-size-15 font-weight-bold text-red text-decoration-none d-flex">
+                                                                                <img
+                                                                                    src="~/shared/toman.svg"/> @item.DiscountPrice.ToString("#,0")
+                                                                            </ins>
 
-                                                                            <del class="font-size-1 tex-gray-6 position-absolute ">@item.SalePrice.ToString("#,0")</del>
-
+                                                                            <del
+                                                                                class="font-size-1 tex-gray-6 position-absolute ">@item.SalePrice.ToString("#,0")</del>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img src="~/shared/toman.svg" /></ins>
-
+                                                                            <ins
+                                                                                class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img
+                                                                                    src="~/shared/toman.svg"/></ins>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                        <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">به اتمام رسیده </ins>
+                                                                        <ins
+                                                                            class="font-size-15 font-weight-bold text-decoration-none d-flex">
+                                                                            به اتمام رسیده
+                                                                        </ins>
                                                                     }
 
 
                                                                 </div>
                                                                 <div class="d-none d-xl-block prodcut-add-cart">
-                                                                    <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="btn-add-cart btn-primary transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
+                                                                    <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                       class="btn-add-cart btn-primary transition-3d-hover"><i
+                                                                            class="ec ec-add-to-cart"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="product-item__footer">
                                                             <div class="border-top pt-2 flex-center-between flex-wrap">
-                                                                <a onclick="AddToCompare(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-compare mr-1 font-size-15"></i> مقایسه</a>
-                                                                <a onclick="AddToFavorite(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> علاقه مندم</a>
+                                                                <a onclick="AddToCompare(@item.ProductId)"
+                                                                   class="text-gray-6 font-size-13"><i
+                                                                        class="ec ec-compare mr-1 font-size-15"></i>
+                                                                    مقایسه</a>
+                                                                <a onclick="AddToFavorite(@item.ProductId)"
+                                                                   class="text-gray-6 font-size-13"><i
+                                                                        class="ec ec-favorites mr-1 font-size-15"></i>
+                                                                    علاقه مندم</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -154,29 +181,27 @@
                                 }
 
 
-
                             </div>
                         </div>
 
                     </div>
                     <!-- End Tab Content -->
                 </div>
-
-
             }
             else
             {
                 <div class="col col-md-12 col-xl-12 ">
                     <!-- Tab Content -->
                     <div class="tab-content" id="Bpills-tabContent">
-                        <div class="tab-pane fade show active" id="Bpills-one-example1" role="tabpanel" aria-labelledby="Bpills-one-example1-tab">
-                            <div class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-1 pb-6 px-1"
-                                 data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4">
+                        <div class="tab-pane fade show active" id="Bpills-one-example1" role="tabpanel"
+                             aria-labelledby="Bpills-one-example1-tab">
+                            <div
+                                class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-1 pb-6 px-1"
+                                data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4">
 
 
                                 @for (var i = 0; i < panelCount; i++)
                                 {
-
                                     var take = 10;
                                     var skip = i * take;
                                     <div class="js-slide">
@@ -188,61 +213,84 @@
 
                                                         @if (item.DiscountDate != null)
                                                         {
-
-
                                                             <div class="rtl">
-                                                                <input type="hidden" id="date-@item.Id" value="@item.DiscountDate" />
-                                                                <input type="hidden" value="@item.Id" class="Discount" />
+                                                                <input type="hidden" id="date-@item.Id"
+                                                                       value="@item.DiscountDate"/>
+                                                                <input type="hidden" value="@item.Id" class="Discount"/>
                                                                 <div id="@item.ProductStockPriceId">
                                                                 </div>
                                                             </div>
-
                                                         }
 
 
                                                         <div class="product-item__body pb-xl-2">
 
-                                                            <div class="mb-2"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="font-size-12 text-gray-5">@item.CateguryName</a></div>
-                                                            <div class="mb-2">
-                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="d-block text-center"><img class="img-fluid" src="~/Shared/Images/Products/@item.Image" alt=""></a>
+                                                            <div class="mb-2"><a
+                                                                    href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                    class="font-size-12 text-gray-5">@item.CateguryName</a>
                                                             </div>
-                                                            <h6 class="font-size-12 mb-1 product-item__title"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class=" font-weight-bold">@item.Name</a></h6>
+                                                            <div class="mb-2">
+                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                   class="d-block text-center"><img class="img-fluid"
+                                                                                                    src="~/Shared/Images/Products/@item.Image"
+                                                                                                    alt=""></a>
+                                                            </div>
+                                                            <h6 class="font-size-12 mb-1 product-item__title"><a
+                                                                    href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                    class=" font-weight-bold">@item.Name</a></h6>
 
                                                             <div class="flex-center-between mt-4 mb-1">
 
 
-                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                <div
+                                                                    class="prodcut-price d-flex align-items-center position-relative">
                                                                     @if (item.Quantity > 0)
                                                                     {
                                                                         @if (item.DiscountPrice > 0)
                                                                         {
-                                                                            <ins class="font-size-15 font-weight-bold text-red text-decoration-none d-flex"><img src="~/shared/toman.svg" /> @item.DiscountPrice.ToString("#,0") </ins>
+                                                                            <ins
+                                                                                class="font-size-15 font-weight-bold text-red text-decoration-none d-flex">
+                                                                                <img
+                                                                                    src="~/shared/toman.svg"/> @item.DiscountPrice.ToString("#,0")
+                                                                            </ins>
 
-                                                                            <del class="font-size-1 tex-gray-6 position-absolute ">@item.SalePrice.ToString("#,0")</del>
-
+                                                                            <del
+                                                                                class="font-size-1 tex-gray-6 position-absolute ">@item.SalePrice.ToString("#,0")</del>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img src="~/shared/toman.svg" /></ins>
-
+                                                                            <ins
+                                                                                class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img
+                                                                                    src="~/shared/toman.svg"/></ins>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                        <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">به اتمام رسیده </ins>
+                                                                        <ins
+                                                                            class="font-size-15 font-weight-bold text-decoration-none d-flex">
+                                                                            به اتمام رسیده
+                                                                        </ins>
                                                                     }
 
 
                                                                 </div>
                                                                 <div class="d-none d-xl-block prodcut-add-cart">
-                                                                    <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="btn-add-cart btn-primary transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
+                                                                    <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId"
+                                                                       class="btn-add-cart btn-primary transition-3d-hover"><i
+                                                                            class="ec ec-add-to-cart"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="product-item__footer">
                                                             <div class="border-top pt-2 flex-center-between flex-wrap">
-                                                                <a onclick="AddToCompare(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-compare mr-1 font-size-15"></i> مقایسه</a>
-                                                                <a onclick="AddToFavorite(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> علاقه مندم</a>
+                                                                <a onclick="AddToCompare(@item.ProductId)"
+                                                                   class="text-gray-6 font-size-13"><i
+                                                                        class="ec ec-compare mr-1 font-size-15"></i>
+                                                                    مقایسه</a>
+                                                                <a onclick="AddToFavorite(@item.ProductId)"
+                                                                   class="text-gray-6 font-size-13"><i
+                                                                        class="ec ec-favorites mr-1 font-size-15"></i>
+                                                                    علاقه مندم</a>
                                                             </div>
                                                         </div>
                                                     </div>

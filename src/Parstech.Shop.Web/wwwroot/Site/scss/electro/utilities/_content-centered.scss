@@ -8,14 +8,14 @@
 
 // Large Devices
 @include media-breakpoint-up(md) {
-	.content-centered-y--md {
-	  @include content-centered(false, true);
-	}
+  .content-centered-y--md {
+    @include content-centered(false, true);
+  }
 }
 
 // Large Devices
 @include media-breakpoint-up(lg) {
-	.content-centered-y--lg {
-	  @include content-centered(false, true);
-	}
+  .content-centered-y--lg {
+    @include content-centered(false, true);
+  }
 }

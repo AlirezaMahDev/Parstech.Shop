@@ -1,68 +1,69 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Parstech.Shop.Shared.Protos.FormCredit;
+
+using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.Web.Services.GrpcClients;
-using Shop.Application.DTOs.Response;
-using Shop.Application.Validators.Coupon;
 
-namespace Shop.Web.Pages
+namespace Parstech.Shop.Web.Pages;
+
+public class CreditRequest : PageModel
 {
-    public class CreditRequest : PageModel
+    #region Constructor
+
+    private readonly FormCreditGrpcClient _formCreditClient;
+
+    public CreditRequest(FormCreditGrpcClient formCreditClient)
     {
-        #region Constructor
+        _formCreditClient = formCreditClient;
+    }
 
-        private readonly FormCreditGrpcClient _formCreditClient;
+    #endregion
 
-        public CreditRequest(FormCreditGrpcClient formCreditClient)
+    #region Properties
+
+    [BindProperty]
+    public FormCreditDto formCredit { get; set; }
+
+    public ResponseDto Response { get; set; } = new ResponseDto();
+
+    #endregion
+
+    #region Get
+
+    public async Task<IActionResult> OnGet()
+    {
+        return Page();
+    }
+
+    #endregion
+
+    #region Post
+
+    public async Task<IActionResult> OnPost()
+    {
+        #region Validator
+
+        var validator = new FormCreditDtoValidator();
+        var valid = validator.Validate(formCredit);
+        if (!valid.IsValid)
         {
-            _formCreditClient = formCreditClient;
-        }
+            Response.IsSuccessed = false;
+            Response.Errors = valid.Errors;
+            Response.Message = "درخواست به درستی تکمیل نشده است";
 
-        #endregion
-
-        #region Properties
-
-        [BindProperty]
-        public FormCreditDto formCredit { get; set; }
-
-        public ResponseDto Response { get; set; } = new ResponseDto();
-
-        #endregion
-
-        #region Get
-
-        public async Task<IActionResult> OnGet()
-        {
-            return Page();
-        }
-
-        #endregion
-
-        #region Post
-
-        public async Task<IActionResult> OnPost()
-        {
-            #region Validator
-            var validator = new FormCreditDtoValidator();
-            var valid = validator.Validate(formCredit);
-            if (!valid.IsValid)
-            {
-                Response.IsSuccessed = false;
-                Response.Errors = valid.Errors;
-                Response.Message = "درخواست به درستی تکمیل نشده است";
-
-                return new JsonResult(Response);
-            }
-            #endregion
-            
-            // Convert request price from text format
-            formCredit.RequestPrice = long.Parse(formCredit.TextRequestPrice.Replace(",", ""));
-            
-            // Use gRPC client instead of MediatR
-            Response = await _formCreditClient.CreateFormCreditAsync(formCredit);
-            
             return new JsonResult(Response);
         }
+
         #endregion
+
+        // Convert request price from text format
+        formCredit.RequestPrice = long.Parse(formCredit.TextRequestPrice.Replace(",", ""));
+
+        // Use gRPC client instead of MediatR
+        Response = await _formCreditClient.CreateFormCreditAsync(formCredit);
+
+        return new JsonResult(Response);
     }
+
+    #endregion
 }

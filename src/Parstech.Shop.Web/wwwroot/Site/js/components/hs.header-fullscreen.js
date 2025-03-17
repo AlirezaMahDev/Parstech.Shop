@@ -6,393 +6,394 @@
  * @requires HSScrollBar component (hs.malihu-scrollbar.js v1.0.0)
  */
 ;(function ($) {
-  'use strict';
+    'use strict';
 
-  $.HSCore.components.HSHeaderFullscreen = {
+    $.HSCore.components.HSHeaderFullscreen = {
+
+        /**
+         * Base configuration.
+         *
+         * @private
+         */
+        _baseConfig: {
+            afterOpen: function () {
+            },
+            afterClose: function () {
+            },
+            overlayClass: 'u-fullscreen__overlay',
+            sectionsContainerSelector: '.u-fullscreen__content'
+        },
+
+
+        /**
+         * Contains all initialized items on the page.
+         *
+         * @private
+         */
+        _pageCollection: $(),
+
+        /**
+         * Initializes collection.
+         *
+         * @param {jQuery|HTMLElement} collection
+         * @param {Object} config
+         * @return {jQuery}
+         */
+        init: function (collection, config) {
+
+            var _self = this;
+
+            if (!collection) return $();
+            collection = $(collection)
+
+            if (!collection.length) return $();
+
+            config = config && $.isPlainObject(config) ? config : {};
+
+            this._bindGlobalEvents();
+
+
+            return collection.each(function (i, el) {
+
+                var $this = $(this),
+                    itemConfig = $.extend(true, {}, _self._baseConfig, config, $this.data());
+
+                if ($this.data('HSHeaderFullscreen')) return;
+
+                $this.data('HSHeaderFullscreen', new HSHeaderFullscreen(
+                    $this,
+                    itemConfig,
+                    new HSHeaderFullscreenOverlayEffect()
+                ));
+
+                _self._pageCollection = _self._pageCollection.add($this);
+
+            });
+
+        },
+
+        /**
+         * Binds necessary global events.
+         *
+         * @private
+         */
+        _bindGlobalEvents: function () {
+
+            var _self = this;
+
+
+            $(window).on('resize.HSHeaderFullscreen', function () {
+
+                if (_self.resizeTimeOutId) clearTimeout(_self.resizeTimeOutId);
+
+                _self.resizeTimeOutId = setTimeout(function () {
+
+                    _self._pageCollection.each(function (i, el) {
+
+                        var $this = $(el),
+                            HSHeaderFullscreen = $this.data('HSHeaderFullscreen');
+
+                        if (!HSHeaderFullscreen) return;
+
+                        HSHeaderFullscreen.update();
+
+                    });
+
+                }, 50);
+
+            });
+
+            $(document).on('keyup.HSHeaderFullscreen', function (e) {
+
+                if (e.keyCode && e.keyCode == 27) {
+
+                    _self._pageCollection.each(function (i, el) {
+
+                        var $this = $(el),
+                            HSHeaderFullscreen = $this.data('HSHeaderFullscreen'),
+                            hamburgers = HSHeaderFullscreen.invoker;
+
+                        if (!HSHeaderFullscreen) return;
+                        if (hamburgers.length && hamburgers.find('.is-active').length) hamburgers.find('.is-active').removeClass('is-active');
+                        HSHeaderFullscreen.hide();
+
+                    });
+
+                }
+
+            });
+
+        }
+    };
 
     /**
-     * Base configuration.
+     * HSHeaderFullscreen.
      *
-     * @private
-     */
-    _baseConfig: {
-      afterOpen: function(){},
-      afterClose: function(){},
-      overlayClass: 'u-fullscreen__overlay',
-      sectionsContainerSelector: '.u-fullscreen__content'
-    },
-
-
-    /**
-     * Contains all initialized items on the page.
-     *
-     * @private
-     */
-    _pageCollection: $(),
-
-    /**
-     * Initializes collection.
-     *
-     * @param {jQuery|HTMLElement} collection
+     * @param {jQuery} element
      * @param {Object} config
-     * @return {jQuery}
+     * @param {Object} effect
+     * @constructor
      */
-    init: function( collection, config ) {
+    function HSHeaderFullscreen(element, config, effect) {
 
-      var _self = this;
+        /**
+         * Contains link to the current object.
+         * @private
+         */
+        var _self = this;
 
-      if(!collection) return $();
-      collection = $(collection)
+        /**
+         * Contains link to the current jQuery element.
+         * @public
+         */
+        this.element = element;
 
-      if(!collection.length) return $();
+        /**
+         * Configuration object.
+         * @public
+         */
+        this.config = config;
 
-      config = config && $.isPlainObject(config) ? config : {};
+        /**
+         * Object that describes animation of the element.
+         * @public
+         */
+        this.effect = effect;
 
-      this._bindGlobalEvents();
+        /**
+         * Contains link to the overlay element.
+         * @public
+         */
+        this.overlay = $('<div></div>', {
+            class: _self.config.overlayClass
+        });
 
+        Object.defineProperty(this, 'isShown', {
+            get: function () {
+                return _self.effect.isShown();
+            }
+        });
 
-      return collection.each(function(i,el){
+        Object.defineProperty(this, 'sections', {
+            get: function () {
+                return _self.element.find(_self.config.sectionsContainerSelector);
+            }
+        });
 
-        var $this = $(this),
-            itemConfig = $.extend(true, {}, _self._baseConfig, config, $this.data());
+        this.element.append(this.overlay);
+        this.effect.init(this.element, this.overlay, this.config.afterOpen, this.config.afterClose);
+        this._bindEvents();
 
-        if( $this.data('HSHeaderFullscreen') ) return;
+        if ($.HSCore.components.HSScrollBar && this.sections.length) {
 
-        $this.data('HSHeaderFullscreen', new HSHeaderFullscreen(
-          $this,
-          itemConfig,
-          new HSHeaderFullscreenOverlayEffect()
-        ));
+            $.HSCore.components.HSScrollBar.init(this.sections);
 
-        _self._pageCollection = _self._pageCollection.add($this);
-
-      });
-
-    },
+        }
+    };
 
     /**
-     * Binds necessary global events.
+     * Binds necessary events.
      *
-     * @private
+     * @public
+     * @return {HSHeaderFullscreen}
      */
-    _bindGlobalEvents: function() {
+    HSHeaderFullscreen.prototype._bindEvents = function () {
 
-      var _self = this;
+        var _self = this;
 
+        this.invoker = $('[data-target="#' + this.element.attr('id') + '"]');
 
-       $(window).on('resize.HSHeaderFullscreen', function() {
+        if (this.invoker.length) {
 
-        if(_self.resizeTimeOutId) clearTimeout(_self.resizeTimeOutId);
+            this.invoker.off('click.HSHeaderFullscreen').on('click.HSHeaderFullscreen', function (e) {
 
-        _self.resizeTimeOutId = setTimeout(function(){
+                _self[_self.isShown ? 'hide' : 'show']();
 
-          _self._pageCollection.each(function(i,el){
+                e.preventDefault();
 
-            var $this = $(el),
-                HSHeaderFullscreen = $this.data('HSHeaderFullscreen');
-
-            if(!HSHeaderFullscreen) return;
-
-            HSHeaderFullscreen.update();
-
-          });
-
-        }, 50);
-
-      });
-
-      $(document).on('keyup.HSHeaderFullscreen', function(e){
-
-        if(e.keyCode && e.keyCode == 27) {
-
-          _self._pageCollection.each(function(i,el){
-
-            var $this = $(el),
-                HSHeaderFullscreen = $this.data('HSHeaderFullscreen'),
-                hamburgers = HSHeaderFullscreen.invoker;
-
-            if(!HSHeaderFullscreen) return;
-            if(hamburgers.length && hamburgers.find('.is-active').length) hamburgers.find('.is-active').removeClass('is-active');
-            HSHeaderFullscreen.hide();
-
-          });
+            });
 
         }
 
-      });
+        return this;
 
-    }
-  };
-
-  /**
-   * HSHeaderFullscreen.
-   *
-   * @param {jQuery} element
-   * @param {Object} config
-   * @param {Object} effect
-   * @constructor
-   */
-  function HSHeaderFullscreen( element, config, effect ) {
+    };
 
     /**
-     * Contains link to the current object.
-     * @private
-     */
-    var _self = this;
-
-    /**
-     * Contains link to the current jQuery element.
+     * Updates the header.
+     *
      * @public
+     * @return {HSHeaderFullscreen}
      */
-    this.element = element;
+    HSHeaderFullscreen.prototype.update = function () {
+
+        if (!this.effect) return false;
+
+        this.effect.update();
+
+        return this;
+    };
 
     /**
-     * Configuration object.
+     * Shows the header.
+     *
      * @public
+     * @return {HSHeaderFullscreen}
      */
-    this.config = config;
+    HSHeaderFullscreen.prototype.show = function () {
+
+        if (!this.effect) return false;
+
+        this.effect.show();
+
+        return this;
+
+    };
 
     /**
-     * Object that describes animation of the element.
+     * Hides the header.
+     *
      * @public
+     * @return {HSHeaderFullscreen}
      */
-    this.effect = effect;
+    HSHeaderFullscreen.prototype.hide = function () {
+
+        // if(this.invoker && this.invoker.length) {
+        //   var hamburgers = this.invoker.find('.is-active');
+        //   if(hamburgers.length) hamburgers.removeClass('is-active');
+        // }
+
+        if (!this.effect) return false;
+
+        this.effect.hide();
+
+        return this;
+
+    };
 
     /**
-     * Contains link to the overlay element.
-     * @public
+     * HSHeaderFullscreenOverlayEffect.
+     *
+     * @constructor
      */
-    this.overlay = $('<div></div>', {
-      class: _self.config.overlayClass
-    });
+    function HSHeaderFullscreenOverlayEffect() {
+        this._isShown = false;
+    };
 
-    Object.defineProperty(this, 'isShown', {
-      get: function() {
-        return _self.effect.isShown();
-      }
-    });
+    /**
+     * Initialization of HSHeaderFullscreenOverlayEffect.
+     *
+     * @param {jQuery} element
+     * @param {jQuery} overlay
+     * @param {Function} afterOpen
+     * @param {Function} afterClose
+     * @public
+     * @return {HSHeaderFullscreenOverlayEffect}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.init = function (element, overlay, afterOpen, afterClose) {
 
-    Object.defineProperty(this, 'sections', {
-      get: function() {
-        return _self.element.find(_self.config.sectionsContainerSelector);
-      }
-    });
+        var _self = this;
 
-    this.element.append( this.overlay );
-    this.effect.init( this.element, this.overlay, this.config.afterOpen, this.config.afterClose );
-    this._bindEvents();
+        this.element = element;
+        this.overlay = overlay;
+        this.afterOpen = afterOpen;
+        this.afterClose = afterClose;
 
-    if($.HSCore.components.HSScrollBar && this.sections.length) {
+        this.overlay.on("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", function (e) {
 
-      $.HSCore.components.HSScrollBar.init( this.sections );
+            if (_self.isShown() && e.originalEvent.propertyName == 'transform') {
+                _self.afterOpen.call(_self.element, _self.overlay);
+            } else if (!_self.isShown() && e.originalEvent.propertyName == 'transform') {
+                _self.afterClose.call(_self.element, _self.overlay);
+            }
 
-    }
-  };
+            e.stopPropagation();
+            e.preventDefault();
 
-  /**
-   * Binds necessary events.
-   *
-   * @public
-   * @return {HSHeaderFullscreen}
-   */
-  HSHeaderFullscreen.prototype._bindEvents = function() {
+        });
 
-    var _self = this;
+        this.update();
 
-    this.invoker = $('[data-target="#'+ this.element.attr('id') +'"]');
+        this.overlay.addClass(this.element.data('overlay-classes'));
 
-    if(this.invoker.length) {
+        return this;
+    };
 
-      this.invoker.off('click.HSHeaderFullscreen').on('click.HSHeaderFullscreen', function(e){
+    /**
+     * Detroys the overlay effect.
+     *
+     * @public
+     * @return {HSHeaderFullscreenOverlayEffect}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.destroy = function () {
 
-        _self[ _self.isShown ? 'hide' : 'show' ]();
+        this.overlay.css({
+            'width': 'auto',
+            'height': 'auto',
+        });
 
-        e.preventDefault();
+        this.element.removeClass('u-fullscreen--showed');
 
-      });
+        return this;
+    };
 
-    }
+    /**
+     * Necessary updates which will be applied when window has been resized.
+     *
+     * @public
+     * @return {HSHeaderFullscreenOverlayEffect}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.update = function () {
 
-    return this;
+        var $w = $(window),
+            $wW = $w.width(),
+            $wH = $w.height();
 
-  };
+        this.overlay.css({
+            width: $wW > $wH ? $wW * 1.5 : $wH * 1.5,
+            height: $wW > $wH ? $wW * 1.5 : $wH * 1.5
+        });
 
-  /**
-   * Updates the header.
-   *
-   * @public
-   * @return {HSHeaderFullscreen}
-   */
-  HSHeaderFullscreen.prototype.update = function() {
+        return this;
+    };
 
-    if(!this.effect) return false;
+    /**
+     * Describes appear of the overlay.
+     *
+     * @public
+     * @return {HSHeaderFullscreenOverlayEffect}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.show = function () {
 
-    this.effect.update();
+        this.element.addClass('u-fullscreen--showed');
+        this._isShown = true;
 
-    return this;
-  };
+        return this;
+    };
 
-  /**
-   * Shows the header.
-   *
-   * @public
-   * @return {HSHeaderFullscreen}
-   */
-  HSHeaderFullscreen.prototype.show = function() {
+    /**
+     * Describes disappearance of the overlay.
+     *
+     * @public
+     * @return {HSHeaderFullscreenOverlayEffect}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.hide = function () {
 
-    if(!this.effect) return false;
+        this.element.removeClass('u-fullscreen--showed');
+        this._isShown = false;
 
-    this.effect.show();
+        return this;
+    };
 
-    return this;
+    /**
+     * Returns true if header has been opened, otherwise returns false.
+     *
+     * @public
+     * @return {Boolean}
+     */
+    HSHeaderFullscreenOverlayEffect.prototype.isShown = function () {
 
-  };
-
-  /**
-   * Hides the header.
-   *
-   * @public
-   * @return {HSHeaderFullscreen}
-   */
-  HSHeaderFullscreen.prototype.hide = function() {
-
-    // if(this.invoker && this.invoker.length) {
-    //   var hamburgers = this.invoker.find('.is-active');
-    //   if(hamburgers.length) hamburgers.removeClass('is-active');
-    // }
-
-    if(!this.effect) return false;
-
-    this.effect.hide();
-
-    return this;
-
-  };
-
-  /**
-   * HSHeaderFullscreenOverlayEffect.
-   *
-   * @constructor
-   */
-  function HSHeaderFullscreenOverlayEffect() {
-    this._isShown = false;
-  };
-
-  /**
-   * Initialization of HSHeaderFullscreenOverlayEffect.
-   *
-   * @param {jQuery} element
-   * @param {jQuery} overlay
-   * @param {Function} afterOpen
-   * @param {Function} afterClose
-   * @public
-   * @return {HSHeaderFullscreenOverlayEffect}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.init = function(element, overlay, afterOpen, afterClose) {
-
-    var _self = this;
-
-    this.element = element;
-    this.overlay = overlay;
-    this.afterOpen = afterOpen;
-    this.afterClose = afterClose;
-
-    this.overlay.on("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", function(e){
-
-      if(_self.isShown() && e.originalEvent.propertyName == 'transform') {
-        _self.afterOpen.call(_self.element, _self.overlay);
-      }
-      else if(!_self.isShown() && e.originalEvent.propertyName == 'transform') {
-        _self.afterClose.call(_self.element, _self.overlay);
-      }
-
-      e.stopPropagation();
-      e.preventDefault();
-
-    });
-
-    this.update();
-
-    this.overlay.addClass( this.element.data('overlay-classes') );
-
-    return this;
-  };
-
-  /**
-   * Detroys the overlay effect.
-   *
-   * @public
-   * @return {HSHeaderFullscreenOverlayEffect}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.destroy = function() {
-
-    this.overlay.css({
-      'width': 'auto',
-      'height': 'auto',
-    });
-
-    this.element.removeClass('u-fullscreen--showed');
-
-    return this;
-  };
-
-  /**
-   * Necessary updates which will be applied when window has been resized.
-   *
-   * @public
-   * @return {HSHeaderFullscreenOverlayEffect}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.update = function() {
-
-    var $w = $(window),
-        $wW = $w.width(),
-        $wH = $w.height();
-
-    this.overlay.css({
-      width: $wW > $wH ? $wW * 1.5 : $wH * 1.5,
-      height: $wW > $wH ? $wW * 1.5 : $wH * 1.5
-    });
-
-    return this;
-  };
-
-  /**
-   * Describes appear of the overlay.
-   *
-   * @public
-   * @return {HSHeaderFullscreenOverlayEffect}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.show = function() {
-
-    this.element.addClass('u-fullscreen--showed');
-    this._isShown = true;
-
-    return this;
-  };
-
-  /**
-   * Describes disappearance of the overlay.
-   *
-   * @public
-   * @return {HSHeaderFullscreenOverlayEffect}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.hide = function() {
-
-    this.element.removeClass('u-fullscreen--showed');
-    this._isShown = false;
-
-    return this;
-  };
-
-  /**
-   * Returns true if header has been opened, otherwise returns false.
-   *
-   * @public
-   * @return {Boolean}
-   */
-  HSHeaderFullscreenOverlayEffect.prototype.isShown = function() {
-
-    return this._isShown;
-  };
+        return this._isShown;
+    };
 
 })(jQuery);

@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class SectionDetailRepository : GenericRepository<SectionDetail>, ISectionDetailRepository
 {
-    public class SectionDetailRepository:GenericRepository<SectionDetail>,ISectionDetailRepository
+    private readonly DatabaseContext _context;
+
+    public SectionDetailRepository(DatabaseContext context) : base(context)
     {
-        private readonly DatabaseContext _context;
+        _context = context;
+    }
 
-        public SectionDetailRepository(DatabaseContext context) : base(context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<SectionDetail>> GetDetailsOfSection(int SectionId)
-        {
-           return await _context.SectionDetails.Where(u => u.SectionId == SectionId).ToListAsync();
-        }
+    public async Task<List<SectionDetail>> GetDetailsOfSection(int SectionId)
+    {
+        return await _context.SectionDetails.Where(u => u.SectionId == SectionId).ToListAsync();
     }
 }

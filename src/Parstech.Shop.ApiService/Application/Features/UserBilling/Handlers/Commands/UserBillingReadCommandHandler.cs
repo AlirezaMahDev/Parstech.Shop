@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.UserBilling;
-using Shop.Application.Features.UserBilling.Requests.Commands;
 
-namespace Shop.Application.Features.UserBilling.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.UserBilling.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.UserBilling.Handlers.Commands;
+
+public class UserBillingReadCommandHandler : IRequestHandler<UserBillingReadCommandReq, UserBillingDto>
 {
-    public class UserBillingReadCommandHandler : IRequestHandler<UserBillingReadCommandReq, UserBillingDto>
-    {
-        private readonly IUserBillingRepository _userBillingRep;
-        private readonly IMapper _mapper;
+    private readonly IUserBillingRepository _userBillingRep;
+    private readonly IMapper _mapper;
 
-        public UserBillingReadCommandHandler(IUserBillingRepository userBillingRep, IMapper mapper)
-        {
-            _userBillingRep = userBillingRep;
-            _mapper = mapper;
-        }
-        public async Task<UserBillingDto> Handle(UserBillingReadCommandReq request, CancellationToken cancellationToken)
-        {
-            var userBilling =await _userBillingRep.GetAsync(request.id);
-            return _mapper.Map<UserBillingDto>(userBilling);
-        }
+    public UserBillingReadCommandHandler(IUserBillingRepository userBillingRep, IMapper mapper)
+    {
+        _userBillingRep = userBillingRep;
+        _mapper = mapper;
+    }
+
+    public async Task<UserBillingDto> Handle(UserBillingReadCommandReq request, CancellationToken cancellationToken)
+    {
+        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetAsync(request.id);
+        return _mapper.Map<UserBillingDto>(userBilling);
     }
 }

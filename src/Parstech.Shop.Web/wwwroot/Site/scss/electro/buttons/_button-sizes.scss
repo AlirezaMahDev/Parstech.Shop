@@ -20,11 +20,11 @@
 
 /* Icons */
 .btn-icon {
-	&.btn-xs {
-  	font-size: $btn-icon-font-size-xs;
-		width: $btn-width-xs;
-		height: $btn-height-xs;
-	}
+  &.btn-xs {
+    font-size: $btn-icon-font-size-xs;
+    width: $btn-width-xs;
+    height: $btn-height-xs;
+  }
 
   &.btn-sm {
     font-size: $btn-icon-font-size-sm;

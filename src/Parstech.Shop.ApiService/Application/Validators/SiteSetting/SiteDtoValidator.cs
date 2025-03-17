@@ -1,19 +1,12 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Application.DTOs.SiteSetting;
 
-namespace Shop.Application.Validators.SiteSetting
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Validators.SiteSetting;
+
+public class SiteDtoValidator : AbstractValidator<SiteDto>
 {
-    public class SiteDtoValidator : AbstractValidator<SiteDto>
+    public SiteDtoValidator()
     {
-        public SiteDtoValidator()
-        {
-
-            
-        }
     }
 }

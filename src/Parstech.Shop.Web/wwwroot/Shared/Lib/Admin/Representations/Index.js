@@ -26,14 +26,14 @@ $(document).ready(function () {
         })
         .catch(error => console.error('Error:', error));
 });
+
 function IdForInputs(id) {
-    
+
     var IdList = document.querySelectorAll('.RepId');
     IdList.forEach(function (input) {
         input.value = id;
     });
 }
-
 
 
 function Filter() {
@@ -46,6 +46,7 @@ function Filter() {
     Parameter_CurrentPage.value = 1;
     /*$("#GetDataForm").submit();*/
 }
+
 function BlankFilter() {
     tableMain
         .clear()
@@ -63,7 +64,7 @@ function FillDataSet(Data) {
 
         var typeHtml;
         var ActionHtml;
-        
+
 
         if (Data.role == "Store") {
             switch (element.typeId) {
@@ -92,8 +93,7 @@ function FillDataSet(Data) {
 
                     break;
             }
-        }
-        else {
+        } else {
             switch (element.typeId) {
                 case 1:
                     typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-success'>ساده</h5><a target='_blank' href='/Admin/Products/CreateOrUpdate/" + element.productId + "' class='btn btn-xs btn-green btn-block font-weight-bold hover-green'>ویرایش </a>"
@@ -121,7 +121,7 @@ function FillDataSet(Data) {
                     break;
             }
         }
-       console.log(element);
+        console.log(element);
         if (element.discountPrice != 0) {
             const data =
                 [
@@ -132,8 +132,7 @@ function FillDataSet(Data) {
                     ActionHtml
                 ];
             dataSet.push(data);
-        }
-        else {
+        } else {
             const data =
                 [
                     typeHtml,
@@ -171,7 +170,7 @@ function FillDataSet(Data) {
         //    default:
         //        break;
         //}
-        
+
     });
     var first = 1;
     var current = Data.object.currentPage;
@@ -186,10 +185,10 @@ function FillDataSet(Data) {
         privious = Data.object.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -208,6 +207,7 @@ function RunPaging(page) {
     currentPage = page;
     $("#GetDataForm").submit();
 }
+
 var Rep = document.getElementById("RepId");
 var Parameter_Filter = document.getElementById("Parameter_Filter");
 var Parameter_Categury = document.getElementById("Parameter_Categury");
@@ -216,6 +216,7 @@ var Parameter_Exist = document.getElementById("Parameter_Exist");
 var ProductsSelect = document.getElementById("ProductsSelect");
 var CategurySelect = document.getElementById("CategurySelect");
 var TypeSelect = document.getElementById("TypeSelect");
+
 function DataSubmit() {
     // console.log(Rep.value);
     IdForInputs(Rep.value);
@@ -239,10 +240,9 @@ function OnLoadingData() {
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON;
     FillDataSet(Data);
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -250,19 +250,19 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-           
-            { title: 'نوع' },
-            { title: 'نام محصول' },
-            { title: 'موجودی' },
-            { title: 'قیمت فروش(تومان)' },
-            { title: 'عملیات' },
+
+            {title: 'نوع'},
+            {title: 'نام محصول'},
+            {title: 'موجودی'},
+            {title: 'قیمت فروش(تومان)'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 0,
             "className": 'w-30',
             "targets": 3,
             "className": 'w-30',
-            
+
         }],
         "pageLength": 25
     });
@@ -274,10 +274,6 @@ function OnCompleteData(xhr) {
 function OnErrorData() {
 
 }
-
-
-
-
 
 
 //Price
@@ -295,6 +291,7 @@ var product_DiscountPrice = document.getElementById("product_DiscountPrice");
 function CleanPriceItem() {
 
 }
+
 function FillPriceItem(Data) {
     console.log(Data);
     //product_Id.value = Data.id;
@@ -326,6 +323,7 @@ function OnLoadingGetPrice() {
 
 
 }
+
 function OnCompleteGetPrice(xhr) {
     var Data = xhr.responseJSON.object;
     FillPriceItem(Data);
@@ -346,8 +344,7 @@ function OnCompleteEditPrice(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (xhr.responseJSON.isSuccessed) {
             var Data = xhr.responseJSON.object;
             FillPriceItem(Data);
@@ -360,8 +357,7 @@ function OnCompleteEditPrice(xhr) {
             //dataSet = [];
 
             //$("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError("اطلاعات وارد شده با خطا بارگذاری شده اند")
             console.log(xhr.responseJSON);
             xhr.responseJSON.errors.forEach(function (element) {
@@ -371,7 +367,7 @@ function OnCompleteEditPrice(xhr) {
 
 
     }
-    
+
 }
 
 function OnErrorEditPrice() {
@@ -380,16 +376,18 @@ function OnErrorEditPrice() {
 
 
 //Mojusi
-function ShowProductRepresentationModal(productId,repId) {
+function ShowProductRepresentationModal(productId, repId) {
     IdForProductInputs(productId);
     IdForInputs(repId);
     $("#ProductRepresentationModal").modal("show");
 }
+
 function ShowQuickProductRepresentationModal(productId, repId) {
     IdForProductInputs(productId);
     IdForInputs(repId);
     $("#QuickProductRepresentationModal").modal("show");
 }
+
 function OnLoadingAddPr() {
 
 
@@ -400,16 +398,14 @@ function OnCompleteAddPr(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (xhr.responseJSON.isSuccessed) {
             //Filter();
             ToastSuccess("عملیات با موفقیت انجام شد جهت مشاهده تغییرات جدید لیست را مجدد بازنشانی فرمایید")
-        }
-        else {
+        } else {
             ToastError(xhr.responseJSON.message);
         }
-        
+
     }
 
 
@@ -429,8 +425,7 @@ function OnCompleteQuickAddPr(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         Filter();
         ToastSuccess("عملیات با موفقیت انجام شد")
@@ -451,12 +446,12 @@ function OnErrorQuickAddPr() {
 }
 
 
-function Delete(rep,id) {
+function Delete(rep, id) {
     var productStockPriceId = document.getElementById("productStockPriceId");
     var repId = document.getElementById("repId");
     productStockPriceId.value = id;
     repId.value = rep;
-    
+
     swal({
         title: '  آیا از حذف کالا از انبار مطمئن هستید؟',
         type: 'question',
@@ -477,7 +472,6 @@ function Delete(rep,id) {
     }).catch(swal.noop);
 
 
-
 }
 
 function OnCompleteDelete(xhr) {
@@ -486,16 +480,14 @@ function OnCompleteDelete(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد جهت مشاهده تغییرات جدید لیست را مجدد بازنشانی فرمایید");
             //BlankFilter();
-        }
-        else {
+        } else {
             ToastError("عملیات حذف به دلیل وجود سفارش از این کالا امکان پذیر نیست")
         }
-        
+
     }
 }

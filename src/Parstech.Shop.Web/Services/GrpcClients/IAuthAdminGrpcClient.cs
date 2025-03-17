@@ -1,14 +1,11 @@
-using Shop.Application.DTOs.Response;
-using Shop.Application.DTOs.User;
-using System.Threading.Tasks;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-namespace Parstech.Shop.Web.Services.GrpcClients
+namespace Parstech.Shop.Web.Services.GrpcClients;
+
+public interface IAuthAdminGrpcClient
 {
-    public interface IAuthAdminGrpcClient
-    {
-        Task<ResponseDto> LoginOrRegisterRequestAsync(string mobile);
-        Task<ResponseDto> LoginByActiveCodeAsync(string mobile, string activeCode);
-        Task<ResponseDto> LoginByPasswordAsync(string mobile, string password);
-        Task<ResponseDto> RegisterUserAsync(UserRegisterDto userRegister);
-    }
-} 
+    Task<ResponseDto> LoginOrRegisterRequestAsync(string mobile);
+    Task<ResponseDto> LoginByActiveCodeAsync(string mobile, string activeCode);
+    Task<ResponseDto> LoginByPasswordAsync(string mobile, string password);
+    Task<ResponseDto> RegisterUserAsync(UserRegisterDto userRegister);
+}

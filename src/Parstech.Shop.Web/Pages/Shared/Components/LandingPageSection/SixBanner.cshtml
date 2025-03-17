@@ -1,15 +1,17 @@
-﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+﻿@model Parstech.Shop.Application.DTOs.Section.SectionAndDetailsDto
 
 <div class="mb-6">
     <div class="row flex-nowrap flex-md-wrap overflow-auto overflow-md-visble">
-        @foreach(var item in Model.SectionDetails)
+        @foreach (var item in Model.SectionDetails)
         {
             <div class="col-md-6 col-xl-4 mb-5 flex-shrink-0 flex-md-shrink-1">
-                <div class="banner bg-gray-1 overflow-hidden shadow-on-hover h-100 d-flex align-items-center" style="background-image: url(/shared/images/@item.BackgroundImage); background-size:cover;">
+                <div class="banner bg-gray-1 overflow-hidden shadow-on-hover h-100 d-flex align-items-center"
+                     style="background-image: url(/shared/images/@item.BackgroundImage); background-size:cover;">
                     <a href="@item.Link" class="d-block  pr-2 pr-wd-6">
                         <div class="media align-items-center">
                             <div class="max-width-148">
-                                <img class="img-fluid transform-rotate-15" src="~/Shared/Images/@item.Image" alt="@item.Alt">
+                                <img class="img-fluid transform-rotate-15" src="~/Shared/Images/@item.Image"
+                                     alt="@item.Alt">
                             </div>
                             <div class="ml-4 media-body">
                                 <h4 class="mb-0 text-gray-90">@item.Caption</h4>
@@ -18,8 +20,7 @@
                     </a>
                 </div>
             </div>
-
         }
-       
+
     </div>
 </div>

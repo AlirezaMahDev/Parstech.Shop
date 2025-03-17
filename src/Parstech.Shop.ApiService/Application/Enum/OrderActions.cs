@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Enum;
 
-namespace Shop.Application.Enum
+public enum OrderActions
 {
-    public enum OrderActions
-    {
-        SendApiOrder,
-        SendApiSale,
-        BackApiOrder,
-        BackApiSale,
-
-    }
+    SendApiOrder,
+    SendApiSale,
+    BackApiOrder,
+    BackApiSale
 }

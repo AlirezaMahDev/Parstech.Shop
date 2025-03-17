@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
-using Shop.Application.DTOs.CouponPcu;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class CouponPcuMapping : Profile
 {
-	public class CouponPcuMapping:Profile
-	{
-        public CouponPcuMapping()
-        {
-            CreateMap<CouponPcu, CouponPcuDto>().ReverseMap();
-            CreateMap<CouponPcu, CouponCheckPcuDto>().ReverseMap();
-        }
+    public CouponPcuMapping()
+    {
+        CreateMap<CouponPcu, CouponPcuDto>().ReverseMap();
+        CreateMap<CouponPcu, CouponCheckPcuDto>().ReverseMap();
     }
 }

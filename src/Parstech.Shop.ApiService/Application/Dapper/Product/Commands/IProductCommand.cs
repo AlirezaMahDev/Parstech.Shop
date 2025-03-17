@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.Product.Commands;
 
-namespace Shop.Application.Dapper.Product.Commands
+public interface IProductCommand
 {
-    public interface IProductCommand
-    {
-        string GetProductById { get; }
-    }
+    string GetProductById { get; }
 }

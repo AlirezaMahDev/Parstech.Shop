@@ -1,9 +1,9 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Representations.TestquickModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Representations.TestquickModel
 @{
     Layout = "Shared/Admin_Layout";
 }
-@using Microsoft.AspNetCore.Antiforgery;
 <div class="row">
     <div class="col-lg-12">
         <div class="portlet box border shadow">
@@ -26,12 +26,12 @@
                     <table class="table table-bordered " id="data-table">
 
                         <thead>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
 
                         </tbody>
 
@@ -57,11 +57,13 @@
     <input type="hidden" asp-for="parameters.Filter" id="Parameter_Filter" />
     <input type="hidden" asp-for="parameters.CurrentPage" id="Parameter_CurrentPage" /> *@
 </form>
+
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
- 
+
 }
+
 @section Scripts {
     <script src="~/shared/lib/admin/representations/quickedit.js"></script>
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>

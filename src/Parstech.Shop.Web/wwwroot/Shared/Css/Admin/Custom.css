@@ -19,11 +19,11 @@
     background: #ff004b !important;
 }
 
-    .hover-red:hover {
-        border: 1px solid #bbb !important;
-        color: #ff004b !important;
-        background: #a9a9a9 !important;
-    }
+.hover-red:hover {
+    border: 1px solid #bbb !important;
+    color: #ff004b !important;
+    background: #a9a9a9 !important;
+}
 
 .hover-orange {
     border: 1px solid #bbb !important;
@@ -31,11 +31,11 @@
     background: #ffc100 !important;
 }
 
-    .hover-orange:hover {
-        border: 1px solid #bbb !important;
-        color: #ffc100 !important;
-        background: #a9a9a9 !important;
-    }
+.hover-orange:hover {
+    border: 1px solid #bbb !important;
+    color: #ffc100 !important;
+    background: #a9a9a9 !important;
+}
 
 .hover-green {
     color: #fff !important;
@@ -43,11 +43,11 @@
     background: #00dd03 !important;
 }
 
-    .hover-green:hover {
-        color: #00dd03 !important;
-        border: 1px solid #bbb !important;
-        background: #a9a9a9 !important;
-    }
+.hover-green:hover {
+    color: #00dd03 !important;
+    border: 1px solid #bbb !important;
+    background: #a9a9a9 !important;
+}
 
 /*.modal-body {
     background-color: #e4e4e4;
@@ -57,13 +57,13 @@
     background: #ffffff !important;
 }
 
-    .metismenu a {
-        padding: 5px 13px !important;
-    }
+.metismenu a {
+    padding: 5px 13px !important;
+}
 
-    .metismenu > li {
-        border-bottom: 1px solid #d0cdcd !important;
-    }
+.metismenu > li {
+    border-bottom: 1px solid #d0cdcd !important;
+}
 
 .Red {
     color: #ff2424;
@@ -76,9 +76,11 @@
 .Green {
     color: #1bd92f;
 }
+
 .Gray {
     color: #8a8585;
 }
+
 .Yellow {
     color: #ff720a;
 }
@@ -169,9 +171,10 @@
     cursor: pointer;
 }
 
-    .icon-button:hover {
-        color: #5ea9ce;
-    }
+.icon-button:hover {
+    color: #5ea9ce;
+}
+
 .stat-box.knob-container {
     height: auto;
     min-height: 120px !important;
@@ -182,25 +185,31 @@
 }
 
 .show {
-    display: block!important;
+    display: block !important;
 }
 
 .border-panel {
     border: 3px solid #cbcbcb !important;
 }
+
 .img-circle {
     border-radius: 50%;
 }
-.w-10{
-    width:10% !important;
+
+.w-10 {
+    width: 10% !important;
 }
-.w-20{
-    width:20% !important;
-}.w-30{
-    width:30% !important;
+
+.w-20 {
+    width: 20% !important;
 }
- .w-40{
-    width:40% !important;
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-40 {
+    width: 40% !important;
 }
 
 .Red {
@@ -254,12 +263,14 @@
     border-color: #ff2424;
     background-color: #ffffff;
 }
+
 .cart-Hover:hover {
     border: 3px solid;
     border-color: #ffb503;
     background-color: #ff9400;
     color: white !important;
 }
+
 .BgRed {
     background-color: #ff2424 !important;
 }
@@ -334,21 +345,22 @@ hr {
     border-top: 1px solid rgba(0, 0, 0, 0.1);*/
 }
 
-    hr.LightGraySolid {
-        background-color: lightgray;
-        /* color: red; */
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        border: 0;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
+hr.LightGraySolid {
+    background-color: lightgray;
+    /* color: red; */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 .panel-heading2 {
     color: #000a09;
-    margin-topm:2%;
-    margin-bottom:2%;
+    margin-topm: 2%;
+    margin-bottom: 2%;
     background-color: #ffffff;
 }
+
 .panel-title2 {
     margin-top: 0;
     margin-bottom: 0;
@@ -356,14 +368,17 @@ hr {
     color: #262626;
     font-weight: bold;
 }
-.panel-title2>a {
-   color: #262626;
+
+.panel-title2 > a {
+    color: #262626;
 
 }
+
 .cart-Hover > a:hover {
-   
+
     color: white !important;
 }
+
 .discount-badge {
     width: 1.5rem;
     height: 1.5rem;
@@ -389,8 +404,9 @@ hr {
     background-clip: border-box;
     border: 1px solid #ffffff;
     border-radius: 2.3125rem;
-    
+
 }
+
 .productImageBackRadius {
     border-radius: 2.3125rem;
 }
@@ -411,9 +427,11 @@ hr {
     padding: 25px 10px;
     cursor: pointer;
 }
+
 .BgSormei {
-    background-color:#000161 !important;
+    background-color: #000161 !important;
 }
+
 .BgToosi {
     background-color: #524f5a !important;
 }

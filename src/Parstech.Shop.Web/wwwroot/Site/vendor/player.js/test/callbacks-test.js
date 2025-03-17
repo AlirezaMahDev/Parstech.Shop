@@ -1,12 +1,20 @@
 import test from 'ava';
-import { callbackMap, storeCallback, getCallbacks, removeCallback, shiftCallbacks, swapCallbacks } from '../src/lib/callbacks';
+import {
+    callbackMap,
+    storeCallback,
+    getCallbacks,
+    removeCallback,
+    shiftCallbacks,
+    swapCallbacks
+} from '../src/lib/callbacks';
 
 test('storeCallback adds the callback when the name doesn’t exist', (t) => {
     const player = {
         element: {}
     };
 
-    const cb = () => {};
+    const cb = () => {
+    };
 
     storeCallback(player, 'test', cb);
     t.true('test' in callbackMap.get(player.element));
@@ -19,8 +27,10 @@ test('storeCallback adds the callback when the name already exists', (t) => {
         element: {}
     };
 
-    const cb = () => {};
-    const cb2 = () => {};
+    const cb = () => {
+    };
+    const cb2 = () => {
+    };
 
     storeCallback(player, 'test', cb);
     storeCallback(player, 'test', cb2);
@@ -29,7 +39,7 @@ test('storeCallback adds the callback when the name already exists', (t) => {
 });
 
 test('getCallbacks returns an empty array when there are no callbacks', (t) => {
-    t.deepEqual(getCallbacks({ element: {} }, 'test'), []);
+    t.deepEqual(getCallbacks({element: {}}, 'test'), []);
 });
 
 test('getCallbacks returns the callbacks', (t) => {
@@ -37,14 +47,15 @@ test('getCallbacks returns the callbacks', (t) => {
         element: {}
     };
 
-    const cb = () => {};
+    const cb = () => {
+    };
 
-    callbackMap.set(player.element, { test: [cb] });
+    callbackMap.set(player.element, {test: [cb]});
     t.deepEqual(getCallbacks(player, 'test'), [cb]);
 });
 
 test('removeCallback does nothing if there are no callbacks', (t) => {
-    t.true(removeCallback({ element: {} }, 'test'));
+    t.true(removeCallback({element: {}}, 'test'));
 });
 
 test('removeCallback removes all callbacks without a callback arg', (t) => {
@@ -52,12 +63,14 @@ test('removeCallback removes all callbacks without a callback arg', (t) => {
         element: {}
     };
 
-    const cb = () => {};
-    const cb2 = () => {};
+    const cb = () => {
+    };
+    const cb2 = () => {
+    };
 
-    callbackMap.set(player.element, { test: [cb, cb2] });
+    callbackMap.set(player.element, {test: [cb, cb2]});
     t.true(removeCallback(player, 'test'));
-    t.deepEqual(callbackMap.get(player.element), { test: [] });
+    t.deepEqual(callbackMap.get(player.element), {test: []});
 });
 
 test('removeCallback removes just the callback specified', (t) => {
@@ -65,12 +78,14 @@ test('removeCallback removes just the callback specified', (t) => {
         element: {}
     };
 
-    const cb = () => {};
-    const cb2 = () => {};
+    const cb = () => {
+    };
+    const cb2 = () => {
+    };
 
-    callbackMap.set(player.element, { test: [cb, cb2] });
+    callbackMap.set(player.element, {test: [cb, cb2]});
     t.true(removeCallback(player, 'test', cb2) === false);
-    t.deepEqual(callbackMap.get(player.element), { test: [cb] });
+    t.deepEqual(callbackMap.get(player.element), {test: [cb]});
 });
 
 test('removeCallback does nothing if the callback passed isn’t in the map', (t) => {
@@ -78,12 +93,14 @@ test('removeCallback does nothing if the callback passed isn’t in the map', (t
         element: {}
     };
 
-    const cb = () => {};
-    const cb2 = () => {};
+    const cb = () => {
+    };
+    const cb2 = () => {
+    };
 
-    callbackMap.set(player.element, { test: [cb] });
+    callbackMap.set(player.element, {test: [cb]});
     t.true(removeCallback(player, 'test', cb2) === false);
-    t.deepEqual(callbackMap.get(player.element), { test: [cb] });
+    t.deepEqual(callbackMap.get(player.element), {test: [cb]});
 });
 
 test('shiftCallbacks shifts a single callback from the callback array', (t) => {
@@ -91,10 +108,12 @@ test('shiftCallbacks shifts a single callback from the callback array', (t) => {
         element: {}
     };
 
-    const cb = () => {};
-    const cb2 = () => {};
+    const cb = () => {
+    };
+    const cb2 = () => {
+    };
 
-    callbackMap.set(player.element, { test: [cb, cb2] });
+    callbackMap.set(player.element, {test: [cb, cb2]});
 
     t.true(shiftCallbacks(player, 'test') === cb);
 
@@ -108,18 +127,19 @@ test('shiftCallbacks returns false when there are no callbacks', (t) => {
         element: {}
     };
 
-    callbackMap.set(player.element, { test: [] });
+    callbackMap.set(player.element, {test: []});
     t.true(shiftCallbacks(player, 'test') === false);
 });
 
 test('swapCallbacks moves the callbacks from one key to another', (t) => {
     const oldElement = {};
     const newElement = {};
-    const cb = () => {};
+    const cb = () => {
+    };
 
-    callbackMap.set(oldElement, { test: [cb] });
+    callbackMap.set(oldElement, {test: [cb]});
     swapCallbacks(oldElement, newElement);
 
     t.true(callbackMap.get(oldElement) === undefined);
-    t.deepEqual(callbackMap.get(newElement), { test: [cb] });
+    t.deepEqual(callbackMap.get(newElement), {test: [cb]});
 });

@@ -13,9 +13,11 @@
             fontSize: "12px",
             fontWeight: "bold"
         },
-        onClick: function () { } // Callback after click
+        onClick: function () {
+        } // Callback after click
     }).showToast();
 }
+
 function ToastSuccess(message) {
     Toastify({
         text: message,
@@ -30,9 +32,10 @@ function ToastSuccess(message) {
             background: "#d2cdc2",
             color: "black",
             fontSize: "12px",
-            
+
         },
-        onClick: function () { } // Callback after click
+        onClick: function () {
+        } // Callback after click
     }).showToast();
 }
 

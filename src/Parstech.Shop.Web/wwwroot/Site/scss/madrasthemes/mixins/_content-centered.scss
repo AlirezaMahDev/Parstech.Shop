@@ -2,18 +2,18 @@
 // Content Centered
 //
 @mixin flex-center-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @mixin flex-content-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin flex-horizontal-center {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }

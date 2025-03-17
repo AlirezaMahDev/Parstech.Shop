@@ -1,108 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Convertor;
-using Shop.Application.DTOs.IUserRole;
-using Shop.Application.DTOs.SocialSetting;
-using Shop.Application.DTOs.User;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class UserRepository : GenericRepository<User>, IUserRepository
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    private readonly DatabaseContext _context;
+    private readonly IdentityContext _icontext;
+    private readonly IUserBillingRepository _userBillingRep;
+    private readonly IMapper _mapper;
+
+    public UserRepository(DatabaseContext context,
+        IdentityContext icontext,
+        IUserBillingRepository userBillingRep,
+        IMapper mapper) : base(context)
     {
-        private readonly DatabaseContext _context;
-        private readonly IdentityContext _icontext;
-        private readonly IUserBillingRepository _userBillingRep;
-        private readonly IMapper _mapper;
+        _context = context;
+        _icontext = icontext;
+        _userBillingRep = userBillingRep;
+        _mapper = mapper;
+    }
 
-        public UserRepository(DatabaseContext context, IdentityContext icontext, IUserBillingRepository userBillingRep, IMapper mapper) : base(context)
+
+    public async Task<List<IUserRoleDto>> GetUserRoles(string UserId)
+    {
+        List<IUserRoleDto> result = new();
+        List<IdentityUserRole<string>> ur = await _icontext.UserRoles.Where(u => u.UserId == UserId).ToListAsync();
+        foreach (IdentityUserRole<string> userRole in ur)
         {
-            _context = context;
-            _icontext = icontext;
-            _userBillingRep = userBillingRep;
-            _mapper = mapper;
+            Irole? role = await _context.Iroles.FindAsync(userRole.RoleId);
+            IdentityUser? user = await _icontext.Users.FindAsync(UserId);
+            IUserRoleDto urDto = new()
+            {
+                UserId = userRole.UserId,
+                RoleId = userRole.RoleId,
+                RoleName = role.Name,
+                PersianRoleName = role.PersianName,
+                UserName = user.UserName
+            };
+            result.Add(urDto);
         }
 
+        return result;
+    }
 
-        public async Task<List<IUserRoleDto>> GetUserRoles(string UserId)
+    public bool PaswordsValid(string password, string confirmPassword)
+    {
+        if (password == confirmPassword)
         {
-            List<IUserRoleDto> result = new List<IUserRoleDto>();
-            var ur =await _icontext.UserRoles.Where(u => u.UserId == UserId).ToListAsync();
-            foreach (var userRole in ur)
-            {
-                var role =await _context.Iroles.FindAsync(userRole.RoleId);
-                var user =await _icontext.Users.FindAsync(UserId);
-                IUserRoleDto urDto = new IUserRoleDto()
-                {
-                    UserId = userRole.UserId,
-                    RoleId = userRole.RoleId,
-                    RoleName = role.Name,
-                    PersianRoleName = role.PersianName,
-                    UserName = user.UserName
-                };
-                result.Add(urDto);
-            }
-
-            return result;
+            return true;
         }
 
-        public bool PaswordsValid(string password, string confirmPassword)
+        return false;
+    }
+
+    public int GetCountOfUsers()
+    {
+        return _context.Users.Count();
+    }
+
+    public async Task<User?> GetUserByUserName(string userName)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+    }
+
+    public async Task<IdentityUser> GetIUserByUserName(string userName)
+    {
+        IdentityUser? item = await _icontext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        return item;
+    }
+
+    public async Task<bool> ExistUserCategury(string userName)
+    {
+        User? user = await GetUserByUserName(userName);
+        if (await _context.UserCateguries.AnyAsync(u => u.UserId == user.Id))
         {
-            if (password==confirmPassword)
-            {
-                return true;
-            }
+            return true;
+        }
+        else
+        {
             return false;
         }
-        public int GetCountOfUsers()
-        {
-            
-            return _context.Users.Count();
-        }
+    }
 
-        public async Task<User?> GetUserByUserName(string userName)
+    public async Task<string?> GetUserCategury(int id)
+    {
+        CateguryOfUser? Usercat = await _context.CateguryOfUsers.FirstOrDefaultAsync(u => u.Id == id);
+        if (Usercat != null)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            return Usercat.CateguryName;
         }
-
-        public async Task<IdentityUser> GetIUserByUserName(string userName)
+        else
         {
-            var item =await _icontext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-            return item;
-        }
-
-        public async Task<bool> ExistUserCategury(string userName)
-        {
-            var user =await GetUserByUserName(userName);
-            if (await _context.UserCateguries.AnyAsync(u => u.UserId == user.Id))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public async Task<string?> GetUserCategury(int id)
-        {
-            var Usercat =await _context.CateguryOfUsers.FirstOrDefaultAsync(u => u.Id == id);
-            if (Usercat != null)
-            {
-                return Usercat.CateguryName;
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

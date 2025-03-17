@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
-using Shop.Application.DTOs.Status;
-using Shop.Application.DTOs.Tax;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class StatusMapping : Profile
 {
-	public class StatusMapping:Profile
-	{
-		public StatusMapping()
-		{
-			CreateMap<Status, StatusDto>().ReverseMap();
-		}
-	}
+    public StatusMapping()
+    {
+        CreateMap<Status, StatusDto>().ReverseMap();
+    }
 }

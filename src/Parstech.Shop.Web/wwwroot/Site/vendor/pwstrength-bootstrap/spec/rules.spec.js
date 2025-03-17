@@ -12,7 +12,7 @@ var jsdom = require('jsdom').jsdom,
             usernameField: '#username'
         },
         rules: {
-            activated : {
+            activated: {
                 wordNotEmail: true,
                 wordMinLength: true,
                 wordMaxLength: false,
@@ -61,7 +61,9 @@ var jsdom = require('jsdom').jsdom,
             ]
         },
         ui: {
-            spanError: function (options, rule) { return rule; }
+            spanError: function (options, rule) {
+                return rule;
+            }
         },
         instances: {
             errors: []

@@ -1,59 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductRepresentation;
-using Shop.Application.Features.ProductRepresentation.Requests.Queries;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductRepresentation.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Queries;
+
+public class
+    ProductRepresentationChartQueryHandler : IRequestHandler<ProductRepresentationChartQueryReq,
+    List<ProductRepresenationChartDto>>
 {
-    public class ProductRepresentationChartQueryHandler : IRequestHandler<ProductRepresentationChartQueryReq, List<ProductRepresenationChartDto>>
-    {
-        private readonly IProductRepresesntationRepository _productRepresentationRep;
+    private readonly IProductRepresesntationRepository _productRepresentationRep;
 
-        public ProductRepresentationChartQueryHandler(IProductRepresesntationRepository productRepresentationRep)
+    public ProductRepresentationChartQueryHandler(IProductRepresesntationRepository productRepresentationRep)
+    {
+        _productRepresentationRep = productRepresentationRep;
+    }
+
+    public async Task<List<ProductRepresenationChartDto>> Handle(ProductRepresentationChartQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        List<ProductRepresenationChartDto> Result = new();
+        int enter = await _productRepresentationRep.GetCountEnterProductRepresentationWithProductId(request.ProductId);
+        ProductRepresenationChartDto enterdto = new() { Name = "ورود به انبار", Color = "", Count = enter };
+        int getOut =
+            await _productRepresentationRep.GetCountGetoutProductRepresentationWithProductId(request.ProductId);
+        ProductRepresenationChartDto getoutdto = new() { Name = "خروج از انبار (فروش)", Color = "", Count = getOut };
+        int returns =
+            await _productRepresentationRep.GetCountReturnProductRepresentationWithProductId(request.ProductId);
+        ProductRepresenationChartDto returnsdto = new() { Name = "برگشت از فروش (عودت)", Color = "", Count = returns };
+        int manualy =
+            await _productRepresentationRep.GetCountEnterManualyProductRepresentationWithProductId(request.ProductId);
+        ProductRepresenationChartDto manualydto = new()
         {
-            _productRepresentationRep = productRepresentationRep;
-        }
-        public async Task<List<ProductRepresenationChartDto>> Handle(ProductRepresentationChartQueryReq request, CancellationToken cancellationToken)
-        {
-            List<ProductRepresenationChartDto> Result = new List<ProductRepresenationChartDto>();
-            var enter = await _productRepresentationRep.GetCountEnterProductRepresentationWithProductId(request.ProductId);
-            ProductRepresenationChartDto enterdto = new ProductRepresenationChartDto()
-            {
-                Name = "ورود به انبار",
-                Color = "",
-                Count = enter
-            };
-            var getOut = await _productRepresentationRep.GetCountGetoutProductRepresentationWithProductId(request.ProductId);
-            ProductRepresenationChartDto getoutdto = new ProductRepresenationChartDto()
-            {
-                Name = "خروج از انبار (فروش)",
-                Color = "",
-                Count = getOut
-            };
-            var returns = await _productRepresentationRep.GetCountReturnProductRepresentationWithProductId(request.ProductId);
-            ProductRepresenationChartDto returnsdto = new ProductRepresenationChartDto()
-            {
-                Name = "برگشت از فروش (عودت)",
-                Color = "",
-                Count = returns
-            };
-            var manualy = await _productRepresentationRep.GetCountEnterManualyProductRepresentationWithProductId(request.ProductId);
-            ProductRepresenationChartDto manualydto = new ProductRepresenationChartDto()
-            {
-                Name = "ورود به انبار به صورت دستی (رفع مغایرت)",
-                Color = "",
-                Count = manualy
-            };
-            Result.Add(enterdto);
-            Result.Add(getoutdto);
-            Result.Add(returnsdto);
-            Result.Add(manualydto);
-            return Result;
-        }
+            Name = "ورود به انبار به صورت دستی (رفع مغایرت)", Color = "", Count = manualy
+        };
+        Result.Add(enterdto);
+        Result.Add(getoutdto);
+        Result.Add(returnsdto);
+        Result.Add(manualydto);
+        return Result;
     }
 }

@@ -1,5 +1,4 @@
-﻿
-var dataSet = [];
+﻿var dataSet = [];
 var tableMain = null;
 
 var productId = document.getElementById("PId");
@@ -48,6 +47,7 @@ function IdForInputs(id) {
         input.value = id;
     });
 }
+
 function IdForProductIdInputs(id) {
 
     var IdList = document.querySelectorAll('.ProductId');
@@ -55,6 +55,7 @@ function IdForProductIdInputs(id) {
         input.value = id;
     });
 }
+
 function IdForProductStockIdInputs(id) {
 
     var IdList = document.querySelectorAll('.ProductStockId');
@@ -62,6 +63,7 @@ function IdForProductStockIdInputs(id) {
         input.value = id;
     });
 }
+
 function IdForGalleryIdInputs(id) {
 
     var IdList = document.querySelectorAll('.GalleryId');
@@ -78,7 +80,7 @@ $(document).ready(function () {
     IdForProductIdInputs(ProductIdNumber);
     //CheckProductId();
     console.log(ProductDto_Description.value);
-   
+
 
 });
 
@@ -96,12 +98,12 @@ function FillProdcut(element) {
     ProductDto_TypeId.value = element.typeId;
     //ProductDto_ParentId.value = element.parentId;
     ProductDto_BrandId.value = element.brandId;
-   
+
 
     //ProductDto_StoreId.value = element.storeId;
     ProductDto_TaxId.value = element.taxId;
     ProductDto_Score.value = element.score;
-    
+
     ProductDto_ShortDescription.value = element.shortDescription;
     ProductDto_Description.value = element.description;
     ProductDto_LatinName.value = element.latinName;
@@ -115,20 +117,18 @@ function FillProdcut(element) {
         CreateEditor(ProductDto_Description.value);
         CountCkEditor++;
     }
-   
+
 
     if (element.isActive == true) {
         isActive.value = 1;
-    }
-    else {
+    } else {
         isActive.value = 2;
     }
 
 
     if (element.parentProductName != null) {
         ParentText.innerText = element.parentProductName
-    }
-    else {
+    } else {
         ParentText.innerText = null;
     }
 
@@ -145,11 +145,9 @@ function FillProdcut(element) {
 }
 
 
-
-
 function FillDataSet(Data) {
 
-    
+
     GalleryData.innerHTML = null;
     dataSet = [];
     Role = Data.role;
@@ -188,9 +186,6 @@ function FillDataSet(Data) {
 }
 
 
-
-
-
 function CreateEditor(content) {
     ClassicEditor
         .create(document.querySelector('#ProductDto_Description'),
@@ -220,11 +215,10 @@ function CreateEditor(content) {
                 }
 
             })
-        .catch(error => { console.error(error); });
+        .catch(error => {
+            console.error(error);
+        });
 }
-
-
-
 
 
 function OnLoadingData() {
@@ -232,6 +226,7 @@ function OnLoadingData() {
     ToastSuccess("در حال دریافت اطلاعات محصول");
     //FillFeutureDataSet = null;
 }
+
 function OnCompleteData(xhr) {
     console.log(xhr);
 
@@ -249,9 +244,9 @@ function OnCompleteData(xhr) {
             "paging": false,
             data: dataSet,
             columns: [
-                { title: 'ویژگی' },
-                { title: 'مقدار ' },
-                { title: 'عملیات' },
+                {title: 'ویژگی'},
+                {title: 'مقدار '},
+                {title: 'عملیات'},
             ],
             "columnDefs": [{
                 "targets": 1,
@@ -265,23 +260,20 @@ function OnCompleteData(xhr) {
 
         if (Data.object2 == "Store") {
             isActive.disabled = true;
-        }
-        else {
+        } else {
             isActive.disabled = false;
         }
-    }
-    else {
+    } else {
         CreateEditor("");
         CountCkEditor++;
     }
     ToastSuccess("اطلاعات با موفقیت دریافت شد");
 
 }
+
 function OnErrorData() {
 
 }
-
-
 
 
 //ویژگی ها
@@ -290,59 +282,37 @@ var SubCategury = document.getElementById("SubCategury");
 var categuryId = document.getElementById("categuryId");
 
 
-
-
-
-
-
-
-
-
-
-
 //جسنجوی ویژگی
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //دخیره
 
 var productContent = document.getElementById("productContent");
+
 //var Content = document.getElementById("Content");
 
 function SaveContent() {
-    
+
     //if (Role == Store) {
     //    isActive = 2;
     //}
     $("#SaveForm").submit();
 }
+
 function OnLoadingSave() {
 
 
 }
+
 function OnCompleteSave(xhr) {
     console.log(xhr)
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (xhr.responseJSON.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد.")
-        }
-        else {
+        } else {
             ToastError("نوع محصول به دلیل وجود زیرمجموعه قابل تغییر نیست ابتدا زیرمجموعه های این محصول را حذف و اصلاح نمایید")
         }
 
@@ -361,12 +331,10 @@ function OnCompleteSave(xhr) {
     }
 
 }
+
 function OnErrorSave() {
 
 }
-
-
-
 
 
 function SearchProductParents(type) {
@@ -379,11 +347,9 @@ function SearchProductParents(type) {
 }
 
 
-
 var VariationSection = document.getElementById("VariationSection");
 var BundleSection = document.getElementById("BundleSection");
 var ParrentSection = document.getElementById("ParrentSection");
-
 
 
 var SelectParentSection = document.getElementById("SelectParentSection");
@@ -405,8 +371,7 @@ variableSelector.addEventListener("change", (e) => {
         ParrentSection.classList.remove('hidden');
         ParrentSection.classList.add('show');
         Type.value = 1;
-    }
-    else if (targetValue == 5) {
+    } else if (targetValue == 5) {
 
         BundleSection.classList.remove('hidden');
         BundleSection.classList.add('show');
@@ -417,8 +382,7 @@ variableSelector.addEventListener("change", (e) => {
         ParrentSection.classList.remove('hidden');
         ParrentSection.classList.add('show');
         Type.value = 2;
-    }
-    else {
+    } else {
         VariationSection.classList.remove('show');
         VariationSection.classList.add('hidden');
 
@@ -443,46 +407,42 @@ variableSelector.addEventListener("change", (e) => {
 //}
 
 
-
 //function CheckProductId() {
 //    console.log(TypeId);
-    //let CateguryButton = document.getElementById("CateguryButton");
-    //let GalleryButton = document.getElementById("GalleryButton");
-    //let FeutureButton = document.getElementById("FeutureButton");
-    //let ChildButton = document.getElementById("ChildButton");
-    //let StockButton = document.getElementById("StockButton");
-    //CateguryButton.innerHTML = null;
-    //GalleryButton.innerHTML = null;
-    //FeutureButton.innerHTML = null;
-    //ChildButton.innerHTML = null;
-    //StockButton.innerHTML = null;
-    //console.log(ProductIdNumber);
-    //if (ProductIdNumber != 0) {
+//let CateguryButton = document.getElementById("CateguryButton");
+//let GalleryButton = document.getElementById("GalleryButton");
+//let FeutureButton = document.getElementById("FeutureButton");
+//let ChildButton = document.getElementById("ChildButton");
+//let StockButton = document.getElementById("StockButton");
+//CateguryButton.innerHTML = null;
+//GalleryButton.innerHTML = null;
+//FeutureButton.innerHTML = null;
+//ChildButton.innerHTML = null;
+//StockButton.innerHTML = null;
+//console.log(ProductIdNumber);
+//if (ProductIdNumber != 0) {
 
-    //    //CateguryButton.insertAdjacentHTML("afterbegin", "");
-    //    //GalleryButton.insertAdjacentHTML("afterbegin", "");
-    //    //FeutureButton.insertAdjacentHTML("afterbegin", "");
-    //    if (TypeId == 2) {
-    //        ChildButton.insertAdjacentHTML("afterbegin", "<button class='btn btn-sm btn-success btn-round hover-green' onclick='CleanProduct()' data-bs-toggle='modal' data-bs-target='#AddVariationModal'><i class='icon-plus'></i></button>");
-    //    }
-    //    else {
-    //        ChildButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>تنها برای محصولات متغیر امکان پذیر است.در صورت نیاز به افزودن محصول زیر مجموعه باندل از قسمت افزودن محصول اقدام فرمایید</small>");
-    //    }
+//    //CateguryButton.insertAdjacentHTML("afterbegin", "");
+//    //GalleryButton.insertAdjacentHTML("afterbegin", "");
+//    //FeutureButton.insertAdjacentHTML("afterbegin", "");
+//    if (TypeId == 2) {
+//        ChildButton.insertAdjacentHTML("afterbegin", "<button class='btn btn-sm btn-success btn-round hover-green' onclick='CleanProduct()' data-bs-toggle='modal' data-bs-target='#AddVariationModal'><i class='icon-plus'></i></button>");
+//    }
+//    else {
+//        ChildButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>تنها برای محصولات متغیر امکان پذیر است.در صورت نیاز به افزودن محصول زیر مجموعه باندل از قسمت افزودن محصول اقدام فرمایید</small>");
+//    }
 
-    //    StockButton.insertAdjacentHTML("afterbegin", "<button class='btn btn-sm btn-success btn-round hover-green' onclick='GetDulicateProduct(" + ProductIdNumber + ")' ><i class='icon-plus'></i></button>");
-    //}
-    //else {
-    //    CateguryButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
-    //    //GalleryButton.insertAdjacentHTML("afterbegin", "");
-    //    FeutureButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
-    //    ChildButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
-    //    StockButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
-
-    //}
+//    StockButton.insertAdjacentHTML("afterbegin", "<button class='btn btn-sm btn-success btn-round hover-green' onclick='GetDulicateProduct(" + ProductIdNumber + ")' ><i class='icon-plus'></i></button>");
 //}
+//else {
+//    CateguryButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
+//    //GalleryButton.insertAdjacentHTML("afterbegin", "");
+//    FeutureButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
+//    ChildButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
+//    StockButton.insertAdjacentHTML("afterbegin", "<small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>");
 
-
-
+//}
+//}
 
 
 //Price
@@ -503,6 +463,7 @@ var product_CateguryOfUserType = document.getElementById("product_CateguryOfUser
 function CleanPriceItem() {
 
 }
+
 function FillPriceItem(Data) {
     console.log(Data);
     //product_Id.value = Data.id;
@@ -519,7 +480,6 @@ function FillPriceItem(Data) {
     product_CateguryOfUserId.value = Data.categuryOfUserId;
     product_CateguryOfUserType.value = Data.categuryOfUserType;
 }
-
 
 
 function ClearDataSet() {

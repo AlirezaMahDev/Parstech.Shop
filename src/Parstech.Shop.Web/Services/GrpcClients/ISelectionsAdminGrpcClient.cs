@@ -1,15 +1,10 @@
-using Shop.Application.DTOs.Categury;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.Section;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-namespace Parstech.Shop.Web.Services.GrpcClients
+namespace Parstech.Shop.Web.Services.GrpcClients;
+
+public interface ISelectionsAdminGrpcClient
 {
-    public interface ISelectionsAdminGrpcClient
-    {
-        Task<List<SectionDto>> GetDiscountSectionsSelectAsync();
-        Task<List<ProductSelectDto>> GetProductsSelectAsync();
-        Task<List<CategurySelectDto>> GetCategoriesSelectAsync();
-    }
-} 
+    Task<List<SectionDto>> GetDiscountSectionsSelectAsync();
+    Task<List<ProductSelectDto>> GetProductsSelectAsync();
+    Task<List<CategurySelectDto>> GetCategoriesSelectAsync();
+}

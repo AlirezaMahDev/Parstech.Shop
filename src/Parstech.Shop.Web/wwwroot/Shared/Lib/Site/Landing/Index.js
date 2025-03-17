@@ -11,15 +11,13 @@ var SlideCaptionSection = document.getElementById("thumbProgressNav");
 function CleanData() {
 
 
-
 }
+
 function FillData(Data) {
     //Data.sectionDetails.forEach(function (element) {
     //    SlideShowSection.insertAdjacentHTML("beforeend", "<div class='js-slide' ><img class='SlideBack' style='position:absolute' src='/shared/images/a198a46183514e219da4cf47fe4ffbc9.webp' /><div class='row height-410-xl mx-0 align-items-center'><div class='col-md-6 mt-6 mt-md-0 mb-4 mb-md-0'><div class='ml-xl-8'><h1 class='font-size-sl-72 text-lh-1 font-weight-light mb-2 mb-lg-3 mb-wd-4'data-scs-animation-delay='100'data-scs-animation-in='fadeInUp'></h1><h3 class='font-size-xl-15 font-weight-bold mb-0'data-scs-animation-in='fadeInUp'data-scs-animation-delay='200'>HURRY UP BEFORE OFFER WILL END</h3></div></div><div class='col-md-6 d-flex align-items-center ml-auto ml-md-0 mb-4 mb-md-0'data-scs-animation-in='zoomIn'data-scs-animation-delay='400'><img class='img-fluid' src='/shared/images/" + element.image + "' alt='" + element.alt + "'></div></div></div>");
     //});
 }
-
-
 
 
 function OnLoading() {
@@ -40,8 +38,7 @@ function checkActiveUser() {
     var activeSite = localStorage.getItem('ActiveSite');
     if (activeSite != null) {
         ReLogin(activeSite);
-    }
-    else {
+    } else {
         console.log(activeSite);
     }
 }
@@ -54,12 +51,11 @@ function ReLogin(active) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "activeSite": active },
+        data: {"activeSite": active},
         success: function (response) {
             if (response.isSuccessed) {
                 window.location.href = "/";
-            }
-            else {
+            } else {
                 if (response.message == "expired") {
                     localStorage.removeItem('ActiveSite');
                 }
@@ -76,7 +72,6 @@ function ReLogin(active) {
 }
 
 
-
 // بررسی وجود کوکی با نام مشخص
 function checkCookie(cookieName) {
     var cookiesLocal = localStorage.getItem('AcceptCookies');
@@ -91,8 +86,7 @@ function checkCookie(cookieName) {
         }
         localStorage.removeItem('AcceptCookies');
         return false; // کوکی یافت نشده است
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -104,19 +98,18 @@ if (!myCookieExists) {
 }
 
 
-
 function acceptCookies() {
     closeModal();
     document.cookie = "cookies_accepted=true; expires=Fri, 31 Dec 9999 23:59:59 GMT;secure=true; path=/";
     localStorage.setItem('AcceptCookies', true);
-    
+
 }
 
 function rejectCookies() {
     closeModal();
     document.cookie = "cookies_accepted=false; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     localStorage.setItem('AcceptCookies', false);
-    
+
 }
 
 function closeModal() {

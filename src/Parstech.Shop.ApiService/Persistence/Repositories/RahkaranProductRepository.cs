@@ -1,22 +1,15 @@
-﻿using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
 
-namespace Shop.Persistence.Repositories
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class RahkaranProductRepository : GenericRepository<RahkaranProduct>, IRahkaranProductRepository
 {
+    private readonly DatabaseContext _context;
 
-
-    public class RahkaranProductRepository : GenericRepository<RahkaranProduct>, IRahkaranProductRepository
+    public RahkaranProductRepository(DatabaseContext context) : base(context)
     {
-        private readonly DatabaseContext _context;
-        public RahkaranProductRepository(DatabaseContext context) : base(context)
-        {
-            _context = context;
-        }
+        _context = context;
     }
 }

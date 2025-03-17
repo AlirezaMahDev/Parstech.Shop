@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.Tax;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class TaxMapping : Profile
 {
-    public class TaxMapping:Profile
+    public TaxMapping()
     {
-        public TaxMapping()
-        {
-            CreateMap<Tax, TaxDto>().ReverseMap();
-        }
+        CreateMap<Tax, TaxDto>().ReverseMap();
     }
 }

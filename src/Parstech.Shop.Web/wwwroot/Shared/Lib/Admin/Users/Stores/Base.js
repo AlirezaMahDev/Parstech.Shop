@@ -38,9 +38,10 @@ function CleanData() {
     Input_LatinStoreName.value = null;
     Input_PersentOfSale.value = null
     Input_RepId.value = null
-    
+
 
 }
+
 function FillData(element) {
     console.log(element);
     Input_Id.value = element.id;
@@ -48,7 +49,7 @@ function FillData(element) {
     Input_FirstName.value = element.firstName;
     Input_LastName.value = element.lastName;
     Input_StoreName.value = element.storeName;
-   
+
     Input_Phone.value = element.phone;
     Input_Mobile.value = element.mobile;
     Input_Country.value = element.country;
@@ -59,9 +60,8 @@ function FillData(element) {
     Input_LatinStoreName.value = element.latinStoreName;
     Input_PersentOfSale.value = element.persentOfSale;
     Input_RepId.value = element.repId
-    
-}
 
+}
 
 
 function OnLoading() {
@@ -72,12 +72,11 @@ function OnComplete(xhr) {
     if (xhr.responseJSON.object != null) {
         FillData(xhr.responseJSON.object);
         $("#StoreEdit").modal('show');
-    }
-    else {
+    } else {
         Input_UserId.value = userId.value;
         $("#StoreEdit").modal('show');
     }
-    
+
 }
 
 function OnError() {
@@ -85,14 +84,12 @@ function OnError() {
 }
 
 
-
-
 function OnLoadingUpdate() {
-    
+
 }
 
 function OnCompleteUpdate(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -103,8 +100,7 @@ function OnCompleteUpdate(xhr) {
         $('#StoreEdit').modal('show');
         ToastSuccess(Response.message);
 
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

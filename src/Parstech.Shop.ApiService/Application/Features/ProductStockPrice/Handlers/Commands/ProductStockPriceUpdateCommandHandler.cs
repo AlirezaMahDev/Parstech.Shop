@@ -1,59 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductStockPrice;
-using Shop.Application.DTOs.User;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.ProductStockPrice.Requests.Commands;
-using Shop.Application.Features.User.Requests.Commands;
 
-namespace Shop.Application.Features.ProductStockPrice.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Commands;
+
+public class
+    ProductStockPriceUpdateCommandHandler : IRequestHandler<ProductStockPriceUpdateCommandReq, ProductStockPriceDto>
 {
-    public class ProductStockPriceUpdateCommandHandler : IRequestHandler<ProductStockPriceUpdateCommandReq, ProductStockPriceDto>
+    private IProductStockPriceRepository _productStockRep;
+    private IProductRepository _productRep;
+    private IUserStoreRepository _userStoreRep;
+    private IMapper _mapper;
+    private IMediator _madiiator;
+
+    public ProductStockPriceUpdateCommandHandler(IProductStockPriceRepository productStockRep,
+        IUserStoreRepository userStoreRep,
+        IMapper mapper,
+        IMediator madiiator,
+        IProductRepository productRep)
     {
+        _productStockRep = productStockRep;
+        _userStoreRep = userStoreRep;
+        _mapper = mapper;
+        _madiiator = madiiator;
+        _productRep = productRep;
+    }
 
-        private IProductStockPriceRepository _productStockRep;
-        private IProductRepository _productRep;
-        private IUserStoreRepository _userStoreRep;
-        private IMapper _mapper;
-        private IMediator _madiiator;
+    public async Task<ProductStockPriceDto> Handle(ProductStockPriceUpdateCommandReq request,
+        CancellationToken cancellationToken)
+    {
+        Domain.Models.ProductStockPrice? productStock =
+            _mapper.Map<Domain.Models.ProductStockPrice>(request.ProductStockPriceDto);
 
-        public ProductStockPriceUpdateCommandHandler(IProductStockPriceRepository productStockRep, IUserStoreRepository userStoreRep, IMapper mapper, IMediator madiiator, IProductRepository productRep)
+        Domain.Models.ProductStockPrice? productResult = await _productStockRep.UpdateAsync(productStock);
+
+
+        Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+        int pId;
+        if (product.TypeId == 3)
         {
-            _productStockRep = productStockRep;
-            _userStoreRep = userStoreRep;
-            _mapper = mapper;
-            _madiiator = madiiator;
-            _productRep = productRep;
+            pId = product.ParentId.Value;
+        }
+        else
+        {
+            pId = product.Id;
         }
 
-        public async Task<ProductStockPriceDto> Handle(ProductStockPriceUpdateCommandReq request, CancellationToken cancellationToken)
-        {
-            var productStock = _mapper.Map<Domain.Models.ProductStockPrice>(request.ProductStockPriceDto);
-            
-            var productResult = await _productStockRep.UpdateAsync(productStock);
+        await _productRep.RefreshBestStockProduct(pId);
 
-
-            var product =await _productRep.GetAsync(productStock.ProductId);
-            int pId;
-            if (product.TypeId == 3)
-            {
-                pId = product.ParentId.Value;
-            }
-            else
-            {
-                pId = product.Id;
-            }
-            await _productRep.RefreshBestStockProduct(pId);
-
-            return _mapper.Map<ProductStockPriceDto>(productResult);
-
-        }
+        return _mapper.Map<ProductStockPriceDto>(productResult);
     }
 }

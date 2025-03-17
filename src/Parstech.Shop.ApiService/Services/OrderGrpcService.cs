@@ -1,402 +1,391 @@
 using AutoMapper;
-using Google.Protobuf;
+
 using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Core;
+
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Parstech.Shop.Shared.Protos.Order;
-using Shop.Application.DTOs.Order;
-using Shop.Application.DTOs.OrderPay;
-using Shop.Application.DTOs.OrderShipping;
-using Shop.Application.DTOs.OrderStatus;
-using Shop.Application.DTOs.Paging;
-using Shop.Application.DTOs.Response;
-using Shop.Application.Features.Order.Requests.Queries;
-using Shop.Application.Features.OrderDetail.Requests.Queries;
-using Shop.Application.Features.OrderPay.Request.Command;
-using Shop.Application.Features.OrderPay.Request.Queries;
-using Shop.Application.Features.OrderShipping.Request.Queries;
-using Shop.Application.Features.OrderStatus.Requests.Commands;
-using Shop.Application.Features.OrderStatus.Requests.Queries;
-using System.IO;
 
-namespace Shop.ApiService.Services
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Command;
+using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
+using Parstech.Shop.ApiService.Application.Features.OrderShipping.Request.Queries;
+using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Services;
+
+public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServiceBase
 {
-    public class OrderGrpcService : Parstech.Shop.Shared.Protos.Order.OrderService.OrderServiceBase
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
+
+    public OrderGrpcService(IMediator mediator, IMapper mapper)
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public OrderGrpcService(IMediator mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
-
-        public override async Task<Order> GetOrder(OrderRequest request, ServerCallContext context)
-        {
-            var order = await _mediator.Send(new GetOrderDetailByIdQueryReq(request.OrderId));
-            return MapToOrderProto(order);
-        }
-
-        public override async Task<OrderDetailShow> GetOrderDetails(OrderRequest request, ServerCallContext context)
-        {
-            var orderDetail = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
-            return MapToOrderDetailShowProto(orderDetail);
-        }
-
-        public override async Task<OrdersResponse> GetOrdersForUser(UserOrdersRequest request, ServerCallContext context)
-        {
-            // Implement this method based on your requirements
-            return new OrdersResponse();
-        }
-
-        public override async Task<OrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
-        {
-            // Implement this method based on your requirements
-            return new OrderResponse();
-        }
-
-        public override async Task<OrderResponse> UpdateOrderStatus(UpdateOrderStatusRequest request, ServerCallContext context)
-        {
-            // Implement this method based on your requirements
-            return new OrderResponse();
-        }
-
-        public override async Task<OrderFilter> GetOrderFilters(OrderFiltersRequest request, ServerCallContext context)
-        {
-            var filters = await _mediator.Send(new OrdersFilterDataQueryReq(request.StoreName));
-            return MapToOrderFilterProto(filters);
-        }
-
-        public override async Task<PagingDto> GetOrdersPaging(ParameterDto request, ServerCallContext context)
-        {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
-            {
-                CurrentPage = request.CurrentPage,
-                TakePage = request.TakePage,
-                SearchKey = request.SearchKey,
-                StatusKey = request.StatusKey,
-                PayTypeKey = request.PayTypeKey,
-                StoreKey = request.StoreKey,
-                CodeKey = request.CodeKey,
-                CustomerKey = request.CustomerKey,
-                FromDate = request.FromDate,
-                ToDate = request.ToDate,
-                store = request.Store
-            };
-
-            var pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
-            return MapToPagingDtoProto(pagingResult);
-        }
-
-        public override async Task<OrderStatusesResponse> GetOrderStatuses(OrderRequest request, ServerCallContext context)
-        {
-            var statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
-            var response = new OrderStatusesResponse();
-            
-            foreach (var status in statuses)
-            {
-                response.Statuses.Add(MapToOrderStatusDtoProto(status));
-            }
-            
-            return response;
-        }
-
-        public override async Task<OrderResponse> CreateOrderStatus(OrderStatusRequest request, ServerCallContext context)
-        {
-            try
-            {
-                var orderStatusDto = new Shop.Application.DTOs.OrderStatus.OrderStatusDto
-                {
-                    Id = request.OrderStatus.Id,
-                    OrderId = request.OrderStatus.OrderId,
-                    StatusId = request.OrderStatus.StatusId,
-                    Description = request.OrderStatus.Description,
-                    CreateBy = request.OrderStatus.CreateBy,
-                    CreateDate = request.OrderStatus.CreateDate.ToDateTime()
-                };
-
-                if (request.FileData != null && request.FileData.Length > 0)
-                {
-                    // Create a temporary file to pass to MediatR
-                    var tempFilePath = Path.GetTempFileName();
-                    await System.IO.File.WriteAllBytesAsync(tempFilePath, request.FileData.ToByteArray());
-                    
-                    // Create FormFile from the temporary file
-                    using var stream = new FileStream(tempFilePath, FileMode.Open);
-                    var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(tempFilePath))
-                    {
-                        Headers = new HeaderDictionary(),
-                        ContentType = "application/octet-stream"
-                    };
-                    
-                    // Set file in DTO
-                    orderStatusDto.File = file;
-                }
-                
-                var response = await _mediator.Send(new OrderStatusCreatCommandReq(orderStatusDto));
-                return MapToOrderResponseProto(response);
-            }
-            catch (Exception ex)
-            {
-                return new OrderResponse
-                {
-                    Status = false,
-                    Message = $"Error creating order status: {ex.Message}",
-                    IsSucceeded = false
-                };
-            }
-        }
-
-        public override async Task<OrderResponse> ChangeOrderShipping(OrderShippingChangeRequest request, ServerCallContext context)
-        {
-            var orderId = await _mediator.Send(new OrderShippingChangeQueryReq(
-                request.Type,
-                request.UserShippingId,
-                request.OrderId,
-                request.OrderShippingId));
-            
-            return new OrderResponse
-            {
-                Status = true,
-                Object = new StringValue { Value = orderId.ToString() },
-                IsSucceeded = true
-            };
-        }
-
-        public override async Task<OrderWordFileResponse> GenerateOrderWordFile(OrderRequest request, ServerCallContext context)
-        {
-            var orderDetailDto = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
-            var wordFilePath = await _mediator.Send(new OrderWordFileQueryReq(orderDetailDto));
-            
-            return new OrderWordFileResponse
-            {
-                FilePath = wordFilePath
-            };
-        }
-
-        public override async Task<OrderResponse> CompleteOrderByAdmin(CompleteOrderRequest request, ServerCallContext context)
-        {
-            var response = await _mediator.Send(new CompleteOrderByAdminQueryReq(
-                request.OrderId,
-                request.TypeName,
-                request.Month?.Value));
-            
-            return MapToOrderResponseProto(response);
-        }
-
-        public override async Task<OrderPaysResponse> GetOrderPays(OrderRequest request, ServerCallContext context)
-        {
-            var orderPays = await _mediator.Send(new OrderPaysOfOrderQueryReq(request.OrderId));
-            var response = new OrderPaysResponse();
-            
-            foreach (var pay in orderPays)
-            {
-                response.Payments.Add(MapToOrderPayDtoProto(pay));
-            }
-            
-            return response;
-        }
-
-        public override async Task<OrderResponse> AddOrderPay(OrderPayRequest request, ServerCallContext context)
-        {
-            var orderPayDto = new Shop.Application.DTOs.OrderPay.OrderPayDto
-            {
-                Id = request.OrderPay.Id,
-                OrderId = request.OrderPay.OrderId,
-                PayTypeId = request.OrderPay.PayTypeId,
-                Amount = request.OrderPay.Amount,
-                RefId = request.OrderPay.RefId,
-                Description = request.OrderPay.Description,
-                CreateBy = request.OrderPay.CreateBy,
-                CreateDate = request.OrderPay.CreateDate.ToDateTime()
-            };
-            
-            var response = await _mediator.Send(new OrderPayCreateCommandReq(orderPayDto));
-            return MapToOrderResponseProto(response);
-        }
-
-        public override async Task<OrderResponse> DeleteOrderPay(OrderPayDeleteRequest request, ServerCallContext context)
-        {
-            var response = await _mediator.Send(new OrderPayDeleteCommandReq(request.Id));
-            return MapToOrderResponseProto(response);
-        }
-
-        #region Mapping Methods
-
-        private Order MapToOrderProto(Shop.Application.DTOs.Order.OrderDto orderDto)
-        {
-            if (orderDto == null) return null;
-
-            var order = new Order
-            {
-                OrderId = orderDto.OrderId,
-                UserId = orderDto.UserId,
-                UserName = orderDto.UserName ?? string.Empty,
-                Costumer = orderDto.Costumer ?? string.Empty,
-                FirstName = orderDto.FirstName ?? string.Empty,
-                LastName = orderDto.LastName ?? string.Empty,
-                OrderCode = orderDto.OrderCode ?? string.Empty,
-                OrderSum = orderDto.OrderSum,
-                Shipping = orderDto.Shipping,
-                Tax = orderDto.Tax,
-                Discount = orderDto.Discount,
-                Total = orderDto.Total,
-                IsFinaly = orderDto.IsFinaly,
-                IntroCoin = orderDto.IntroCoin,
-                IsDelete = orderDto.IsDelete,
-                TaxId = orderDto.TaxId,
-                Status = orderDto.Status ?? string.Empty,
-                StatusIcon = orderDto.StatusIcon ?? string.Empty,
-                PayType = orderDto.PayType ?? string.Empty,
-                TypeName = orderDto.TypeName ?? string.Empty,
-                StatusName = orderDto.StatusName ?? string.Empty
-            };
-
-            if (orderDto.CreateDate.HasValue)
-            {
-                order.CreateDate = Timestamp.FromDateTime(orderDto.CreateDate.Value.ToUniversalTime());
-            }
-
-            if (!string.IsNullOrEmpty(orderDto.CreateDateShamsi))
-            {
-                order.CreateDateShamsi = orderDto.CreateDateShamsi;
-            }
-
-            if (!string.IsNullOrEmpty(orderDto.IntroCode))
-            {
-                order.IntroCode = new StringValue { Value = orderDto.IntroCode };
-            }
-
-            if (orderDto.ConfirmPayment.HasValue)
-            {
-                order.ConfirmPayment = new BoolValue { Value = orderDto.ConfirmPayment.Value };
-            }
-
-            if (!string.IsNullOrEmpty(orderDto.FactorFile))
-            {
-                order.FactorFile = new StringValue { Value = orderDto.FactorFile };
-            }
-
-            return order;
-        }
-
-        private OrderDetailShow MapToOrderDetailShowProto(Shop.Application.DTOs.OrderDetail.OrderDetailShowDto dto)
-        {
-            // Implementation based on your specific requirements
-            var result = new OrderDetailShow();
-            
-            if (dto.Order != null)
-            {
-                result.Order = MapToOrderProto(dto.Order);
-            }
-            
-            // Map other properties as needed
-            
-            return result;
-        }
-
-        private OrderFilter MapToOrderFilterProto(Shop.Application.DTOs.Order.OrderFilterDto dto)
-        {
-            var filter = new OrderFilter();
-            
-            if (dto.Stores != null)
-            {
-                foreach (var store in dto.Stores)
-                {
-                    filter.Stores.Add(new StoreFilter
-                    {
-                        StoreName = store.StoreName ?? string.Empty,
-                        UserStoreId = store.UserStoreId,
-                        UserId = store.UserId
-                    });
-                }
-            }
-            
-            // Map other collections
-            
-            return filter;
-        }
-
-        private PagingDto MapToPagingDtoProto(Shop.Application.DTOs.Paging.PagingDto dto)
-        {
-            var pagingDto = new PagingDto
-            {
-                TotalCount = dto.TotalCount,
-                PageCount = dto.PageCount,
-                CurrentPage = dto.CurrentPage,
-                TakePage = dto.TakePage
-            };
-            
-            if (dto.Items != null)
-            {
-                foreach (var item in dto.Items)
-                {
-                    pagingDto.Items.Add(MapToOrderProto(item));
-                }
-            }
-            
-            return pagingDto;
-        }
-
-        private OrderPayDto MapToOrderPayDtoProto(Shop.Application.DTOs.OrderPay.OrderPayDto dto)
-        {
-            var orderPayDto = new OrderPayDto
-            {
-                Id = dto.Id,
-                OrderId = dto.OrderId,
-                PayTypeId = dto.PayTypeId,
-                Amount = dto.Amount,
-                RefId = dto.RefId ?? string.Empty,
-                Description = dto.Description ?? string.Empty,
-                CreateBy = dto.CreateBy ?? string.Empty
-            };
-            
-            if (dto.CreateDate.HasValue)
-            {
-                orderPayDto.CreateDate = Timestamp.FromDateTime(dto.CreateDate.Value.ToUniversalTime());
-            }
-            
-            return orderPayDto;
-        }
-
-        private OrderStatusDto MapToOrderStatusDtoProto(Shop.Application.DTOs.OrderStatus.OrderStatusDto dto)
-        {
-            var orderStatusDto = new OrderStatusDto
-            {
-                Id = dto.Id,
-                OrderId = dto.OrderId,
-                StatusId = dto.StatusId,
-                Description = dto.Description ?? string.Empty,
-                CreateBy = dto.CreateBy ?? string.Empty
-            };
-            
-            if (dto.CreateDate.HasValue)
-            {
-                orderStatusDto.CreateDate = Timestamp.FromDateTime(dto.CreateDate.Value.ToUniversalTime());
-            }
-            
-            return orderStatusDto;
-        }
-
-        private OrderResponse MapToOrderResponseProto(Shop.Application.DTOs.Response.ResponseDto dto)
-        {
-            var response = new OrderResponse
-            {
-                Status = dto.IsSuccessed,
-                Message = dto.Message ?? string.Empty,
-                IsSucceeded = dto.IsSuccessed
-            };
-            
-            if (dto.Object != null)
-            {
-                response.Object = new StringValue { Value = dto.Object.ToString() };
-            }
-            
-            return response;
-        }
-
-        #endregion
+        _mediator = mediator;
+        _mapper = mapper;
     }
-} 
+
+    public override async Task<Order> GetOrder(OrderRequest request, ServerCallContext context)
+    {
+        void order = await _mediator.Send(new GetOrderDetailByIdQueryReq(request.OrderId));
+        return MapToOrderProto(order);
+    }
+
+    public override async Task<OrderDetailShow> GetOrderDetails(OrderRequest request, ServerCallContext context)
+    {
+        void orderDetail = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+        return MapToOrderDetailShowProto(orderDetail);
+    }
+
+    public override async Task<OrdersResponse> GetOrdersForUser(UserOrdersRequest request, ServerCallContext context)
+    {
+        // Implement this method based on your requirements
+        return new OrdersResponse();
+    }
+
+    public override async Task<OrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
+    {
+        // Implement this method based on your requirements
+        return new();
+    }
+
+    public override async Task<OrderResponse> UpdateOrderStatus(UpdateOrderStatusRequest request,
+        ServerCallContext context)
+    {
+        // Implement this method based on your requirements
+        return new();
+    }
+
+    public override async Task<OrderFilter> GetOrderFilters(OrderFiltersRequest request, ServerCallContext context)
+    {
+        void filters = await _mediator.Send(new OrdersFilterDataQueryReq(request.StoreName));
+        return MapToOrderFilterProto(filters);
+    }
+
+    public override async Task<PagingDto> GetOrdersPaging(ParameterDto request, ServerCallContext context)
+    {
+        var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+        {
+            CurrentPage = request.CurrentPage,
+            TakePage = request.TakePage,
+            SearchKey = request.SearchKey,
+            StatusKey = request.StatusKey,
+            PayTypeKey = request.PayTypeKey,
+            StoreKey = request.StoreKey,
+            CodeKey = request.CodeKey,
+            CustomerKey = request.CustomerKey,
+            FromDate = request.FromDate,
+            ToDate = request.ToDate,
+            store = request.Store
+        };
+
+        void pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
+        return MapToPagingDtoProto(pagingResult);
+    }
+
+    public override async Task<OrderStatusesResponse> GetOrderStatuses(OrderRequest request, ServerCallContext context)
+    {
+        void statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
+        var response = new OrderStatusesResponse();
+
+        foreach (var status in statuses)
+        {
+            response.Statuses.Add(MapToOrderStatusDtoProto(status));
+        }
+
+        return response;
+    }
+
+    public override async Task<OrderResponse> CreateOrderStatus(OrderStatusRequest request, ServerCallContext context)
+    {
+        try
+        {
+            var orderStatusDto = new Shop.Application.DTOs.OrderStatus.OrderStatusDto
+            {
+                Id = request.OrderStatus.Id,
+                OrderId = request.OrderStatus.OrderId,
+                StatusId = request.OrderStatus.StatusId,
+                Description = request.OrderStatus.Description,
+                CreateBy = request.OrderStatus.CreateBy,
+                CreateDate = request.OrderStatus.CreateDate.ToDateTime()
+            };
+
+            if (request.FileData != null && request.FileData.Length > 0)
+            {
+                // Create a temporary file to pass to MediatR
+                string? tempFilePath = Path.GetTempFileName();
+                await File.WriteAllBytesAsync(tempFilePath, request.FileData.ToByteArray());
+
+                // Create FormFile from the temporary file
+                using FileStream? stream = new(tempFilePath, FileMode.Open);
+                FormFile file = new(stream, 0, stream.Length, null, Path.GetFileName(tempFilePath))
+                {
+                    Headers = new HeaderDictionary(), ContentType = "application/octet-stream"
+                };
+
+                // Set file in DTO
+                orderStatusDto.File = file;
+            }
+
+            void response = await _mediator.Send(new OrderStatusCreatCommandReq(orderStatusDto));
+            return MapToOrderResponseProto(response);
+        }
+        catch (Exception ex)
+        {
+            return new()
+            {
+                Status = false, Message = $"Error creating order status: {ex.Message}", IsSucceeded = false
+            };
+        }
+    }
+
+    public override async Task<OrderResponse> ChangeOrderShipping(OrderShippingChangeRequest request,
+        ServerCallContext context)
+    {
+        void orderId = await _mediator.Send(new OrderShippingChangeQueryReq(
+            request.Type,
+            request.UserShippingId,
+            request.OrderId,
+            request.OrderShippingId));
+
+        return new() { Status = true, Object = new StringValue { Value = orderId.ToString() }, IsSucceeded = true };
+    }
+
+    public override async Task<OrderWordFileResponse> GenerateOrderWordFile(OrderRequest request,
+        ServerCallContext context)
+    {
+        void orderDetailDto = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+        void wordFilePath = await _mediator.Send(new OrderWordFileQueryReq(orderDetailDto));
+
+        return new OrderWordFileResponse { FilePath = wordFilePath };
+    }
+
+    public override async Task<OrderResponse> CompleteOrderByAdmin(CompleteOrderRequest request,
+        ServerCallContext context)
+    {
+        void response = await _mediator.Send(new CompleteOrderByAdminQueryReq(
+            request.OrderId,
+            request.TypeName,
+            request.Month?.Value));
+
+        return MapToOrderResponseProto(response);
+    }
+
+    public override async Task<OrderPaysResponse> GetOrderPays(OrderRequest request, ServerCallContext context)
+    {
+        void orderPays = await _mediator.Send(new OrderPaysOfOrderQueryReq(request.OrderId));
+        var response = new OrderPaysResponse();
+
+        foreach (var pay in orderPays)
+        {
+            response.Payments.Add(MapToOrderPayDtoProto(pay));
+        }
+
+        return response;
+    }
+
+    public override async Task<OrderResponse> AddOrderPay(OrderPayRequest request, ServerCallContext context)
+    {
+        var orderPayDto = new Shop.Application.DTOs.OrderPay.OrderPayDto
+        {
+            Id = request.OrderPay.Id,
+            OrderId = request.OrderPay.OrderId,
+            PayTypeId = request.OrderPay.PayTypeId,
+            Amount = request.OrderPay.Amount,
+            RefId = request.OrderPay.RefId,
+            Description = request.OrderPay.Description,
+            CreateBy = request.OrderPay.CreateBy,
+            CreateDate = request.OrderPay.CreateDate.ToDateTime()
+        };
+
+        void response = await _mediator.Send(new OrderPayCreateCommandReq(orderPayDto));
+        return MapToOrderResponseProto(response);
+    }
+
+    public override async Task<OrderResponse> DeleteOrderPay(OrderPayDeleteRequest request, ServerCallContext context)
+    {
+        void response = await _mediator.Send(new OrderPayDeleteCommandReq(request.Id));
+        return MapToOrderResponseProto(response);
+    }
+
+    #region Mapping Methods
+
+    private Order MapToOrderProto(OrderDto orderDto)
+    {
+        if (orderDto == null)
+        {
+            return null;
+        }
+
+        var order = new Order
+        {
+            OrderId = orderDto.OrderId,
+            UserId = orderDto.UserId,
+            UserName = orderDto.UserName ?? string.Empty,
+            Costumer = orderDto.Costumer ?? string.Empty,
+            FirstName = orderDto.FirstName ?? string.Empty,
+            LastName = orderDto.LastName ?? string.Empty,
+            OrderCode = orderDto.OrderCode ?? string.Empty,
+            OrderSum = orderDto.OrderSum,
+            Shipping = orderDto.Shipping,
+            Tax = orderDto.Tax,
+            Discount = orderDto.Discount,
+            Total = orderDto.Total,
+            IsFinaly = orderDto.IsFinaly,
+            IntroCoin = orderDto.IntroCoin,
+            IsDelete = orderDto.IsDelete,
+            TaxId = orderDto.TaxId,
+            Status = orderDto.Status ?? string.Empty,
+            StatusIcon = orderDto.StatusIcon ?? string.Empty,
+            PayType = orderDto.PayType ?? string.Empty,
+            TypeName = orderDto.TypeName ?? string.Empty,
+            StatusName = orderDto.StatusName ?? string.Empty
+        };
+
+        if (orderDto.CreateDate.HasValue)
+        {
+            order.CreateDate = Timestamp.FromDateTime(orderDto.CreateDate.Value.ToUniversalTime());
+        }
+
+        if (!string.IsNullOrEmpty(orderDto.CreateDateShamsi))
+        {
+            order.CreateDateShamsi = orderDto.CreateDateShamsi;
+        }
+
+        if (!string.IsNullOrEmpty(orderDto.IntroCode))
+        {
+            order.IntroCode = new StringValue { Value = orderDto.IntroCode };
+        }
+
+        if (orderDto.ConfirmPayment.HasValue)
+        {
+            order.ConfirmPayment = new BoolValue { Value = orderDto.ConfirmPayment.Value };
+        }
+
+        if (!string.IsNullOrEmpty(orderDto.FactorFile))
+        {
+            order.FactorFile = new StringValue { Value = orderDto.FactorFile };
+        }
+
+        return order;
+    }
+
+    private OrderDetailShow MapToOrderDetailShowProto(Shop.Application.DTOs.OrderDetail.OrderDetailShowDto dto)
+    {
+        // Implementation based on your specific requirements
+        var result = new OrderDetailShow();
+
+        if (dto.Order != null)
+        {
+            result.Order = MapToOrderProto(dto.Order);
+        }
+
+        // Map other properties as needed
+
+        return result;
+    }
+
+    private OrderFilter MapToOrderFilterProto(Shop.Application.DTOs.Order.OrderFilterDto dto)
+    {
+        var filter = new OrderFilter();
+
+        if (dto.Stores != null)
+        {
+            foreach (var store in dto.Stores)
+            {
+                filter.Stores.Add(new StoreFilter
+                {
+                    StoreName = store.StoreName ?? string.Empty,
+                    UserStoreId = store.UserStoreId,
+                    UserId = store.UserId
+                });
+            }
+        }
+
+        // Map other collections
+
+        return filter;
+    }
+
+    private PagingDto MapToPagingDtoProto(PagingDto dto)
+    {
+        PagingDto? pagingDto = new()
+        {
+            TotalCount = dto.TotalCount,
+            PageCount = dto.PageCount,
+            CurrentPage = dto.CurrentPage,
+            TakePage = dto.TakePage
+        };
+
+        if (dto.Items != null)
+        {
+            foreach (var item in dto.Items)
+            {
+                pagingDto.Items.Add(MapToOrderProto(item));
+            }
+        }
+
+        return pagingDto;
+    }
+
+    private OrderPayDto MapToOrderPayDtoProto(OrderPayDto dto)
+    {
+        OrderPayDto? orderPayDto = new()
+        {
+            Id = dto.Id,
+            OrderId = dto.OrderId,
+            PayTypeId = dto.PayTypeId,
+            Amount = dto.Amount,
+            RefId = dto.RefId ?? string.Empty,
+            Description = dto.Description ?? string.Empty,
+            CreateBy = dto.CreateBy ?? string.Empty
+        };
+
+        if (dto.CreateDate.HasValue)
+        {
+            orderPayDto.CreateDate = Timestamp.FromDateTime(dto.CreateDate.Value.ToUniversalTime());
+        }
+
+        return orderPayDto;
+    }
+
+    private OrderStatusDto MapToOrderStatusDtoProto(OrderStatusDto dto)
+    {
+        OrderStatusDto? orderStatusDto = new()
+        {
+            Id = dto.Id,
+            OrderId = dto.OrderId,
+            StatusId = dto.StatusId,
+            Description = dto.Description ?? string.Empty,
+            CreateBy = dto.CreateBy ?? string.Empty
+        };
+
+        if (dto.CreateDate.HasValue)
+        {
+            orderStatusDto.CreateDate = Timestamp.FromDateTime(dto.CreateDate.Value.ToUniversalTime());
+        }
+
+        return orderStatusDto;
+    }
+
+    private OrderResponse MapToOrderResponseProto(ResponseDto dto)
+    {
+        OrderResponse? response = new()
+        {
+            Status = dto.IsSuccessed, Message = dto.Message ?? string.Empty, IsSucceeded = dto.IsSuccessed
+        };
+
+        if (dto.Object != null)
+        {
+            response.Object = new StringValue { Value = dto.Object.ToString() };
+        }
+
+        return response;
+    }
+
+    #endregion
+}

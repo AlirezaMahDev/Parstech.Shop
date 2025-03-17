@@ -1,18 +1,17 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Shop.Web.Pages
+namespace Parstech.Shop.Web.Pages;
+
+public class ContactUs : PageModel
 {
-    public class ContactUs : PageModel
+    private readonly ILogger<ContactUs> _logger;
+
+    public ContactUs(ILogger<ContactUs> logger)
     {
-        private readonly ILogger<ContactUs> _logger;
+        _logger = logger;
+    }
 
-        public ContactUs(ILogger<ContactUs> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-        }
+    public void OnGet()
+    {
     }
 }

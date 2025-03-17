@@ -1,32 +1,26 @@
-﻿using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Images;
 
-namespace Shop.Application.Images
+public static class ImageDownloadAndSave
 {
-    public static class ImageDownloadAndSave
+    public static async Task<string> DownloadImageAsync(string fileName, Uri uri)
     {
-        public static async Task<string> DownloadImageAsync( string fileName, Uri uri)
-        {
-            using var httpClient = new HttpClient();
+        using HttpClient httpClient = new();
 
-            // Get the file extension
-            var uriWithoutQuery = uri.GetLeftPart(UriPartial.Path);
-            var fileExtension = Path.GetExtension(uriWithoutQuery);
+        // Get the file extension
+        string uriWithoutQuery = uri.GetLeftPart(UriPartial.Path);
+        string fileExtension = Path.GetExtension(uriWithoutQuery);
 
-            // Create file path and ensure directory exists
-           
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Shared/Images/Products", $"{fileName}{fileExtension}");
-            //Directory.CreateDirectory(directoryPath);
+        // Create file path and ensure directory exists
 
-            // Download the image and write to the file
-            var imageBytes = await httpClient.GetByteArrayAsync(uri);
-            //file
-            await File.WriteAllBytesAsync(path, imageBytes);
-            return $"{fileName}{fileExtension}";
-        }
+        string path = Path.Combine(Directory.GetCurrentDirectory(),
+            "wwwroot/Shared/Images/Products",
+            $"{fileName}{fileExtension}");
+        //Directory.CreateDirectory(directoryPath);
+
+        // Download the image and write to the file
+        byte[] imageBytes = await httpClient.GetByteArrayAsync(uri);
+        //file
+        await File.WriteAllBytesAsync(path, imageBytes);
+        return $"{fileName}{fileExtension}";
     }
 }

@@ -4,7 +4,12 @@
 
 ## Quick start
 
-Bootstrap-select requires jQuery v1.9.1+, Bootstrap’s dropdown.js component, and Bootstrap's CSS. If you're not already using Bootstrap in your project, a precompiled version of the Bootstrap v3.3.7 minimum requirements can be downloaded [here](https://getbootstrap.com/docs/3.3/customize/?id=7830063837006f6fc84f). If using bootstrap-select with Bootstrap v4+, you'll also need Popper.js. For all of Bootstrap v4's requirements, see [Getting started](https://getbootstrap.com/docs/4.1/getting-started/introduction/). A precompiled version of the requirements will be made available in an upcoming release of bootstrap-select.
+Bootstrap-select requires jQuery v1.9.1+, Bootstrap’s dropdown.js component, and Bootstrap's CSS. If you're not already
+using Bootstrap in your project, a precompiled version of the Bootstrap v3.3.7 minimum requirements can be
+downloaded [here](https://getbootstrap.com/docs/3.3/customize/?id=7830063837006f6fc84f). If using bootstrap-select with
+Bootstrap v4+, you'll also need Popper.js. For all of Bootstrap v4's requirements,
+see [Getting started](https://getbootstrap.com/docs/4.1/getting-started/introduction/). A precompiled version of the
+requirements will be made available in an upcoming release of bootstrap-select.
 
 Several quick start options are available:
 
@@ -42,7 +47,9 @@ Several quick start options are available:
 </div>
 
 ### Via `selectpicker` class
+
 Add the `selectpicker` class to your select element to use the data-api.
+
 ```html
 <select class="selectpicker">
   <option>Mustard</option>
@@ -52,14 +59,19 @@ Add the `selectpicker` class to your select element to use the data-api.
 ```
 
 ### Via JavaScript
+
 ```js
 // To style only selects with the selectpicker class
 $('.selectpicker').selectpicker();
 ```
+
 or
+
 ```js
 // To style all selects
 $('select').selectpicker();
 ```
 
-If calling bootstrap-select via JavaScript, you will need to wrap your code in a [`$(document).ready()`](https://api.jquery.com/ready/) block or place it at the bottom of the page (after the last instance of bootstrap-select).
+If calling bootstrap-select via JavaScript, you will need to wrap your code in a [
+`$(document).ready()`](https://api.jquery.com/ready/) block or place it at the bottom of the page (after the last
+instance of bootstrap-select).

@@ -1,4 +1,4 @@
-﻿@model Shop.Application.DTOs.Section.SliderShowDto
+﻿@model Parstech.Shop.Application.DTOs.Section.SliderShowDto
 
 <!-- Desktop Slider Section -->
 <div class="mb-8 DesktopnSlide">
@@ -11,7 +11,8 @@
                     @foreach (var item in Model.Desktop)
                     {
                         <div class="js-slide">
-                            <div class="bg-img-hero min-height-420" style="background-image: url(/shared/images/@item.BackgroundImage);">
+                            <div class="bg-img-hero min-height-420"
+                                 style="background-image: url(/shared/images/@item.BackgroundImage);">
                                 <div class="row height-410-xl mx-0 align-items-center">
                                     <div class="col-md-6 mt-6 mt-md-0 mb-4 mb-md-0">
                                         <div class="ml-xl-8">
@@ -43,7 +44,8 @@
                 </div>
             </div>
 
-            <div id="thumbProgressNav" class="js-slick-carousel u-slick u-slick--transform-off u-slick-thumb-progress__custom mx-xl-3 text-center font-size-13"
+            <div id="thumbProgressNav"
+                 class="js-slick-carousel u-slick u-slick--transform-off u-slick-thumb-progress__custom mx-xl-3 text-center font-size-13"
                  data-autoplay="false"
                  data-pagi-classes="d-md-none text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4"
                  data-slides-show="5"
@@ -59,8 +61,8 @@
                         </a>
                     </div>
                 }
-              
-               
+
+
             </div>
         </div>
     </div>
@@ -78,7 +80,8 @@
                     @foreach (var item in Model.Mobile)
                     {
                         <div class="js-slide">
-                            <div class="bg-img-hero" style="background-image: url(/shared/images/@item.BackgroundImage);height:80%">
+                            <div class="bg-img-hero"
+                                 style="background-image: url(/shared/images/@item.BackgroundImage);height:80%">
                                 <div class="row height-410-xl mx-0 align-items-center">
                                     <div class="col-md-6 mt-6 mt-md-0 mb-4 mb-md-0">
                                         <div class="ml-xl-8">
@@ -110,7 +113,8 @@
                 </div>
             </div>
 
-            <div id="thumbProgressNav" class="js-slick-carousel u-slick u-slick--transform-off u-slick-thumb-progress__custom mx-xl-3 text-center font-size-13"
+            <div id="thumbProgressNav"
+                 class="js-slick-carousel u-slick u-slick--transform-off u-slick-thumb-progress__custom mx-xl-3 text-center font-size-13"
                  data-autoplay="false"
                  data-pagi-classes="d-md-none text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4"
                  data-slides-show="5"

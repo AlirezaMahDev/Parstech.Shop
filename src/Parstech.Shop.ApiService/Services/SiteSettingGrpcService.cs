@@ -1,28 +1,31 @@
 using Grpc.Core;
-using MediatR;
-using Parstech.Shop.Shared.Protos.SiteSetting;
-using Shop.Application.Features.SiteSeting.Requests.Queries;
 
-namespace Parstech.Shop.ApiService.Services
+using MediatR;
+
+using Parstech.Shop.ApiService.Application.Features.SiteSeting.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Services;
+
+public class SiteSettingGrpcService : SiteSettingService.SiteSettingServiceBase
 {
-    public class SiteSettingGrpcService : SiteSettingService.SiteSettingServiceBase
+    private readonly IMediator _mediator;
+
+    public SiteSettingGrpcService(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-        
-        public SiteSettingGrpcService(IMediator mediator)
+        _mediator = mediator;
+    }
+
+    public override async Task<SettingAndSeoResponse> GetSettingAndSeo(SettingAndSeoRequest request,
+        ServerCallContext context)
+    {
+        try
         {
-            _mediator = mediator;
-        }
-        
-        public override async Task<SettingAndSeoResponse> GetSettingAndSeo(SettingAndSeoRequest request, ServerCallContext context)
-        {
-            try
+            void settings = await _mediator.Send(new GetSettingAndSeoQueryReq());
+
+            var response = new SettingAndSeoResponse
             {
-                var settings = await _mediator.Send(new GetSettingAndSeoQueryReq());
-                
-                var response = new SettingAndSeoResponse
-                {
-                    SiteSetting = new SiteSettingItem
+                SiteSetting =
+                    new SiteSettingItem
                     {
                         Id = settings.Setting.Id,
                         SiteName = settings.Setting.SiteName ?? string.Empty,
@@ -55,30 +58,29 @@ namespace Parstech.Shop.ApiService.Services
                         BnplTerminalId = settings.Setting.BnplTerminalId ?? string.Empty,
                         BnplTerminalKey = settings.Setting.BnplTerminalKey ?? string.Empty
                     },
-                    SeoSetting = new SeoSettingItem
-                    {
-                        Id = settings.Seo.Id,
-                        MetaTitle = settings.Seo.MetaTitle ?? string.Empty,
-                        MetaDescription = settings.Seo.MetaDescription ?? string.Empty,
-                        MetaKeywords = settings.Seo.MetaKeywords ?? string.Empty,
-                        CanonicalUrl = settings.Seo.CanonicalUrl ?? string.Empty,
-                        RobotsTxt = settings.Seo.RobotsTxt ?? string.Empty,
-                        SchemaOrg = settings.Seo.SchemaOrg ?? string.Empty,
-                        OpenGraphTitle = settings.Seo.OpenGraphTitle ?? string.Empty,
-                        OpenGraphDescription = settings.Seo.OpenGraphDescription ?? string.Empty,
-                        OpenGraphImage = settings.Seo.OpenGraphImage ?? string.Empty,
-                        TwitterTitle = settings.Seo.TwitterTitle ?? string.Empty,
-                        TwitterDescription = settings.Seo.TwitterDescription ?? string.Empty,
-                        TwitterImage = settings.Seo.TwitterImage ?? string.Empty
-                    }
-                };
-                
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
-            }
+                SeoSetting = new SeoSettingItem
+                {
+                    Id = settings.Seo.Id,
+                    MetaTitle = settings.Seo.MetaTitle ?? string.Empty,
+                    MetaDescription = settings.Seo.MetaDescription ?? string.Empty,
+                    MetaKeywords = settings.Seo.MetaKeywords ?? string.Empty,
+                    CanonicalUrl = settings.Seo.CanonicalUrl ?? string.Empty,
+                    RobotsTxt = settings.Seo.RobotsTxt ?? string.Empty,
+                    SchemaOrg = settings.Seo.SchemaOrg ?? string.Empty,
+                    OpenGraphTitle = settings.Seo.OpenGraphTitle ?? string.Empty,
+                    OpenGraphDescription = settings.Seo.OpenGraphDescription ?? string.Empty,
+                    OpenGraphImage = settings.Seo.OpenGraphImage ?? string.Empty,
+                    TwitterTitle = settings.Seo.TwitterTitle ?? string.Empty,
+                    TwitterDescription = settings.Seo.TwitterDescription ?? string.Empty,
+                    TwitterImage = settings.Seo.TwitterImage ?? string.Empty
+                }
+            };
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new RpcException(new(StatusCode.Internal, ex.Message));
         }
     }
-} 
+}

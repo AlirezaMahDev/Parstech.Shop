@@ -1,11 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.UserProduct.Requests.Command
-{
-    public record DeleteUserProductCommandReq(int userProductId):IRequest;
-}
+namespace Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Command;
+
+public record DeleteUserProductCommandReq(int userProductId) : IRequest;

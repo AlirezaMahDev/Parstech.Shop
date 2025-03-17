@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shop.Domain.Models;
+﻿namespace Parstech.Shop.ApiService.Domain.Models;
 
 public partial class RepresentationType
 {
@@ -11,5 +8,6 @@ public partial class RepresentationType
 
     public string Color { get; set; } = null!;
 
-    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } = new List<ProductRepresentation>();
+    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } =
+        new List<ProductRepresentation>();
 }

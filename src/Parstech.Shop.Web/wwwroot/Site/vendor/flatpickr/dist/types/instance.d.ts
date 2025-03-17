@@ -1,6 +1,7 @@
-import { DateOption, Options, ParsedOptions } from "./options";
-import { Locale, CustomLocale, key as LocaleKey } from "./locale";
-import { RevFormat, Formats, TokenRegex } from "../utils/formatting";
+import {DateOption, Options, ParsedOptions} from "./options";
+import {Locale, CustomLocale, key as LocaleKey} from "./locale";
+import {RevFormat, Formats, TokenRegex} from "../utils/formatting";
+
 export interface Elements {
     element: HTMLElement;
     input: HTMLInputElement;
@@ -34,11 +35,13 @@ export interface Elements {
     secondElement?: HTMLInputElement;
     amPM?: HTMLSpanElement;
 }
+
 export interface Formatting {
     revFormat: RevFormat;
     formats: Formats;
     tokenRegex: TokenRegex;
 }
+
 export declare type Instance = Elements & Formatting & {
     minRangeDate?: Date;
     maxRangeDate?: Date;
@@ -92,8 +95,10 @@ export declare type Instance = Elements & Formatting & {
         getDaysInMonth: (month?: number, year?: number) => number;
     };
 };
+
 export interface FlatpickrFn {
     (selector: NodeList | HTMLElement | string, config?: Options): Instance | Instance[];
+
     defaultConfig: ParsedOptions;
     l10ns: {
         [k in LocaleKey]?: CustomLocale;
@@ -106,6 +111,7 @@ export interface FlatpickrFn {
     formatDate: (date: Date, format: string) => string;
     compareDates: (date1: Date, date2: Date, timeless?: boolean) => number;
 }
+
 export declare type DayElement = HTMLSpanElement & {
     dateObj: Date;
     $i: number;

@@ -1,11 +1,10 @@
-﻿
-function OnLoadingCreateUser() {
+﻿function OnLoadingCreateUser() {
 
 
 }
 
 function OnCompleteCreateUser(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -13,7 +12,7 @@ function OnCompleteCreateUser(xhr) {
 
     if (Response.isSuccessed) {
         ToastSuccess(Response.message);
-        
+
         Parameter_Filter.value = FilterInput.value;
         tableMain
             .clear()
@@ -21,8 +20,7 @@ function OnCompleteCreateUser(xhr) {
         dataSet = [];
         $("#GetDataForm").submit();
         $("#CreateUser").modal('hide');
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

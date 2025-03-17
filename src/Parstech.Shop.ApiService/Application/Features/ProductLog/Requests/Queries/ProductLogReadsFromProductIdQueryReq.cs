@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.ProductLog;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductLog.Requests.Queries
-{
-    public record ProductLogReadsFromProductIdQueryReq(int productId) : IRequest<LogDto>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductLog.Requests.Queries;
+
+public record ProductLogReadsFromProductIdQueryReq(int productId) : IRequest<LogDto>;

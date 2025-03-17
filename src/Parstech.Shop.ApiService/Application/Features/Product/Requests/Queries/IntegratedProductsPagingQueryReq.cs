@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.Product;
 
+using Parstech.Shop.ApiService.Application.DTOs;
 
-namespace Shop.Application.Features.Product.Requests.Queries
-{
-    public record IntegratedProductsPagingQueryReq(ProductSearchParameterDto parameters,string userName) :IRequest<ProductPageingDto>;
-    
-}
+namespace Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+
+public record IntegratedProductsPagingQueryReq(ProductSearchParameterDto parameters, string userName)
+    : IRequest<ProductPageingDto>;

@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Users.PermissionModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Users.PermissionModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -14,10 +15,17 @@
                     </h3>
                 </div>
                 <div class="buttons-box">
-                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal" data-bs-target="#CreateUser">
+                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal"
+                            data-bs-target="#CreateUser">
                         <i class="icon-plus"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
-                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background" style="opacity: 0.0088;"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
 
                 </div>
@@ -37,21 +45,24 @@
                                     </div>
 
                                     <div class="col-lg-12">
-                                        <form method="post"  class="form-horizontal" role="form" enctype="multipart/form-data">
+                                        <form method="post" class="form-horizontal" role="form"
+                                              enctype="multipart/form-data">
 
                                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                                 <label>نام <span class="text-danger">*</span></label>
                                                 <div class="form-group round">
-                                                    <input asp-for="Input.Name" required="" type="text" class="form-control" />
+                                                    <input asp-for="Input.Name" required="" type="text"
+                                                           class="form-control"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                                 <label>عنوان فارسی<span class="text-danger">*</span></label>
                                                 <div class="form-group round">
-                                                    <input asp-for="Input.PersianName" required="" type="text" class="form-control" />
+                                                    <input asp-for="Input.PersianName" required="" type="text"
+                                                           class="form-control"/>
                                                 </div>
                                             </div>
-                                            
+
 
                                             <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
@@ -68,7 +79,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -79,10 +91,10 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        
+
                         <th>عنوان دسترسی</th>
                         <th>عنوان فارسی</th>
-                        
+
                     </tr>
                     </thead>
                     <tbody>
@@ -93,7 +105,7 @@
                             <td>@item.PersianName</td>
                         </tr>
                     }
-                   
+
 
                     </tbody>
                 </table>

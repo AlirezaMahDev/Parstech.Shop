@@ -2,8 +2,8 @@ $(".summernote").summernote({
     tooltip: false,
     airMode: false,
     direction: "rtl",
-    fontNames: ['Tahoma', 'IranSans', 'B Nazanin', 'B Yekan', 'Parastoo', 'Arial' ],
-    fontNamesIgnoreCheck: ['Tahoma', 'B Nazanin', 'B Yekan', 'Parastoo', 'Arial', 'IranSans' ]
+    fontNames: ['Tahoma', 'IranSans', 'B Nazanin', 'B Yekan', 'Parastoo', 'Arial'],
+    fontNamesIgnoreCheck: ['Tahoma', 'B Nazanin', 'B Yekan', 'Parastoo', 'Arial', 'IranSans']
 });
 
 $(".summernote-ltr").summernote({

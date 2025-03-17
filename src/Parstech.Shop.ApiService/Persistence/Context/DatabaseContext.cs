@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Shop.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Shop.Persistence.Context;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Persistence.Context;
 
 public partial class DatabaseContext : DbContext
 {
@@ -186,7 +185,8 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IsParnet).HasColumnName("isParnet");
             entity.Property(e => e.LatinGroupTitle).HasMaxLength(200);
 
-            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
+            entity.HasOne(d => d.Parent)
+                .WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
                 .HasConstraintName("FK_Categury_Categury");
         });
@@ -211,7 +211,8 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Products).HasMaxLength(50);
             entity.Property(e => e.Users).HasMaxLength(50);
 
-            entity.HasOne(d => d.CouponType).WithMany(p => p.Coupons)
+            entity.HasOne(d => d.CouponType)
+                .WithMany(p => p.Coupons)
                 .HasForeignKey(d => d.CouponTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Coupon_CouponType");
@@ -227,7 +228,8 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Type).HasMaxLength(50);
 
-            entity.HasOne(d => d.Coupon).WithMany(p => p.CouponPcus)
+            entity.HasOne(d => d.Coupon)
+                .WithMany(p => p.CouponPcus)
                 .HasForeignKey(d => d.CouponId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CouponProductCatgury_Coupon");
@@ -291,7 +293,8 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
 
-            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+            entity.HasMany(d => d.Roles)
+                .WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "IuserRole",
                     r => r.HasOne<Irole>().WithMany().HasForeignKey("RoleId"),
@@ -349,12 +352,14 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Description).HasMaxLength(500);
 
-            entity.HasOne(d => d.LogCategury).WithMany(p => p.Logs)
+            entity.HasOne(d => d.LogCategury)
+                .WithMany(p => p.Logs)
                 .HasForeignKey(d => d.LogCateguryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Log_LogCategury");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Logs)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Logs)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Log_User");
@@ -380,12 +385,14 @@ public partial class DatabaseContext : DbContext
                 .HasMaxLength(30)
                 .HasDefaultValue("");
 
-            entity.HasOne(d => d.TaxNavigation).WithMany(p => p.Orders)
+            entity.HasOne(d => d.TaxNavigation)
+                .WithMany(p => p.Orders)
                 .HasForeignKey(d => d.TaxId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Orders_Tax");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Orders_User");
@@ -399,12 +406,14 @@ public partial class DatabaseContext : DbContext
 
             entity.HasIndex(e => e.OrderId, "IX_OrderCoupon_OrderId");
 
-            entity.HasOne(d => d.Coupon).WithMany(p => p.OrderCoupons)
+            entity.HasOne(d => d.Coupon)
+                .WithMany(p => p.OrderCoupons)
                 .HasForeignKey(d => d.CouponId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderCoupon_Coupon");
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderCoupons)
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderCoupons)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderCoupon_Orders");
@@ -420,12 +429,14 @@ public partial class DatabaseContext : DbContext
 
             entity.HasIndex(e => e.ProductStockPriceId, "IX_OrderDetail_ProductStockPriceId");
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_Orders");
 
-            entity.HasOne(d => d.ProductStockPrice).WithMany(p => p.OrderDetails)
+            entity.HasOne(d => d.ProductStockPrice)
+                .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductStockPriceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_ProductStockPrice");
@@ -444,17 +455,20 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.DepositCode).HasMaxLength(100);
             entity.Property(e => e.Description).HasMaxLength(300);
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderPays)
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderPays)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderPay_Orders");
 
-            entity.HasOne(d => d.PayStatusType).WithMany(p => p.OrderPays)
+            entity.HasOne(d => d.PayStatusType)
+                .WithMany(p => p.OrderPays)
                 .HasForeignKey(d => d.PayStatusTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderPay_PayStatusType");
 
-            entity.HasOne(d => d.PayType).WithMany(p => p.OrderPays)
+            entity.HasOne(d => d.PayType)
+                .WithMany(p => p.OrderPays)
                 .HasForeignKey(d => d.PayTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderPay_PayType");
@@ -479,12 +493,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.StatusName).HasMaxLength(50);
             entity.Property(e => e.UserShippingId).HasMaxLength(50);
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderShippings)
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderShippings)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderShipping_Orders");
 
-            entity.HasOne(d => d.ShippingType).WithMany(p => p.OrderShippings)
+            entity.HasOne(d => d.ShippingType)
+                .WithMany(p => p.OrderShippings)
                 .HasForeignKey(d => d.ShippingTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderShipping_ShippingType");
@@ -506,12 +522,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.FileName).HasMaxLength(150);
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderStatuses)
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderStatuses)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderStatus_Orders");
 
-            entity.HasOne(d => d.Status).WithMany(p => p.OrderStatuses)
+            entity.HasOne(d => d.Status)
+                .WithMany(p => p.OrderStatuses)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderStatus_Status");
@@ -564,21 +582,25 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.TaxCode).HasMaxLength(50);
             entity.Property(e => e.VariationName).HasMaxLength(100);
 
-            entity.HasOne(d => d.Brand).WithMany(p => p.Products)
+            entity.HasOne(d => d.Brand)
+                .WithMany(p => p.Products)
                 .HasForeignKey(d => d.BrandId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Brand");
 
-            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
+            entity.HasOne(d => d.Parent)
+                .WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
                 .HasConstraintName("FK_Product_Product");
 
-            entity.HasOne(d => d.Tax).WithMany(p => p.Products)
+            entity.HasOne(d => d.Tax)
+                .WithMany(p => p.Products)
                 .HasForeignKey(d => d.TaxId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Tax");
 
-            entity.HasOne(d => d.Type).WithMany(p => p.Products)
+            entity.HasOne(d => d.Type)
+                .WithMany(p => p.Products)
                 .HasForeignKey(d => d.TypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_ProductType");
@@ -592,12 +614,14 @@ public partial class DatabaseContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "IX_ProductCategury_ProductId");
 
-            entity.HasOne(d => d.Categury).WithMany(p => p.ProductCateguries)
+            entity.HasOne(d => d.Categury)
+                .WithMany(p => p.ProductCateguries)
                 .HasForeignKey(d => d.CateguryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductCategury_Categury1");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductCateguries)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductCateguries)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductCategury_Product");
@@ -614,12 +638,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Comment).HasMaxLength(300);
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductComments)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductComments)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductComment_Product");
 
-            entity.HasOne(d => d.User).WithMany(p => p.ProductComments)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.ProductComments)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductComment_User");
@@ -635,7 +661,8 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Alt).HasMaxLength(100);
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductGalleries)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductGalleries)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductGallery_Product");
@@ -655,17 +682,20 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.NewValue).HasMaxLength(500);
             entity.Property(e => e.OldValue).HasMaxLength(500);
 
-            entity.HasOne(d => d.ProductLogType).WithMany(p => p.ProductLogs)
+            entity.HasOne(d => d.ProductLogType)
+                .WithMany(p => p.ProductLogs)
                 .HasForeignKey(d => d.ProductLogTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductLog_ProductLogType");
 
-            entity.HasOne(d => d.ProductStockPrice).WithMany(p => p.ProductLogs)
+            entity.HasOne(d => d.ProductStockPrice)
+                .WithMany(p => p.ProductLogs)
                 .HasForeignKey(d => d.ProductStockPriceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductLog_ProductStockPrice");
 
-            entity.HasOne(d => d.User).WithMany(p => p.ProductLogs)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.ProductLogs)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductLog_User");
@@ -688,12 +718,14 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Value).HasMaxLength(1500);
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductProperties)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductProperties)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductProperty_Product");
 
-            entity.HasOne(d => d.Property).WithMany(p => p.ProductProperties)
+            entity.HasOne(d => d.Property)
+                .WithMany(p => p.ProductProperties)
                 .HasForeignKey(d => d.PropertyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductProperty_Property");
@@ -707,7 +739,8 @@ public partial class DatabaseContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "IX_ProductRating_ProductId");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductRatings)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductRatings)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRating_Product");
@@ -721,12 +754,14 @@ public partial class DatabaseContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "IX_ProductRelated_ProductId");
 
-            entity.HasOne(d => d.FkProduct).WithMany(p => p.ProductRelatedFkProducts)
+            entity.HasOne(d => d.FkProduct)
+                .WithMany(p => p.ProductRelatedFkProducts)
                 .HasForeignKey(d => d.FkProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRelated_Product1");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductRelatedProducts)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductRelatedProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRelated_Product");
@@ -746,17 +781,20 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.FileName).HasMaxLength(500);
             entity.Property(e => e.UniqeCode).HasMaxLength(50);
 
-            entity.HasOne(d => d.ProductStockPrice).WithMany(p => p.ProductRepresentations)
+            entity.HasOne(d => d.ProductStockPrice)
+                .WithMany(p => p.ProductRepresentations)
                 .HasForeignKey(d => d.ProductStockPriceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRepresentation_ProductStockPrice");
 
-            entity.HasOne(d => d.Represntation).WithMany(p => p.ProductRepresentations)
+            entity.HasOne(d => d.Represntation)
+                .WithMany(p => p.ProductRepresentations)
                 .HasForeignKey(d => d.RepresntationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRepresentation_Representation");
 
-            entity.HasOne(d => d.Type).WithMany(p => p.ProductRepresentations)
+            entity.HasOne(d => d.Type)
+                .WithMany(p => p.ProductRepresentations)
                 .HasForeignKey(d => d.TypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductRepresentation_RepresentationType");
@@ -775,17 +813,20 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.CateguryOfUserType).HasMaxLength(50);
             entity.Property(e => e.DiscountDate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductStockPrices)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductStockPrices)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductStockPrice_Product");
 
-            entity.HasOne(d => d.Rep).WithMany(p => p.ProductStockPrices)
+            entity.HasOne(d => d.Rep)
+                .WithMany(p => p.ProductStockPrices)
                 .HasForeignKey(d => d.RepId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductStockPrice_Representation");
 
-            entity.HasOne(d => d.Store).WithMany(p => p.ProductStockPrices)
+            entity.HasOne(d => d.Store)
+                .WithMany(p => p.ProductStockPrices)
                 .HasForeignKey(d => d.StoreId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductStockPrice_UserStore");
@@ -795,12 +836,14 @@ public partial class DatabaseContext : DbContext
         {
             entity.ToTable("ProductStockPriceSection");
 
-            entity.HasOne(d => d.ProductStockPrice).WithMany(p => p.ProductStockPriceSections)
+            entity.HasOne(d => d.ProductStockPrice)
+                .WithMany(p => p.ProductStockPriceSections)
                 .HasForeignKey(d => d.ProductStockPriceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductStockPriceSection_ProductStockPrice1");
 
-            entity.HasOne(d => d.Section).WithMany(p => p.ProductStockPriceSections)
+            entity.HasOne(d => d.Section)
+                .WithMany(p => p.ProductStockPriceSections)
                 .HasForeignKey(d => d.SectionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductStockPriceSection_Section");
@@ -823,12 +866,14 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Caption).HasMaxLength(1500);
 
-            entity.HasOne(d => d.Categury).WithMany(p => p.Properties)
+            entity.HasOne(d => d.Categury)
+                .WithMany(p => p.Properties)
                 .HasForeignKey(d => d.CateguryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Property_Categury");
 
-            entity.HasOne(d => d.PropertyCategury).WithMany(p => p.Properties)
+            entity.HasOne(d => d.PropertyCategury)
+                .WithMany(p => p.Properties)
                 .HasForeignKey(d => d.PropertyCateguryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Property_PropertyCategury");
@@ -878,7 +923,8 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Name).HasMaxLength(100);
 
-            entity.HasOne(d => d.State).WithMany(p => p.Representations)
+            entity.HasOne(d => d.State)
+                .WithMany(p => p.Representations)
                 .HasForeignKey(d => d.StateId)
                 .HasConstraintName("FK_Representation_States");
         });
@@ -910,7 +956,8 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.SectionName).HasMaxLength(150);
 
-            entity.HasOne(d => d.SectionType).WithMany(p => p.Sections)
+            entity.HasOne(d => d.SectionType)
+                .WithMany(p => p.Sections)
                 .HasForeignKey(d => d.SectionTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Section_SectionType");
@@ -934,12 +981,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.SlideNavName).HasMaxLength(200);
             entity.Property(e => e.SubCaption).HasMaxLength(200);
 
-            entity.HasOne(d => d.Section).WithMany(p => p.SectionDetails)
+            entity.HasOne(d => d.Section)
+                .WithMany(p => p.SectionDetails)
                 .HasForeignKey(d => d.SectionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SectionDetail_Section");
 
-            entity.HasOne(d => d.SectionType).WithMany(p => p.SectionDetails)
+            entity.HasOne(d => d.SectionType)
+                .WithMany(p => p.SectionDetails)
                 .HasForeignKey(d => d.SectionTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SectionDetail_SectionType");
@@ -1023,7 +1072,8 @@ public partial class DatabaseContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("title");
 
-            entity.HasOne(d => d.SiteSetting).WithMany(p => p.SocialSettings)
+            entity.HasOne(d => d.SiteSetting)
+                .WithMany(p => p.SocialSettings)
                 .HasForeignKey(d => d.SiteSettingId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SocialSetting_SiteSetting");
@@ -1069,12 +1119,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.DepartmentId).HasColumnName("departmentId");
             entity.Property(e => e.TicketCaption).HasDefaultValue("");
 
-            entity.HasOne(d => d.Status).WithMany(p => p.Tickets)
+            entity.HasOne(d => d.Status)
+                .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tickets_TicketStatuses");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Tickets)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tickets_User");
@@ -1091,12 +1143,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.TicketFile).HasMaxLength(200);
             entity.Property(e => e.TicketText).HasMaxLength(2000);
 
-            entity.HasOne(d => d.Ticket).WithMany(p => p.TicketDetails)
+            entity.HasOne(d => d.Ticket)
+                .WithMany(p => p.TicketDetails)
                 .HasForeignKey(d => d.TicketId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketDetails_Tickets");
 
-            entity.HasOne(d => d.Type).WithMany(p => p.TicketDetails)
+            entity.HasOne(d => d.Type)
+                .WithMany(p => p.TicketDetails)
                 .HasForeignKey(d => d.TypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketDetails_TicketTypes");
@@ -1146,7 +1200,8 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.PostCode).HasMaxLength(50);
             entity.Property(e => e.State).HasMaxLength(50);
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserBillings)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserBillings)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserBilling_User");
@@ -1156,12 +1211,14 @@ public partial class DatabaseContext : DbContext
         {
             entity.ToTable("UserCategury");
 
-            entity.HasOne(d => d.Categury).WithMany(p => p.UserCateguries)
+            entity.HasOne(d => d.Categury)
+                .WithMany(p => p.UserCateguries)
                 .HasForeignKey(d => d.CateguryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserCategury_CateguryOfUser");
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserCateguries)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserCateguries)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserCategury_User");
@@ -1192,7 +1249,8 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.PostCode).HasMaxLength(500);
             entity.Property(e => e.State).HasMaxLength(500);
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserShippings)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserShippings)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserShipping_User");
@@ -1220,12 +1278,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.State).HasMaxLength(200);
             entity.Property(e => e.StoreName).HasMaxLength(200);
 
-            entity.HasOne(d => d.Rep).WithMany(p => p.UserStores)
+            entity.HasOne(d => d.Rep)
+                .WithMany(p => p.UserStores)
                 .HasForeignKey(d => d.RepId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserStore_Representation");
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserStores)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserStores)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserStore_User1");
@@ -1247,7 +1307,8 @@ public partial class DatabaseContext : DbContext
         {
             entity.HasIndex(e => e.UserId, "IX_Wallets_UserId");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Wallets)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Wallets)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Wallets_User");
@@ -1268,12 +1329,14 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.TrackingCode).HasMaxLength(100);
             entity.Property(e => e.Type).HasMaxLength(300);
 
-            entity.HasOne(d => d.TypeNavigation).WithMany(p => p.WalletTransactions)
+            entity.HasOne(d => d.TypeNavigation)
+                .WithMany(p => p.WalletTransactions)
                 .HasForeignKey(d => d.TypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WalletTransaction_WalletTypes");
 
-            entity.HasOne(d => d.Wallet).WithMany(p => p.WalletTransactions)
+            entity.HasOne(d => d.Wallet)
+                .WithMany(p => p.WalletTransactions)
                 .HasForeignKey(d => d.WalletId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WalletTransaction_Wallets");

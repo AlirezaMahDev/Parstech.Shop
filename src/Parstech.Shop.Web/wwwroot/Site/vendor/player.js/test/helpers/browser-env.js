@@ -1,5 +1,5 @@
 /* eslint-env node */
-import { JSDOM } from 'jsdom';
+import {JSDOM} from 'jsdom';
 
 const html = `<body>
 	<div id="test_player" data-vimeo-id="2"></div>

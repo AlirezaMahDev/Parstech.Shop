@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dargah.ZarrinPal.Models.withExtra;
 
-namespace ZarinPal
+public class PaymentRequestWithExtra : PaymentRequest
 {
-   public class PaymentRequestWithExtra : PaymentRequest
-    {
-        public Object AdditionalData {get;set;}
+    public object AdditionalData { get; set; }
 
-        public PaymentRequestWithExtra(String MerchantID, long Amount, String CallbackURL, String Description,Object AdditionalData):
-            base(MerchantID , Amount , CallbackURL , Description){
-                this.AdditionalData = AdditionalData;
-        }
+    public PaymentRequestWithExtra(string MerchantID,
+        long Amount,
+        string CallbackURL,
+        string Description,
+        object AdditionalData) :
+        base(MerchantID, Amount, CallbackURL, Description)
+    {
+        this.AdditionalData = AdditionalData;
     }
 }

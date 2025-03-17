@@ -30,21 +30,21 @@ function GetData() {
         success: function (response) {
             FillData(response);
 
-            
+
         },
         failure: function (response) {
-            
+
         },
         error: function (response) {
-            
+
         }
     });
- 
+
 }
 
 
-
 let DataSection = document.getElementById("DataSection");
+
 function FillData(Data) {
     page = Data.currentPage;
     DataSection.innerHTML = null;
@@ -54,12 +54,11 @@ function FillData(Data) {
 
     if (Data.list.length > 0) {
         Data.list.forEach(function (element) {
-            
+
             listSection.insertAdjacentHTML("beforebegin", "<tr role='row'><td class='small text-center'>" + element.name + "</td><td class='small text-center'>" + element.count + "</td><td class='small text-center'>" + separate(element.price) + "</td><td class='small text-center'>" + separate(element.detailSum) + "</td><td class='small text-center font-weight-bold'>" + separate(element.tax) + "</td><td class='small text-center'>" + separate(element.total) + "</td><td class='small text-center'>" + element.orderCode + "</td><td class='small text-center font-weight-bold '>" + element.createDateShamsi + "</td><td class='small text-center'>" + element.storeName + " <button onclick='GetStatusOfOrder(" + element.orderId + ")' type='button' class='btn btn-default'><i class=' fas fa-info Yellow m-1'></i></button></td><td class='small text-center'><button onclick='GetContract(" + element.orderId + ")' type='button' class='btn btn-default btn-xs btn-primary'>استعلام</button></td></tr>");
         });
-    }
-    else {
-        listSection.insertAdjacentHTML("beforebegin","<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
+    } else {
+        listSection.insertAdjacentHTML("beforebegin", "<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
     }
 
     Data.storesSelect.forEach(function (element) {
@@ -81,15 +80,14 @@ function GenerateExcel() {
     extoDate.value = toDate.value;
     $("#ExcelForm").submit();
 }
+
 function RunPaging(type) {
     if (type == "next") {
         currentPage.value = page += 1;
-    }
-    else {
+    } else {
         if (currentPage.value == 1) {
             currentPage.value = 1;
-        }
-        else {
+        } else {
             currentPage.value = page -= 1;
         }
     }
@@ -106,7 +104,7 @@ function GetStatusOfOrder(orderId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "OrderId": orderId },
+        data: {"OrderId": orderId},
         success: function (response) {
             FillStatusOfOrder(response.object);
         },
@@ -120,6 +118,7 @@ function GetStatusOfOrder(orderId) {
 }
 
 let StatusOfOrderSection = document.getElementById("StatusOfOrderSection");
+
 function FillStatusOfOrder(Data) {
     console.log(Data);
     StatusOfOrderSection.innerHTML = null;
@@ -128,8 +127,6 @@ function FillStatusOfOrder(Data) {
     });
     $("#StatusOfOrderModal").modal('show');
 }
-
-
 
 
 //حق العمل کاری
@@ -141,7 +138,7 @@ function GetContract(orderId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "OrderId": orderId },
+        data: {"OrderId": orderId},
         success: function (response) {
             fillContract(response);
 
@@ -158,6 +155,7 @@ function GetContract(orderId) {
 }
 
 let contractData = document.getElementById("contractData");
+
 function fillContract(response) {
     contractData.innerHTML = null;
     response.details.forEach(function (element) {

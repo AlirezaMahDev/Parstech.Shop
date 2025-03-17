@@ -16,16 +16,16 @@ function OnComplete(xhr) {
             row = 0
             break;
         case 1:
-            row=12
+            row = 12
             break;
         case 2:
-            row=6
+            row = 6
             break;
         case 3:
-            row=4
+            row = 4
             break;
         case 4:
-            row=3
+            row = 3
             break;
     }
     if (row != 0) {
@@ -42,11 +42,10 @@ function OnComplete(xhr) {
                 idPASection.insertAdjacentHTML("beforebegin", "<span class='font-weight-bold'>" + all.caption + "</span><p>" + all.value + "</p>")
             });
         });
-    }
-    else {
-        
+    } else {
+
         compareSection.insertAdjacentHTML("beforeend", "<div class='alert alert-secondery border Gray font-weight-bold text-center font-size-17'><i class=' ec ec-compare'></i>هیچ محصولی در لیست مقایسه شما وجود ندارد</div>")
 
     }
-    
+
 }

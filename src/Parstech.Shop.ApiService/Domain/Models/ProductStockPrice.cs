@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shop.Domain.Models;
+﻿namespace Parstech.Shop.ApiService.Domain.Models;
 
 public partial class ProductStockPrice
 {
@@ -45,9 +42,11 @@ public partial class ProductStockPrice
 
     public virtual ICollection<ProductLog> ProductLogs { get; set; } = new List<ProductLog>();
 
-    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } = new List<ProductRepresentation>();
+    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } =
+        new List<ProductRepresentation>();
 
-    public virtual ICollection<ProductStockPriceSection> ProductStockPriceSections { get; set; } = new List<ProductStockPriceSection>();
+    public virtual ICollection<ProductStockPriceSection> ProductStockPriceSections { get; set; } =
+        new List<ProductStockPriceSection>();
 
     public virtual Representation Rep { get; set; } = null!;
 

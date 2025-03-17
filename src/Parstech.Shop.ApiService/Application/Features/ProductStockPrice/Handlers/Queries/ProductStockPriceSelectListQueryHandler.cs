@@ -1,29 +1,34 @@
 ﻿using Dapper;
+
 using MediatR;
-using Microsoft.Extensions.Configuration;
-using Shop.Application.Dapper.Helper;
-using Shop.Application.DTOs.Product;
-using Shop.Application.Features.ProductStockPrice.Requests.Queries;
+
+using Parstech.Shop.ApiService.Application.Dapper.Helper;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
 
 
-namespace Shop.Application.Features.ProductStockPrice.Handlers.Queries
+namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Queries;
+
+public class
+    ProductStockPriceSelectListQueryHandler : IRequestHandler<ProductStockPriceSelectListQueryReq,
+    List<ProductSelectDto>>
 {
-    
-    public class ProductStockPriceSelectListQueryHandler : IRequestHandler<ProductStockPriceSelectListQueryReq, List<ProductSelectDto>>
+    #region Constractor
+
+    private readonly string _connectionString;
+
+    public ProductStockPriceSelectListQueryHandler(IConfiguration configuration)
     {
-        #region Constractor
-        private readonly string _connectionString;
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+    }
 
-        public ProductStockPriceSelectListQueryHandler(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");
-        }
-        #endregion
-        public async Task<List<ProductSelectDto>> Handle(ProductStockPriceSelectListQueryReq request, CancellationToken cancellationToken)
-        {
-            var query =$"select p.Id, product.Name as ProductName, product.Code from ProductStockPrice as p inner join Product on p.ProductId=product.Id WHERE p.RepId!={request.repId}";
-            return DapperHelper.ExecuteCommand<List<ProductSelectDto>>(_connectionString, conn => conn.Query<ProductSelectDto>(query).ToList());
+    #endregion
 
-        }
+    public async Task<List<ProductSelectDto>> Handle(ProductStockPriceSelectListQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        string? query =
+            $"select p.Id, product.Name as ProductName, product.Code from ProductStockPrice as p inner join Product on p.ProductId=product.Id WHERE p.RepId!={request.repId}";
+        return DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<ProductSelectDto>(query).ToList());
     }
 }

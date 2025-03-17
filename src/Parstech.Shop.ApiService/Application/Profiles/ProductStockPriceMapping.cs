@@ -1,23 +1,16 @@
-﻿
-using AutoMapper;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductStockPrice;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class ProductStockPriceMapping : Profile
 {
-    public class ProductStockPriceMapping:Profile
+    public ProductStockPriceMapping()
     {
-        public ProductStockPriceMapping()
-        {
-            CreateMap<ProductStockPrice,ProductStockPriceDto>().ReverseMap();
-            CreateMap<ProductStockPrice,ProductDto>().ReverseMap();
-            CreateMap<ProductStockPrice, ProductListShowDto>().ReverseMap();
-        }
+        CreateMap<ProductStockPrice, ProductStockPriceDto>().ReverseMap();
+        CreateMap<ProductStockPrice, ProductDto>().ReverseMap();
+        CreateMap<ProductStockPrice, ProductListShowDto>().ReverseMap();
     }
 }

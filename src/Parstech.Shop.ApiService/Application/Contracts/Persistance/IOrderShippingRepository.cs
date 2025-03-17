@@ -1,14 +1,8 @@
-﻿using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IOrderShippingRepository : IGenericRepository<OrderShipping>
 {
-	public interface IOrderShippingRepository : IGenericRepository<OrderShipping>
-	{
-		Task<OrderShipping> GetOrderShippingByOrderId(int orderId);
-	}
+    Task<OrderShipping> GetOrderShippingByOrderId(int orderId);
 }

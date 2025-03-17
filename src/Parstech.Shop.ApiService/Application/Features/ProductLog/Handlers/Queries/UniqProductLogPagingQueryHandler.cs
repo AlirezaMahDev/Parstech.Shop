@@ -1,113 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Convertor;
-using Shop.Application.DTOs.Paging;
-using Shop.Application.DTOs.ProductLog;
-using Shop.Application.Features.ProductLog.Requests.Queries;
-using Shop.Domain.Models;
 
-namespace Shop.Application.Features.ProductLog.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.Convertor;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductLog.Requests.Queries;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductLog.Handlers.Queries;
+
+public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPagingQueryReq, PagingDto>
 {
-    public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPagingQueryReq, PagingDto>
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
+    private readonly IProductLogRepository _producLogRep;
+    private readonly IProductLogTypeRepository _productLogTypeRep;
+    private readonly IUserBillingRepository _userBillingRep;
+
+    public UniqProductLogPagingQueryHandler(IMediator mediator,
+        IMapper mapper,
+        IProductLogRepository producLogRep,
+        IProductLogTypeRepository productLogTypeRep,
+        IUserBillingRepository userBillingRep)
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-        private readonly IProductLogRepository _producLogRep;
-        private readonly IProductLogTypeRepository _productLogTypeRep;
-        private readonly IUserBillingRepository _userBillingRep;
+        _mediator = mediator;
+        _mapper = mapper;
+        _producLogRep = producLogRep;
+        _productLogTypeRep = productLogTypeRep;
+        _userBillingRep = userBillingRep;
+    }
 
-        public UniqProductLogPagingQueryHandler(IMediator mediator, IMapper mapper,
-            IProductLogRepository producLogRep, IProductLogTypeRepository productLogTypeRep,
-            IUserBillingRepository userBillingRep)
+    public async Task<PagingDto> Handle(UniqProductLogPagingQueryReq request, CancellationToken cancellationToken)
+    {
+        IList<ProductLogDto> productLogDto = new List<ProductLogDto>();
+
+        List<Domain.Models.ProductLog> Sale =
+            await _producLogRep.GetSaleProductLogWithProductId(request.parameter.ProductId);
+        List<Domain.Models.ProductLog> Price =
+            await _producLogRep.GetPriceProductLogWithProductId(request.parameter.ProductId);
+        List<Domain.Models.ProductLog> Base =
+            await _producLogRep.GetBaseProductLogWithProductId(request.parameter.ProductId);
+        List<Domain.Models.ProductLog> Discount =
+            await _producLogRep.GetDiscountProductLogWithProductId(request.parameter.ProductId);
+
+        foreach (Domain.Models.ProductLog product in Sale)
         {
-            _mediator = mediator;
-            _mapper = mapper;
-            _producLogRep = producLogRep;
-            _productLogTypeRep = productLogTypeRep;
-            _userBillingRep = userBillingRep;
+            if (product.OldValue != product.NewValue)
+            {
+                ProductLogDto dto = new();
+                dto = _mapper.Map<ProductLogDto>(product);
+                dto.CreateDateShamsi = product.CreateDate.ToShamsi();
+                ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
+                dto.ProductLogTypeName = type.Name;
+                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                dto.UserName = $"{user.FirstName} {user.LastName}";
+                productLogDto.Add(dto);
+            }
         }
-        public async Task<PagingDto> Handle(UniqProductLogPagingQueryReq request, CancellationToken cancellationToken)
+
+        foreach (Domain.Models.ProductLog product in Base)
         {
-            IList<ProductLogDto> productLogDto = new List<ProductLogDto>();
-
-            var Sale = await _producLogRep.GetSaleProductLogWithProductId(request.parameter.ProductId);
-            var Price = await _producLogRep.GetPriceProductLogWithProductId(request.parameter.ProductId);
-            var Base = await _producLogRep.GetBaseProductLogWithProductId(request.parameter.ProductId);
-            var Discount = await _producLogRep.GetDiscountProductLogWithProductId(request.parameter.ProductId);
-
-            foreach (var product in Sale)
+            if (product.OldValue != product.NewValue)
             {
-                if (product.OldValue != product.NewValue)
-                {
-                    ProductLogDto dto = new ProductLogDto();
-                    dto = _mapper.Map<ProductLogDto>(product);
-                    dto.CreateDateShamsi = product.CreateDate.ToShamsi();
-                    var type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
-                    dto.ProductLogTypeName = type.Name;
-                    var user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
-                    dto.UserName = $"{user.FirstName} {user.LastName}";
-                    productLogDto.Add(dto);
-                }
+                ProductLogDto dto = new();
+                dto = _mapper.Map<ProductLogDto>(product);
+                dto.CreateDateShamsi = product.CreateDate.ToShamsi();
+                ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
+                dto.ProductLogTypeName = type.Name;
+                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                dto.UserName = $"{user.FirstName} {user.LastName}";
+                productLogDto.Add(dto);
             }
-            foreach (var product in Base)
-            {
-                if (product.OldValue != product.NewValue)
-                {
-                    ProductLogDto dto = new ProductLogDto();
-                    dto = _mapper.Map<ProductLogDto>(product);
-                    dto.CreateDateShamsi = product.CreateDate.ToShamsi();
-                    var type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
-                    dto.ProductLogTypeName = type.Name;
-                    var user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
-                    dto.UserName = $"{user.FirstName} {user.LastName}";
-                    productLogDto.Add(dto);
-                }
-            }
-            foreach (var product in Price)
-            {
-                if (product.OldValue != product.NewValue)
-                {
-                    ProductLogDto dto = new ProductLogDto();
-                    dto = _mapper.Map<ProductLogDto>(product);
-                    dto.CreateDateShamsi = product.CreateDate.ToShamsi();
-                    var type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
-                    dto.ProductLogTypeName = type.Name;
-                    var user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
-                    dto.UserName = $"{user.FirstName} {user.LastName}";
-                    productLogDto.Add(dto);
-                }
-            }
-            foreach (var product in Discount)
-            {
-                if (product.OldValue != product.NewValue)
-                {
-                    ProductLogDto dto = new ProductLogDto();
-                    dto = _mapper.Map<ProductLogDto>(product);
-                    dto.CreateDateShamsi = product.CreateDate.ToShamsi();
-                    var type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
-                    dto.ProductLogTypeName = type.Name;
-                    var user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
-                    dto.UserName = $"{user.FirstName} {user.LastName}";
-                    productLogDto.Add(dto);
-                }
-            }
-
-            IQueryable<ProductLogDto> result = productLogDto.AsQueryable();
-            PagingDto response = new PagingDto();
-            int skip = (request.parameter.CurrentPage - 1) * request.parameter.TakePage;
-            response.CurrentPage = request.parameter.CurrentPage;
-            int count = result.Count();
-            response.PageCount = count / request.parameter.TakePage;
-            response.List = result.Skip(skip).Take(request.parameter.TakePage).ToArray();
-            return response;
-
         }
+
+        foreach (Domain.Models.ProductLog product in Price)
+        {
+            if (product.OldValue != product.NewValue)
+            {
+                ProductLogDto dto = new();
+                dto = _mapper.Map<ProductLogDto>(product);
+                dto.CreateDateShamsi = product.CreateDate.ToShamsi();
+                ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
+                dto.ProductLogTypeName = type.Name;
+                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                dto.UserName = $"{user.FirstName} {user.LastName}";
+                productLogDto.Add(dto);
+            }
+        }
+
+        foreach (Domain.Models.ProductLog product in Discount)
+        {
+            if (product.OldValue != product.NewValue)
+            {
+                ProductLogDto dto = new();
+                dto = _mapper.Map<ProductLogDto>(product);
+                dto.CreateDateShamsi = product.CreateDate.ToShamsi();
+                ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
+                dto.ProductLogTypeName = type.Name;
+                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                dto.UserName = $"{user.FirstName} {user.LastName}";
+                productLogDto.Add(dto);
+            }
+        }
+
+        IQueryable<ProductLogDto> result = productLogDto.AsQueryable();
+        PagingDto response = new();
+        int skip = (request.parameter.CurrentPage - 1) * request.parameter.TakePage;
+        response.CurrentPage = request.parameter.CurrentPage;
+        int count = result.Count();
+        response.PageCount = count / request.parameter.TakePage;
+        response.List = result.Skip(skip).Take(request.parameter.TakePage).ToArray();
+        return response;
     }
 }

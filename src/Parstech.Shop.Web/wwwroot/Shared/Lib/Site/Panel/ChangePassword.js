@@ -1,9 +1,6 @@
-﻿
-
-var old = document.getElementById("old");
+﻿var old = document.getElementById("old");
 var New = document.getElementById("New");
 var reNew = document.getElementById("reNew");
-
 
 
 function Clean() {
@@ -11,15 +8,13 @@ function Clean() {
     old.value = null;
     New.value = null;
     reNew.value = null;
-    
+
 
 }
 
 
-
-
 function OnLoading() {
-    
+
 }
 
 function OnComplete(xhr) {
@@ -31,16 +26,14 @@ function OnComplete(xhr) {
     if (Response.isSuccessed) {
         ToastSuccess(Response.message);
         Clean();
-    }
-    else {
+    } else {
 
         if (Response.errors != null) {
             console.log(Response);
             Response.errors.forEach(function (element) {
                 ToastError(element.errorMessage);
             });
-        }
-        else {
+        } else {
             ToastError(Response.message);
         }
 
@@ -52,17 +45,12 @@ function OnError() {
 }
 
 
-
-
-
-
-
 function OnLoadingUpdate() {
     CleanBilling();
 }
 
 function OnCompleteUpdate(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -72,8 +60,7 @@ function OnCompleteUpdate(xhr) {
         FillBilling(xhr.responseJSON.object);
         ToastSuccess(Response.message);
 
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.User;
-using Shop.Application.DTOs.Wallet;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Wallet.Requests.Commands
-{
-    public record WalletCreateCommandReq(WalletDto walletDto) : IRequest<WalletDto>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Commands;
+
+public record WalletCreateCommandReq(WalletDto walletDto) : IRequest<WalletDto>;

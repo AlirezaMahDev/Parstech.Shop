@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Parstech.Shop.ApiService.Application.Generator;
 
-namespace Shop.Application.Generator
+public static class NameGenerator
 {
-    public static class NameGenerator
+    public static string GenerateUniqCode()
     {
-        public static string GenerateUniqCode()
-        {
-            return Guid.NewGuid().ToString().Replace("-", "");
-        }
+        return Guid.NewGuid().ToString().Replace("-", "");
     }
 }

@@ -32,18 +32,18 @@ function GetData() {
             FillData(response);
         },
         failure: function (response) {
-            
+
         },
         error: function (response) {
-            
+
         }
     });
- 
+
 }
 
 
-
 let DataSection = document.getElementById("DataSection");
+
 function FillData(Data) {
     page = Data.currentPage;
     DataSection.innerHTML = null;
@@ -67,11 +67,10 @@ function FillData(Data) {
             }
             listSection.insertAdjacentHTML("beforebegin", "<tr role='row'><td class='small text-center'>" + element.firstName + " " + element.lastName + "</td><td class='small text-center'>" + element.id + "</td><td class='small text-center'>" + element.trackingCode + "</td><td class='small text-center'>" + element.createDateShamsi + "</td><td class='small text-center font-weight-bold'>" + separate(element.price) + "</td><td class='small text-center'>" + Type + "</td><td class='small text-center'>" + separate(element.orgCredit) + "</td><td class='small text-center font-weight-bold " + element.color + "'>" + element.typeTitle + "</td><td class='small text-center'>" + element.description + " </td></tr>");
         });
+    } else {
+        listSection.insertAdjacentHTML("beforebegin", "<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
     }
-    else {
-        listSection.insertAdjacentHTML("beforebegin","<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
-    }
-    
+
 }
 
 function OnComplete(xhr) {
@@ -88,15 +87,14 @@ function GenerateExcel() {
     extoDate.value = toDate.value;
     $("#ExcelForm").submit();
 }
+
 function RunPaging(type) {
     if (type == "next") {
         currentPage.value = page += 1;
-    }
-    else {
+    } else {
         if (currentPage.value == 1) {
             currentPage.value = 1;
-        }
-        else {
+        } else {
             currentPage.value = page -= 1;
         }
     }

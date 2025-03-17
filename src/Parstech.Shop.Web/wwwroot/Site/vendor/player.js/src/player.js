@@ -3,10 +3,10 @@ import './lib/compatibility-check';
 import 'weakmap-polyfill';
 import Promise from 'native-promise-only';
 
-import { storeCallback, getCallbacks, removeCallback, swapCallbacks } from './lib/callbacks';
-import { getMethodName, isDomElement, isVimeoUrl, getVimeoUrl, isNode } from './lib/functions';
-import { getOEmbedParameters, getOEmbedData, createEmbed, initializeEmbeds, resizeEmbeds } from './lib/embed';
-import { parseMessageData, postMessage, processData } from './lib/postmessage';
+import {storeCallback, getCallbacks, removeCallback, swapCallbacks} from './lib/callbacks';
+import {getMethodName, isDomElement, isVimeoUrl, getVimeoUrl, isNode} from './lib/functions';
+import {getOEmbedParameters, getOEmbedData, createEmbed, initializeEmbeds, resizeEmbeds} from './lib/embed';
+import {parseMessageData, postMessage, processData} from './lib/postmessage';
 
 const playerMap = new WeakMap();
 const readyMap = new WeakMap();
@@ -87,8 +87,7 @@ class Player {
 
             if (window.addEventListener) {
                 window.addEventListener('message', onMessage, false);
-            }
-            else if (window.attachEvent) {
+            } else if (window.attachEvent) {
                 window.attachEvent('onmessage', onMessage);
             }
 
@@ -321,7 +320,7 @@ class Player {
      * @return {AddCuePointPromise}
      */
     addCuePoint(time, data = {}) {
-        return this.callMethod('addCuePoint', { time, data });
+        return this.callMethod('addCuePoint', {time, data});
     }
 
     /**
@@ -352,6 +351,7 @@ class Player {
      * @property {string} kind The kind of track it is (captions or subtitles).
      * @property {string} label The human‐readable label for the track.
      */
+
     /**
      * A promise to enable a text track.
      *
@@ -556,6 +556,7 @@ class Player {
      * @property {object} data The data passed when adding the cue point.
      * @property {string} id The unique id for use with removeCuePoint.
      */
+
     /**
      * A promise to get the cue points of a video.
      *

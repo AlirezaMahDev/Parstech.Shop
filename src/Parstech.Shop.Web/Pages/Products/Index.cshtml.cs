@@ -1,77 +1,74 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Parstech.Shop.Shared.Protos.Brand;
-using Parstech.Shop.Shared.Protos.Category;
-using Parstech.Shop.Shared.Protos.Product;
-using Parstech.Shop.Shared.Protos.Response;
-using Parstech.Shop.Shared.Protos.UserStore;
+
+using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.Web.Services.GrpcClients;
-using Shop.Application.DTOs.Brand;
-using Shop.Application.DTOs.Categury;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.Response;
-using Shop.Application.DTOs.UserStore;
 
-namespace Shop.Web.Pages.Products
+namespace Parstech.Shop.Web.Pages.Products;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    #region Constructor
+
+    private readonly ProductGrpcClient _productClient;
+    private readonly CategoryGrpcClient _categoryClient;
+    private readonly BrandGrpcClient _brandClient;
+    private readonly UserStoreGrpcClient _storeClient;
+
+    public IndexModel(
+        ProductGrpcClient productClient,
+        CategoryGrpcClient categoryClient,
+        BrandGrpcClient brandClient,
+        UserStoreGrpcClient storeClient)
     {
-        #region Constructor
-        private readonly ProductGrpcClient _productClient;
-        private readonly CategoryGrpcClient _categoryClient;
-        private readonly BrandGrpcClient _brandClient;
-        private readonly UserStoreGrpcClient _storeClient;
+        _productClient = productClient;
+        _categoryClient = categoryClient;
+        _brandClient = brandClient;
+        _storeClient = storeClient;
+    }
 
-        public IndexModel(
-            ProductGrpcClient productClient,
-            CategoryGrpcClient categoryClient,
-            BrandGrpcClient brandClient,
-            UserStoreGrpcClient storeClient)
+    #endregion
+
+    #region Properties
+
+    [BindProperty]
+    public ProductSearchParameterDto Parameter { get; set; } = new ProductSearchParameterDto();
+
+    [BindProperty]
+    public ProductPageingDto List { get; set; }
+
+    [BindProperty]
+    public ResponseDto Response { get; set; } = new ResponseDto();
+
+    [BindProperty]
+    public string Categury { get; set; }
+
+    [BindProperty]
+    public string FilterCat { get; set; }
+
+    [BindProperty]
+    public int Type { get; set; }
+
+    [BindProperty]
+    public string Filter { get; set; }
+
+    public List<CateguryDto> categuries { get; set; }
+    public List<BrandDto> Brands { get; set; }
+    public List<UserStoreDto> Stores { get; set; }
+
+    #endregion
+
+    #region Get
+
+    public async Task<IActionResult> OnGet(string cat)
+    {
+        try
         {
-            _productClient = productClient;
-            _categoryClient = categoryClient;
-            _brandClient = brandClient;
-            _storeClient = storeClient;
-        }
-        #endregion
+            Categury = cat;
 
-        #region Properties
-        [BindProperty]
-        public ProductSearchParameterDto Parameter { get; set; } = new ProductSearchParameterDto();
-
-        [BindProperty]
-        public ProductPageingDto List { get; set; }
-
-        [BindProperty]
-        public ResponseDto Response { get; set; } = new ResponseDto();
-
-        [BindProperty]
-        public string Categury { get; set; }
-
-        [BindProperty]
-        public string FilterCat { get; set; }
-
-        [BindProperty]
-        public int Type { get; set; }
-
-        [BindProperty]
-        public string Filter { get; set; }
-
-        public List<CateguryDto> categuries { get; set; }
-        public List<BrandDto> Brands { get; set; }
-        public List<UserStoreDto> Stores { get; set; }
-        #endregion
-
-        #region Get
-        public async Task<IActionResult> OnGet(string cat)
-        {
-            try
-            {
-                Categury = cat;
-
-                // Get brands
-                var brandsResponse = await _brandClient.GetBrandsAsync();
-                Brands = brandsResponse.Brands.Select(b => new BrandDto
+            // Get brands
+            var brandsResponse = await _brandClient.GetBrandsAsync();
+            Brands = brandsResponse.Brands.Select(b => new BrandDto
                 {
                     Id = b.Id,
                     Name = b.Name,
@@ -83,11 +80,12 @@ namespace Shop.Web.Pages.Products
                     Logo = b.Logo,
                     Website = b.Website,
                     Country = b.Country
-                }).ToList();
+                })
+                .ToList();
 
-                // Get stores
-                var storesResponse = await _storeClient.GetStoresAsync();
-                Stores = storesResponse.Stores.Select(s => new UserStoreDto
+            // Get stores
+            var storesResponse = await _storeClient.GetStoresAsync();
+            Stores = storesResponse.Stores.Select(s => new UserStoreDto
                 {
                     Id = s.Id,
                     Name = s.Name,
@@ -105,95 +103,96 @@ namespace Shop.Web.Pages.Products
                     UserName = s.UserName,
                     CreatedAt = DateTime.Parse(s.CreatedAt),
                     UpdatedAt = DateTime.Parse(s.UpdatedAt)
-                }).ToList();
+                })
+                .ToList();
 
-                // Get categories
-                categuries = new List<CateguryDto>();
-                var parentCategories = await _categoryClient.GetParentCategoriesAsync();
-                
-                foreach (var parent in parentCategories.Categories)
+            // Get categories
+            categuries = new();
+            var parentCategories = await _categoryClient.GetParentCategoriesAsync();
+
+            foreach (var parent in parentCategories.Categories)
+            {
+                categuries.Add(new CateguryDto
+                {
+                    Id = parent.Id,
+                    Name = parent.Name,
+                    LatinName = parent.LatinName,
+                    Description = parent.Description,
+                    Image = parent.Image,
+                    ParentId = parent.ParentId,
+                    GroupId = parent.GroupId,
+                    IsActive = parent.IsActive,
+                    Order = parent.Order
+                });
+
+                var subParentCategories = await _categoryClient.GetSubCategoriesAsync(parent.GroupId);
+                foreach (var subParent in subParentCategories.Categories)
                 {
                     categuries.Add(new CateguryDto
                     {
-                        Id = parent.Id,
-                        Name = parent.Name,
-                        LatinName = parent.LatinName,
-                        Description = parent.Description,
-                        Image = parent.Image,
-                        ParentId = parent.ParentId,
-                        GroupId = parent.GroupId,
-                        IsActive = parent.IsActive,
-                        Order = parent.Order
+                        Id = subParent.Id,
+                        Name = subParent.Name,
+                        LatinName = subParent.LatinName,
+                        Description = subParent.Description,
+                        Image = subParent.Image,
+                        ParentId = subParent.ParentId,
+                        GroupId = subParent.GroupId,
+                        IsActive = subParent.IsActive,
+                        Order = subParent.Order
                     });
 
-                    var subParentCategories = await _categoryClient.GetSubCategoriesAsync(parent.GroupId);
-                    foreach (var subParent in subParentCategories.Categories)
+                    var subCategories = await _categoryClient.GetSubCategoriesAsync(subParent.GroupId);
+                    foreach (var sub in subCategories.Categories)
                     {
                         categuries.Add(new CateguryDto
                         {
-                            Id = subParent.Id,
-                            Name = subParent.Name,
-                            LatinName = subParent.LatinName,
-                            Description = subParent.Description,
-                            Image = subParent.Image,
-                            ParentId = subParent.ParentId,
-                            GroupId = subParent.GroupId,
-                            IsActive = subParent.IsActive,
-                            Order = subParent.Order
+                            Id = sub.Id,
+                            Name = sub.Name,
+                            LatinName = sub.LatinName,
+                            Description = sub.Description,
+                            Image = sub.Image,
+                            ParentId = sub.ParentId,
+                            GroupId = sub.GroupId,
+                            IsActive = sub.IsActive,
+                            Order = sub.Order
                         });
-
-                        var subCategories = await _categoryClient.GetSubCategoriesAsync(subParent.GroupId);
-                        foreach (var sub in subCategories.Categories)
-                        {
-                            categuries.Add(new CateguryDto
-                            {
-                                Id = sub.Id,
-                                Name = sub.Name,
-                                LatinName = sub.LatinName,
-                                Description = sub.Description,
-                                Image = sub.Image,
-                                ParentId = sub.ParentId,
-                                GroupId = sub.GroupId,
-                                IsActive = sub.IsActive,
-                                Order = sub.Order
-                            });
-                        }
                     }
                 }
+            }
 
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                Response.IsSuccessed = false;
-                Response.Message = $"Error loading data: {ex.Message}";
-                return Page();
-            }
+            return Page();
         }
-
-        public async Task<IActionResult> OnPostData(int skip, string store)
+        catch (Exception ex)
         {
-            try
+            Response.IsSuccessed = false;
+            Response.Message = $"Error loading data: {ex.Message}";
+            return Page();
+        }
+    }
+
+    public async Task<IActionResult> OnPostData(int skip, string store)
+    {
+        try
+        {
+            Parameter.Take = 30;
+            string userName = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+
+            // Get products using gRPC
+            var productRequest = new ProductPagingRequest
             {
-                Parameter.Take = 30;
-                string userName = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+                Skip = skip,
+                Take = Parameter.Take,
+                Category = Parameter.Categury,
+                UserName = userName,
+                Store = store
+            };
 
-                // Get products using gRPC
-                var productRequest = new ProductPagingRequest
-                {
-                    Skip = skip,
-                    Take = Parameter.Take,
-                    Category = Parameter.Categury,
-                    UserName = userName,
-                    Store = store
-                };
+            var productResponse = await _productClient.GetPagedProductsAsync(productRequest);
 
-                var productResponse = await _productClient.GetPagedProductsAsync(productRequest);
-                
-                // Map the response
-                List = new ProductPageingDto
-                {
-                    Products = productResponse.Products.Select(p => new ProductDto
+            // Map the response
+            List = new ProductPageingDto
+            {
+                Products = productResponse.Products.Select(p => new ProductDto
                     {
                         Id = p.Id,
                         Name = p.Name,
@@ -206,39 +205,40 @@ namespace Shop.Web.Pages.Products
                         IsActive = p.IsActive,
                         CreatedAt = DateTime.Parse(p.CreatedAt),
                         UpdatedAt = DateTime.Parse(p.UpdatedAt)
-                    }).ToList(),
-                    TotalCount = productResponse.TotalCount,
-                    PageCount = productResponse.PageCount
-                };
+                    })
+                    .ToList(),
+                TotalCount = productResponse.TotalCount,
+                PageCount = productResponse.PageCount
+            };
 
-                // Get category by latin name
-                var category = await _categoryClient.GetCategoryByLatinNameAsync(Parameter.Categury);
+            // Get category by latin name
+            var category = await _categoryClient.GetCategoryByLatinNameAsync(Parameter.Categury);
 
-                Response.Object = List;
-                Response.Object2 = new CateguryDto
-                {
-                    Id = category.Id,
-                    Name = category.Name,
-                    LatinName = category.LatinName,
-                    Description = category.Description,
-                    Image = category.Image,
-                    ParentId = category.ParentId,
-                    GroupId = category.GroupId,
-                    IsActive = category.IsActive,
-                    Order = category.Order
-                };
-                Response.CurrentParameter = Parameter;
-                Response.IsSuccessed = true;
-
-                return new JsonResult(Response);
-            }
-            catch (Exception ex)
+            Response.Object = List;
+            Response.Object2 = new CateguryDto
             {
-                Response.IsSuccessed = false;
-                Response.Message = $"Error loading products: {ex.Message}";
-                return new JsonResult(Response);
-            }
+                Id = category.Id,
+                Name = category.Name,
+                LatinName = category.LatinName,
+                Description = category.Description,
+                Image = category.Image,
+                ParentId = category.ParentId,
+                GroupId = category.GroupId,
+                IsActive = category.IsActive,
+                Order = category.Order
+            };
+            Response.CurrentParameter = Parameter;
+            Response.IsSuccessed = true;
+
+            return new JsonResult(Response);
         }
-        #endregion
+        catch (Exception ex)
+        {
+            Response.IsSuccessed = false;
+            Response.Message = $"Error loading products: {ex.Message}";
+            return new JsonResult(Response);
+        }
     }
+
+    #endregion
 }

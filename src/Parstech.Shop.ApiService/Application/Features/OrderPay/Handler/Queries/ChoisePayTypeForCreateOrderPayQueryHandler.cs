@@ -1,158 +1,206 @@
-﻿using Dto.Response.Payment;
-using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.OrderPay;
-using Shop.Application.DTOs.Response;
-using Shop.Application.Features.OrderPay.Request.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace Shop.Application.Features.OrderPay.Handler.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.OrderPay.Handler.Queries;
+
+public class
+    ChoisePayTypeForCreateOrderPayQueryHandler : IRequestHandler<ChoisePayTypeForCreateOrderPayQueryReq,
+    ResponseOrderPayDto>
 {
-    public class ChoisePayTypeForCreateOrderPayQueryHandler : IRequestHandler<ChoisePayTypeForCreateOrderPayQueryReq, ResponseOrderPayDto>
+    private readonly IOrderPayRepository _orderPayRep;
+
+    public ChoisePayTypeForCreateOrderPayQueryHandler(IOrderPayRepository orderPayRep)
     {
-        private readonly IOrderPayRepository _orderPayRep;
-        public ChoisePayTypeForCreateOrderPayQueryHandler(IOrderPayRepository orderPayRep)
-        {
-            _orderPayRep = orderPayRep;
-        }
-        public async Task<ResponseOrderPayDto> Handle(ChoisePayTypeForCreateOrderPayQueryReq request, CancellationToken cancellationToken)
-        {
-            ResponseOrderPayDto response = new ResponseOrderPayDto();
-            List<Domain.Models.OrderPay> payResult = new List<Domain.Models.OrderPay>();
-            long walletPrice = 0;
-            string walletdescription = "";
-            long DargahPrice = 0;
-            string Dargahdescription = "";
+        _orderPayRep = orderPayRep;
+    }
 
-            if (await _orderPayRep.HasOrderPay(request.order.OrderId))
+    public async Task<ResponseOrderPayDto> Handle(ChoisePayTypeForCreateOrderPayQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        ResponseOrderPayDto response = new();
+        List<Domain.Models.OrderPay> payResult = new();
+        long walletPrice = 0;
+        string walletdescription = "";
+        long DargahPrice = 0;
+        string Dargahdescription = "";
+
+        if (await _orderPayRep.HasOrderPay(request.order.OrderId))
+        {
+            List<Domain.Models.OrderPay> items = await _orderPayRep.GetListByOrderId(request.order.OrderId);
+            foreach (Domain.Models.OrderPay item in items)
             {
+                await _orderPayRep.DeleteAsync(item);
+            }
+        }
 
-                var items = await _orderPayRep.GetListByOrderId(request.order.OrderId);
-                foreach (var item in items)
+        switch (request.payTypeId)
+        {
+            case 1:
+                Dargahdescription = $"پرداخت  کل مبلغ سفارش از طریق درگاه پرداخت سداد {request.order.OrderCode}";
+                Domain.Models.OrderPay res1 = await CreateOrderPay(request.order,
+                    request.wallet,
+                    request.payTypeId,
+                    Dargahdescription,
+                    request.order.Total);
+                payResult.Add(res1);
+                response.IsSuccessed = true;
+                break;
+            case 2:
+                if (request.wallet.Amount == 0)
                 {
-                    await _orderPayRep.DeleteAsync(item);
+                    response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
+                    response.IsSuccessed = false;
                 }
-            }
-            switch (request.payTypeId)
-            {
-                case 1:
-                    Dargahdescription = $"پرداخت  کل مبلغ سفارش از طریق درگاه پرداخت سداد {request.order.OrderCode}";
-                    var res1 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, Dargahdescription, request.order.Total);
-                    payResult.Add(res1);
+                else if (request.order.Total <= request.wallet.Amount)
+                {
+                    walletdescription = $"پرداخت  کل مبلغ سفارش از کیف پول سفارش {request.order.OrderCode}";
+                    Domain.Models.OrderPay res2 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        request.order.Total);
+                    payResult.Add(res2);
                     response.IsSuccessed = true;
-                    break;
-                case 2:
-                    if (request.wallet.Amount == 0)
-                    {
-                        response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
-                        response.IsSuccessed = false;
-                    }
-                    else if (request.order.Total <= request.wallet.Amount)
-                    {
-                        walletdescription = $"پرداخت  کل مبلغ سفارش از کیف پول سفارش {request.order.OrderCode}";
-                        var res2 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, request.order.Total);
-                        payResult.Add(res2);
-                        response.IsSuccessed = true;
-                    }
-                    else
-                    {
-                        walletPrice = request.wallet.Amount;
-                        walletdescription = $"پرداخت بخشی از مبلغ سفارش از کیف پول سفارش {request.order.OrderCode}";
-                        DargahPrice = request.order.Total - request.wallet.Amount;
-                        Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
-                        var res21 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, walletPrice);
-                        payResult.Add(res21);
-                        var res22 = await CreateOrderPay(request.order, request.wallet, 1, Dargahdescription, DargahPrice);
-                        payResult.Add(res22);
-                        response.IsSuccessed = true;
-                    }
-                    break;
-                case 3:
-                    if (request.wallet.Fecilities == 0)
-                    {
-                        response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
-                        response.IsSuccessed = false;
-                    }
-                    else if (request.order.Total <= request.wallet.Fecilities)
-                    {
-                        walletdescription = $"پرداخت  کل مبلغ سفارش از تسهیلات سفارش {request.order.OrderCode}";
-                        var res2 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, request.order.Total);
-                        payResult.Add(res2);
-                        response.IsSuccessed = true;
-                    }
-                    else
-                    {
-                        walletPrice = request.wallet.Fecilities;
-                        walletdescription = $"پرداخت بخشی از مبلغ سفارش از تسهیلات سفارش {request.order.OrderCode}";
-                        DargahPrice = request.order.Total - request.wallet.Fecilities;
-                        Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
-                        var res21 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, walletPrice);
-                        payResult.Add(res21);
-                        var res22 = await CreateOrderPay(request.order, request.wallet, 1, Dargahdescription, DargahPrice);
-                        payResult.Add(res22);
-                        response.IsSuccessed = true;
-                    }
-                    break;
-                case 4:
-                    if (request.wallet.OrgCredit == 0)
-                    {
-                        response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
-                        response.IsSuccessed = false;
-                    }
-                    else if (request.order.Total <= request.wallet.OrgCredit)
-                    {
-                        walletdescription = $"پرداخت  کل مبلغ سفارش از اعتبار سازمانی سفارش {request.order.OrderCode}";
-                        var res2 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, request.order.Total);
-                        payResult.Add(res2);
-                        response.IsSuccessed = true;
-                    }
-                    else
-                    {
-                        walletPrice = request.wallet.OrgCredit;
-                        walletdescription = $"پرداخت بخشی از مبلغ سفارش از اعتبار سازمانی سفارش {request.order.OrderCode}";
-                        DargahPrice = request.order.Total - request.wallet.OrgCredit;
-                        Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
-                        var res21 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, walletdescription, walletPrice);
-                        payResult.Add(res21);
-                        var res22 = await CreateOrderPay(request.order, request.wallet, 1, Dargahdescription, DargahPrice);
-                        payResult.Add(res22);
-                        response.IsSuccessed = true;
-                    }
-                    break;
-                case 6:
-                    Dargahdescription = $"پرداخت  کل مبلغ سفارش از طریق درگاه پرداخت نوپی {request.order.OrderCode}";
-                    var res6 = await CreateOrderPay(request.order, request.wallet, request.payTypeId, Dargahdescription, request.order.Total);
-                    payResult.Add(res6);
+                }
+                else
+                {
+                    walletPrice = request.wallet.Amount;
+                    walletdescription = $"پرداخت بخشی از مبلغ سفارش از کیف پول سفارش {request.order.OrderCode}";
+                    DargahPrice = request.order.Total - request.wallet.Amount;
+                    Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
+                    Domain.Models.OrderPay res21 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        walletPrice);
+                    payResult.Add(res21);
+                    Domain.Models.OrderPay res22 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        1,
+                        Dargahdescription,
+                        DargahPrice);
+                    payResult.Add(res22);
                     response.IsSuccessed = true;
-                    break;
+                }
 
-                default: break;
-            }
+                break;
+            case 3:
+                if (request.wallet.Fecilities == 0)
+                {
+                    response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
+                    response.IsSuccessed = false;
+                }
+                else if (request.order.Total <= request.wallet.Fecilities)
+                {
+                    walletdescription = $"پرداخت  کل مبلغ سفارش از تسهیلات سفارش {request.order.OrderCode}";
+                    Domain.Models.OrderPay res2 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        request.order.Total);
+                    payResult.Add(res2);
+                    response.IsSuccessed = true;
+                }
+                else
+                {
+                    walletPrice = request.wallet.Fecilities;
+                    walletdescription = $"پرداخت بخشی از مبلغ سفارش از تسهیلات سفارش {request.order.OrderCode}";
+                    DargahPrice = request.order.Total - request.wallet.Fecilities;
+                    Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
+                    Domain.Models.OrderPay res21 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        walletPrice);
+                    payResult.Add(res21);
+                    Domain.Models.OrderPay res22 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        1,
+                        Dargahdescription,
+                        DargahPrice);
+                    payResult.Add(res22);
+                    response.IsSuccessed = true;
+                }
 
+                break;
+            case 4:
+                if (request.wallet.OrgCredit == 0)
+                {
+                    response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست";
+                    response.IsSuccessed = false;
+                }
+                else if (request.order.Total <= request.wallet.OrgCredit)
+                {
+                    walletdescription = $"پرداخت  کل مبلغ سفارش از اعتبار سازمانی سفارش {request.order.OrderCode}";
+                    Domain.Models.OrderPay res2 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        request.order.Total);
+                    payResult.Add(res2);
+                    response.IsSuccessed = true;
+                }
+                else
+                {
+                    walletPrice = request.wallet.OrgCredit;
+                    walletdescription = $"پرداخت بخشی از مبلغ سفارش از اعتبار سازمانی سفارش {request.order.OrderCode}";
+                    DargahPrice = request.order.Total - request.wallet.OrgCredit;
+                    Dargahdescription = $"پرداخت ما به التفاوت از طریق درگاه پرداخت سداد {request.order.OrderCode}";
+                    Domain.Models.OrderPay res21 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        request.payTypeId,
+                        walletdescription,
+                        walletPrice);
+                    payResult.Add(res21);
+                    Domain.Models.OrderPay res22 = await CreateOrderPay(request.order,
+                        request.wallet,
+                        1,
+                        Dargahdescription,
+                        DargahPrice);
+                    payResult.Add(res22);
+                    response.IsSuccessed = true;
+                }
 
-            response.orderPayResult = payResult;
+                break;
+            case 6:
+                Dargahdescription = $"پرداخت  کل مبلغ سفارش از طریق درگاه پرداخت نوپی {request.order.OrderCode}";
+                Domain.Models.OrderPay res6 = await CreateOrderPay(request.order,
+                    request.wallet,
+                    request.payTypeId,
+                    Dargahdescription,
+                    request.order.Total);
+                payResult.Add(res6);
+                response.IsSuccessed = true;
+                break;
 
-            return response;
+            default: break;
         }
-        public async Task<Domain.Models.OrderPay> CreateOrderPay(Domain.Models.Order order, Domain.Models.Wallet wallet, int payType, string description, long price)
+
+
+        response.orderPayResult = payResult;
+
+        return response;
+    }
+
+    public async Task<Domain.Models.OrderPay> CreateOrderPay(Domain.Models.Order order,
+        Domain.Models.Wallet wallet,
+        int payType,
+        string description,
+        long price)
+    {
+        Random random = new();
+        Domain.Models.OrderPay newItem = new()
         {
-            Random random = new Random();
-            Domain.Models.OrderPay newItem = new Domain.Models.OrderPay()
-            {
-                OrderId = order.OrderId,
-                PayTypeId = payType,
-                PayStatusTypeId = 4,
-                Description = description,
-                DepositCode = random.Next(10000, 99999).ToString(),
-                Price = price
-            };
-            return await _orderPayRep.AddAsync(newItem);
-
-        }
-
+            OrderId = order.OrderId,
+            PayTypeId = payType,
+            PayStatusTypeId = 4,
+            Description = description,
+            DepositCode = random.Next(10000, 99999).ToString(),
+            Price = price
+        };
+        return await _orderPayRep.AddAsync(newItem);
     }
 }

@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.Section;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class ProductMapping : Profile
 {
-    public class ProductMapping:Profile
+    public ProductMapping()
     {
-        public ProductMapping()
-        {
-            CreateMap<Product, ProductDto>().ReverseMap();
-            CreateMap<Product, ProductListShowDto>().ReverseMap();
-            CreateMap<DapperProductDto, ProductListShowDto>().ReverseMap();
-            CreateMap<DapperProductDto, ProductDto>().ReverseMap();
-            CreateMap<ProductDto, ProductQuickEditDto>().ReverseMap();
-        }
+        CreateMap<Product, ProductDto>().ReverseMap();
+        CreateMap<Product, ProductListShowDto>().ReverseMap();
+        CreateMap<DapperProductDto, ProductListShowDto>().ReverseMap();
+        CreateMap<DapperProductDto, ProductDto>().ReverseMap();
+        CreateMap<ProductDto, ProductQuickEditDto>().ReverseMap();
     }
 }

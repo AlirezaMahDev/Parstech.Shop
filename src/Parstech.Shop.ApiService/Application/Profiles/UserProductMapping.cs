@@ -1,21 +1,14 @@
 ﻿using AutoMapper;
-using Shop.Application.DTOs.UserProduct;
-using Shop.Application.DTOs.UserShipping;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class UserProductMapping : Profile
 {
-    public class UserProductMapping : Profile
+    public UserProductMapping()
     {
-        public UserProductMapping()
-        {
-            CreateMap<UserProduct, UserProductDto>().ReverseMap();
-        }
+        CreateMap<UserProduct, UserProductDto>().ReverseMap();
     }
 }

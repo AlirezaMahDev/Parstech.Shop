@@ -1,10 +1,8 @@
-using Shop.Application.DTOs.Reports;
-using System.Threading.Tasks;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-namespace Parstech.Shop.Web.Services.GrpcClients
+namespace Parstech.Shop.Web.Services.GrpcClients;
+
+public interface IDashboardAdminGrpcClient
 {
-    public interface IDashboardAdminGrpcClient
-    {
-        Task<IndexCountsDto> GetDashboardCountsAsync();
-    }
-} 
+    Task<IndexCountsDto> GetDashboardCountsAsync();
+}

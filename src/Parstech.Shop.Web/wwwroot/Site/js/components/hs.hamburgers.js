@@ -6,101 +6,103 @@
  *
  */
 ;(function ($) {
-  'use strict';
+    'use strict';
 
-  $.HSCore.components.HSHamburgers = {
-    /**
-     *
-     *
-     * @var Object _baseConfig
-     */
-    _baseConfig: {
-      afterOpen: function () {},
-      afterClose: function () {}
-    },
+    $.HSCore.components.HSHamburgers = {
+        /**
+         *
+         *
+         * @var Object _baseConfig
+         */
+        _baseConfig: {
+            afterOpen: function () {
+            },
+            afterClose: function () {
+            }
+        },
 
-    /**
-     *
-     *
-     * @var jQuery pageCollection
-     */
-    pageCollection: $(),
+        /**
+         *
+         *
+         * @var jQuery pageCollection
+         */
+        pageCollection: $(),
 
-    init: function (selector, config) {
+        init: function (selector, config) {
 
-      this.collection = selector && $(selector).length ? $(selector) : $();
-      if (!$(selector).length) return;
+            this.collection = selector && $(selector).length ? $(selector) : $();
+            if (!$(selector).length) return;
 
-      this.config = config && $.isPlainObject(config) ?
-        $.extend({}, this._baseConfig, config) : this._baseConfig;
+            this.config = config && $.isPlainObject(config) ?
+                $.extend({}, this._baseConfig, config) : this._baseConfig;
 
-      this.config.itemSelector = selector;
+            this.config.itemSelector = selector;
 
-      this.initHamburgers();
+            this.initHamburgers();
 
-      return this.pageCollection;
+            return this.pageCollection;
 
-    },
+        },
 
-    /**
-     * Initialize 'hamburgers' plugin.
-     *
-     * @param String selector
-     *
-     * @return undefined;
-     */
-    initHamburgers: function () {
-      //Variables
-      var $self = this,
-        config = $self.config,
-        collection = $self.pageCollection;
+        /**
+         * Initialize 'hamburgers' plugin.
+         *
+         * @param String selector
+         *
+         * @return undefined;
+         */
+        initHamburgers: function () {
+            //Variables
+            var $self = this,
+                config = $self.config,
+                collection = $self.pageCollection;
 
-      if (!$self || !$($self).length) return;
+            if (!$self || !$($self).length) return;
 
-      //Actions
-      this.collection.each(function (i, el) {
-        var $this = $(el),
-          button = $this.parents('button, a'),
-          isActive = false;
+            //Actions
+            this.collection.each(function (i, el) {
+                var $this = $(el),
+                    button = $this.parents('button, a'),
+                    isActive = false;
 
-        // if(button.length) {
-        $(button).on('click', function () {
+                // if(button.length) {
+                $(button).on('click', function () {
 
-          if (isActive === false) {
+                    if (isActive === false) {
 
-            $this.addClass('is-active');
+                        $this.addClass('is-active');
 
-            isActive = true;
+                        isActive = true;
 
-            config.afterOpen();
+                        config.afterOpen();
 
-          } else {
+                    } else {
 
-            $this.removeClass('is-active');
+                        $this.removeClass('is-active');
 
-            isActive = false;
+                        isActive = false;
 
-            config.afterClose();
+                        config.afterClose();
 
-          }
+                    }
 
-        });
+                });
 
-        $(document).on('keyup.HSHeaderSide', function (e) {
+                $(document).on('keyup.HSHeaderSide', function (e) {
 
-          if (e.keyCode && e.keyCode === 27) {
+                    if (e.keyCode && e.keyCode === 27) {
 
-            isActive = false;
+                        isActive = false;
 
-            config.afterClose();
+                        config.afterClose();
 
-          }
+                    }
 
-        });
+                });
 
-        //Actions
-        collection = collection.add($this);
-      });
-    }
-  };
+                //Actions
+                collection = collection.add($this);
+            });
+        }
+    };
 })(jQuery);

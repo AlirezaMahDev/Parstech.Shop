@@ -9,7 +9,8 @@
 
 ## Why
 
-Copying text to the clipboard shouldn't be hard. It shouldn't require dozens of steps to configure or hundreds of KBs to load. But most of all, it shouldn't depend on Flash or any bloated framework.
+Copying text to the clipboard shouldn't be hard. It shouldn't require dozens of steps to configure or hundreds of KBs to
+load. But most of all, it shouldn't depend on Flash or any bloated framework.
 
 That's why clipboard.js exists.
 
@@ -21,33 +22,43 @@ You can get it on npm.
 npm install clipboard --save
 ```
 
-Or if you're not into package management, just [download a ZIP](https://github.com/zenorocha/clipboard.js/archive/master.zip) file.
+Or if you're not into package management,
+just [download a ZIP](https://github.com/zenorocha/clipboard.js/archive/master.zip) file.
 
 ## Setup
 
-First, include the script located on the `dist` folder or load it from [a third-party CDN provider](https://github.com/zenorocha/clipboard.js/wiki/CDN-Providers).
+First, include the script located on the `dist` folder or load it
+from [a third-party CDN provider](https://github.com/zenorocha/clipboard.js/wiki/CDN-Providers).
 
 ```html
 <script src="dist/clipboard.min.js"></script>
 ```
 
-Now, you need to instantiate it by [passing a DOM selector](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-selector.html#L18), [HTML element](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-node.html#L16-L17), or [list of HTML elements](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-nodelist.html#L18-L19).
+Now, you need to instantiate it
+by [passing a DOM selector](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-selector.html#L18), [HTML element](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-node.html#L16-L17),
+or [list of HTML elements](https://github.com/zenorocha/clipboard.js/blob/master/demo/constructor-nodelist.html#L18-L19).
 
 ```js
 new ClipboardJS('.btn');
 ```
 
-Internally, we need to fetch all elements that matches with your selector and attach event listeners for each one. But guess what? If you have hundreds of matches, this operation can consume a lot of memory.
+Internally, we need to fetch all elements that matches with your selector and attach event listeners for each one. But
+guess what? If you have hundreds of matches, this operation can consume a lot of memory.
 
-For this reason we use [event delegation](http://stackoverflow.com/questions/1687296/what-is-dom-event-delegation) which replaces multiple event listeners with just a single listener. After all, [#perfmatters](https://twitter.com/hashtag/perfmatters).
+For this reason we use [event delegation](http://stackoverflow.com/questions/1687296/what-is-dom-event-delegation) which
+replaces multiple event listeners with just a single listener. After
+all, [#perfmatters](https://twitter.com/hashtag/perfmatters).
 
 # Usage
 
-We're living a _declarative renaissance_, that's why we decided to take advantage of [HTML5 data attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes) for better usability.
+We're living a _declarative renaissance_, that's why we decided to take advantage
+of [HTML5 data attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes) for better
+usability.
 
 ### Copy text from another element
 
-A pretty common use case is to copy content from another element. You can do that by adding a `data-clipboard-target` attribute in your trigger element.
+A pretty common use case is to copy content from another element. You can do that by adding a `data-clipboard-target`
+attribute in your trigger element.
 
 The value you include on this attribute needs to match another's element selector.
 
@@ -65,7 +76,8 @@ The value you include on this attribute needs to match another's element selecto
 
 ### Cut text from another element
 
-Additionally, you can define a `data-clipboard-action` attribute to specify if you want to either `copy` or `cut` content.
+Additionally, you can define a `data-clipboard-action` attribute to specify if you want to either `copy` or `cut`
+content.
 
 If you omit this attribute, `copy` will be used by default.
 
@@ -85,7 +97,8 @@ As you may expect, the `cut` action only works on `<input>` or `<textarea>` elem
 
 ### Copy text from attribute
 
-Truth is, you don't even need another element to copy its content from. You can just include a `data-clipboard-text` attribute in your trigger element.
+Truth is, you don't even need another element to copy its content from. You can just include a `data-clipboard-text`
+attribute in your trigger element.
 
 <a href="https://clipboardjs.com/#example-text"><img width="147" alt="example-1" src="https://cloud.githubusercontent.com/assets/398893/10000347/6e16cf8c-6050-11e5-9883-1c5681f9ec45.png"></a>
 
@@ -98,7 +111,8 @@ Truth is, you don't even need another element to copy its content from. You can 
 
 ## Events
 
-There are cases where you'd like to show some user feedback or capture what has been selected after a copy/cut operation.
+There are cases where you'd like to show some user feedback or capture what has been selected after a copy/cut
+operation.
 
 That's why we fire custom events such as `success` and `error` for you to listen and implement your custom logic.
 
@@ -123,13 +137,17 @@ For a live demonstration, go to this [site](https://clipboardjs.com/) and open y
 
 ## Tooltips
 
-Each application has different design needs, that's why clipboard.js does not include any CSS or built-in tooltip solution.
+Each application has different design needs, that's why clipboard.js does not include any CSS or built-in tooltip
+solution.
 
-The tooltips you see on the [demo site](https://clipboardjs.com/) were built using [GitHub's Primer](https://github.com/primer/primer-css/tree/master/modules/primer-tooltips). You may want to check that out if you're looking for a similar look and feel.
+The tooltips you see on the [demo site](https://clipboardjs.com/) were built
+using [GitHub's Primer](https://github.com/primer/primer-css/tree/master/modules/primer-tooltips). You may want to check
+that out if you're looking for a similar look and feel.
 
 ## Advanced Options
 
-If you don't want to modify your HTML, there's a pretty handy imperative API for you to use. All you need to do is declare a function, do your thing, and return a value.
+If you don't want to modify your HTML, there's a pretty handy imperative API for you to use. All you need to do is
+declare a function, do your thing, and return a value.
 
 For instance, if you want to dynamically set a `target`, you'll need to return a Node.
 
@@ -151,7 +169,8 @@ new ClipboardJS('.btn', {
 });
 ```
 
-For use in Bootstrap Modals or with any other library that changes the focus you'll want to set the focused element as the `container` value.
+For use in Bootstrap Modals or with any other library that changes the focus you'll want to set the focused element as
+the `container` value.
 
 ```js
 new ClipboardJS('.btn', {
@@ -159,7 +178,8 @@ new ClipboardJS('.btn', {
 });
 ```
 
-Also, if you are working with single page apps, you may want to manage the lifecycle of the DOM more precisely. Here's how you clean up the events and objects that we create.
+Also, if you are working with single page apps, you may want to manage the lifecycle of the DOM more precisely. Here's
+how you clean up the events and objects that we create.
 
 ```js
 var clipboard = new ClipboardJS('.btn');
@@ -168,21 +188,29 @@ clipboard.destroy();
 
 ## Browser Support
 
-This library relies on both [Selection](https://developer.mozilla.org/en-US/docs/Web/API/Selection) and [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) APIs. The first one is [supported by all browsers](http://caniuse.com/#search=selection) while the second one is supported in the following browsers.
+This library relies on both [Selection](https://developer.mozilla.org/en-US/docs/Web/API/Selection)
+and [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) APIs. The first one
+is [supported by all browsers](http://caniuse.com/#search=selection) while the second one is supported in the following
+browsers.
 
 | <img src="https://clipboardjs.com/assets/images/chrome.png" width="48px" height="48px" alt="Chrome logo"> | <img src="https://clipboardjs.com/assets/images/edge.png" width="48px" height="48px" alt="Edge logo"> | <img src="https://clipboardjs.com/assets/images/firefox.png" width="48px" height="48px" alt="Firefox logo"> | <img src="https://clipboardjs.com/assets/images/ie.png" width="48px" height="48px" alt="Internet Explorer logo"> | <img src="https://clipboardjs.com/assets/images/opera.png" width="48px" height="48px" alt="Opera logo"> | <img src="https://clipboardjs.com/assets/images/safari.png" width="48px" height="48px" alt="Safari logo"> |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| 42+ ✔ | 12+ ✔ | 41+ ✔ | 9+ ✔ | 29+ ✔ | 10+ ✔ |
+|:---------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
+|                                                   42+ ✔                                                   |                                                 12+ ✔                                                 |                                                    41+ ✔                                                    |                                                       9+ ✔                                                       |                                                  29+ ✔                                                  |                                                   10+ ✔                                                   |
 
-The good news is that clipboard.js gracefully degrades if you need to support older browsers. All you have to do is show a tooltip saying `Copied!` when `success` event is called and `Press Ctrl+C to copy` when `error` event is called because the text is already selected.
+The good news is that clipboard.js gracefully degrades if you need to support older browsers. All you have to do is show
+a tooltip saying `Copied!` when `success` event is called and `Press Ctrl+C to copy` when `error` event is called
+because the text is already selected.
 
-You can also check if clipboard.js is supported or not by running `ClipboardJS.isSupported()`, that way you can hide copy/cut buttons from the UI.
+You can also check if clipboard.js is supported or not by running `ClipboardJS.isSupported()`, that way you can hide
+copy/cut buttons from the UI.
 
 ## Bonus
 
-A browser extension that adds a "copy to clipboard" button to every code block on *GitHub, MDN, Gist, StackOverflow, StackExchange, npm, and even Medium.*
+A browser extension that adds a "copy to clipboard" button to every code block on *GitHub, MDN, Gist, StackOverflow,
+StackExchange, npm, and even Medium.*
 
-Install for [Chrome](https://chrome.google.com/webstore/detail/codecopy/fkbfebkcoelajmhanocgppanfoojcdmg) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/codecopy/).
+Install for [Chrome](https://chrome.google.com/webstore/detail/codecopy/fkbfebkcoelajmhanocgppanfoojcdmg)
+and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/codecopy/).
 
 ## License
 

@@ -1,103 +1,101 @@
 ﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductCategury;
-using Shop.Application.DTOs.ProductGallery;
-using Shop.Application.DTOs.ProductProperty;
-using Shop.Application.DTOs.ProductRelated;
-using Shop.Application.DTOs.ProductRepresentation;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.Product.Requests.Queries;
-using Shop.Application.Features.ProductCategury.Requests.Commands;
-using Shop.Application.Features.ProductGallery.Requests.Commands;
-using Shop.Application.Features.ProductProperty.Requests.Commands;
-using Shop.Application.Features.ProductRelated.Requests.Commnads;
-using Shop.Application.Features.ProductRepresentation.Requests.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Product.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.ApiService.Application.Features.ProductCategury.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Commands;
+using Parstech.Shop.ApiService.Application.Features.ProductRelated.Requests.Commnads;
+using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
+
+public class CopyProductQueryHandler : IRequestHandler<CopyProductQueryReq>
 {
-    public class CopyProductQueryHandler : IRequestHandler<CopyProductQueryReq>
+    private readonly IProductRepository _productRep;
+    private readonly IProductCateguryRepository _productCateguryRep;
+    private readonly IProductRepresesntationRepository _productRepresesntationRep;
+    private readonly IProductPropertyRepository _productPropertyRep;
+    private readonly IProductGallleryRepository _productGallleryRep;
+    private readonly IProductRelatedRepository _productRelatedRep;
+    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
+
+    public CopyProductQueryHandler(IProductRepository productRep,
+        IMapper mapper,
+        IProductCateguryRepository productCateguryRep,
+        IProductRepresesntationRepository productRepresesntationRep,
+        IProductPropertyRepository productPropertyRep,
+        IProductGallleryRepository productGallleryRep,
+        IProductRelatedRepository productRelatedRep,
+        IMediator mediator)
     {
-        private readonly IProductRepository _productRep;
-        private readonly IProductCateguryRepository _productCateguryRep;
-        private readonly IProductRepresesntationRepository _productRepresesntationRep;
-        private readonly IProductPropertyRepository _productPropertyRep;
-        private readonly IProductGallleryRepository _productGallleryRep;
-        private readonly IProductRelatedRepository _productRelatedRep;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
+        _productRep = productRep;
+        _mapper = mapper;
+        _productCateguryRep = productCateguryRep;
+        _productRepresesntationRep = productRepresesntationRep;
+        _productPropertyRep = productPropertyRep;
+        _productGallleryRep = productGallleryRep;
+        _productRelatedRep = productRelatedRep;
+        _mediator = mediator;
+    }
 
-        public CopyProductQueryHandler(IProductRepository productRep, IMapper mapper,
-            IProductCateguryRepository productCateguryRep,
-            IProductRepresesntationRepository productRepresesntationRep,
-            IProductPropertyRepository productPropertyRep,
-            IProductGallleryRepository productGallleryRep,
-            IProductRelatedRepository productRelatedRep,
-            IMediator mediator)
+    public async Task Handle(CopyProductQueryReq request, CancellationToken cancellationToken)
+    {
+        //error
+        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
+        ProductDto? newProduct = _mapper.Map<ProductDto>(product);
+        newProduct.Id = 0;
+        await _mediator.Send(new ProductCreateCommandReq(newProduct));
+
+        List<Domain.Models.ProductCategury>? productCategories =
+            await _productCateguryRep.GetCateguriesByProduct(request.productId);
+        foreach (Domain.Models.ProductCategury? item in productCategories)
         {
-            _productRep = productRep;
-            _mapper = mapper;
-            _productCateguryRep = productCateguryRep;
-            _productRepresesntationRep = productRepresesntationRep;
-            _productPropertyRep = productPropertyRep;
-            _productGallleryRep = productGallleryRep;
-            _productRelatedRep = productRelatedRep;
-            _mediator = mediator;
+            ProductCateguryDto? newProductCategory = _mapper.Map<ProductCateguryDto>(item);
+            newProductCategory.Id = 0;
+            await _mediator.Send(new ProductCateguryCreateCommandReq(newProductCategory));
         }
-        public async Task Handle(CopyProductQueryReq request, CancellationToken cancellationToken)
+
+        Domain.Models.ProductRepresentation? productRepresentation =
+            await _productRepresesntationRep.GetProductRepresentationOfProduct(request.productId);
+        ProductRepresentationDto? newProductRepresentation =
+            _mapper.Map<ProductRepresentationDto>(productRepresentation);
+        newProductRepresentation.Id = 0;
+        await _mediator.Send(new ProductRepresesntationCreateCommandReq(newProductRepresentation));
+
+        List<Domain.Models.ProductProperty>? productProperties =
+            await _productPropertyRep.GetPropertiesByProduct(request.productId);
+        foreach (Domain.Models.ProductProperty? item in productProperties)
         {
-            //error
-            var product = await _productRep.GetAsync(request.productId);
-            var newProduct = _mapper.Map<ProductDto>(product);
-            newProduct.Id = 0;
-            await _mediator.Send(new ProductCreateCommandReq(newProduct));
+            ProductPropertyDto? newProductProperty = _mapper.Map<ProductPropertyDto>(item);
+            newProductProperty.Id = 0;
+            await _mediator.Send(new ProductPropertyCreateCommandReq(newProductProperty));
+        }
 
-            var productCategories = await _productCateguryRep.GetCateguriesByProduct(request.productId);
-            foreach (var item in productCategories)
+        List<Domain.Models.ProductGallery>? productGalleries =
+            await _productGallleryRep.GetGalleriesByProduct(request.productId);
+        foreach (Domain.Models.ProductGallery? item in productGalleries)
+        {
+            ProductGalleryDto? newProductGallery = _mapper.Map<ProductGalleryDto>(item);
+            newProductGallery.Id = 0;
+            await _mediator.Send(new ProductGalleryCreateCommandReq(newProductGallery));
+        }
+
+        if (request.related)
+        {
+            List<Domain.Models.ProductRelated>? productRelated =
+                await _productRelatedRep.GetRelatedProductsByProductId(request.productId);
+            foreach (Domain.Models.ProductRelated? item in productRelated)
             {
-                var newProductCategory = _mapper.Map<ProductCateguryDto>(item);
-                newProductCategory.Id = 0;
-                await _mediator.Send(new ProductCateguryCreateCommandReq(newProductCategory));
+                ProductRelatedDto? newProductRelated = _mapper.Map<ProductRelatedDto>(item);
+                newProductRelated.Id = 0;
+                await _mediator.Send(new CreateProductRelatedCommandReq(newProductRelated));
             }
-
-            var productRepresentation = await _productRepresesntationRep.GetProductRepresentationOfProduct(request.productId);
-            var newProductRepresentation = _mapper.Map<ProductRepresentationDto>(productRepresentation);
-            newProductRepresentation.Id = 0;
-            await _mediator.Send(new ProductRepresesntationCreateCommandReq(newProductRepresentation));
-
-            var productProperties = await _productPropertyRep.GetPropertiesByProduct(request.productId);
-            foreach(var item in productProperties)
-            {
-                var newProductProperty = _mapper.Map<ProductPropertyDto>(item);
-                newProductProperty.Id = 0;
-                await _mediator.Send(new ProductPropertyCreateCommandReq(newProductProperty));
-            }
-
-            var productGalleries = await _productGallleryRep.GetGalleriesByProduct(request.productId);
-            foreach (var item in productGalleries)
-            {
-                var newProductGallery = _mapper.Map<ProductGalleryDto>(item);
-                newProductGallery.Id = 0;
-                await _mediator.Send(new ProductGalleryCreateCommandReq(newProductGallery));
-            }
-
-            if (request.related)
-            {
-                var productRelated = await _productRelatedRep.GetRelatedProductsByProductId(request.productId);
-                foreach (var item in productRelated)
-                {
-                    var newProductRelated = _mapper.Map<ProductRelatedDto>(item);
-                    newProductRelated.Id = 0;
-                    await _mediator.Send(new CreateProductRelatedCommandReq(newProductRelated));
-                }
-            }
-
         }
     }
 }

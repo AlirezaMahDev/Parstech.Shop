@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Domain;
 
-namespace Shop.Domain
+internal class DomainServiceRegistration
 {
-    internal class DomainServiceRegistration
-    {
-    }
 }

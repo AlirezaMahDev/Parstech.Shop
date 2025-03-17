@@ -1,49 +1,50 @@
 ﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Representation;
-using Shop.Application.Features.Representation.Requests.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Application.DTOs.RepresentationType;
-using Shop.Application.Features.RepresentationType.Requests.Commands;
 
-namespace Shop.Application.Features.RepresentationType.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.RepresentationType.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.RepresentationType.Handlers.Commands;
+
+public class
+    RepresentationTypeReadCommandHandler : IRequestHandler<RepresentationTypeReadCommandReq, RepresentationTypeDto>
 {
-    public class RepresentationTypeReadCommandHandler : IRequestHandler<RepresentationTypeReadCommandReq, RepresentationTypeDto>
-    {
-        private IRepresentationTypeRepository _representationTypeRep;
-        private IMapper _mapper;
+    private IRepresentationTypeRepository _representationTypeRep;
+    private IMapper _mapper;
 
-        public RepresentationTypeReadCommandHandler(IRepresentationTypeRepository representationTypeRep, IMapper mapper)
-        {
-            _representationTypeRep = representationTypeRep;
-            _mapper = mapper;
-        }
-        public async Task<RepresentationTypeDto> Handle(RepresentationTypeReadCommandReq request, CancellationToken cancellationToken)
-        {
-            var item = await _representationTypeRep.GetAsync(request.RepTypeId);
-            return _mapper.Map<RepresentationTypeDto>(item);
-        }
+    public RepresentationTypeReadCommandHandler(IRepresentationTypeRepository representationTypeRep, IMapper mapper)
+    {
+        _representationTypeRep = representationTypeRep;
+        _mapper = mapper;
     }
-    
-    public class RepresentationTypeReadsCommandHandler : IRequestHandler<RepresentationTypeReadsCommandReq, List<RepresentationTypeDto>>
-    {
-        private IRepresentationTypeRepository _representationTypeRep;
-        private IMapper _mapper;
 
-        public RepresentationTypeReadsCommandHandler(IRepresentationTypeRepository representationTypeRep, IMapper mapper)
-        {
-            _representationTypeRep = representationTypeRep;
-            _mapper = mapper;
-        }
-        public async Task<List<RepresentationTypeDto>> Handle(RepresentationTypeReadsCommandReq request, CancellationToken cancellationToken)
-        {
-            var list = await _representationTypeRep.GetAll();
-            return _mapper.Map<List<RepresentationTypeDto>>(list);
-        }
+    public async Task<RepresentationTypeDto> Handle(RepresentationTypeReadCommandReq request,
+        CancellationToken cancellationToken)
+    {
+        Domain.Models.RepresentationType? item = await _representationTypeRep.GetAsync(request.RepTypeId);
+        return _mapper.Map<RepresentationTypeDto>(item);
+    }
+}
+
+public class
+    RepresentationTypeReadsCommandHandler : IRequestHandler<RepresentationTypeReadsCommandReq,
+    List<RepresentationTypeDto>>
+{
+    private IRepresentationTypeRepository _representationTypeRep;
+    private IMapper _mapper;
+
+    public RepresentationTypeReadsCommandHandler(IRepresentationTypeRepository representationTypeRep, IMapper mapper)
+    {
+        _representationTypeRep = representationTypeRep;
+        _mapper = mapper;
+    }
+
+    public async Task<List<RepresentationTypeDto>> Handle(RepresentationTypeReadsCommandReq request,
+        CancellationToken cancellationToken)
+    {
+        IReadOnlyList<Domain.Models.RepresentationType>? list = await _representationTypeRep.GetAll();
+        return _mapper.Map<List<RepresentationTypeDto>>(list);
     }
 }

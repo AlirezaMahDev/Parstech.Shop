@@ -17,7 +17,8 @@ try {
             jsdom = require("jsdom").jsdom;
         jQuery = jQuery(jsdom().defaultView);
     }
-} catch (ignore) {}
+} catch (ignore) {
+}
 
 (function ($, rulesEngine) {
     "use strict";
@@ -79,15 +80,17 @@ try {
 
     validation.wordTwoCharacterClasses = function (options, word, score) {
         if (word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) ||
-                (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) ||
-                (word.match(/(.[!,@,#,$,%,\^,&,*,?,_,~])/) && word.match(/[a-zA-Z0-9_]/))) {
+            (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) ||
+            (word.match(/(.[!,@,#,$,%,\^,&,*,?,_,~])/) && word.match(/[a-zA-Z0-9_]/))) {
             return score;
         }
         return 0;
     };
 
     validation.wordRepetitions = function (options, word, score) {
-        if (word.match(/(.)\1\1/)) { return score; }
+        if (word.match(/(.)\1\1/)) {
+            return score;
+        }
         return 0;
     };
 
@@ -96,7 +99,9 @@ try {
             j;
         if (word.length > 2) {
             $.each(rulesEngine.forbiddenSequences, function (idx, seq) {
-                if (found) { return; }
+                if (found) {
+                    return;
+                }
                 var sequences = [seq, seq.split('').reverse().join('')];
                 $.each(sequences, function (idx, sequence) {
                     for (j = 0; j < (word.length - 2); j += 1) { // iterate the word trough a sliding window of size 3:
@@ -106,7 +111,9 @@ try {
                     }
                 });
             });
-            if (found) { return score; }
+            if (found) {
+                return score;
+            }
         }
         return 0;
     };
@@ -193,4 +200,5 @@ try {
     if (module && module.exports) {
         module.exports = rulesEngine;
     }
-} catch (ignore) {}
+} catch (ignore) {
+}

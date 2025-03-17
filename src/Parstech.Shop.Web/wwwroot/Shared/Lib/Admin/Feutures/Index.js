@@ -5,12 +5,6 @@ var Parameter_Filter = document.getElementById("Parameter_Filter");
 var paging = document.getElementById("paging");
 
 
-
-
-
-
-
-
 $(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
@@ -20,7 +14,6 @@ $(document).ready(function () {
     Parameter_CurrentPage.value = 1;
     $("#GetDataForm").submit();
 });
-
 
 
 function Filter() {
@@ -37,7 +30,7 @@ function Filter() {
 
 function FillDataSet(Data) {
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
                 "<h5 class=''>" + element.caption + "</h5>",
@@ -81,16 +74,16 @@ function RunPaging(page) {
     Parameter_CurrentPage.value = page;
     $("#GetDataForm").submit();
 }
+
 function OnLoadingData() {
 
 
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -98,10 +91,10 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'ویژگی' },
-            { title: 'دسته بندی ویژگی' },
-            { title: 'دسته بندی' },
-            { title: 'عملیات' },
+            {title: 'ویژگی'},
+            {title: 'دسته بندی ویژگی'},
+            {title: 'دسته بندی'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 0,
@@ -147,45 +140,43 @@ function CleanItem() {
     PropertyDto_PropertyCateguryId.value = null;
     SearchCat();
 }
+
 function FillItem(element) {
-   // console.log(element);
+    // console.log(element);
     PropertyDto_Id.value = element.id;
     PropertyDto_Caption.value = element.caption;
     PropertyDto_CateguryId.value = element.categuryId;
     PropertyDto_PropertyCateguryId.value = element.propertyCateguryId;
-   
-   
+
+
 }
 
 function OnLoadingGetItem() {
     //CleanProduct();
 }
+
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#AddOrEditCateguryModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#AddOrEditCateguryModal").modal("hide");
 
@@ -205,10 +196,9 @@ function OnErrorAE() {
 }
 
 
-
-
 var SearchCatText = document.getElementById("SearchCatText");
 var FilterCatForm = document.getElementById("FilterCatForm");
+
 function SearchCat() {
     FilterCatForm.value = SearchCatText.value;
     $("#GetAllCatForm").submit();
@@ -221,11 +211,10 @@ function OnCompleteGetAllCat(xhr) {
     Data.forEach(function (element) {
         if (element.isParnet) {
             PropertyDto_CateguryId.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>دسته بندی اصلی (" + element.groupTitle + ")</option>")
-        }
-        else {
+        } else {
             PropertyDto_CateguryId.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>" + element.groupTitle + "</option>")
         }
 
     });
-    
+
 }

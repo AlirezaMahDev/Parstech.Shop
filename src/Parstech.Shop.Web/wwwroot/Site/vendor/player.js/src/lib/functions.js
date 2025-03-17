@@ -8,7 +8,7 @@
  */
 /* global global */
 export const isNode = typeof global !== 'undefined' &&
-  ({}).toString.call(global) === '[object global]';
+    ({}).toString.call(global) === '[object global]';
 
 /**
  * Get the name of the method for a given getter or setter.

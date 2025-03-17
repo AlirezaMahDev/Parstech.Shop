@@ -1,30 +1,23 @@
-﻿using Dto.Response.Payment;
-using Shop.Application.Convertor;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Application.Convertor;
 
-namespace Shop.Application.Generator
+namespace Parstech.Shop.ApiService.Application.Generator;
+
+public static class CodeGenerator
 {
-    public static class CodeGenerator
+    public static string GenerateUniqCode()
     {
-        public static string GenerateUniqCode()
-        {
-            var code= Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
-            return $"PT-{code}";
-        }
-        public static string GenerateOrderCode()
-        {
-            var time = DateTime.Now;
-            var Shamsi=time.ToShamsi();
-            string[] Date = Shamsi.Split('/');
-            
-            var code = $"{Date[0]}{Date[1]}{Date[2]}{time.Minute}{time.Millisecond}";
-            
-            return $"PT-{code}";
-        }
+        string? code = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+        return $"PT-{code}";
+    }
+
+    public static string GenerateOrderCode()
+    {
+        DateTime time = DateTime.Now;
+        string? Shamsi = time.ToShamsi();
+        string[] Date = Shamsi.Split('/');
+
+        string? code = $"{Date[0]}{Date[1]}{Date[2]}{time.Minute}{time.Millisecond}";
+
+        return $"PT-{code}";
     }
 }

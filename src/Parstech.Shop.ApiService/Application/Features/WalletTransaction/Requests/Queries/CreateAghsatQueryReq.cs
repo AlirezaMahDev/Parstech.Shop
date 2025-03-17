@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Order;
-using Shop.Application.DTOs.WalletTransaction;
+﻿using MediatR;
 
-namespace Shop.Application.Features.WalletTransaction.Requests.Queries
-{
-    public record CreateAghsatQueryReq(Domain.Models.Order order,int transactionId,int? month) : IRequest<bool>;
+namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
 
-}
+public record CreateAghsatQueryReq(Domain.Models.Order order, int transactionId, int? month) : IRequest<bool>;

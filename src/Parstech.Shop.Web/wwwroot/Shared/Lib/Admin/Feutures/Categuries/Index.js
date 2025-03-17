@@ -4,14 +4,6 @@ var FilterInput = document.getElementById("FilterInput");
 var Parameter_Filter = document.getElementById("Parameter_Filter");
 
 
-
-
-
-
-
-
-
-
 $(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
@@ -20,7 +12,6 @@ $(window).on('resize', function () {
 $(document).ready(function () {
     $("#GetDataForm").submit();
 });
-
 
 
 function Filter() {
@@ -37,7 +28,7 @@ function Filter() {
 
 function FillDataSet(Data) {
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
                 "<h5 class=''>" + element.name + "</h5>",
@@ -54,10 +45,9 @@ function OnLoadingData() {
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -65,8 +55,8 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'دسته بندی' },
-            { title: 'عملیات' },
+            {title: 'دسته بندی'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 0,
@@ -105,43 +95,41 @@ function CleanItem() {
 
     PropertyCateguryDto_Id.value = null;
     PropertyCateguryDto_Name.value = null;
-   
+
 }
+
 function FillItem(element) {
     PropertyCateguryDto_Id.value = element.id;
     PropertyCateguryDto_Name.value = element.name;
-   
+
 }
 
 function OnLoadingGetItem() {
     //CleanProduct();
 }
+
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#AddOrEditCateguryModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#AddOrEditCateguryModal").modal("hide");
 

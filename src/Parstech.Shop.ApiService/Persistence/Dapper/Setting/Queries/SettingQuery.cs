@@ -1,14 +1,8 @@
-﻿using Shop.Application.Dapper.Setting.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Application.Dapper.Setting.Queries;
 
-namespace Shop.Persistence.Dapper.Setting.Queries
+namespace Parstech.Shop.ApiService.Persistence.Dapper.Setting.Queries;
+
+public class SettingQuery : ISettingQuery
 {
-    public class SettingQuery : ISettingQuery
-    {
-        public string GetSiteSetting => "SELECT* FROM SiteSetting";
-    }
+    public string GetSiteSetting => "SELECT* FROM SiteSetting";
 }

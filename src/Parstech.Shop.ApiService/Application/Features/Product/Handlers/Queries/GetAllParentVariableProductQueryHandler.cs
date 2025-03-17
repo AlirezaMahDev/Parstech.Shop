@@ -1,40 +1,40 @@
 ﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Product;
-using Shop.Application.Features.Product.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Product.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
+
+public class
+    GetAllParentVariableProductQueryHandler : IRequestHandler<GetAllParentVariableProductQueryReq,
+    List<ProductSelectDto>>
 {
-    public class GetAllParentVariableProductQueryHandler : IRequestHandler<GetAllParentVariableProductQueryReq, List<ProductSelectDto>>
+    private readonly IProductRepository _productRep;
+    private readonly IMapper _mapper;
+
+    public GetAllParentVariableProductQueryHandler(IProductRepository productRep, IMapper mapper)
     {
-        private readonly IProductRepository _productRep;
-        private readonly IMapper _mapper;
+        _productRep = productRep;
+        _mapper = mapper;
+    }
 
-        public GetAllParentVariableProductQueryHandler(IProductRepository productRep, IMapper mapper)
+    public async Task<List<ProductSelectDto>> Handle(GetAllParentVariableProductQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        List<Domain.Models.Product>? products = await _productRep.GetAllParentVariableProduct(request.filter);
+        List<ProductSelectDto> result = new();
+        foreach (Domain.Models.Product product in products)
         {
-            _productRep = productRep;
-            _mapper = mapper;
+            ProductSelectDto dto = new();
+            dto.ProductName = product.Name;
+            dto.Code = product.Code;
+            dto.Id = product.Id;
+            result.Add(dto);
         }
 
-        public async Task<List<ProductSelectDto>> Handle(GetAllParentVariableProductQueryReq request, CancellationToken cancellationToken)
-        {
-            var products = await _productRep.GetAllParentVariableProduct(request.filter);
-            List<ProductSelectDto> result = new List<ProductSelectDto>();
-            foreach (var product in products)
-            {
-                var dto = new ProductSelectDto();
-                dto.ProductName = product.Name;
-                dto.Code = product.Code;
-                dto.Id = product.Id;
-                result.Add(dto);
-            }
-            return result;
-        }
+        return result;
     }
 }

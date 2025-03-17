@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Section.Requests.Queries
-{
-    public record SectionCheckQueryReq(int id) : IRequest<bool>;
-}
+namespace Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
+
+public record SectionCheckQueryReq(int id) : IRequest<bool>;

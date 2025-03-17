@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-namespace ZarinPal
+﻿namespace Parstech.Shop.ApiService.Application.Dargah.ZarrinPal.Models;
+
+public class VerificationResponse
 {
-    public class VerificationResponse
+    public bool IsSuccess
     {
-
-        public bool IsSuccess { get { return Status == 100; } set { this.IsSuccess = value; } }
-        public String RefID { get; set; }
-        public int Status { get; set; }
-        public ExtraDetail ExtraDetail { get; set; }
- 
-
+        get => Status == 100;
+        set => IsSuccess = value;
     }
 
-    public class ExtraDetail
-   {
-       public Transaction Transaction;
-   }
+    public string RefID { get; set; }
+    public int Status { get; set; }
+    public ExtraDetail ExtraDetail { get; set; }
+}
 
+public class ExtraDetail
+{
+    public Transaction Transaction;
+}
 
-   public class Transaction
-   {
-       public String CardPanHash;
-       public String CardPanMask;
-   }
+public class Transaction
+{
+    public string CardPanHash;
+    public string CardPanMask;
 }

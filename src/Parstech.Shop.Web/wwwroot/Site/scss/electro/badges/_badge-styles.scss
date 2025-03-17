@@ -3,7 +3,7 @@
 ------------------------------------*/
 
 @each $color, $value in $theme-colors {
-	/* #{$color} badge */
+  /* #{$color} badge */
   .badge-outline-#{$color} {
     @if $color == "warning" {
       @include badge-outline($value, $value, $dark);

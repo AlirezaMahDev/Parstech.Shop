@@ -1,45 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class ProductPropertyRepository : GenericRepository<ProductProperty>, IProductPropertyRepository
 {
-    public class ProductPropertyRepository:GenericRepository<ProductProperty>,IProductPropertyRepository
+    private readonly DatabaseContext _context;
+
+    public ProductPropertyRepository(DatabaseContext context) : base(context)
     {
-        private readonly DatabaseContext _context;
+        _context = context;
+    }
 
-        public ProductPropertyRepository(DatabaseContext context) : base(context)
-        {
-            _context = context;
-        }
+    public async Task<List<ProductProperty>> GetPropertiesByProduct(int productId)
+    {
+        return await _context.ProductProperties.Where(u => u.ProductId == productId).ToListAsync();
+    }
 
-        public async Task<List<ProductProperty>> GetPropertiesByProduct(int productId)
-        {
-            return await _context.ProductProperties.Where(u => u.ProductId == productId).ToListAsync();
-        }
+    public async Task<ProductProperty?> GetpropertyByProduct(int productId)
+    {
+        return await _context.ProductProperties.FirstOrDefaultAsync(u => u.ProductId == productId);
+    }
 
-        public async Task<ProductProperty?> GetpropertyByProduct(int productId)
+    public async Task<bool> ExistPropertyForProduct(int productId, int propertyId)
+    {
+        if (await _context.ProductProperties.AnyAsync(u => u.ProductId == productId && u.PropertyId == propertyId))
         {
-            return await _context.ProductProperties.FirstOrDefaultAsync(u => u.ProductId == productId);
+            return true;
         }
-        
-        public async Task<bool> ExistPropertyForProduct(int productId,int propertyId)
+        else
         {
-            if(await _context.ProductProperties.AnyAsync(u=>u.ProductId==productId&&u.PropertyId== propertyId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
+            return false;
         }
     }
 }

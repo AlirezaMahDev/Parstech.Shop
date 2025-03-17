@@ -1,14 +1,8 @@
-﻿using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IPayTypeRepository : IGenericRepository<PayType>
 {
-    public interface IPayTypeRepository:IGenericRepository<PayType>
-    {
-        Task<List<PayType>> GetActiveList();
-    }
+    Task<List<PayType>> GetActiveList();
 }

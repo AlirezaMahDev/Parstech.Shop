@@ -8,13 +8,17 @@
 
     @each $prop, $abbrev in (column-count: cc) {
       @each $card-count, $length in $card-count {
-        .card#{$infix}-#{$card-count}-count { #{$prop}: $length; }
+        .card#{$infix}-#{$card-count}-count {
+          #{$prop}: $length;
+        }
       }
     }
 
     @each $prop, $abbrev in (column-gap: cg) {
       @each $card-gap-sizes, $gap in $card-gap-sizes {
-        .card#{$infix}-#{$card-gap-sizes}-gap { #{$prop}: $gap; }
+        .card#{$infix}-#{$card-gap-sizes}-gap {
+          #{$prop}: $gap;
+        }
       }
     }
 

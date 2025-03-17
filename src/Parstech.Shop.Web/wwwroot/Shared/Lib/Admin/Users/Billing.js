@@ -34,6 +34,7 @@ function CleanBilling() {
     UserBillingDto_NationalCode.value = null;
 
 }
+
 function FillBilling(element) {
     console.log(element);
     UserBillingDto_Id.value = element.id;
@@ -54,14 +55,12 @@ function FillBilling(element) {
 }
 
 
-
-
 function OnLoadingBillingGet() {
     CleanBilling();
 }
 
 function OnCompleteBillingGet(xhr) {
-   console.log(xhr);
+    console.log(xhr);
     FillBilling(xhr.responseJSON.object);
     $('#BillingModal').modal('show');
 }
@@ -71,17 +70,12 @@ function OnErrorBillingGet() {
 }
 
 
-
-
-
-
-
 function OnLoadingBillingEC() {
     CleanBilling();
 }
 
 function OnCompleteBillingEC(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -91,12 +85,11 @@ function OnCompleteBillingEC(xhr) {
         FillBilling(xhr.responseJSON.object);
         $('#BillingModal').modal('show');
         ToastSuccess(Response.message);
-        
-    }
-    else {
+
+    } else {
 
         ToastError(Response.message);
-        
+
     }
 }
 

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductStockPrice;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductStockPrice.Requests.Queries
-{
-    public record ProductStockPriceEditPriceQueryReq(ProductDto product) : IRequest<ProductStockPriceDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
+
+public record ProductStockPriceEditPriceQueryReq(ProductDto product) : IRequest<ProductStockPriceDto>;

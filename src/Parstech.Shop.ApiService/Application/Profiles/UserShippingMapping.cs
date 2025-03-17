@@ -1,20 +1,14 @@
-﻿using Shop.Application.DTOs.UserBilling;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.UserShipping;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class UserShippingMapping : Profile
 {
-    public class UserShippingMapping:Profile
+    public UserShippingMapping()
     {
-        public UserShippingMapping()
-        {
-            CreateMap<UserShipping, UserShippingDto>().ReverseMap();
-        }
+        CreateMap<UserShipping, UserShippingDto>().ReverseMap();
     }
 }

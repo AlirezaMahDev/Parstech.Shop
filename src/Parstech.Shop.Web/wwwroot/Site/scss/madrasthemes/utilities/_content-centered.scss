@@ -3,18 +3,18 @@
 ------------------------------------*/
 
 .flex-center-between { //display: flex; align-items: center; justify-content: space-between;
-    @include flex-center-between;
+  @include flex-center-between;
 }
 
 .flex-content-center { //display: flex; align-items: center; justify-content: center;
-    @include flex-content-center;
+  @include flex-content-center;
 }
 
 .flex-horizontal-center { // display: flex; align-items: center;
-    @include flex-horizontal-center;
+  @include flex-horizontal-center;
 }
 
 /* Vertical Center Alignment */
 .position-absolute-center {
-	@include content-centered(true, true);
+  @include content-centered(true, true);
 }

@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Convertor;
 
-namespace Shop.Application.Convertor
+public static class ConvertPersianNumbersToEnglish
 {
-    public static class ConvertPersianNumbersToEnglish
+    public static string ToEnglishNumber(string input)
     {
-        public static string ToEnglishNumber(string input)
+        string englishNumbers = "";
+        for (int i = 0; i < input.Length; i++)
         {
-            string englishNumbers = "";
-            for (int i = 0; i < input.Length; i++)
+            if (char.IsDigit(input[i]))
             {
-                if (Char.IsDigit(input[i]))
-                {
-                    englishNumbers += char.GetNumericValue(input, i);
-                }
-                else
-                {
-                    englishNumbers += input[i].ToString();
-                }
+                englishNumbers += char.GetNumericValue(input, i);
             }
-            return englishNumbers;
+            else
+            {
+                englishNumbers += input[i].ToString();
+            }
         }
+
+        return englishNumbers;
     }
 }

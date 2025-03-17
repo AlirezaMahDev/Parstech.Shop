@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.Section;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Section.Requests.Commands
-{
+using Parstech.Shop.ApiService.Application.DTOs;
 
-    public record SectionCreateCommandReq(SectionDto SectionDto) : IRequest<SectionDto>;
-}
+namespace Parstech.Shop.ApiService.Application.Features.Section.Requests.Commands;
+
+public record SectionCreateCommandReq(SectionDto SectionDto) : IRequest<SectionDto>;

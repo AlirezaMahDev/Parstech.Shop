@@ -1,6 +1,29 @@
-import { Locale } from "../types/locale";
-import { ParsedOptions } from "../types/options";
-export declare type token = "D" | "F" | "G" | "H" | "J" | "K" | "M" | "S" | "U" | "W" | "Y" | "Z" | "d" | "h" | "i" | "j" | "l" | "m" | "n" | "s" | "w" | "y";
+import {Locale} from "../types/locale";
+import {ParsedOptions} from "../types/options";
+
+export declare type token =
+    "D"
+    | "F"
+    | "G"
+    | "H"
+    | "J"
+    | "K"
+    | "M"
+    | "S"
+    | "U"
+    | "W"
+    | "Y"
+    | "Z"
+    | "d"
+    | "h"
+    | "i"
+    | "j"
+    | "l"
+    | "m"
+    | "n"
+    | "s"
+    | "w"
+    | "y";
 export declare const monthToStr: (monthNumber: number, shorthand: boolean, locale: Locale) => string;
 export declare type RevFormatFn = (date: Date, data: string, locale: Locale) => Date | void | undefined;
 export declare type RevFormat = Record<string, RevFormatFn>;

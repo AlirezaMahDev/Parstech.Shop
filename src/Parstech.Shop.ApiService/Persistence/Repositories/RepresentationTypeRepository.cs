@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
+﻿using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
 
-namespace Shop.Persistence.Repositories
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class RepresentationTypeRepository : GenericRepository<RepresentationType>, IRepresentationTypeRepository
 {
-    public class RepresentationTypeRepository:GenericRepository<RepresentationType>,IRepresentationTypeRepository
-    {
-        private readonly DatabaseContext _context;
+    private readonly DatabaseContext _context;
 
-        public RepresentationTypeRepository(DatabaseContext context) : base(context)
-        {
-            _context = context;
-        }
+    public RepresentationTypeRepository(DatabaseContext context) : base(context)
+    {
+        _context = context;
     }
 }

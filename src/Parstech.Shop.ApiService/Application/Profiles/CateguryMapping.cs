@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.Categury;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class CateguryMapping : Profile
 {
-    public class CateguryMapping:Profile
+    public CateguryMapping()
     {
-        public CateguryMapping()
-        {
-            CreateMap<Categury, CateguryDto>().ReverseMap();
-            CreateMap<Categury, ParrentCateguryShowDto>().ReverseMap();
-            CreateMap<Categury, SubParrentCateguryShowDto>().ReverseMap();
-            CreateMap<Categury, SubCateguryShowDto>().ReverseMap();
-            CreateMap<CateguryDto, SubCateguryShowDto>().ReverseMap();
-        }
+        CreateMap<Categury, CateguryDto>().ReverseMap();
+        CreateMap<Categury, ParrentCateguryShowDto>().ReverseMap();
+        CreateMap<Categury, SubParrentCateguryShowDto>().ReverseMap();
+        CreateMap<Categury, SubCateguryShowDto>().ReverseMap();
+        CreateMap<CateguryDto, SubCateguryShowDto>().ReverseMap();
     }
 }

@@ -14,13 +14,6 @@ var PpayType = document.getElementById("PpayType");
 var PuserId = document.getElementById("PuserId");
 
 
-
-
-
-
-
-
-
 $(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
@@ -32,7 +25,6 @@ $(document).ready(function () {
     toDate.value = null;
     $("#GetDataForm").submit();
 });
-
 
 
 function Filter() {
@@ -50,22 +42,22 @@ function Filter() {
 function FillDataSet(Data) {
     dataSet = [];
     Data.list.forEach(function (element) {
-       
+
         if (element.status == null) {
             element.status = "سبد خرید";
             element.statusIcon = "text-danger font-weight-bold";
         }
-        
-            const data =
-                [
-                    "<h5 class='font-weight-bold'>" + element.orderCode + "</h5>",
-                    "<h5>" + element.statusName + "</h5>",
-                    "<h5 class=''>" + element.firstName + " " + element.lastName + "</h5>",
-                    "<h5 class=''>" + separate(element.total) + " تومان </h5>",
-                    "<h5 class=''>" + element.typeName + "</h5>",
-                    "<h5 class=''>" + element.createDateShamsi + "</h5>",
-                    "<div class='btn-group'><button onclick='GetOrderSubmit(" + element.orderId + ")' class='btn btn-default'><i class='fas fa-circle-info Blue m-1'></i>نمایش جزییات</button><button onclick='ShowStatusModal(" + element.orderId + ")' type='button' class='btn btn-default'><i class=' fas fa-pencil Yellow m-1'></i>تغییر وضعیت</button><button onclick='GetStatusOfOrder(" + element.orderId + ")' type='button' class='btn btn-default'><i class=' fas fa-info Yellow m-1'></i> گزارش وضعیت</button><a href='/admin/orders/apihamkaran/" + element.orderId + "' class='btn btn-default mt-1'><i class=' fas fa-circle-nodes Green m-1'></i>وب سرویس</button></div>"
-                ];
+
+        const data =
+            [
+                "<h5 class='font-weight-bold'>" + element.orderCode + "</h5>",
+                "<h5>" + element.statusName + "</h5>",
+                "<h5 class=''>" + element.firstName + " " + element.lastName + "</h5>",
+                "<h5 class=''>" + separate(element.total) + " تومان </h5>",
+                "<h5 class=''>" + element.typeName + "</h5>",
+                "<h5 class=''>" + element.createDateShamsi + "</h5>",
+                "<div class='btn-group'><button onclick='GetOrderSubmit(" + element.orderId + ")' class='btn btn-default'><i class='fas fa-circle-info Blue m-1'></i>نمایش جزییات</button><button onclick='ShowStatusModal(" + element.orderId + ")' type='button' class='btn btn-default'><i class=' fas fa-pencil Yellow m-1'></i>تغییر وضعیت</button><button onclick='GetStatusOfOrder(" + element.orderId + ")' type='button' class='btn btn-default'><i class=' fas fa-info Yellow m-1'></i> گزارش وضعیت</button><a href='/admin/orders/apihamkaran/" + element.orderId + "' class='btn btn-default mt-1'><i class=' fas fa-circle-nodes Green m-1'></i>وب سرویس</button></div>"
+            ];
         dataSet.push(data);
     });
 
@@ -73,7 +65,7 @@ function FillDataSet(Data) {
     var current = Data.currentPage;
     var next = Data.currentPage + 1;
     var privious = Data.currentPage - 1;
-    var last = Data.pageCount ;
+    var last = Data.pageCount;
 
     if (next > last) {
         next = Data.currentPage;
@@ -82,10 +74,10 @@ function FillDataSet(Data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -105,14 +97,13 @@ function RunPaging(page) {
 }
 
 
-
 function OnLoadingData() {
 
     CleanItem();
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
 
@@ -121,15 +112,15 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'کد سفارش' },
-            { title: 'وضعیت سفارش' },
-            { title: 'نام مشتری' },
-            { title: 'مبلغ نهایی' },
-            { title: ' تسویه سفارش' },
-            { title: 'تاریخ' },
-            { title: 'عملیات         ' },
+            {title: 'کد سفارش'},
+            {title: 'وضعیت سفارش'},
+            {title: 'نام مشتری'},
+            {title: 'مبلغ نهایی'},
+            {title: ' تسویه سفارش'},
+            {title: 'تاریخ'},
+            {title: 'عملیات         '},
         ],
-        
+
         "pageLength": 25
     });
     tableMain.destroy();
@@ -181,15 +172,15 @@ function FillItem(Data) {
     var Radif = 1;
     Data.orderDetailDto.forEach(function (element) {
         console.log(element);
-        Products.insertAdjacentHTML("afterbegin", "<tr><td> " + Radif + " </td><td> " + element.productName + "<br /><strong class='Orange'>" + element.productCode + "</strong> </td><td> " + element.storeName + "</td><td> " + element.count + " </td><td> " + separate(element.price) + " </td><td> " + separate(element.detailSum) + " </td><td> " + separate(element.tax) + " </td><td> " + separate(element.discount) + " </td><td> " + separate(element.total)+" </td></tr>");
-       Radif++;
+        Products.insertAdjacentHTML("afterbegin", "<tr><td> " + Radif + " </td><td> " + element.productName + "<br /><strong class='Orange'>" + element.productCode + "</strong> </td><td> " + element.storeName + "</td><td> " + element.count + " </td><td> " + separate(element.price) + " </td><td> " + separate(element.detailSum) + " </td><td> " + separate(element.tax) + " </td><td> " + separate(element.discount) + " </td><td> " + separate(element.total) + " </td></tr>");
+        Radif++;
     });
     Products.insertAdjacentHTML("beforeend", "<tr><td colspan='4'> جمع </td><td colspan='4'> " + separate(Data.order.orderSum) + " </td></tr> <tr><td colspan='4'> مالیات </td><td colspan='4'> " + separate(Data.order.tax) + " </td></tr> <tr><td colspan='4'> تخفیف </td><td colspan='4'> " + separate(Data.order.discount) + " </td></tr> <tr><td colspan='4'> جمع کل </td><td colspan='4'> " + separate(Data.order.total) + " </td></tr>")
     Data.userShippingList.forEach(function (element) {
 
-        UserShippingList.insertAdjacentHTML("beforeend", " <option value="+element.id+">"+element.address+"</option>");
-      
-        
+        UserShippingList.insertAdjacentHTML("beforeend", " <option value=" + element.id + ">" + element.address + "</option>");
+
+
     });
 }
 
@@ -197,32 +188,29 @@ function FillItem(Data) {
 function OnLoadingGetItem() {
     CleanItem();
 }
+
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#ShowOrderDetailModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#ShowOrderDetailModal").modal("hide");
 
@@ -242,9 +230,7 @@ function OnErrorAE() {
 }
 
 
-
-
-function ShowStatusModal(OrderId){
+function ShowStatusModal(OrderId) {
     IdForInputs(OrderId);
     $("#ShowStatusModal").modal("show");
 
@@ -253,16 +239,16 @@ function ShowStatusModal(OrderId){
 function OnLoadingStatus() {
     //CleanProduct();
 }
+
 function OnCompleteStatus(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
-        if(xhr.responseJSON.isSuccessed){
+        if (xhr.responseJSON.isSuccessed) {
 
             $("#ShowStatusModal").modal("hide");
 
@@ -272,9 +258,8 @@ function OnCompleteStatus(xhr) {
             dataSet = [];
             $("#GetDataForm").submit();
 
-        ToastSuccess(xhr.responseJSON.message)
-        }
-        else{
+            ToastSuccess(xhr.responseJSON.message)
+        } else {
             $("#ShowStatusModal").modal("hide");
             ToastError(xhr.responseJSON.message)
         }
@@ -296,7 +281,7 @@ function GetStatusOfOrder(orderId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "OrderId": orderId },
+        data: {"OrderId": orderId},
         success: function (response) {
             FillStatusOfOrder(response.object);
         },
@@ -310,6 +295,7 @@ function GetStatusOfOrder(orderId) {
 }
 
 let StatusOfOrderSection = document.getElementById("StatusOfOrderSection");
+
 function FillStatusOfOrder(Data) {
     console.log(Data);
     StatusOfOrderSection.innerHTML = null;
@@ -317,15 +303,13 @@ function FillStatusOfOrder(Data) {
         let file;
         if (element.fileName != null) {
             file = "<div class='col-lg-2' ><a href='/Shared/Files/" + element.fileName + "' class='text-success m-t-20  font-weight-bold'>پیوست</a><hr /></div>";
-        }
-        else {
-            file=""
+        } else {
+            file = ""
         }
         StatusOfOrderSection.insertAdjacentHTML("beforeend", "<div class='col-lg-5' ><p class='text-center m-t-10 m-b-10 font-weight-bold'>" + element.statusName + "</p><hr /></div><div class='col-lg-2' ><p class='text-center m-t-10 m-b-10 font-weight-bold Orange'>" + element.createDateShamsi + "</p><hr /></div><div class='col-lg-3' ><p class='text-center m-t-10 m-b-10 font-weight-bold'>" + element.createBy + "</p><hr /></div>" + file + "");
     });
     $("#StatusOfOrderModal").modal('show');
 }
-
 
 
 function OpenOrderSetting() {
@@ -344,7 +328,7 @@ function GetOrderPays(orderId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "orderId": orderId },
+        data: {"orderId": orderId},
         success: function (response) {
             FillOrderPays(response.object);
         },
@@ -358,10 +342,11 @@ function GetOrderPays(orderId) {
 }
 
 let orderPays = document.getElementById("orderPays");
+
 function FillOrderPays(pays) {
     orderPays.innerHTML = null;
     pays.forEach(function (element) {
-        
+
         orderPays.insertAdjacentHTML("beforeend", "<div class='d-flex'><h5>مبلغ  <strong>" + separate(element.price) + "</strong> با روش پرداخت <strong>" + element.typeName + "</strong> و توضیحات <strong>" + element.description + "</strong>  <button type='button' onclick='DeleteOrderPays(" + element.id + ")' class='btn btn-danger btn-round'>حذف</button></h5><hr /></div>")
     })
 }
@@ -375,15 +360,14 @@ function DeleteOrderPays(id) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "id": id },
+        data: {"id": id},
         success: function (response) {
             if (response.isSuccessed) {
 
-               
+
                 ToastSuccess(response.message);
                 GetOrderPays(Oid.value);
-            }
-            else {
+            } else {
 
                 ToastError(response.message)
             }
@@ -401,22 +385,21 @@ function OnCompleteAddPay(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (xhr.responseJSON.isSuccessed) {
 
-            
+
             ToastSuccess("روش بپرداخت با موفقیت ثبت گردید");
             GetOrderPays(Oid.value);
             $("#AddOrderPayModal").modal('hide');
-        }
-        else {
-            
+        } else {
+
             ToastError("امکان ایجاد روش پرداخت وجود ندارد")
         }
     }
 }
+
 function AddOrderPayForm() {
     $("#AddOrderPayModal").modal('show');
 }
@@ -426,8 +409,7 @@ function OnCompleteOrderComplete(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (xhr.responseJSON.isSuccessed) {
 
@@ -435,8 +417,7 @@ function OnCompleteOrderComplete(xhr) {
             ToastSuccess(xhr.responseJSON.message);
             GetOrderPays(Oid.value);
             $("#AddOrderPayModal").modal('hide');
-        }
-        else {
+        } else {
 
             ToastError(xhr.responseJSON.message)
         }
@@ -477,5 +458,5 @@ function Clean() {
     fromDate.value = null;
     toDate.value = null;
     $("#GetDataForm").submit();
-    
+
 }

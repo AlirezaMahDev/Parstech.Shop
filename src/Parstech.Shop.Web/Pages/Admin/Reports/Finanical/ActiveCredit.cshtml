@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Reports.Finanical.ActiveCreditModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Reports.Finanical.ActiveCreditModel
 @{
     Layout = "Shared/Admin_Layout";
     ViewData["Title"] = "Home page";
@@ -38,7 +39,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -50,7 +52,7 @@
                       data-ajax="true"
                       data-ajax-method="POST"
                       data-ajax-complete="OnComplete">
-                    <input type="hidden" asp-for="parameters.CurrentPage" id="currentPage" />
+                    <input type="hidden" asp-for="parameters.CurrentPage" id="currentPage"/>
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="form-group">
@@ -69,7 +71,8 @@
                         <div class="col-lg-2">
                             <div class="form-group ">
                                 <label>فیلتر حساب</label>
-                                <select asp-for="parameters.WalletType" id="walletType" type="text" class="form-control w-100">
+                                <select asp-for="parameters.WalletType" id="walletType" type="text"
+                                        class="form-control w-100">
                                     <option value="">انتخاب نشده</option>
                                     <option value="OrgCredit">اعتبار سازمانی</option>
                                     <option value="Fecilities">تسهیلات وام</option>
@@ -80,37 +83,42 @@
                         <div class="col-lg-2">
                             <div class="form-group ">
                                 <label>فیلتر تراکنش</label>
-                                <select asp-for="parameters.TransactionType" id="transactionType" type="text" class="form-control w-100">
+                                <select asp-for="parameters.TransactionType" id="transactionType" type="text"
+                                        class="form-control w-100">
                                     <option value="">انتخاب نشده</option>
-                                    <option value=null></option>
-                                    <option value=1>واریز</option>
-                                    <option value=2>برداشت</option>
-                                    <option value=3>در انتظار پرداخت</option>
-                                    <option value=4>پرداخت موفقیت آمیز</option>
-                                    <option value=5>تراکنش لغو شده</option>
-                                    <option value=6>اقساط</option>
-                                    <option value=7>تسویه</option>
-                                    <option value=8>تسویه و شارژ مجدد</option>
+                                    <option value="null"></option>
+                                    <option value="1">واریز</option>
+                                    <option value="2">برداشت</option>
+                                    <option value="3">در انتظار پرداخت</option>
+                                    <option value="4">پرداخت موفقیت آمیز</option>
+                                    <option value="5">تراکنش لغو شده</option>
+                                    <option value="6">اقساط</option>
+                                    <option value="7">تسویه</option>
+                                    <option value="8">تسویه و شارژ مجدد</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group ">
                                 <label>از تاریخ</label>
-                                <input type="text" asp-for="parameters.FromDate" id="fromDate" class="has-persian-datepicker form-control">
+                                <input type="text" asp-for="parameters.FromDate" id="fromDate"
+                                       class="has-persian-datepicker form-control">
 
                             </div>
-                        </div><div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-3">
                             <div class="form-group ">
                                 <label>تا تاریخ</label>
-                                <input type="text" asp-for="parameters.ToDate" id="toDate" class="has-persian-datepicker form-control">
+                                <input type="text" asp-for="parameters.ToDate" id="toDate"
+                                       class="has-persian-datepicker form-control">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group ">
 
                                 <button type="submit" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
-                                <a href="#" class="btn btn-green  hover-green font-weight-bold- text-white" onclick="GenerateExcel()">دریافت اطلاعات به صورت اکسل</a>
+                                <a href="#" class="btn btn-green  hover-green font-weight-bold- text-white"
+                                   onclick="GenerateExcel()">دریافت اطلاعات به صورت اکسل</a>
 
                             </div>
                         </div>
@@ -124,7 +132,12 @@
                     </div>
 
                     <div class="d-flex mb-2" id="paging">
-                        <button onclick="RunPaging('previues')" class="btn cart-Blue btn-xs font-weight-bold ml-2">صفحه قبل</button><button onclick="RunPaging('next')" class="btn cart-Blue btn-xs font-weight-bold ml-2">صفحه بعد</button>
+                        <button onclick="RunPaging('previues')" class="btn cart-Blue btn-xs font-weight-bold ml-2">صفحه
+                            قبل
+                        </button>
+                        <button onclick="RunPaging('next')" class="btn cart-Blue btn-xs font-weight-bold ml-2">صفحه
+                            بعد
+                        </button>
                     </div>
                 </div><!-- /.portlet-body -->
             </div><!-- /.portlet -->
@@ -132,7 +145,7 @@
 
         </div>
     </div>
-    </div>
+</div>
 
 
 <div id="AghsatModal" class="modal fade" role="dialog" tabindex="-1">
@@ -140,15 +153,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>اقساط</b></h4><br />
-               
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>اقساط</b></h4><br/>
+
             </div>
             <div class="modal-body">
 
-                <div  id="aghsats">
-                    
+                <div id="aghsats">
+
                 </div>
-               
+
 
             </div>
 
@@ -166,12 +179,13 @@
       data-ajax-failure="OnError">
 </form>
 <form method="post" asp-page-handler="Excel" id="ExcelForm">
-    <input type="hidden" name="userFilter" id="exuserFilter" />
-    <input type="hidden" name="walletType" id="exwalletType" />
-    <input type="hidden" name="transactionType" id="extransactionType" />
-    <input type="hidden" name="fromDate" id="exfromDate" />
-    <input type="hidden" name="toDate" id="extoDate" />
+    <input type="hidden" name="userFilter" id="exuserFilter"/>
+    <input type="hidden" name="walletType" id="exwalletType"/>
+    <input type="hidden" name="transactionType" id="extransactionType"/>
+    <input type="hidden" name="fromDate" id="exfromDate"/>
+    <input type="hidden" name="toDate" id="extoDate"/>
 </form>
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Admin/plugins/morris.js/morris.min.js"></script>
@@ -186,11 +200,11 @@
 
     <script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
     <script src="~/Admin/js/pages/calendar.js"></script>
-    }
+}
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
     <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
 
-    }
+}

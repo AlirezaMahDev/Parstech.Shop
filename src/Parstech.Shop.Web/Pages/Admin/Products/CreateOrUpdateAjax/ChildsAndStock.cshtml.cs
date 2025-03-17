@@ -1,76 +1,78 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Parstech.Shop.Shared.Protos.ProductAdmin;
-using Parstech.Shop.Shared.Protos.ProductComponentsAdmin;
+
+using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.Web.GrpcClients;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductStockPrice;
+using Parstech.Shop.Web.Services.GrpcClients;
 
-namespace Shop.Web.Pages.Admin.Products.Detail
+namespace Parstech.Shop.Web.Pages.Admin.Products.CreateOrUpdateAjax;
+
+public class ChildsAndStockModel : PageModel
 {
-    public class ChildsAndStockModel : PageModel
+    #region Constructor
+
+    private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
+    private readonly IProductAdminGrpcClient _productAdminClient;
+    private readonly IUserAdminGrpcClient _userAdminClient;
+    private readonly IProductStockPriceRepository _productStockRep;
+
+    public ChildsAndStockModel(
+        IProductComponentsAdminGrpcClient productComponentsClient,
+        IProductAdminGrpcClient productAdminClient,
+        IUserAdminGrpcClient userAdminClient,
+        IProductStockPriceRepository productStockRep)
     {
-        #region Constructor
+        _productComponentsClient = productComponentsClient;
+        _productAdminClient = productAdminClient;
+        _userAdminClient = userAdminClient;
+        _productStockRep = productStockRep;
+    }
 
-        private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
-        private readonly IProductAdminGrpcClient _productAdminClient;
-        private readonly IUserAdminGrpcClient _userAdminClient;
-        private readonly IProductStockPriceRepository _productStockRep;
+    #endregion
 
-        public ChildsAndStockModel(
-            IProductComponentsAdminGrpcClient productComponentsClient,
-            IProductAdminGrpcClient productAdminClient,
-            IUserAdminGrpcClient userAdminClient,
-            IProductStockPriceRepository productStockRep)
+    //id
+    [BindProperty]
+    public int? productId { get; set; }
+
+    [BindProperty]
+    public int? TypeId { get; set; } = 0;
+
+    public ChildsAndStocksResponse ChildsAndStock { get; set; }
+    public ProductDto product { get; set; }
+
+    public async Task OnGet(int? id)
+    {
+        productId = id;
+
+        if (productId != 0)
         {
-            _productComponentsClient = productComponentsClient;
-            _productAdminClient = productAdminClient;
-            _userAdminClient = userAdminClient;
-            _productStockRep = productStockRep;
+            var productResponse = await _productAdminClient.GetProductAsync(id.Value);
+            if (productResponse.IsSuccess)
+            {
+                product = productResponse.Product;
+                TypeId = product.TypeId;
+            }
         }
 
-        #endregion
-
-        //id
-        [BindProperty] public int? productId { get; set; }
-        [BindProperty] public int? TypeId { get; set; } = 0;
-
-        public ChildsAndStocksResponse ChildsAndStock { get; set; }
-        public ProductDto product { get; set; }
-
-        public async Task OnGet(int? id)
+        if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
         {
-            productId = id;
-            
-            if (productId != 0)
+            var userResponse = await _userAdminClient.GetUserByUserNameAsync(User.Identity.Name);
+            if (userResponse.IsSuccess)
             {
-                var productResponse = await _productAdminClient.GetProductAsync(id.Value);
-                if (productResponse.IsSuccess)
+                var userStoreResponse = await _userAdminClient.GetUserStoreOfUserAsync(userResponse.User.Id);
+                if (userStoreResponse.IsSuccess)
                 {
-                    product = productResponse.Product;
-                    TypeId = product.TypeId;
+                    ChildsAndStock = await _productComponentsClient.GetChildsAndProductStocksAsync(
+                        productId.Value,
+                        userStoreResponse.UserStore.Id);
                 }
             }
-            
-            if (User.IsInRole("Store") || User.IsInRole("StoreBySend"))
-            {
-                var userResponse = await _userAdminClient.GetUserByUserNameAsync(User.Identity.Name);
-                if (userResponse.IsSuccess)
-                {
-                    var userStoreResponse = await _userAdminClient.GetUserStoreOfUserAsync(userResponse.User.Id);
-                    if (userStoreResponse.IsSuccess)
-                    {
-                        ChildsAndStock = await _productComponentsClient.GetChildsAndProductStocksAsync(
-                            productId.Value, userStoreResponse.UserStore.Id);
-                    }
-                }
-            }
-            else
-            {
-                ChildsAndStock = await _productComponentsClient.GetChildsAndProductStocksAsync(
-                    productId.Value, 0);
-            }
+        }
+        else
+        {
+            ChildsAndStock = await _productComponentsClient.GetChildsAndProductStocksAsync(
+                productId.Value,
+                0);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shop.Domain.Models;
+﻿namespace Parstech.Shop.ApiService.Domain.Models;
 
 public partial class Section
 {
@@ -19,7 +16,8 @@ public partial class Section
 
     public int? StoreId { get; set; }
 
-    public virtual ICollection<ProductStockPriceSection> ProductStockPriceSections { get; set; } = new List<ProductStockPriceSection>();
+    public virtual ICollection<ProductStockPriceSection> ProductStockPriceSections { get; set; } =
+        new List<ProductStockPriceSection>();
 
     public virtual ICollection<SectionDetail> SectionDetails { get; set; } = new List<SectionDetail>();
 

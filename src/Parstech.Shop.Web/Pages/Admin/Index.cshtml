@@ -1,4 +1,5 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Admin.IndexModel
 @{
     Layout = "Shared/Admin_Layout";
@@ -12,7 +13,7 @@
             <ul class="breadcrumb">
                 <li><a href="dashboard.html">پیشخوان</a></li>
             </ul>
-          
+
         </div><!-- /.breadcrumb-box -->
     </div><!-- /.col-md-12 -->
     <!-- END BREADCRUMB -->
@@ -79,35 +80,44 @@
             <div class="col-lg-2 col-sm-4 col-6">
                 <div class="stat-box bg-purple shadow radius knob-container">
                     <div class="h3">امتیاز</div>
-                    <input id="Coin" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round" data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)" data-fgColor="#fff" readonly>
+                    <input id="Coin" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round"
+                           data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)"
+                           data-fgColor="#fff" readonly>
                 </div><!-- /.stat-box -->
             </div><!-- /.col-lg-2 -->
             <div class="col-lg-2 col-sm-4 col-6">
                 <div class="stat-box bg-lime  shadow radius knob-container">
                     <div class="h3">حساب</div>
-                    <input id="transaction" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round" data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)" data-fgColor="#fff" readonly>
+                    <input id="transaction" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round"
+                           data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)"
+                           data-fgColor="#fff" readonly>
                 </div><!-- /.stat-box -->
             </div><!-- /.col-lg-2 -->
             <div class="col-lg-2 col-sm-4 col-6">
                 <div class="stat-box bg-deeporange shadow radius knob-container">
                     <div class="h3">اقساط</div>
-                    <input id="Fecilities" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round" data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)" data-fgColor="#fff" readonly>
+                    <input id="Fecilities" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round"
+                           data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)"
+                           data-fgColor="#fff" readonly>
                 </div><!-- /.stat-box -->
             </div><!-- /.col-lg-2 -->
             <div class="col-lg-2 col-sm-4 col-6">
                 <div class="stat-box bg-rose shadow radius knob-container">
-                    <div class="h3">پیش فاکتور </div>
-                    <input id="PreOrders" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round" data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)" data-fgColor="#fff" readonly>
+                    <div class="h3">پیش فاکتور</div>
+                    <input id="PreOrders" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round"
+                           data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)"
+                           data-fgColor="#fff" readonly>
                 </div><!-- /.stat-box -->
             </div><!-- /.col-lg-2 -->
             <div class="col-lg-2 col-sm-4 col-6">
                 <div class="stat-box bg-red shadow radius knob-container">
                     <div class="h3">صورتحساب</div>
-                    <input id="Factors" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round" data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)" data-fgColor="#fff" readonly>
+                    <input id="Factors" class="knob-animate" value="" data-min="0" data-max="" data-linecap="round"
+                           data-thickness=".1" data-width="40%" data-bgcolor="rgba(255, 255, 255, 0.15)"
+                           data-fgColor="#fff" readonly>
                 </div><!-- /.stat-box -->
             </div><!-- /.col-lg-2 -->
         </div><!-- /.row -->
-
 
 
         <div class="row">
@@ -124,7 +134,7 @@
                     </div>
                     <div class="portlet-body">
                         <div id="donut" class="morris-chart"></div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -137,7 +147,7 @@
                                 فروش نمایندگی ها
                             </h3>
                         </div><!-- /.portlet-title -->
-                       
+
                     </div><!-- /.portlet-heading -->
                     <div class="portlet-body">
                         @*<div id="donut" class="morris-chart"></div>*@
@@ -168,6 +178,7 @@
       data-ajax-complete="OnComplete"
       data-ajax-failure="OnError">
 </form>
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Admin/plugins/morris.js/morris.min.js"></script>
@@ -178,6 +189,6 @@
 }
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
-    
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+
 }

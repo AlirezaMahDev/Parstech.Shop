@@ -1,11 +1,12 @@
 ﻿@page "{Id}"
-@model Shop.Web.Pages.Admin.Products.EditContentModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Products.EditContentModel
 @{
     Layout = "Shared/Admin_Layout";
 }
 
 <div class="row">
-   
+
     <div class="col-12">
         <div class="portlet box border shadow">
             <div class="portlet-heading">
@@ -15,10 +16,17 @@
                         گالری محصول
                     </h3>
                     <div class="buttons-box">
-                        <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanProduct()" data-bs-toggle="modal" data-bs-target="#GalleryModal">
+                        <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanProduct()"
+                                data-bs-toggle="modal" data-bs-target="#GalleryModal">
                             <i class="icon-plus"></i>
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
-                            <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background" style="opacity: 0.0088;"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div>
@@ -28,7 +36,7 @@
             <div class="portlet-body">
                 <div class="portlet-body">
                     <div class="row" id="GalleryData">
-                      
+
                     </div><!-- /.row -->
                 </div><!-- /.portlet-body -->
 
@@ -36,13 +44,14 @@
         </div><!-- /.portlet -->
     </div><!-- /.col-12 -->
     <div class="col-12">
-        <form method="post"id="SaveForm" asp-page-handler="Save" class="form-horizontal" role="form" enctype="multipart/form-data"
+        <form method="post" id="SaveForm" asp-page-handler="Save" class="form-horizontal" role="form"
+              enctype="multipart/form-data"
               data-ajax="true"
               data-ajax-method="POST"
               data-ajax-begin="OnLoadingSave"
               data-ajax-complete="OnCompleteSave"
               data-ajax-failure="OnErrorSave">
-            
+
             <div class="portlet box border shadow">
                 <div class="portlet-heading">
                     <div class="portlet-title">
@@ -57,18 +66,18 @@
 
                     <textarea asp-for="productContent" class="form-control"></textarea>
                     <input type="hidden" asp-for="productId" class="productId"/>
-                   
 
-                    <button type="submit"  class="btn btn-info  mb-2">
+
+                    <button type="submit" class="btn btn-info  mb-2">
                         به روز رسانی محصول
 
                     </button>
                 </div><!-- /.portlet-body -->
             </div><!-- /.portlet -->
-           
+
 
         </form>
-       
+
     </div><!-- /.col-12 -->
     <div class="col-12">
         <div class="portlet box border shadow">
@@ -80,10 +89,17 @@
                     </h3>
                 </div><!-- /.portlet-title -->
                 <div class="buttons-box">
-                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal" data-bs-target="#SearchFeutureModal">
+                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal"
+                            data-bs-target="#SearchFeutureModal">
                         <i class="icon-plus"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
-                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background" style="opacity: 0.0088;"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
 
                 </div>
@@ -93,7 +109,7 @@
                     <table class="table table-bordered table-hover table-striped" id="data-table">
                         <div class="form-group d-flex">
 
-                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی ویژگی" />
+                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی ویژگی"/>
                             <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
 
                             @*<select class="form-control w-25" placeholder="جستجوی کاربران">
@@ -135,16 +151,19 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddGallery" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddGallery" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingGallery"
                           data-ajax-complete="OnCompleteGallery"
                           data-ajax-failure="OnErrorGallery">
-                          <input type="hidden" asp-for="Gallery.ProductId" class="productId"/>
-                        
+                        <input type="hidden" asp-for="Gallery.ProductId" class="productId"/>
+
                         <div class="form-group relative">
-                            <input type="file" class="form-control" data-val="true" data-val-required="The LogoFile field is required." asp-for="Gallery.File" id="Gallery_File">
+                            <input type="file" class="form-control" data-val="true"
+                                   data-val-required="The LogoFile field is required." asp-for="Gallery.File"
+                                   id="Gallery_File">
                             <label>تصویر محصول</label>
                             <div class="input-group round">
                                 <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
@@ -155,12 +174,13 @@
                                         <div class="paper-ripple">
                                             <div class="paper-ripple__background"></div>
                                             <div class="paper-ripple__waves"></div></div>
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div></button>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div></button>
                                 </span>
                             </div><!-- /.input-group -->
                             <div class="help-block"></div>
                         </div>
-                        
+
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label> متن جایگزین تصویر</label>
                             <div class="form-group round">
@@ -170,10 +190,11 @@
                         <div class="col-md-6 col-lg-6 m-auto m-b-10">
                             <label>به عنوان تصویر اصلی محصول در نظر گرفته شود؟</label>
                             <div class="form-group round">
-                                <input asp-for="Gallery.IsMain" id="Gallery_IsMain" type="checkbox" class="form-control">
+                                <input asp-for="Gallery.IsMain" id="Gallery_IsMain" type="checkbox"
+                                       class="form-control">
                             </div>
                         </div>
-                        
+
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
                             <button type="submit" class="btn btn-info btn-round btn-block mb-2">
@@ -203,20 +224,21 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="DeleteGallery" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="DeleteGallery" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingGallery"
                           data-ajax-complete="OnCompleteGallery"
                           data-ajax-failure="OnErrorGallery">
-                        <input type="hidden" asp-for="Gallery.ProductId" class="productId" />
-                        <input type="hidden" asp-for="GalleryId" class="GalleryId" />
+                        <input type="hidden" asp-for="Gallery.ProductId" class="productId"/>
+                        <input type="hidden" asp-for="GalleryId" class="GalleryId"/>
 
                         <div class="form-group relative">
                             <h5>آیا از حذف تصویر محصول مورد نظر مطمئن هستید؟</h5>
                         </div>
 
-                       
+
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
                             <button type="submit" class="btn btn-danger btn-round btn-block mb-2">
@@ -250,7 +272,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="SearchFeuture" id="SearchFeutureForm" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="SearchFeuture" id="SearchFeutureForm" class="form-horizontal"
+                          role="form" enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingFeuture"
@@ -261,7 +284,7 @@
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>دسته بندی اصلی</label>
                             <div class="form-group round">
-                                
+
                                 <select class="form-control select2 curve" id="my-select">
                                     <option>انتخاب دسته بندی</option>
                                     <option>جستجوی از دسته بندی اصلی</option>
@@ -283,11 +306,11 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>جستجوی دسته بندی ویژگی ها</label>
                             <div class="form-group round">
-                                <select class="form-control select2 curve"asp-for="propertyCatId">
+                                <select class="form-control select2 curve" asp-for="propertyCatId">
                                     @foreach (var item in Model.categuryObject.propertyCategury)
                                     {
                                         <option value="@item.Id">@item.Name</option>
@@ -311,11 +334,11 @@
                 </div><!-- /col-lg-12 -->
             </div>
             <div class="modal-footer">
-               
+
                 <div class="portlet-body w-100" style="">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped" id="data-table2">
-                           
+
                             <thead>
                             <tr>
                             </tr>
@@ -345,7 +368,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddEditFeuture" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddEditFeuture" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingAEFeuture"
@@ -355,9 +379,8 @@
                         <input type="hidden" asp-for="AddFeutureInput.ProductId" class="productId">
                         <input type="hidden" asp-for="AddFeutureInput.Id" id="AddFeutureInput_Id">
                         <input type="hidden" asp-for="AddFeutureInput.PropertyId" id="AddFeutureInput_PropertyId">
-                            
-                        
-                        
+
+
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label>مقدار ویژگی</label>
                             <div class="form-group round">
@@ -382,7 +405,7 @@
             </div>
             <div class="modal-footer">
 
-               
+
             </div>
         </div>
     </div>
@@ -397,7 +420,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="DeleteFeuture" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="DeleteFeuture" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingDeleteFeuture"
@@ -408,7 +432,7 @@
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
-                           <h5>آیا از حذف این ویژگی مطمئن هستید؟</h5>
+                            <h5>آیا از حذف این ویژگی مطمئن هستید؟</h5>
                         </div>
 
 
@@ -435,7 +459,7 @@
 
 <!--FORMS-->
 
-<input type="hidden" asp-for="productId" id="PId" />
+<input type="hidden" asp-for="productId" id="PId"/>
 
 <form method="post" id="GetDataForm" asp-page-handler="Data"
       data-ajax="true"
@@ -443,7 +467,7 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="productId" class="productId" />
+    <input type="hidden" asp-for="productId" class="productId"/>
 </form>
 
 <form method="post" id="GetSubsForm" asp-page-handler="Subs"
@@ -452,13 +476,15 @@
       data-ajax-begin="OnLoadingSub"
       data-ajax-complete="OnCompleteSub"
       data-ajax-failure="OnErrorSub">
-    <input type="hidden" name="parentId" id="parentId" />
+    <input type="hidden" name="parentId" id="parentId"/>
 </form>
 <!--FORMS-->
+
 @section Styles{
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
 }
+
 @section Scripts {
 
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
@@ -475,7 +501,7 @@
             uiColor: '#daffd3',
         });
     </script>
-   @* <script>
+    @* <script>
         //CKEDITOR.replace('editor');
         CKEDITOR.replace('Content', {
             language: 'fa',

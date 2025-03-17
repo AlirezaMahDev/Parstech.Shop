@@ -8,22 +8,22 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  const str = req.url.split('?')[1];
-  const query = qs.parse(str);
+    const str = req.url.split('?')[1];
+    const query = qs.parse(str);
 
-  res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json');
 
-  const tweetie = new Tweetie();
+    const tweetie = new Tweetie();
 
-  tweetie.fetch(query.type, query.params).then((response) => {
-    res.statusCode = 200;
-    res.end(JSON.stringify(response));
-  }).catch((err) => {
-    res.statusCode = 500;
-    res.end(JSON.stringify(err));
-  });
+    tweetie.fetch(query.type, query.params).then((response) => {
+        res.statusCode = 200;
+        res.end(JSON.stringify(response));
+    }).catch((err) => {
+        res.statusCode = 500;
+        res.end(JSON.stringify(err));
+    });
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+    console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -1,4 +1,5 @@
 var nReloads = 0;
+
 function data(offset) {
     var ret = [];
     for (var x = 0; x <= 360; x += 10) {
@@ -11,6 +12,7 @@ function data(offset) {
     }
     return ret;
 }
+
 var graph = Morris.Line({
     element: 'graph',
     data: data(0),
@@ -23,8 +25,10 @@ var graph = Morris.Line({
     hideHover: true,
     lineColors: ['#ff4400', '#22aa22']
 });
+
 function update() {
     nReloads++;
     graph.setData(data(5 * nReloads));
 }
+
 setInterval(update, 400);

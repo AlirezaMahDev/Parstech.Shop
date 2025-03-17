@@ -1,20 +1,20 @@
-$("#txt-search").keyup(function(){
+$("#txt-search").keyup(function () {
     var key = $(this).val().trim();
-    if(key){
+    if (key) {
         $(".icon-box, .alert").css("display", "none");
-        $(".icon-box .item").each(function(){
-            if($(this).text().indexOf(key)>=0){
+        $(".icon-box .item").each(function () {
+            if ($(this).text().indexOf(key) >= 0) {
                 $(this).parent().css("display", "block");
             }
         });
-        
-    }else{
+
+    } else {
         $(".icon-box, .alert").css("display", "block");
     }
 });
 
 
-$(".icon-box .item").click(function(){
+$(".icon-box .item").click(function () {
     var text = this;
     var selection = window.getSelection();
     var range = document.createRange();

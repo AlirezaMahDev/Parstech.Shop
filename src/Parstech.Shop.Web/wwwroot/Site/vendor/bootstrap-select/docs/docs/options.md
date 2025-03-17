@@ -2,7 +2,11 @@
 
 ---
 
-Because there are some changes in class names and layout between Bootstrap 3 and Bootstrap 4, bootstrap-select needs to know the version of Bootstrap you are using. By default, bootstrap-select automatically detects the version of Bootstrap. However, there are some instances where the version detection does not work properly (e.g. Bootstrap is being loaded asynchronously or there is a namespace collision). For now, bootstrap-select defaults to using Bootstrap 3 formatting if version detection fails. This will be changed in the next major release.
+Because there are some changes in class names and layout between Bootstrap 3 and Bootstrap 4, bootstrap-select needs to
+know the version of Bootstrap you are using. By default, bootstrap-select automatically detects the version of
+Bootstrap. However, there are some instances where the version detection does not work properly (e.g. Bootstrap is being
+loaded asynchronously or there is a namespace collision). For now, bootstrap-select defaults to using Bootstrap 3
+formatting if version detection fails. This will be changed in the next major release.
 
 You can manually specify Bootstrap's version via bootstrap-select's `Constructor.BootstrapVersion` object:
 
@@ -14,7 +18,7 @@ $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 
 ---
 
-Options can be passed via data attributes or JavaScript. For data attributes, append the option name to `data-`, as in 
+Options can be passed via data attributes or JavaScript. For data attributes, append the option name to `data-`, as in
 `data-style=""` or `data-selected-text-format="count"`.
 
 <table class="table table-bordered table-striped">
@@ -322,7 +326,8 @@ $.fn.selectpicker.Constructor.DEFAULTS.multipleSeparator = ' | ';
 
 Bootstrap-select exposes a few events for hooking into select functionality.
 
-hide.bs.select, hidden.bs.select, show.bs.select, and shown.bs.select all have a `relatedTarget` property, whose value is the toggling anchor element.
+hide.bs.select, hidden.bs.select, show.bs.select, and shown.bs.select all have a `relatedTarget` property, whose value
+is the toggling anchor element.
 
 <table class="table table-bordered table-striped">
   <thead>

@@ -1,4 +1,4 @@
-﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+﻿@model Parstech.Shop.Application.DTOs.Section.SectionAndDetailsDto
 <div class="container mb-8">
     <div class="py-2 border-top border-bottom">
         <div class="js-slick-carousel u-slick my-1"
@@ -23,17 +23,17 @@
                                 "slidesToShow": 1
                             }
                         }]'>
-            @foreach(var item in Model.Brands)
+            @foreach (var item in Model.Brands)
             {
-
                 <div class="js-slide">
                     <a href="#" class="link-hover__brand">
-                        <img class="img-fluid m-auto max-height-50" src="~/Shared/Images/Products/@item.BrandImage" alt="برند های پارس تک">
+                        <img class="img-fluid m-auto max-height-50" src="~/Shared/Images/Products/@item.BrandImage"
+                             alt="برند های پارس تک">
                     </a>
                 </div>
             }
-           
-           
+
+
         </div>
     </div>
 </div>

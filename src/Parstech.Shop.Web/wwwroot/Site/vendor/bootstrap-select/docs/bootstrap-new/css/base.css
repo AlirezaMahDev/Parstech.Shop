@@ -26,7 +26,7 @@ div.source-links {
 }
 
 div.col-md-9 img {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 /*
@@ -49,7 +49,7 @@ div.col-md-9 img {
 .bs-sidenav {
     margin-top: 30px;
     margin-bottom: 30px;
-    padding-top:    10px;
+    padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 5px;
 }
@@ -60,11 +60,13 @@ div.col-md-9 img {
     padding: 5px 20px;
     z-index: 1;
 }
+
 .bs-sidebar .nav > li > a:hover,
 .bs-sidebar .nav > li > a:focus {
     text-decoration: none;
     border-right: 1px solid;
 }
+
 .bs-sidebar .nav > .active > a,
 .bs-sidebar .nav > .active:hover > a,
 .bs-sidebar .nav > .active:focus > a {
@@ -78,8 +80,9 @@ div.col-md-9 img {
     display: none; /* Hide by default, but at >768px, show it */
     margin-bottom: 8px;
 }
+
 .bs-sidebar .nav .nav > li > a {
-    padding-top:    3px;
+    padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 30px;
     font-size: 90%;
@@ -90,24 +93,29 @@ div.col-md-9 img {
     .bs-sidebar .nav > .active > ul {
         display: block;
     }
+
     /* Widen the fixed sidebar */
     .bs-sidebar.affix,
     .bs-sidebar.affix-bottom {
         width: 213px;
     }
+
     .bs-sidebar.affix {
         position: fixed; /* Undo the static from mobile first approach */
         top: 80px;
     }
+
     .bs-sidebar.affix-bottom {
         position: absolute; /* Undo the static from mobile first approach */
     }
+
     .bs-sidebar.affix-bottom .bs-sidenav,
     .bs-sidebar.affix .bs-sidenav {
         margin-top: 0;
         margin-bottom: 0;
     }
 }
+
 @media (min-width: 1200px) {
     /* Widen the fixed sidebar again */
     .bs-sidebar.affix-bottom,

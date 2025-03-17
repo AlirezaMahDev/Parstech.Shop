@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Config.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Config.IndexModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -23,7 +24,6 @@
                     <div class="form-body">
 
 
-
                         <div class="form-group relative">
                             <input required="" type="file" name="file" class="form-control">
                             <label>آپلود فایل</label>
@@ -33,7 +33,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -45,7 +46,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -68,28 +72,29 @@
                     <div class="form-body">
 
 
-
-                       
                     </div><!-- /.form-body -->
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
                 </form>
             </div><!-- /.portlet-body -->
-        </div><!-- /.portlet --> 
-        
+        </div><!-- /.portlet -->
+
         <div class="portlet box border shadow">
             <div class="portlet-heading">
                 <div class="portlet-title">
                     <h3 class="title">
                         <i class="icon-settings"></i>
-                       تصاویر محصول
+                        تصاویر محصول
                     </h3>
                 </div><!-- /.portlet-title -->
 
@@ -99,15 +104,16 @@
                     <div class="form-body">
 
 
-
-                       
                     </div><!-- /.form-body -->
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -125,9 +131,9 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="Wordpress">
                     <div class="form-body">
-                        
+
                     </div><!-- /.form-body -->
-                    <input type="number" name="page" />
+                    <input type="number" name="page"/>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
@@ -150,7 +156,7 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="VariationWordpress">
                     <div class="form-body">
-                        
+
                     </div><!-- /.form-body -->
 
                     <div class="form-actions">
@@ -175,7 +181,7 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="FixProductStocks">
                     <div class="form-body">
-                        
+
                     </div><!-- /.form-body -->
 
                     <div class="form-actions">
@@ -202,8 +208,6 @@
                     <div class="form-body">
 
 
-
-
                         <div class="form-group relative">
                             <input required="" type="file" name="file" class="form-control">
                             <label>آپلود فایل</label>
@@ -213,7 +217,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -225,26 +230,29 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
                 </form>
             </div><!-- /.portlet-body -->
         </div><!-- /.portlet -->
-        
+
         <div class="portlet box border shadow">
             <div class="portlet-heading">
                 <div class="portlet-title">
-                    <h5>  استعلام اعتبار سازمانی سرمایه انسانی</h5>
+                    <h5> استعلام اعتبار سازمانی سرمایه انسانی</h5>
                 </div><!-- /.portlet-title -->
 
             </div><!-- /.portlet-heading -->
             <div class="portlet-body" style="">
-                <form role="form" method="post" asp-page-handler="UpdateUserWalletsCredit" enctype="multipart/form-data">
+                <form role="form" method="post" asp-page-handler="UpdateUserWalletsCredit"
+                      enctype="multipart/form-data">
                     <div class="form-body">
                         <h5 class="text-warning">کد پرسنلی - شماره همراه - مانده اعتبار</h5>
-
 
 
                         <div class="form-group relative">
@@ -256,7 +264,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -268,7 +277,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -289,7 +301,7 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="ProductList">
                     <div class="form-body">
-                        
+
                     </div><!-- /.form-body -->
 
                     <div class="form-actions">
@@ -303,7 +315,7 @@
                 </form>
             </div><!-- /.portlet-body -->
         </div><!-- /.portlet -->
-        
+
         <div class="portlet box border shadow">
             <div class="portlet-heading">
                 <div class="portlet-title">
@@ -314,10 +326,10 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="GetProductFromWordpressById">
                     <div class="form-body">
-                       
+
                     </div><!-- /.form-body -->
 
-                    <input type="text" name="pid" class="form-control" />
+                    <input type="text" name="pid" class="form-control"/>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
@@ -340,10 +352,10 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="GetCateguriesFromWordpress">
                     <div class="form-body">
-                       
+
                     </div><!-- /.form-body -->
 
-                    <input type="text" name="pageCategury" class="form-control" />
+                    <input type="text" name="pageCategury" class="form-control"/>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
@@ -366,7 +378,7 @@
             <div class="portlet-body" style="">
                 <form role="form" method="post" asp-page-handler="DatetimeChange">
                     <div class="form-body">
-                        
+
                     </div><!-- /.form-body -->
 
 
@@ -394,8 +406,6 @@
                     <div class="form-body">
 
 
-                        
-
                         <div class="form-group relative">
                             <input required="" type="file" name="file" class="form-control">
                             <label>آپلود فایل</label>
@@ -405,7 +415,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -417,7 +428,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -439,7 +453,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ثبت
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -455,10 +472,9 @@
 
             </div><!-- /.portlet-heading -->
             <div class="portlet-body" style="">
-                <form role="form" method="post" asp-page-handler="EditCateguriesOfProducts" enctype="multipart/form-data">
+                <form role="form" method="post" asp-page-handler="EditCateguriesOfProducts"
+                      enctype="multipart/form-data">
                     <div class="form-body">
-
-
 
 
                         <div class="form-group relative">
@@ -470,7 +486,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -482,7 +499,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -498,10 +518,9 @@
 
             </div><!-- /.portlet-heading -->
             <div class="portlet-body" style="">
-                <form role="form" method="post" asp-page-handler="AddUsersAndWalletCredit" enctype="multipart/form-data">
+                <form role="form" method="post" asp-page-handler="AddUsersAndWalletCredit"
+                      enctype="multipart/form-data">
                     <div class="form-body">
-
-
 
 
                         <div class="form-group relative">
@@ -513,7 +532,8 @@
                                     <button type="button" class="btn btn-info">
                                         <i class="icon-picture"></i>
                                         آپلود عکس
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -525,7 +545,10 @@
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ذخیره
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -541,13 +564,16 @@
 
             </div><!-- /.portlet-heading -->
             <div class="portlet-body" style="">
-                <form role="form" method="post" asp-page-handler="SetBestStockId" >
+                <form role="form" method="post" asp-page-handler="SetBestStockId">
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-info btn-round">
                             <i class="icon-check"></i>
                             ثبت
-                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
                         </button>
 
                     </div><!-- /.form-actions -->
@@ -555,23 +581,23 @@
             </div><!-- /.portlet-body -->
         </div><!-- /.portlet -->
     </div>
-    
+
     <table>
         <thead>
-            <tr>
-                <th>id</th>
-                <th>message</th>
-            </tr>
+        <tr>
+            <th>id</th>
+            <th>message</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach(var item in Model.rw)
-            {
-                <tr>
-                    <td>@item.productId</td>
-                    <td>@item.error</td>
-                </tr>
-            }
-           
+        @foreach (var item in Model.rw)
+        {
+            <tr>
+                <td>@item.productId</td>
+                <td>@item.error</td>
+            </tr>
+        }
+
         </tbody>
     </table>
 </div><!-- /.row -->

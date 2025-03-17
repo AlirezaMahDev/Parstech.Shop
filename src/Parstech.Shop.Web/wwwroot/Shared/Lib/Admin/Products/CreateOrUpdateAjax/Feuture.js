@@ -15,14 +15,14 @@ function Filter() {
 
     $("#SearchFeutureForm").submit();
 }
+
 function OnCompleteFeuture(xhr) {
     // console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         var Data = xhr.responseJSON.object;
         console.log(Data);
         FillFeutureDataSet(Data);
@@ -32,8 +32,8 @@ function OnCompleteFeuture(xhr) {
             "paging": true,
             data: feutureDataSet,
             columns: [
-                { title: 'نام ویژگی' },
-                { title: 'عملیات' },
+                {title: 'نام ویژگی'},
+                {title: 'عملیات'},
             ],
             "columnDefs": [{
                 "targets": 1,
@@ -52,6 +52,7 @@ var feuturecaption = document.getElementById("feuturecaption");
 var AddFeutureInput_PropertyId = document.getElementById("AddFeutureInput_PropertyId");
 var AddFeutureInput_Id = document.getElementById("AddFeutureInput_Id");
 var DeleteAddFeutureInput_Id = document.getElementById("DeleteAddFeutureInput_Id");
+
 function FillFeutureDataSet(Data) {
     console.log(Data);
     Data.forEach(function (element) {
@@ -82,8 +83,7 @@ function OnCompleteAEFeuture(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (xhr.responseJSON.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد.")
             $("#AddEditFeutureModal").modal('hide');
@@ -94,8 +94,7 @@ function OnCompleteAEFeuture(xhr) {
             dataSet = [];
 
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError(xhr.responseJSON.object.message)
         }
 
@@ -117,8 +116,7 @@ function OnCompleteDeleteFeuture(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         ToastSuccess("عملیات با موفقیت انجام شد.")
         $("#DeleteFeutureModal").modal('hide');
         ClearDataSet();
@@ -140,8 +138,7 @@ function OnCompleteSub(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         SubCategury.innerHTML = null;
         var Data = xhr.responseJSON.object;
         Data.forEach(function (element) {

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.OrderDetail.Queries;
 
-namespace Shop.Application.Dapper.OrderDetail.Queries
+public interface IOrderDetailQueries
 {
-    public interface IOrderDetailQueries
-    {
-        string GetOrderDetailOfProductStockPriceId { get; }
-        string GetOrderDetailsOfSaleStore { get; }
-        string GetOrderDetailsOfAllSaleStore { get; }
-    }
+    string GetOrderDetailOfProductStockPriceId { get; }
+    string GetOrderDetailsOfSaleStore { get; }
+    string GetOrderDetailsOfAllSaleStore { get; }
 }

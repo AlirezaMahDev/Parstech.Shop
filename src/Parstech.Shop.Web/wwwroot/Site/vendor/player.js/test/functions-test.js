@@ -1,6 +1,6 @@
 import test from 'ava';
 import html from './helpers/html';
-import { getMethodName, isDomElement, isInteger, isVimeoUrl, getVimeoUrl } from '../src/lib/functions';
+import {getMethodName, isDomElement, isInteger, isVimeoUrl, getVimeoUrl} from '../src/lib/functions';
 
 test('getMethodName properly formats the method name', (t) => {
     t.true(getMethodName('color', 'get') === 'getColor');
@@ -51,9 +51,9 @@ test('isVimeoUrl identifies *.vimeo.com only', (t) => {
 });
 
 test('getVimeoUrl correctly returns a url from the embed parameters', (t) => {
-    t.true(getVimeoUrl({ id: 2 }) === 'https://vimeo.com/2');
-    t.true(getVimeoUrl({ url: 'http://vimeo.com/2' }) === 'https://vimeo.com/2');
-    t.true(getVimeoUrl({ url: 'https://vimeo.com/2' }) === 'https://vimeo.com/2');
+    t.true(getVimeoUrl({id: 2}) === 'https://vimeo.com/2');
+    t.true(getVimeoUrl({url: 'http://vimeo.com/2'}) === 'https://vimeo.com/2');
+    t.true(getVimeoUrl({url: 'https://vimeo.com/2'}) === 'https://vimeo.com/2');
 
 });
 
@@ -63,14 +63,14 @@ test('getVimeoUrl throws when the required keys don’t exist', (t) => {
     }, Error);
 
     t.throws(() => {
-        getVimeoUrl({ id: 'string' });
+        getVimeoUrl({id: 'string'});
     }, TypeError);
 
     t.throws(() => {
-        getVimeoUrl({ id: 'https://notvimeo.com/2' });
+        getVimeoUrl({id: 'https://notvimeo.com/2'});
     }, TypeError);
 
     t.throws(() => {
-        getVimeoUrl({ url: 'https://notvimeo.com/2' });
+        getVimeoUrl({url: 'https://notvimeo.com/2'});
     }, TypeError);
 });

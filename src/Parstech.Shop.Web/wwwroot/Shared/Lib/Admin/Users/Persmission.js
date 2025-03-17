@@ -1,15 +1,10 @@
 ﻿var PersmissoinData = document.getElementById("PersmissoinData");
 
 
-
-
 var UserRole_NumberuserId = document.getElementById("UserRole_NumberuserId");
 
 var UserRole_UserName2 = document.getElementById("UserRole_UserName2");
 var URole_RoleName = document.getElementById("URole_RoleName");
-
-
-
 
 
 function OnLoadingPersmissoinListGet() {
@@ -17,7 +12,7 @@ function OnLoadingPersmissoinListGet() {
 }
 
 function OnCompletePersmissoinListGet(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var list = xhr.responseJSON.object;
     list.forEach(function (element) {
 
@@ -34,13 +29,13 @@ function OnErrorPersmissoinListGet() {
 }
 
 function DeleteRole(role, user) {
-   
+
     UserRole_UserName2.value = user;
 
     URole_RoleName.value = role;
 
-   // console.log(UserRole_UserName2.value);
-   // console.log("role" + URole_RoleName.value);
+    // console.log(UserRole_UserName2.value);
+    // console.log("role" + URole_RoleName.value);
 
     $("#DeleteRoleForm").submit();
 }
@@ -50,13 +45,12 @@ function ShowRoleCreateModal() {
 }
 
 
-
 function OnLoadingAddRole() {
     PersmissoinData.innerHTML = null;
 }
 
 function OnCompleteAddRole(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -66,8 +60,7 @@ function OnCompleteAddRole(xhr) {
         ToastSuccess(Response.message);
         $('#PersmissoinDataModal').modal('hide');
         $('#RoleCreateModal').modal('hide');
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 
@@ -79,13 +72,12 @@ function OnErrorAddRole() {
 }
 
 
-
 function OnLoadingDeleteRole() {
     PersmissoinData.innerHTML = null;
 }
 
 function OnCompleteDeleteRole(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -95,8 +87,7 @@ function OnCompleteDeleteRole(xhr) {
         ToastSuccess(Response.message);
         $('#PersmissoinDataModal').modal('hide');
         $('#RoleCreateModal').modal('hide');
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

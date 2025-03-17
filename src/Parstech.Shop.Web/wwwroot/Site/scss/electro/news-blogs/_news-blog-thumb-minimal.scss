@@ -3,19 +3,19 @@
 ------------------------------------*/
 
 .u-blog-thumb-minimal {
-	padding: .5rem;
-	transition: $transition-timing $transition-function;
+  padding: .5rem;
+  transition: $transition-timing $transition-function;
 
-	&,
-	&__img {
-		@include border-radius($border-radius);
-	}
+  &,
+  &__img {
+    @include border-radius($border-radius);
+  }
 
-	&:hover {
-		background-color: $primary-darker;
-	}
+  &:hover {
+    background-color: $primary-darker;
+  }
 
-	&__img-wrapper {
-		width: 5rem;
-	}
+  &__img-wrapper {
+    width: 5rem;
+  }
 }

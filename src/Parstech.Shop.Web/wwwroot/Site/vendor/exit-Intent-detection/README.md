@@ -13,7 +13,6 @@ Requirements
 
 1. jQuery >= 1.4
 
-
 Installation
 ------------
 
@@ -36,7 +35,6 @@ Installation
                 console.log('Oops... trying to leave the page');
             });
 
-
 Reference
 ---------
 
@@ -52,7 +50,6 @@ Reference
 
         $.exitIntent('disable', { 'sensitivity': 100 })
 
-
 ### Settings
 
 The second parameter to the `$.exitIntent` plugin call can contain a
@@ -63,12 +60,11 @@ settings object. The following settings are recognized:
   milliseconds) the user is allowed to "exit" your page, but come back
   without triggering the `exitintent`. Default: 300.
 
-
 FAQ
 ---
 
 1. How do I display a modal popup when the user is trying to leave my
-page?
+   page?
 
    This plugin only deals with detecting when the user is leaving the
    page, and triggering the `exitintent` event. It's up to you do
@@ -81,7 +77,6 @@ page?
    There are no interesting events in a mobile site that can be used
    to try detect if the user is going to exit. This may be extremely
    difficult to implement reliably, if not impossible.
-
 
 Future Improvements
 -------------------

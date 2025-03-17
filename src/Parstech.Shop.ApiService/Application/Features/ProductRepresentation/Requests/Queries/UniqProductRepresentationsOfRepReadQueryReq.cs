@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.ProductRepresentation;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductRepresentation.Requests.Queries
-{
-    public record UniqProductRepresentationsOfRepReadQueryReq(int repId) : IRequest<ProductRepresentationList>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
+
+public record UniqProductRepresentationsOfRepReadQueryReq(int repId) : IRequest<ProductRepresentationList>;

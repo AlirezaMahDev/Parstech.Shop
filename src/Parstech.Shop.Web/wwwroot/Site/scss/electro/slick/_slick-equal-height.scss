@@ -3,19 +3,19 @@
 ------------------------------------*/
 
 .u-slick--equal-height {
-	.slick {
-		&-list {
-			height: 100%;
-		}
+  .slick {
+    &-list {
+      height: 100%;
+    }
 
-		&-track {
-		  display: flex;
-		  height: 100%;
+    &-track {
+      display: flex;
+      height: 100%;
 
-		  .slick-slide {
-		  	display: flex;
-  			height: auto;
-		  }
-		}
-	}
+      .slick-slide {
+        display: flex;
+        height: auto;
+      }
+    }
+  }
 }

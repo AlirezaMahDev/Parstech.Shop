@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="fa" dir="rtl" class="rtl">
 <head>
     <title>پیشخوان </title>
@@ -10,68 +11,68 @@
     <link rel="shortcut icon" href="~/favicon.ico">
 
     <!-- BEGIN CSS -->
-    <partial name="Admin/_Css" />
-    @await RenderSectionAsync("Styles",required: false)
+    <partial name="Admin/_Css"/>
+    @await RenderSectionAsync("Styles", false)
 
 
     <!-- END PAGE CSS -->
 </head>
 <body class="active-ripple theme-darkorange fix-header sidebar-extra">
-    <!-- BEGIN LOEADING -->
-    <div id="loader">
-        <div class="spinner"></div>
-    </div><!-- /loader -->
-    <!-- END LOEADING -->
-    <!-- BEGIN HEADER -->
-    <div class="navbar navbar-fixed-top" id="main-navbar">
-        <div class="header-right">
-            <a href="/" class="logo-con">
-                <img src="~/Shared/Images/logo.png" width="150" class="img-responsive center-block" alt="">
-            </a>
-        </div><!-- /.header-right -->
-        <div class="header-left">
-            <div class="top-bar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#" class="btn" id="toggle-sidebar">
-                            <span class="menu"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="btn open" id="toggle-sidebar-top">
-                            <i class="icon-user-following"></i>
-                        </a>
-                    </li>
-                   @* <li>
+<!-- BEGIN LOEADING -->
+<div id="loader">
+    <div class="spinner"></div>
+</div><!-- /loader -->
+<!-- END LOEADING -->
+<!-- BEGIN HEADER -->
+<div class="navbar navbar-fixed-top" id="main-navbar">
+    <div class="header-right">
+        <a href="/" class="logo-con">
+            <img src="~/Shared/Images/logo.png" width="150" class="img-responsive center-block" alt="">
+        </a>
+    </div><!-- /.header-right -->
+    <div class="header-left">
+        <div class="top-bar">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="btn" id="toggle-sidebar">
+                        <span class="menu"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn open" id="toggle-sidebar-top">
+                        <i class="icon-user-following"></i>
+                    </a>
+                </li>
+                @* <li>
                         <a href="#" class="btn" id="toggle-dark-mode">
                             <i class="icon-bulb"></i>
                         </a>
                     </li>*@
-                </ul>
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="dropdown">
-                        <a href="#" class="btn" id="toggle-fullscreen">
-                            <i class="icon-size-fullscreen"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown dropdown-messages">
-                        <a href="#" class="dropdown-toggle btn" data-bs-toggle="dropdown">
-                            <i class="icon-envelope"></i>
-                           @* <span class="badge badge-primary">
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a href="#" class="btn" id="toggle-fullscreen">
+                        <i class="icon-size-fullscreen"></i>
+                    </a>
+                </li>
+                <li class="dropdown dropdown-messages">
+                    <a href="#" class="dropdown-toggle btn" data-bs-toggle="dropdown">
+                        <i class="icon-envelope"></i>
+                        @* <span class="badge badge-primary">
                                 4
                             </span>*@
-                        </a>
-                        <ul class="dropdown-menu has-scrollbar">
-                            <li class="dropdown-header clearfix">
+                    </a>
+                    <ul class="dropdown-menu has-scrollbar">
+                        <li class="dropdown-header clearfix">
                                 <span class="float-start">
                                     <a href="#" rel="tooltip" title="خواندن همه" data-placement="left">
                                         <i class="icon-eye"></i>
                                     </a>
                                     شما 4 پیام تازه دارید.
                                 </span>
-                            </li>
-                            <li class="dropdown-body">
-                                @*<ul class="dropdown-menu-list">
+                        </li>
+                        <li class="dropdown-body">
+                            @*<ul class="dropdown-menu-list">
                                     <li class="clearfix">
                                         <a href="#">
                                             <p class="clearfix">
@@ -133,24 +134,24 @@
                                         </a>
                                     </li>
                                 </ul>*@
-                            </li>
-                            <li class="dropdown-footer clearfix">
-                                <a href="#">
-                                    <i class="icon-list fa-flip-horizontal"></i>
-                                    مشاهده همه پیام ها
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown dropdown-announces">
-                        <a href="#" class="dropdown-toggle btn" data-bs-toggle="dropdown">
-                            <i class="icon-bell"></i>
-                            @*<span class="badge badge-warning">
+                        </li>
+                        <li class="dropdown-footer clearfix">
+                            <a href="#">
+                                <i class="icon-list fa-flip-horizontal"></i>
+                                مشاهده همه پیام ها
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-announces">
+                    <a href="#" class="dropdown-toggle btn" data-bs-toggle="dropdown">
+                        <i class="icon-bell"></i>
+                        @*<span class="badge badge-warning">
                                 5
                             </span>*@
-                        </a>
-                        <ul class="dropdown-menu has-scrollbar">
-                            <li class="dropdown-header clearfix">
+                    </a>
+                    <ul class="dropdown-menu has-scrollbar">
+                        <li class="dropdown-header clearfix">
                                 <span class="float-start">
                                     <a href="#" rel="tooltip" title="خواندن همه" data-placement="left">
                                         <i class="icon-eye"></i>
@@ -160,9 +161,9 @@
                                     </span>
                                 </span>
 
-                            </li>
-                            <li class="dropdown-body">
-                               @* <ul class="dropdown-menu-list">
+                        </li>
+                        <li class="dropdown-body">
+                            @* <ul class="dropdown-menu-list">
                                     <li class="clearfix">
                                         <a href="#">
                                             <p class="clearfix">
@@ -224,74 +225,75 @@
                                         </a>
                                     </li>
                                 </ul>*@
-                            </li>
-                            <li class="dropdown-footer clearfix">
-                                <a href="#">
-                                    <i class="icon-list fa-flip-horizontal"></i>
-                                    مشاهده همه اعلانات
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        </li>
+                        <li class="dropdown-footer clearfix">
+                            <a href="#">
+                                <i class="icon-list fa-flip-horizontal"></i>
+                                مشاهده همه اعلانات
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-                    <partial name="Shared/_UserNamePartialMenu" />
-                </ul><!-- /.navbar-left -->
-            </div><!-- /.top-bar -->
-        </div><!-- /.header-left -->
-    </div><!-- /.navbar -->
-    <!-- END HEADER -->
-    <!-- BEGIN WRAPPER -->
-    <div id="wrapper">
+                <partial name="Shared/_UserNamePartialMenu"/>
+            </ul><!-- /.navbar-left -->
+        </div><!-- /.top-bar -->
+    </div><!-- /.header-left -->
+</div><!-- /.navbar -->
+<!-- END HEADER -->
+<!-- BEGIN WRAPPER -->
+<div id="wrapper">
 
-        <!-- BEGIN SIDEBAR -->
+    <!-- BEGIN SIDEBAR -->
 
-        <partial name="Admin/_SideBar" />
-        <!-- END SIDEBAR -->
-        <!-- BEGIN PAGE CONTENT -->
-        <div id="page-content">
-            @RenderBody()
-        </div>
-       
-        <!-- END PAGE CONTENT -->
+    <partial name="Admin/_SideBar"/>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN PAGE CONTENT -->
+    <div id="page-content">
+        @RenderBody()
+    </div>
 
-    </div><!-- /#wrapper -->
-    <!-- END WRAPPER -->
+    <!-- END PAGE CONTENT -->
 
-    <div class="row footer-container">
-        <div class="col-md-12">
-            <div class="copyright">
-                <p class="float-start">
-                    کلیه حقوق سامانه فروش پارس تک متعلق به شرکت پارس تکنولوژی سداد می باشد.
-                </p>
-                <p class="float-end ltr tahoma">
-                    <span>©</span>
-                    <a href="http://www.rayanik.com" target="_blank">Parstech</a>
-                    <span>V 0.0.1</span>
-                </p>
-            </div><!-- /.copyright -->
-        </div><!-- /.col-md-12 -->
-    </div><!-- /.row -->
-    <!-- BEGIN SETTING -->
-    
-    <!-- END SETTING -->
-    <!-- BEGIN CODE MODAL -->
-    <div class="modal fade" id="code-modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn btn-default btn-round btn-icon float-start" id="btn-copy"><i class="far fa-copy"></i></button>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">کپی کردن کدها</h4>
-                </div>
-                <div class="modal-body"></div>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
-    <!-- END CODE MODAL -->
-    
+</div><!-- /#wrapper -->
+<!-- END WRAPPER -->
 
-<partial name="Admin/_Js" />
-@await RenderSectionAsync("Scripts",required: false)
+<div class="row footer-container">
+    <div class="col-md-12">
+        <div class="copyright">
+            <p class="float-start">
+                کلیه حقوق سامانه فروش پارس تک متعلق به شرکت پارس تکنولوژی سداد می باشد.
+            </p>
+            <p class="float-end ltr tahoma">
+                <span>©</span>
+                <a href="http://www.rayanik.com" target="_blank">Parstech</a>
+                <span>V 0.0.1</span>
+            </p>
+        </div><!-- /.copyright -->
+    </div><!-- /.col-md-12 -->
+</div><!-- /.row -->
+<!-- BEGIN SETTING -->
+
+<!-- END SETTING -->
+<!-- BEGIN CODE MODAL -->
+<div class="modal fade" id="code-modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn btn-default btn-round btn-icon float-start" id="btn-copy"><i
+                        class="far fa-copy"></i></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">کپی کردن کدها</h4>
+            </div>
+            <div class="modal-body"></div>
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+<!-- END CODE MODAL -->
+
+
+<partial name="Admin/_Js"/>
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>
 

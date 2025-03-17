@@ -36,7 +36,7 @@ function FillDataSet(Data) {
                 "<h5 class=''>" + element.amount + "</h5>",
                 "<h5 class=''>" + element.couponTypeName + "</h5>",
                 "<h5 class=''>" + element.expireDateShamsi + "</h5>",
-                "<button onclick='GetCouponSubmit(" + element.id + ")' class='btn btn-default'><i class=' fas fa-pencil Yellow m-1'></i>ویرایش </button><button onclick='DeleteCouponSubmit(" + element.id + "," + element.code +")' class='btn btn-default'><i class='far fa-circle-xmark Red m-1'></i>حذف</button>",
+                "<button onclick='GetCouponSubmit(" + element.id + ")' class='btn btn-default'><i class=' fas fa-pencil Yellow m-1'></i>ویرایش </button><button onclick='DeleteCouponSubmit(" + element.id + "," + element.code + ")' class='btn btn-default'><i class='far fa-circle-xmark Red m-1'></i>حذف</button>",
             ];
         dataSet.push(data);
     });
@@ -54,10 +54,10 @@ function FillDataSet(Data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -75,13 +75,14 @@ function RunPaging(page) {
     Parameter_CurrentPage.value = page;
     $("#GetDataForm").submit();
 }
+
 function OnLoadingData() {
 
     CleanItem();
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
 
@@ -90,11 +91,11 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'کد کوپن' },
-            { title: 'ارزش' },
-            { title: 'تایپ' },
-            { title: 'تاریخ انقضا' },
-            { title: 'عملیات' },
+            {title: 'کد کوپن'},
+            {title: 'ارزش'},
+            {title: 'تایپ'},
+            {title: 'تاریخ انقضا'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 4,
@@ -151,7 +152,7 @@ function CleanItem() {
 }
 
 function FillItem(element) {
-  //  console.log(element);
+    //  console.log(element);
     couponDto_Id.value = element.id;
     couponDto_Code.value = element.code;
     couponDto_Amount.value = element.amount;
@@ -174,7 +175,7 @@ function OnLoadingGetItem() {
 }
 
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     CleanItem();
     FillItem(xhr.responseJSON.object);
     $("#EditAndDeleteModal").modal("show");
@@ -189,44 +190,43 @@ function GetCouponSubmit(id) {
     $("#GetCoupon").submit();
 }
 
-function DeleteCouponSubmit(id,code) {
+function DeleteCouponSubmit(id, code) {
     IdForInputs(id);
 
-   
-        swal({
-            title: '  آیا از حذف کوپن '+ code +' مطمئن هستید؟',
-            type: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#f44336',
-            cancelButtonColor: '#777',
-            confirmButtonText: 'بله، حذف شود. '
-        }).then(function () {
-            $("#DeleteCoupon").submit();
-        }, function (dismiss) {
-            if (dismiss === 'cancel') {
-                swal(
-                    'لغو گردید',
-                    'کوپن شما همچنان وجود دارد.',
-                    'error'
-                ).catch(swal.noop);
-            }
-        }).catch(swal.noop);
-  
 
-    
+    swal({
+        title: '  آیا از حذف کوپن ' + code + ' مطمئن هستید؟',
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#f44336',
+        cancelButtonColor: '#777',
+        confirmButtonText: 'بله، حذف شود. '
+    }).then(function () {
+        $("#DeleteCoupon").submit();
+    }, function (dismiss) {
+        if (dismiss === 'cancel') {
+            swal(
+                'لغو گردید',
+                'کوپن شما همچنان وجود دارد.',
+                'error'
+            ).catch(swal.noop);
+        }
+    }).catch(swal.noop);
+
+
 }
 
 function OnLoadingUpdate() {
     CleanItem();
 }
+
 function OnCompleteUpdate(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#EditAndDeleteModal").modal("hide");
 
@@ -240,8 +240,7 @@ function OnCompleteUpdate(xhr) {
             xhr.responseJSON.errors.forEach(function (element) {
                 ToastError(element.errorMessage)
             });
-        }
-        else { 
+        } else {
             ToastSuccess("عملیات با موفقیت انجام شد")
         }
     }
@@ -255,13 +254,13 @@ function OnErrorUpdate() {
 function OnLoadingDelete() {
     CleanItem();
 }
+
 function OnCompleteDelete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
 
         tableMain
@@ -270,14 +269,13 @@ function OnCompleteDelete(xhr) {
         dataSet = [];
         $("#GetDataForm").submit();
 
-        
+
         if (!xhr.responseJSON.isSuccessed) {
             ToastError(xhr.responseJSON.message)
-        }
-        else {
+        } else {
             ToastSuccess(xhr.responseJSON.message)
         }
-        
+
     }
 
 }

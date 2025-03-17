@@ -1,22 +1,16 @@
-﻿using Shop.Application.DTOs.SiteSetting;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.SocialSetting;
+﻿using AutoMapper;
+
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Application.DTOs;
 
 
-namespace Shop.Application.Profiles
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class SocialSettingMapping : Profile
 {
-    public class SocialSettingMapping:Profile
+    public SocialSettingMapping()
     {
-        public SocialSettingMapping()
-        {
-            CreateMap<SocialSetting, SocialSettingDto>().ReverseMap();
-            //CreateMap<List<SocialSetting>, List<SocialSettingDto>>().ReverseMap();
-        }
+        CreateMap<SocialSetting, SocialSettingDto>().ReverseMap();
+        //CreateMap<List<SocialSetting>, List<SocialSettingDto>>().ReverseMap();
     }
 }

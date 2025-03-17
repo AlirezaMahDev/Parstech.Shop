@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Paging;
-using Shop.Application.DTOs.ProductRepresentation;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductRepresentation.Requests.Queries
-{
-    public record ProductPresentationsWithProductPagingQueryReq(ProductRepresenationParameterDto Parameter) : IRequest<PagingDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
+
+public record ProductPresentationsWithProductPagingQueryReq(ProductRepresenationParameterDto Parameter)
+    : IRequest<PagingDto>;

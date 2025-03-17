@@ -1,27 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.Web.Services.GrpcClients;
-using Shop.Application.DTOs.Categury;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Shop.Web.Pages.Components
+namespace Parstech.Shop.Web.Pages.Components;
+
+public class GetCategurySelectModel : PageModel
 {
-    public class GetCategurySelectModel : PageModel
+    #region Constructor
+
+    private readonly ISelectionsAdminGrpcClient _selectionsClient;
+
+    public GetCategurySelectModel(ISelectionsAdminGrpcClient selectionsClient)
     {
-        #region Constructor
-        private readonly ISelectionsAdminGrpcClient _selectionsClient;
+        _selectionsClient = selectionsClient;
+    }
 
-        public GetCategurySelectModel(ISelectionsAdminGrpcClient selectionsClient)
-        {
-            _selectionsClient = selectionsClient;
-        }
-        #endregion
+    #endregion
 
-        public List<CategurySelectDto> list { get; set; }
-        public async Task OnGet()
-        {
-            list = await _selectionsClient.GetCategoriesSelectAsync();
-        }
+    public List<CategurySelectDto> list { get; set; }
+
+    public async Task OnGet()
+    {
+        list = await _selectionsClient.GetCategoriesSelectAsync();
     }
 }

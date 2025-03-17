@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Setting.SocialModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Setting.SocialModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -17,11 +18,14 @@
                 <div class="buttons-box">
                     <button onclick="ShowCreateModal()" class="btn btn-sm btn-success btn-round ">
                         <i class="icon-plus text-success"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
-                   
+
                 </div>
-                
+
                 <!-- /.buttons-box -->
 
             </div><!-- /.portlet-heading -->
@@ -29,27 +33,28 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th>شبکه</th>
-                                <th>لینک</th>
-                                <th>عملیات</th>
+                        <tr>
+                            <th>شبکه</th>
+                            <th>لینک</th>
+                            <th>عملیات</th>
 
-                            </tr>
+                        </tr>
                         </thead>
                         <tbody>
 
-                            @foreach (var item in Model.List)
-                            {
-                                <tr>
-                                    <td>@item.SocialName</td>
-                                    <td>@item.Site</td>
-                                    <td>
-                                        <button class="btn btn-warning round" onclick="GetEditData(@item.Id)">ویرایش</button>
+                        @foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td>@item.SocialName</td>
+                                <td>@item.Site</td>
+                                <td>
+                                    <button class="btn btn-warning round" onclick="GetEditData(@item.Id)">ویرایش
+                                    </button>
 
-                                    </td>
+                                </td>
 
-                                </tr>
-                            }
+                            </tr>
+                        }
 
 
                         </tbody>
@@ -70,7 +75,7 @@
       data-ajax-complete="OnCompleteGet"
       data-ajax-failure="OnErrorGet">
 
-    <input type="hidden" asp-for="Id" class="Input_Id" />
+    <input type="hidden" asp-for="Id" class="Input_Id"/>
 </form>
 
 <div id="modal" class="modal fade" role="dialog" tabindex="-1">
@@ -83,27 +88,28 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <p class="text-center m-t-30 m-b-40"id="image">
-                            
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
                         </p>
                     </div>
                     <div class="col-lg-12">
-                        <form method="post" class="form-horizontal" role="form"enctype="multipart/form-data"
+                        <form method="post" class="form-horizontal" role="form" enctype="multipart/form-data"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-begin="OnLoadingUpdate"
                               data-ajax-complete="OnCompleteUpdate"
                               data-ajax-failure="OnErrorUpdate">
-                            
-                            
-                            <input type="hidden" asp-for="Input.Id" class="Input_Id" />
-                            <input type="hidden" asp-for="Input.Image" id="Input_Image" />
-                            
+
+
+                            <input type="hidden" asp-for="Input.Id" class="Input_Id"/>
+                            <input type="hidden" asp-for="Input.Image" id="Input_Image"/>
+
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>نام شبکه</label>
                                 <div class="form-group round">
-                                    <input asp-for="Input.SocialName" id="Input_SocialName" type="text" class="form-control">
+                                    <input asp-for="Input.SocialName" id="Input_SocialName" type="text"
+                                           class="form-control">
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
 
@@ -124,16 +130,18 @@
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>توضیحات</label>
                                 <div class="form-group round">
-                                    <textarea asp-for="Input.Description" id="Input_Description" type="text" class="form-control"></textarea>
+                                    <textarea asp-for="Input.Description" id="Input_Description" type="text"
+                                              class="form-control"></textarea>
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
-                            <!-- /.col-md-8 --> 
+                            <!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <div class="form-group relative">
                                     <input asp-for="Input.ImageFile" type="file" class="form-control">
                                     <label>تصویر شیکه </label>
                                     <div class="input-group round">
-                                        <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                        <input type="text" class="form-control file-input"
+                                               placeholder="برای آپلود کلیک کنید">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-info">
                                                 <i class="icon-picture"></i>
@@ -154,7 +162,8 @@
                                     ثبت
                                     <div class="paper-ripple">
                                         <div class="paper-ripple__background"></div>
-                                        <div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
                                 </button>
                             </div><!-- /.col-md-8 -->
                         </form>
@@ -170,8 +179,9 @@
 
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

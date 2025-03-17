@@ -1,21 +1,15 @@
-﻿using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
 
-namespace Shop.Persistence.Repositories
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class ShippingTypeRepository : GenericRepository<ShippingType>, IShippingTypeRepository
 {
-    public class ShippingTypeRepository:GenericRepository<ShippingType>, IShippingTypeRepository
+    private readonly DatabaseContext _context;
+
+    public ShippingTypeRepository(DatabaseContext context) : base(context)
     {
-        private readonly DatabaseContext _context;
-        public ShippingTypeRepository(DatabaseContext context):base(context) 
-        { 
-            _context = context;
-        }
-        
+        _context = context;
     }
 }

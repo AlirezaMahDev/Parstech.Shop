@@ -1,7 +1,7 @@
 ﻿@page "{Status}"
-@model Shop.Web.Pages.Checkout.PaymentModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Checkout.PaymentModel
 @{
-   
     ViewData["Title"] = "بازگشت از پرداخت";
 }
 <main id="content" role="main">
@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="row">
-            <partial name="Site/_PanelSideBar" />
+            <partial name="Site/_PanelSideBar"/>
             <div class="col-lg-9 order-lg-1">
                 <div class="pb-7 mb-7">
                     <!-- Title -->
@@ -41,12 +41,10 @@
                                 <h3>پرداخت ناموفق</h3>
                                 <h5>@Model.Result.Message</h5>
                             }
-                           
+
                         </div><!-- /.panel-body -->
                     </div>
                     <!-- End Title -->
-
-
 
 
                 </div>

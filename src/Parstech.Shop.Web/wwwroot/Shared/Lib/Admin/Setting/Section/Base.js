@@ -30,8 +30,9 @@ function SectionIdForIllInput(id) {
         input.value = id;
     });
 
-    
+
 }
+
 function SectionDetailIdForIllInput(id) {
     var DetailIdList = document.querySelectorAll('.SectionDetail_Id');
     DetailIdList.forEach(function (input) {
@@ -49,7 +50,6 @@ function CleanModal() {
     Section_ProductId.value = null;
     Section_CateguryId.value = null;
     SectionDetail_BackgroundColor.value = null;
-   
 
 
     SectionDetail_SlideNavName.value = null;
@@ -62,9 +62,8 @@ function CleanModal() {
     SectionDetail_SectionTypeId.value = null;
     SectionDetail_ResponsiveSize.value = null;
     image.innerHTML = null;
-    
-}
 
+}
 
 
 function SectionCreate() {

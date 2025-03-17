@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Features.Section.Requests.Queries;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Section.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Section.Handlers.Queries;
+
+internal class SectionCheckQueryHandler : IRequestHandler<SectionCheckQueryReq, bool>
 {
-    internal class SectionCheckQueryHandler : IRequestHandler<SectionCheckQueryReq, bool>
+    private readonly ISectionRepository _sectionRep;
+
+    public SectionCheckQueryHandler(ISectionRepository sectionRep)
     {
+        _sectionRep = sectionRep;
+    }
 
-        private readonly ISectionRepository _sectionRep;
-
-        public SectionCheckQueryHandler(ISectionRepository sectionRep)
-        {
-            _sectionRep = sectionRep;
-        }
-
-        public async Task<bool> Handle(SectionCheckQueryReq request, CancellationToken cancellationToken)
-        {
-           return await _sectionRep.CheckSectionDetailExist(request.id);
-        }
+    public async Task<bool> Handle(SectionCheckQueryReq request, CancellationToken cancellationToken)
+    {
+        return await _sectionRep.CheckSectionDetailExist(request.id);
     }
 }

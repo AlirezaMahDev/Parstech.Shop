@@ -1,62 +1,60 @@
 ﻿using Newtonsoft.Json;
+
 using System.Net;
 
 
-namespace ZarinPal
+namespace Parstech.Shop.ApiService.Application.Dargah.ZarrinPal;
+
+internal class HttpCore
 {
-    class HttpCore
+    public string URL { get; set; }
+    public Method Method { get; set; }
+    public object Raw { get; set; }
+
+
+    public HttpCore(string URL)
     {
-        public String URL { get; set; }
-        public Method Method { get; set; }
-        public Object Raw { get; set; }
+        this.URL = URL;
+    }
 
-
-        public HttpCore(String URL)
-        {
-            this.URL = URL;
-        }
-
-        public HttpCore()
-        {
-            //TODO....
-        }
-
-
-        public String Get()
-        {
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(this.URL);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = Method.ToString();
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                if (this.Method == Method.POST)
-                {
-                    string json = JsonConvert.SerializeObject(Raw);
-                    streamWriter.Write(json);
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                }
-            }
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                return result.ToString();
-            }
-
-        }
+    public HttpCore()
+    {
+        //TODO....
     }
 
 
-
-    public enum Method
+    public string Get()
     {
-        GET,
-        POST
-    }
+        HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(URL);
+        httpWebRequest.ContentType = "application/json";
+        httpWebRequest.Method = Method.ToString();
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
+                                               SecurityProtocolType.Tls11 |
+                                               SecurityProtocolType.Tls |
+                                               SecurityProtocolType.Ssl3;
 
+        using (StreamWriter streamWriter = new(httpWebRequest.GetRequestStream()))
+        {
+            if (Method == Method.POST)
+            {
+                string json = JsonConvert.SerializeObject(Raw);
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+        }
+
+        HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        using (StreamReader streamReader = new(httpResponse.GetResponseStream()))
+        {
+            string result = streamReader.ReadToEnd();
+            return result.ToString();
+        }
+    }
+}
+
+public enum Method
+{
+    GET,
+    POST
 }

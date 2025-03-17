@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Dapper.Order.Commands;
 
-namespace Shop.Application.Dapper.Order.Commands
+public interface IOrderCommand
 {
-    public interface IOrderCommand
-    {
-        string GetOrderByOrderCode { get; }
-    }
+    string GetOrderByOrderCode { get; }
 }

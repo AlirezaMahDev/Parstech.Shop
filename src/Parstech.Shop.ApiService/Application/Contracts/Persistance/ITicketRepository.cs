@@ -1,16 +1,7 @@
-﻿using Shop.Application.DTOs.Paging;
-using Shop.Application.DTOs.Ticket;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface ITicketRepository : IGenericRepository<Ticket>
 {
-    public interface ITicketRepository : IGenericRepository<Ticket>
-    {
-
-    }
 }

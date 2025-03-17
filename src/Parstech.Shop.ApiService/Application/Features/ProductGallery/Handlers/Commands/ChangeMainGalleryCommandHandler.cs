@@ -1,58 +1,55 @@
 ﻿using AutoMapper;
-using Azure;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductGallery;
-using Shop.Application.DTOs.Response;
-using Shop.Application.Features.ProductGallery.Requests.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.ProductGallery.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.ProductGallery.Handlers.Commands;
+
+public class ChangeMainGalleryCommandHandler : IRequestHandler<ChangeMainGalleryCommandReq, ResponseDto>
 {
-    public class ChangeMainGalleryCommandHandler : IRequestHandler<ChangeMainGalleryCommandReq, ResponseDto>
+    private readonly IProductRepository _productRep;
+    private readonly IProductGallleryRepository _productGallleryRep;
+    private readonly IMapper _mapper;
+
+    public ChangeMainGalleryCommandHandler(IProductGallleryRepository productGallleryRep,
+        IProductRepository productRep,
+        IMapper mapper)
     {
-        private readonly IProductRepository _productRep;
-        private readonly IProductGallleryRepository _productGallleryRep;
-        private readonly IMapper _mapper;
+        _productGallleryRep = productGallleryRep;
+        _productRep = productRep;
+        _mapper = mapper;
+    }
 
-        public ChangeMainGalleryCommandHandler(IProductGallleryRepository productGallleryRep,
-            IProductRepository productRep, IMapper mapper)
+    public async Task<ResponseDto> Handle(ChangeMainGalleryCommandReq request, CancellationToken cancellationToken)
+    {
+        List<Domain.Models.ProductGallery> galleries =
+            await _productGallleryRep.GetGalleriesByProduct(request.productId);
+        foreach (Domain.Models.ProductGallery gallery in galleries)
         {
-            _productGallleryRep = productGallleryRep;
-            _productRep = productRep;
-            _mapper = mapper;
-        }
-        public async Task<ResponseDto> Handle(ChangeMainGalleryCommandReq request, CancellationToken cancellationToken)
-        {
-            var galleries = await _productGallleryRep.GetGalleriesByProduct(request.productId);
-            foreach (var gallery in galleries)
+            if (gallery.Id != request.galleryId)
             {
-                if (gallery.Id != request.galleryId)
+                if (gallery.IsMain)
                 {
-                    if (gallery.IsMain)
-                    {
-                        gallery.IsMain = false;
-                        await _productGallleryRep.UpdateAsync(gallery);
-                    }
-
-                }
-                else
-                {
-                    if (!gallery.IsMain)
-                    {
-                        gallery.IsMain = true;
-                        await _productGallleryRep.UpdateAsync(gallery);
-                    }
+                    gallery.IsMain = false;
+                    await _productGallleryRep.UpdateAsync(gallery);
                 }
             }
-            ResponseDto Response=new ResponseDto();
-            Response.IsSuccessed = true;
-            Response.Message = "عملیات با موفقیت انجام شد";
-            return Response;
+            else
+            {
+                if (!gallery.IsMain)
+                {
+                    gallery.IsMain = true;
+                    await _productGallleryRep.UpdateAsync(gallery);
+                }
+            }
         }
+
+        ResponseDto Response = new();
+        Response.IsSuccessed = true;
+        Response.Message = "عملیات با موفقیت انجام شد";
+        return Response;
     }
 }

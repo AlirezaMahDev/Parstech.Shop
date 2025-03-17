@@ -1,14 +1,14 @@
 ﻿@page
-@using Shop.Application.Contracts.Persistance
-@model Shop.Web.Pages.Admin.Setting.SectionsModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Setting.SectionsModel
 @{
     Layout = "Shared/Admin_Layout";
 }
 @inject ICateguryRepository _CateguryRep;
 @inject ISectionTypeRepository _sectionTypeRep;
 @{
-    var categuries =await _CateguryRep.GetAll();
-    var sectionTypes =await _sectionTypeRep.GetAll();
+    var categuries = await _CateguryRep.GetAll();
+    var sectionTypes = await _sectionTypeRep.GetAll();
 }
 
 
@@ -24,15 +24,18 @@
                 <div class="buttons-box ">
                     <button onclick="SectionCreate()" class="btn btn-sm btn-success btn-round hover-green">
                         <i class="icon-plus"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
-                    
+
 
                 </div>
             </div><!-- /.portlet-heading -->
             <div class="portlet-body" style="">
 
-                <div class="row" >
+                <div class="row">
                     @foreach (var item in Model.List)
                     {
                         <div class="col-lg-12">
@@ -40,21 +43,33 @@
                                 <div class="portlet-heading">
                                     <div class="portlet-title">
                                         <h3 class="title">
-                                            @item.SectionName 
+                                            @item.SectionName
                                         </h3>
                                     </div>
                                     <div class="buttons-box ">
-                                        <button onclick="SectionDetailCreate(@item.Id)" class="btn btn-sm btn-success btn-round hover-green">
+                                        <button onclick="SectionDetailCreate(@item.Id)"
+                                                class="btn btn-sm btn-success btn-round hover-green">
                                             <i class="icon-plus"></i>
-                                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
                                         </button>
-                                        <button onclick="SectionGetSubmit(@item.Id)" class="btn btn-sm btn-success btn-round hover-orange">
+                                        <button onclick="SectionGetSubmit(@item.Id)"
+                                                class="btn btn-sm btn-success btn-round hover-orange">
                                             <i class="icon-pencil"></i>
-                                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
                                         </button>
-                                        <button onclick="SectionDelete(@item.Id)" class="btn btn-sm btn-success btn-round hover-red">
+                                        <button onclick="SectionDelete(@item.Id)"
+                                                class="btn btn-sm btn-success btn-round hover-red">
                                             <i class="icon-trash"></i>
-                                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
                                         </button>
 
                                     </div>
@@ -66,25 +81,28 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped table-hover">
                                                 <thead>
-                                                    <tr>
-                                                        <th>زیر مجموعه</th>
+                                                <tr>
+                                                    <th>زیر مجموعه</th>
 
-                                                        <th>عملیات</th>
+                                                    <th>عملیات</th>
 
-                                                    </tr>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
                                                 <tr>
-                                                        <td>@itemDetail.Caption</td>
+                                                    <td>@itemDetail.Caption</td>
 
-                                                        <td>
-                                                            <button class="btn btn-warning round" onclick="SectionDetailGetSubmit(@itemDetail.Id)">ویرایش</button>
-                                                            <button class="btn btn-danger round" onclick="SectionDetailDelete(@itemDetail.Id)">حذف</button>
+                                                    <td>
+                                                        <button class="btn btn-warning round"
+                                                                onclick="SectionDetailGetSubmit(@itemDetail.Id)">ویرایش
+                                                        </button>
+                                                        <button class="btn btn-danger round"
+                                                                onclick="SectionDetailDelete(@itemDetail.Id)">حذف
+                                                        </button>
 
-                                                        </td>
+                                                    </td>
 
-                                                    </tr>
-
+                                                </tr>
 
 
                                                 </tbody>
@@ -115,10 +133,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        
+
                     </div>
                     <div class="col-lg-12">
-                        <form method="post" asp-page-handler="CreateUpdateSection" class="form-horizontal" role="form" enctype="multipart/form-data"
+                        <form method="post" asp-page-handler="CreateUpdateSection" class="form-horizontal" role="form"
+                              enctype="multipart/form-data"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-begin="OnLoadingSectionCU"
@@ -126,12 +145,13 @@
                               data-ajax-failure="OnErrorSectionCU">
 
 
-                            <input type="hidden" asp-for="SectionId" class="Section_Id" />
-                            <input type="hidden" asp-for="Section.Id" class="Section_Id" />
+                            <input type="hidden" asp-for="SectionId" class="Section_Id"/>
+                            <input type="hidden" asp-for="Section.Id" class="Section_Id"/>
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>نام قسمت</label>
                                 <div class="form-group round">
-                                    <input asp-for="Section.SectionName" id="Section_SectionName" type="text" class="form-control">
+                                    <input asp-for="Section.SectionName" id="Section_SectionName" type="text"
+                                           class="form-control">
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
 
@@ -162,13 +182,15 @@
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>اختصاص شناسه محصول به قسمت</label>
                                 <div class="form-group round">
-                                    <input asp-for="Section.ProductId" id="Section_ProductId" type="text" class="form-control">
+                                    <input asp-for="Section.ProductId" id="Section_ProductId" type="text"
+                                           class="form-control">
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>اختصاص دسته بندی به قسمت</label>
                                 <div class="form-group round">
-                                    <select asp-for="Section.CateguryId" id="Section_CateguryId" type="text" class="form-control">
+                                    <select asp-for="Section.CateguryId" id="Section_CateguryId" type="text"
+                                            class="form-control">
                                         @foreach (var cat in categuries)
                                         {
                                             <option value=@cat.GroupId>@cat.GroupTitle</option>
@@ -181,13 +203,14 @@
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>استایل قسمت</label>
                                 <div class="form-group round">
-                                    <select asp-for="Section.SectionTypeId" id="Section_SectionTypeId" type="text" class="form-control">
+                                    <select asp-for="Section.SectionTypeId" id="Section_SectionTypeId" type="text"
+                                            class="form-control">
                                         @foreach (var type in sectionTypes)
                                         {
                                             <option value=@type.Id>@type.Type</option>
                                         }
                                     </select>
-                                   
+
 
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
@@ -226,44 +249,49 @@
                         </p>
                     </div>
                     <div class="col-lg-12">
-                        <form method="post" asp-page-handler="CreateUpdateSectionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
+                        <form method="post" asp-page-handler="CreateUpdateSectionDetail" class="form-horizontal"
+                              role="form" enctype="multipart/form-data"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-begin="OnLoadingSectionDetailCU"
                               data-ajax-complete="OnCompleteSectionDetailCU"
                               data-ajax-failure="OnErrorSectionDetailCU">
 
-                            <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id" />
-                            <input type="hidden" asp-for="SectionDetail.Id" class="SectionDetail_Id" />
+                            <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id"/>
+                            <input type="hidden" asp-for="SectionDetail.Id" class="SectionDetail_Id"/>
                             @*<input type="hidden" asp-for="SectionDetail.Image" id="SectionDetail_Image" />*@
-                            <input type="hidden" asp-for="SectionDetail.SectionId" id="SectionDetail_SectionId" />
-                            <input type="hidden" asp-for="SectionId" class="Section_Id" />
+                            <input type="hidden" asp-for="SectionDetail.SectionId" id="SectionDetail_SectionId"/>
+                            <input type="hidden" asp-for="SectionId" class="Section_Id"/>
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label> عنوان</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.Caption" id="SectionDetail_Caption" type="text" class="form-control">
+                                    <input asp-for="SectionDetail.Caption" id="SectionDetail_Caption" type="text"
+                                           class="form-control">
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>زیر عنوان</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.SubCaption" id="SectionDetail_SubCaption" type="text" class="form-control">
+                                    <input asp-for="SectionDetail.SubCaption" id="SectionDetail_SubCaption" type="text"
+                                           class="form-control">
                                 </div><!-- /.input-group -->
-                            </div><!-- /.col-md-8 --> 
-                            
+                            </div><!-- /.col-md-8 -->
+
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>عنوان اسلایدر</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.SlideNavName" id="SectionDetail_SlideNavName" type="text" class="form-control">
+                                    <input asp-for="SectionDetail.SlideNavName" id="SectionDetail_SlideNavName"
+                                           type="text" class="form-control">
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>اختصاص دسته بندی</label>
                                 <div class="form-group round">
-                                    <select asp-for="SectionDetail.CateguryId" id="SectionDetail_CateguryId" type="text" class="form-control">
+                                    <select asp-for="SectionDetail.CateguryId" id="SectionDetail_CateguryId" type="text"
+                                            class="form-control">
                                         @foreach (var cat in categuries)
                                         {
                                             <option value=@cat.GroupId>@cat.GroupTitle</option>
@@ -271,11 +299,12 @@
                                     </select>
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
-                            
+
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>استایل قسمت</label>
                                 <div class="form-group round">
-                                    <select asp-for="SectionDetail.SectionTypeId" id="SectionDetail_SectionTypeId" type="text" class="form-control">
+                                    <select asp-for="SectionDetail.SectionTypeId" id="SectionDetail_SectionTypeId"
+                                            type="text" class="form-control">
                                         @foreach (var type in sectionTypes)
                                         {
                                             <option value=@type.Id>@type.Type</option>
@@ -288,40 +317,43 @@
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>لینک</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.Link" id="SectionDetail_Link" type="text" class="form-control" />
+                                    <input asp-for="SectionDetail.Link" id="SectionDetail_Link" type="text"
+                                           class="form-control"/>
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>ابعاد ریسپانسیو</label>
                                 <div class="form-group round">
-                                    <select asp-for="SectionDetail.ResponsiveSize" id="SectionDetail_ResponsiveSize" type="text" class="form-control">
-                                      
-                                            <option value="Desktop">سایز استاندارد (Desktop)</option>
-                                            <option value="Mobile">ابعاد موبایل (Mobile)</option>
-                                        
+                                    <select asp-for="SectionDetail.ResponsiveSize" id="SectionDetail_ResponsiveSize"
+                                            type="text" class="form-control">
+
+                                        <option value="Desktop">سایز استاندارد (Desktop)</option>
+                                        <option value="Mobile">ابعاد موبایل (Mobile)</option>
+
                                     </select>
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
-                            
+
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>تعداد ستون</label>
                                 <div class="form-group round">
-                                    <select asp-for="SectionDetail.ColSpace" id="SectionDetail_ColSpace" type="text" class="form-control">
-                                      
-                                            <option value="1">1 ستون</option>
-                                            <option value="2">2 ستون</option>
-                                            <option value="3">3 ستون</option>
-                                            <option value="4">4 ستون</option>
-                                            <option value="5">5 ستون</option>
-                                            <option value="6">6 ستون</option>
-                                            <option value="7">7 ستون</option>
-                                            <option value="8">8 ستون</option>
-                                            <option value="9">9 ستون</option>
-                                            <option value="10">10 ستون</option>
-                                            <option value="11">11 ستون</option>
-                                            <option value="12">12 ستون</option>
-                                            
+                                    <select asp-for="SectionDetail.ColSpace" id="SectionDetail_ColSpace" type="text"
+                                            class="form-control">
+
+                                        <option value="1">1 ستون</option>
+                                        <option value="2">2 ستون</option>
+                                        <option value="3">3 ستون</option>
+                                        <option value="4">4 ستون</option>
+                                        <option value="5">5 ستون</option>
+                                        <option value="6">6 ستون</option>
+                                        <option value="7">7 ستون</option>
+                                        <option value="8">8 ستون</option>
+                                        <option value="9">9 ستون</option>
+                                        <option value="10">10 ستون</option>
+                                        <option value="11">11 ستون</option>
+                                        <option value="12">12 ستون</option>
+
                                     </select>
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
@@ -329,10 +361,12 @@
                             <!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <div class="form-group relative">
-                                    <input asp-for="SectionDetail.BackgroundImageFile" id="SectionDetail.BackgroundImageFile" type="file" class="form-control">
-                                    <label>تصویر پس زمینه  </label>
+                                    <input asp-for="SectionDetail.BackgroundImageFile"
+                                           id="SectionDetail.BackgroundImageFile" type="file" class="form-control">
+                                    <label>تصویر پس زمینه </label>
                                     <div class="input-group round">
-                                        <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                        <input type="text" class="form-control file-input"
+                                               placeholder="برای آپلود کلیک کنید">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-info">
                                                 <i class="icon-picture"></i>
@@ -347,23 +381,27 @@
                                     <div class="help-block"></div>
                                 </div><!-- /.form-group -->
                                 <label>شرح تصویر</label>
-                                <input asp-for="SectionDetail.BackgroundImage" id="SectionDetail_BackgroundImage" type="text" class="form-control">
+                                <input asp-for="SectionDetail.BackgroundImage" id="SectionDetail_BackgroundImage"
+                                       type="text" class="form-control">
                             </div><!-- /.col-md-8 -->
                             <!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>رنگ پس زمینه(کد رنگ را وارد نمایید)</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.BackgroundColor" id="SectionDetail_BackgroundColor" type="text" class="form-control">
+                                    <input asp-for="SectionDetail.BackgroundColor" id="SectionDetail_BackgroundColor"
+                                           type="text" class="form-control">
 
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
-                           
+
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <div class="form-group relative">
-                                    <input asp-for="SectionDetail.ImageFile" id="SectionDetail.ImageFile" type="file" class="form-control">
-                                    <label>تصویر  </label>
+                                    <input asp-for="SectionDetail.ImageFile" id="SectionDetail.ImageFile" type="file"
+                                           class="form-control">
+                                    <label>تصویر </label>
                                     <div class="input-group round">
-                                        <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                        <input type="text" class="form-control file-input"
+                                               placeholder="برای آپلود کلیک کنید">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-info">
                                                 <i class="icon-picture"></i>
@@ -378,12 +416,14 @@
                                     <div class="help-block"></div>
                                 </div><!-- /.form-group -->
                                 <label>شرح تصویر</label>
-                                <input asp-for="SectionDetail.Image" id="SectionDetail_Image" type="text" class="form-control">
+                                <input asp-for="SectionDetail.Image" id="SectionDetail_Image" type="text"
+                                       class="form-control">
                             </div><!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>لینک و یا آیکن تصویر</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.Image" id="SectionDetail_Image" type="text" class="form-control">
+                                    <input asp-for="SectionDetail.Image" id="SectionDetail_Image" type="text"
+                                           class="form-control">
 
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
@@ -391,8 +431,9 @@
                             <div class="col-md-8 col-lg-6 m-auto m-b-10">
                                 <label>متن جایگزین تصویر</label>
                                 <div class="form-group round">
-                                    <input asp-for="SectionDetail.Alt" id="SectionDetail_Alt" type="text" class="form-control">
-                                    
+                                    <input asp-for="SectionDetail.Alt" id="SectionDetail_Alt" type="text"
+                                           class="form-control">
+
                                 </div><!-- /.input-group -->
                             </div><!-- /.col-md-8 -->
                             <div class="col-md-8 col-lg-6 m-auto m-b-50">
@@ -417,22 +458,24 @@
 </div>
 
 
-<form method="post" id="SectionForm" asp-page-handler="Section" class="form-horizontal" role="form" enctype="multipart/form-data"
+<form method="post" id="SectionForm" asp-page-handler="Section" class="form-horizontal" role="form"
+      enctype="multipart/form-data"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-begin="OnLoadingSection"
       data-ajax-complete="OnCompleteSection"
       data-ajax-failure="OnErrorSection">
-    <input type="hidden" asp-for="SectionId" class="Section_Id" />
+    <input type="hidden" asp-for="SectionId" class="Section_Id"/>
 </form>
 
-<form method="post" id="SectionDetailForm" asp-page-handler="SectionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
-        data-ajax="true"
-        data-ajax-method="POST"
-        data-ajax-begin="OnLoadingSectionDetail"
+<form method="post" id="SectionDetailForm" asp-page-handler="SectionDetail" class="form-horizontal" role="form"
+      enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingSectionDetail"
       data-ajax-complete="OnCompleteSectionDetail"
       data-ajax-failure="OnErrorSectionDetail">
-    <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id" />
+    <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id"/>
 </form>
 
 
@@ -451,13 +494,14 @@
                         </p>
                     </div>
                     <div class="col-lg-12">
-                        <form method="post" asp-page-handler="DeleteSection" class="form-horizontal" role="form" enctype="multipart/form-data"
+                        <form method="post" asp-page-handler="DeleteSection" class="form-horizontal" role="form"
+                              enctype="multipart/form-data"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-begin="OnLoadingSectionDelete"
                               data-ajax-complete="OnCompleteSectionDelete"
                               data-ajax-failure="OnErrorSectionDelete">
-                            <input type="hidden" asp-for="SectionId" class="Section_Id" />
+                            <input type="hidden" asp-for="SectionId" class="Section_Id"/>
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
@@ -494,13 +538,14 @@
                         </p>
                     </div>
                     <div class="col-lg-12">
-                        <form method="post" asp-page-handler="DeleteSectionDetail" class="form-horizontal" role="form" enctype="multipart/form-data"
+                        <form method="post" asp-page-handler="DeleteSectionDetail" class="form-horizontal" role="form"
+                              enctype="multipart/form-data"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-begin="OnLoadingSectionDetailDelete"
                               data-ajax-complete="OnCompleteSectionDetailDelete"
                               data-ajax-failure="OnErrorSectionDetailDelete">
-                            <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id" />
+                            <input type="hidden" asp-for="SectionDeatilId" class="SectionDetail_Id"/>
 
                             <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
@@ -524,11 +569,12 @@
 </div>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
-    
+
     <script src="~/shared/lib/shared/toast/toast.js"></script>
     <script src="~/shared/lib/shared/toast/mytoast.js"></script>
 

@@ -1,54 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Parstech.Shop.Shared.Protos.ProductComponentsAdmin;
+
+using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.Web.GrpcClients;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.ProductGallery;
-using Shop.Application.DTOs.ProductProperty;
-using Shop.Application.DTOs.Property;
-using Shop.Application.DTOs.PropertyCategury;
-using Shop.Application.Features.ProductGallery.Requests.Queries;
-using Shop.Application.Features.ProductProperty.Requests.Queries;
-using Shop.Application.Features.PropertyCategury.Requests.Commands;
-using Shop.Domain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Shop.Web.Pages.Admin.Products.Detail
+namespace Parstech.Shop.Web.Pages.Admin.Products.CreateOrUpdateAjax;
+
+public class FeuturesModel : PageModel
 {
-    public class FeuturesModel : PageModel
+    #region Constructor
+
+    private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
+    private readonly IProductStockPriceRepository _productStockRep;
+
+    public FeuturesModel(
+        IProductComponentsAdminGrpcClient productComponentsClient,
+        IProductStockPriceRepository productStockRep)
     {
-        #region Constructor
+        _productComponentsClient = productComponentsClient;
+        _productStockRep = productStockRep;
+    }
 
-        private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
-        private readonly IProductStockPriceRepository _productStockRep;
+    #endregion
 
-        public FeuturesModel(
-            IProductComponentsAdminGrpcClient productComponentsClient,
-            IProductStockPriceRepository productStockRep)
+    //id
+    [BindProperty]
+    public int? productId { get; set; }
+
+    [BindProperty]
+    public List<ProductPropertyDto> PropertyDtos { get; set; } = new();
+
+    public async Task OnGet(int? id)
+    {
+        productId = id;
+        if (productId != null)
         {
-            _productComponentsClient = productComponentsClient;
-            _productStockRep = productStockRep;
-        }
-
-        #endregion
-        
-        //id
-        [BindProperty] public int? productId { get; set; }
-
-        [BindProperty]
-        public List<ProductPropertyDto> PropertyDtos { get; set; } = new List<ProductPropertyDto>();
-
-        public async Task OnGet(int? id)
-        {
-            productId = id;
-            if (productId != null)
+            var response = await _productComponentsClient.GetPropertiesOfProductAsync(productId.Value);
+            if (response.IsSuccess)
             {
-                var response = await _productComponentsClient.GetPropertiesOfProductAsync(productId.Value);
-                if (response.IsSuccess)
-                {
-                    PropertyDtos = response.Properties.ToList();
-                }
+                PropertyDtos = response.Properties.ToList();
             }
         }
     }

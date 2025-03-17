@@ -13,7 +13,9 @@ $('.selectpicker').selectpicker('val', 'Mustard');
 $('.selectpicker').selectpicker('val', ['Mustard','Relish']);
 ```
 
-This is different to calling `val()` directly on the `select` element. If you call `val()` on the element directly, the bootstrap-select ui will not refresh (as the change event only fires from user interaction). You will have to call the ui refresh method yourself.
+This is different to calling `val()` directly on the `select` element. If you call `val()` on the element directly, the
+bootstrap-select ui will not refresh (as the change event only fires from user interaction). You will have to call the
+ui refresh method yourself.
 
 ```js
 $('.selectpicker').val('Mustard');
@@ -47,7 +49,8 @@ $('.selectpicker').selectpicker('deselectAll');
 
 #### `.selectpicker('render')`
 
-You can force a re-render of the bootstrap-select ui with the `render` method. This is useful if you programatically change any underlying values that affect the layout of the element.
+You can force a re-render of the bootstrap-select ui with the `render` method. This is useful if you programatically
+change any underlying values that affect the layout of the element.
 
 ```js
 $('.selectpicker').selectpicker('render');
@@ -57,7 +60,8 @@ $('.selectpicker').selectpicker('render');
 
 #### `.selectpicker('mobile')`
 
-Enable mobile scrolling by calling `$('.selectpicker').selectpicker('mobile')`. This enables the device's native menu for select menus.
+Enable mobile scrolling by calling `$('.selectpicker').selectpicker('mobile')`. This enables the device's native menu
+for select menus.
 
 The method for detecting the browser is left up to the user.
 
@@ -92,13 +96,12 @@ $('.selectpicker').selectpicker('setStyle', 'btn-large', 'add');
 $('.selectpicker').selectpicker('setStyle', 'btn-large', 'remove');
 ```
 
-
 ---
 
 #### `.selectpicker('refresh')`
 
-To programmatically update a select with JavaScript, first manipulate the select, then use the `refresh` method to 
-update the UI to match the new state. This is necessary when removing or adding options, or when disabling/enabling a 
+To programmatically update a select with JavaScript, first manipulate the select, then use the `refresh` method to
+update the UI to match the new state. This is necessary when removing or adding options, or when disabling/enabling a
 select via JavaScript.
 
 ```js
@@ -114,9 +117,9 @@ $('.selectpicker').selectpicker('refresh');
     </select>
   </div>
 
-  <button class="btn btn-warning rm-mustard">Remove Mustard</button>
-  <button class="btn btn-danger rm-ketchup">Remove Ketchup</button>
-  <button class="btn btn-success rm-relish">Remove Relish</button>
+<button class="btn btn-warning rm-mustard">Remove Mustard</button>
+<button class="btn btn-danger rm-ketchup">Remove Ketchup</button>
+<button class="btn btn-success rm-relish">Remove Relish</button>
 </div>
 
 ```html
@@ -130,6 +133,7 @@ $('.selectpicker').selectpicker('refresh');
 <button class="btn btn-danger rm-ketchup">Remove Ketchup</button>
 <button class="btn btn-success rm-relish">Remove Relish</button>
 ```
+
 ```js
 $('.rm-mustard').click(function () {
   $('.remove-example').find('[value=Mustard]').remove();
@@ -146,8 +150,8 @@ $('.rm-mustard').click(function () {
     </select>
   </div>
 
-  <button class="btn btn-default ex-disable"><i class="icon-remove"></i> Disable</button>
-  <button class="btn btn-default ex-enable"><i class="icon-ok"></i> Enable</button>
+<button class="btn btn-default ex-disable"><i class="icon-remove"></i> Disable</button>
+<button class="btn btn-default ex-enable"><i class="icon-ok"></i> Enable</button>
 </div>
 
 ```js
@@ -204,7 +208,8 @@ $('.selectpicker').selectpicker('toggle');
 
 #### `.selectpicker('hide')`
 
-To programmatically hide the bootstrap-select use the `hide` method (this only affects the visibility of the bootstrap-select itself).
+To programmatically hide the bootstrap-select use the `hide` method (this only affects the visibility of the
+bootstrap-select itself).
 
 ```js
 $('.selectpicker').selectpicker('hide');
@@ -214,7 +219,8 @@ $('.selectpicker').selectpicker('hide');
 
 #### `.selectpicker('show')`
 
-To programmatically show the bootstrap-select use the `show` method (this only affects the visibility of the bootstrap-select itself).
+To programmatically show the bootstrap-select use the `show` method (this only affects the visibility of the
+bootstrap-select itself).
 
 ```js
 $('.selectpicker').selectpicker('show');

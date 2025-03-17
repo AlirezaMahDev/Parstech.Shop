@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Domain.Models;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface ITaxRepository : IGenericRepository<Tax>
 {
-    public interface ITaxRepository:IGenericRepository<Tax>
-    {
-        Task<long> TaxCalculate(long Price);
-    }
+    Task<long> TaxCalculate(long Price);
 }

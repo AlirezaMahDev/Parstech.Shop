@@ -13,7 +13,6 @@ suits your purposes better.
 
 [npm entry](https://www.npmjs.com/package/pwstrength-bootstrap)
 
-
 ## Requirements
 
 * jQuery 1.7 or higher
@@ -28,7 +27,6 @@ forgetting completely about the UI feedback.
 Forks to use it with another frameworks that I know of:
 
 * [Zurb Foundation fork by edtownend](https://github.com/edtownend/jquery.pwstrength.foundation)
-
 
 ## How to use it
 
@@ -64,12 +62,10 @@ Click here to find [the complete list of options for the plugin](OPTIONS.md).
 If you are looking for options to change or add new texts, please have a look
 at the internationalization section.
 
-
 ## Methods
 
 Once the plugin has been initialized, it is possible to interact with it
 through the methods.
-
 
 ### Force an update
 
@@ -81,7 +77,6 @@ callback will be called.
 $("#passwdfield").pwstrength("forceUpdate");
 ```
 
-
 ### Remove the strength meter
 
 This will remove the data associated to the meter, and the UI elements.
@@ -89,7 +84,6 @@ This will remove the data associated to the meter, and the UI elements.
 ```javascript
 $("#passwdfield").pwstrength("destroy");
 ```
-
 
 ### Adding Custom Rules
 
@@ -108,7 +102,6 @@ $("#passwdfield").pwstrength("addRule", "testRule", function (options, word, sco
 }, 10, true);
 ```
 
-
 ### Change the score associated to a rule
 
 It is possible to change the score given by a rule. It works like this:
@@ -118,7 +111,6 @@ $("#passwdfield").pwstrength("changeScore", "wordSequences", -100);
 ```
 
 That would penalize even more the presence of sequences in the password.
-
 
 ### Activate and deactivate rules
 
@@ -130,7 +122,6 @@ $("#passwdfield").pwstrength("ruleActive", "wordSequences", false);
 
 That would avoid looking for sequences in the password being tested.
 
-
 ### Know if all password inputs pass a specific rule
 
 This method allows to make a quick check to test if all password inputs in the
@@ -140,10 +131,9 @@ page pass a rule, the method returns a boolean value. Example:
 $("#passwdfield").pwstrength("ruleIsMet", "wordSequences");
 ```
 
-
 ## Callback Functions
 
-The plugin provides three callback functions, onLoad, onKeyUp, and scoreCalculated.  You can use
+The plugin provides three callback functions, onLoad, onKeyUp, and scoreCalculated. You can use
 them like this:
 
 ```javascript
@@ -173,7 +163,6 @@ $(document).ready(function () {
 });
 ```
 
-
 ## Extra restrictions
 
 The plugin comes with two validation rules deactivated by default. One checks
@@ -198,7 +187,6 @@ $(document).ready(function () {
     $(':password').pwstrength(options);
 });
 ```
-
 
 ## Internationalization (i18n)
 
@@ -248,7 +236,6 @@ $(document).ready(function () {
 You can find an example of some keys and translations in the
 [locales folder](locales).
 
-
 ## Examples
 
 There are some examples in the `examples` directory. Just serve them with any
@@ -262,7 +249,8 @@ python -m SimpleHTTPServer
 
 And go to [localhost:8000](http://localhost:8000).
 
-Alternatively, you can check-out the examples in a [hosted demo](https://cdn.rawgit.com/ablanco/jquery.pwstrength.bootstrap/master/examples/index.html).
+Alternatively, you can check-out the examples in
+a [hosted demo](https://cdn.rawgit.com/ablanco/jquery.pwstrength.bootstrap/master/examples/index.html).
 
 ## Build and Test
 
@@ -277,7 +265,6 @@ sudo npm install -g grunt-cli
 
 Now you have the grunt command line utility installed globally.
 
-
 ### Bundle and minified
 
 To generate the bundle and the minified file you only need to execute this in
@@ -291,7 +278,6 @@ grunt
 It will check the source files, and build a minified version with its
 corresponding source map. The generated files will be available in the `dist`
 directory.
-
 
 ### Testing
 

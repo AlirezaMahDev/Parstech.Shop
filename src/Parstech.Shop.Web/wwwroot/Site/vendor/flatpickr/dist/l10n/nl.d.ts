@@ -1,4 +1,5 @@
-import { CustomLocale } from "../types/locale";
+import {CustomLocale} from "../types/locale";
+
 export declare const Dutch: CustomLocale;
 declare const _default: {
     default?: CustomLocale | undefined;

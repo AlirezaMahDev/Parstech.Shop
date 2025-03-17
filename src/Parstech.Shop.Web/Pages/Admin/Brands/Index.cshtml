@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Brands.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Brands.IndexModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -18,16 +19,23 @@
                     </h3>
                 </div>
                 <div class="buttons-box">
-                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddOrEditModal">
+                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()"
+                            data-bs-toggle="modal" data-bs-target="#AddOrEditModal">
                         <i class="icon-plus"></i>
-                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
-                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background" style="opacity: 0.0088;"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
                     </button>
 
                 </div>
-               
+
             </div>
-           
+
             <div class="portlet-body" style="">
                 <div class="d-flex mb-2" id="pagingHeader">
                 </div>
@@ -35,7 +43,7 @@
                     <table class="table table-bordered table-hover table-striped" id="data-table">
                         <div class="form-group d-flex">
 
-                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی برند" />
+                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی برند"/>
                             <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
 
                             @*<select class="form-control w-25" placeholder="جستجوی کاربران">
@@ -43,12 +51,12 @@
                             <button class="btn btn-orange text-white font-weight-bold">فیلتر دسترسی ها</button>*@
                         </div>
                         <thead>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            </tr>
+                        <tr>
+                        </tr>
 
                         </tbody>
 
@@ -70,8 +78,8 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
-    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
 </form>
 <form method="post" id="GetBrandForm" asp-page-handler="Item"
       data-ajax="true"
@@ -79,7 +87,7 @@
       data-ajax-begin="OnLoadingGetItem"
       data-ajax-complete="OnCompleteGetItem"
       data-ajax-failure="OnErrorGetItem">
-    <input type="hidden" asp-for="BrandId" class="Id" />
+    <input type="hidden" asp-for="BrandId" class="Id"/>
 </form>
 
 
@@ -95,31 +103,34 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="EditOrCreate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="EditOrCreate" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingAE"
                           data-ajax-complete="OnCompleteAE"
                           data-ajax-failure="OnErrorAE">
 
-                        <input type="hidden" asp-for="BrandDto.BrandId" id="BrandDto_BrandId" />
-                        <input type="hidden" asp-for="BrandDto.BrandImage" id="BrandDto_BrandImage" />
+                        <input type="hidden" asp-for="BrandDto.BrandId" id="BrandDto_BrandId"/>
+                        <input type="hidden" asp-for="BrandDto.BrandImage" id="BrandDto_BrandImage"/>
 
 
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
                             <label> عنوان برند</label>
                             <div class="form-group round">
-                                <input asp-for="BrandDto.BrandTitle" id="BrandDto_BrandTitle" type="text" class="form-control">
+                                <input asp-for="BrandDto.BrandTitle" id="BrandDto_BrandTitle" type="text"
+                                       class="form-control">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12 m-auto m-b-10">
-                            <label> عنوان  لاتین برند</label>
+                            <label> عنوان لاتین برند</label>
                             <div class="form-group round">
-                                <input asp-for="BrandDto.LatinBrandTitle" id="BrandDto_LatinBrandTitle" type="text" class="form-control">
+                                <input asp-for="BrandDto.LatinBrandTitle" id="BrandDto_LatinBrandTitle" type="text"
+                                       class="form-control">
                             </div>
                         </div>
                         <div class="form-group round" id="BrandImage">
-                            
+
                         </div>
                         <div class="form-group relative">
                             <input asp-for="BrandDto.BrandFile" type="file" class="form-control">
@@ -139,8 +150,7 @@
                             </div><!-- /.input-group -->
                             <div class="help-block"></div>
                         </div><!-- /.form-group -->
-                        
-                       
+
 
                         <div class="col-md-8 col-lg-6 m-auto m-b-50">
 
@@ -164,9 +174,10 @@
 <!--End Add Or Edit Categury -->
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

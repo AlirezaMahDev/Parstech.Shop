@@ -1,20 +1,15 @@
-﻿
+﻿function OnLoadingGallery() {
 
-
-
-function OnLoadingGallery() {
-    
 }
+
 function OnCompleteGallery(xhr) {
     console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else if (!xhr.responseJSON.isSuccessed) {
+    } else if (!xhr.responseJSON.isSuccessed) {
         ToastError(xhr.responseJSON.message);
-    }
-    else {
+    } else {
         ToastSuccess("عملیات با موفقیت انجام شد.")
         $("#GalleryModal").modal('hide');
         $("#GalleryDeleteModal").modal('hide');
@@ -29,6 +24,7 @@ function OnCompleteGallery(xhr) {
     }
 
 }
+
 function OnErrorGallery() {
 
 }
@@ -39,10 +35,11 @@ function DeleteGalleryShowModal(id) {
     IdForGalleryIdInputs(id);
     $("#GalleryDeleteModal").modal("show");
 }
+
 function ChangeMain(id) {
     IdForGalleryIdInputs(id)
     $("#ChangeMainGallery").submit();
- 
+
 }
 
 function OnCompleteChangeMain(xhr) {
@@ -50,10 +47,9 @@ function OnCompleteChangeMain(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         ToastSuccess("عملیات با موفقیت انجام شد.")
-        
+
         ClearDataSet();
         tableMain
             .clear()

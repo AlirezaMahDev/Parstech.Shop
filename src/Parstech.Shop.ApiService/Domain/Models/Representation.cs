@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shop.Domain.Models;
+﻿namespace Parstech.Shop.ApiService.Domain.Models;
 
 public partial class Representation
 {
@@ -11,7 +8,8 @@ public partial class Representation
 
     public int? StateId { get; set; }
 
-    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } = new List<ProductRepresentation>();
+    public virtual ICollection<ProductRepresentation> ProductRepresentations { get; set; } =
+        new List<ProductRepresentation>();
 
     public virtual ICollection<ProductStockPrice> ProductStockPrices { get; set; } = new List<ProductStockPrice>();
 

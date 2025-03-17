@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.SiteMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Api.Requests.Queries
-{
-    public record SiteMapGenerateQueryReq():IRequest<List<SitemapDto>>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
+
+public record SiteMapGenerateQueryReq() : IRequest<List<SitemapDto>>;

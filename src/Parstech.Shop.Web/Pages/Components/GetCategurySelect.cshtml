@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Components.GetCategurySelectModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Components.GetCategurySelectModel
 @{
     Layout = null;
 }
@@ -7,5 +8,5 @@
 <option value="">انتخاب نشده</option>
 @foreach (var item in Model.list)
 {
-                <option value="@item.GroupId">@item.GroupTitle </option>
+    <option value="@item.GroupId">@item.GroupTitle </option>
 }

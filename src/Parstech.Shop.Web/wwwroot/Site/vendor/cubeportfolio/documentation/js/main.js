@@ -1,8 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     var verticalLinks = {
 
-        init: function() {
+        init: function () {
             var t = this,
                 name;
 
@@ -13,7 +13,7 @@ $(document).ready(function() {
             if (index > 0 && index < url.length - 1) {
                 name = url.substr(index);
 
-                t.options.links.children().filter(function() {
+                t.options.links.children().filter(function () {
 
                     var me = $(this),
                         link = me.children();
@@ -33,20 +33,20 @@ $(document).ready(function() {
         },
 
         // add events
-        addEvents: function() {
+        addEvents: function () {
             var t = this,
                 me;
 
-            t.options.links.on('click', 'dt', function(e) {
+            t.options.links.on('click', 'dt', function (e) {
                 me = $(this);
 
                 me.addClass('active').siblings().removeClass('active');
 
             });
 
-            $(window).scroll(function(e) {
+            $(window).scroll(function (e) {
 
-                t.offset = $.map($('a[name]'), function(value, index) {
+                t.offset = $.map($('a[name]'), function (value, index) {
                     return {
                         el: $(value),
                         offset: $(value).offset().top

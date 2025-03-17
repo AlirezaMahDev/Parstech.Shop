@@ -2,7 +2,7 @@
  * @module lib/embed
  */
 
-import { isVimeoUrl, getVimeoUrl } from './functions';
+import {isVimeoUrl, getVimeoUrl} from './functions';
 
 const oEmbedParameters = [
     'autopause',
@@ -52,7 +52,7 @@ export function getOEmbedParameters(element, defaults = {}) {
  * @param {HTMLElement} element The element to put the iframe in.
  * @return {HTMLIFrameElement} The iframe embed.
  */
-export function createEmbed({ html }, element) {
+export function createEmbed({html}, element) {
     if (!element) {
         throw new TypeError('An element must be provided');
     }
@@ -95,7 +95,7 @@ export function getOEmbedData(videoUrl, params = {}, element) {
         const xhr = 'XDomainRequest' in window ? new XDomainRequest() : new XMLHttpRequest();
         xhr.open('GET', url, true);
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 404) {
                 reject(new Error(`“${videoUrl}” was not found.`));
                 return;
@@ -117,13 +117,12 @@ export function getOEmbedData(videoUrl, params = {}, element) {
                 }
 
                 resolve(json);
-            }
-            catch (error) {
+            } catch (error) {
                 reject(error);
             }
         };
 
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             const status = xhr.status ? ` (${xhr.status})` : '';
             reject(new Error(`There was an error fetching the embed code from Vimeo${status}.`));
         };
@@ -160,8 +159,7 @@ export function initializeEmbeds(parent = document) {
             getOEmbedData(url, params, element).then((data) => {
                 return createEmbed(data, element);
             }).catch(handleError);
-        }
-        catch (error) {
+        } catch (error) {
             handleError(error);
         }
     });
@@ -202,8 +200,7 @@ export function resizeEmbeds(parent = document) {
 
     if (window.addEventListener) {
         window.addEventListener('message', onMessage, false);
-    }
-    else if (window.attachEvent) {
+    } else if (window.attachEvent) {
         window.attachEvent('onmessage', onMessage);
     }
 }

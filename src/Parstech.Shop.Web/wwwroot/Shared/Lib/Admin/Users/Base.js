@@ -16,7 +16,6 @@ $(document).ready(function () {
 });
 
 
-
 function Filter() {
 
     tableMain
@@ -37,7 +36,7 @@ function FillDataSet(Data) {
                 element.firstName,
                 element.lastName,
                 element.economicCode,
-                
+
                 "<button onclick='GetShippingListSubmit(" + element.id + ")' class='btn btn-success curve m-1'>حمل و نقل</button><button onclick='GetBillingSubmit(" + element.id + ")' class='btn btn-primary curve m-1'>اطلاعات کاربری</button><button onclick='GetPersmissoinDataListSubmit(" + element.id + ")' class='btn curve btn-dark m-1'>دسترسی ها</button><button onclick='loginByUser(" + element.id + ")' class='btn curve btn-red m-1 font-weight-bold text-white'>ورود به پنل کاربر</button>"
             ];
         dataSet.push(data);
@@ -56,16 +55,17 @@ function FillDataSet(Data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
     paging.insertAdjacentHTML("beforeend", "<button onclick='RunPaging(" + first + ")' class='btn cart-Blue btn-xs font-weight-bold ml-2'>اولین صفحه<i class=' fas fa-circle-arrow-right p-1'></i></button><button onclick='RunPaging(" + privious + ")' class='btn cart-Green btn-xs font-weight-bold ml-2'><i class=' fas fa-arrow-right p-1'></i></button><button onclick='RunPaging(" + next + ")' class='btn cart-Green btn-xs font-weight-bold ml-2'><i class=' fas fa-arrow-left p-1'></i></button><button onclick='RunPaging(" + last + ")' class='btn cart-Blue btn-xs font-weight-bold ml-2'><i class=' fas fa-circle-arrow-left p-1'></i>آخرین صفحه</button> <h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
 
 }
+
 function RunPaging(page) {
     tableMain
         .clear()
@@ -76,30 +76,30 @@ function RunPaging(page) {
     Parameter_CurrentPage.value = page;
     $("#GetDataForm").submit();
 }
+
 function OnLoadingData() {
 
 
 }
 
 function OnCompleteData(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
-   // console.log(Data.userDtos);
+    // console.log(Data.userDtos);
     FillDataSet(Data);
 
-    
 
     tableMain = $('#data-table').DataTable({
         "searching": false,
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'نام کاربری' },
-            { title: 'نام' },
-            { title: 'نام خانوادگی' },
-            { title: 'کد پرسنلی' },
-           
-            { title: 'عملیات' },
+            {title: 'نام کاربری'},
+            {title: 'نام'},
+            {title: 'نام خانوادگی'},
+            {title: 'کد پرسنلی'},
+
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 4,
@@ -153,8 +153,6 @@ function GetBillingSubmit(id) {
 }
 
 
-
-
 function GetShippingListSubmit(id) {
     IuserIdForInputs(id);
     $("#GetShipppingListForm").submit();
@@ -164,6 +162,7 @@ function AddShipping() {
 
     $('#ShippingCreateUpdateModal').modal('show');
 }
+
 function GetShippingSubmit(id, userId) {
     IuserIdForInputs(userId);
     ShippingIdForInputs(id)
@@ -176,12 +175,10 @@ function DeleteShippingSubmit(id) {
 }
 
 
-
-
 function GetPersmissoinDataListSubmit(id) {
     IuserIdForInputs(id);
     UserRole_NumberuserId.value = id;
-   // console.log(UserRole_NumberuserId.value);
+    // console.log(UserRole_NumberuserId.value);
     $("#GetPersmissoinDataListForm").submit();
 }
 
@@ -190,7 +187,7 @@ function loginByUser(id) {
     console.log(id);
     var loginUserId = document.getElementById("loginUserId");
     loginUserId.value = id;
-    
+
     console.log(loginUserId.value);
     $("#LoginByUserForm").submit();
 }

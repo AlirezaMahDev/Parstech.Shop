@@ -1,6 +1,5 @@
 ﻿@page
-@using Shop.Application.Enum
-@model Shop.Web.Pages.Admin.Products.Detail.ChildsAndStockModel
+@model Parstech.Shop.Web.Pages.Admin.Products.Detail.ChildsAndStockModel
 @{
     Layout = null;
 }
@@ -16,11 +15,13 @@
             <div class="buttons-box">
                 @if (Model.TypeId == 2)
                 {
-                    <button class='btn btn-sm btn-success btn-round hover-green' data-bs-toggle='modal' data-bs-target='#AddVariationModal'><i class='icon-plus'></i></button>
+                    <button class='btn btn-sm btn-success btn-round hover-green' data-bs-toggle='modal'
+                            data-bs-target='#AddVariationModal'><i class='icon-plus'></i></button>
                 }
                 else
                 {
-                    <small class='Orange font-weight-bold'>تنها برای محصولات متغیر امکان پذیر است.در صورت نیاز به افزودن محصول زیر مجموعه باندل از قسمت افزودن محصول اقدام فرمایید</small>
+                    <small class='Orange font-weight-bold'>تنها برای محصولات متغیر امکان پذیر است.در صورت نیاز به افزودن
+                        محصول زیر مجموعه باندل از قسمت افزودن محصول اقدام فرمایید</small>
                 }
             </div>
         </div><!-- /.portlet-heading -->
@@ -28,73 +29,98 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
-                        <tr>
+                    <tr>
 
-                            <th>شناسه</th>
-                            <th>نام</th>
-                            <th>کد</th>
-                            <th>نام متغیر</th>
+                        <th>شناسه</th>
+                        <th>نام</th>
+                        <th>کد</th>
+                        <th>نام متغیر</th>
 
-                            <th>عملیات</th>
-                        </tr>
+                        <th>عملیات</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.ChildsAndStock.ProductDtos)
+                    @foreach (var item in Model.ChildsAndStock.ProductDtos)
+                    {
+                        @switch (item.TypeId)
                         {
-                            @switch (item.TypeId)
-                            {
-                                case 3:
+                            case 3:
 
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.Code</td>
-                                        <td>@item.VariationName</td>
-                                        <td>
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Code</td>
+                                    <td>@item.VariationName</td>
+                                    <td>
+                                        <div class='btn-group'>
                                             <div class='btn-group'>
-                                                <div class='btn-group'>
-                                                    <button type='button' class='btn btn-default dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='true'><i class='icon-options'></i><i class='icon-arrow-down'></i></button>
-                                                    <ul class='dropdown-menu' style=''>
-                                                        <li><a onclick='GetUpdateVariation(@item.Id)' class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i>ویرایش نام متغیر</a></li>
-                                                        <li><a onclick='SingleAdStock(@item.Id)' class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i> انبار محصول</a></li>
-                                                        <li><button onclick='DeleteChild(@item.Id)' type='button' class='btn btn-default btn-block'><i class=' fas fa-trash Red m-1'></i>حذف محصول</button></li>
-                                                    </ul>
-                                                </div>
+                                                <button type='button' class='btn btn-default dropdown-toggle'
+                                                        data-bs-toggle='dropdown' aria-expanded='true'><i
+                                                        class='icon-options'></i><i class='icon-arrow-down'></i>
+                                                </button>
+                                                <ul class='dropdown-menu' style=''>
+                                                    <li><a onclick='GetUpdateVariation(@item.Id)'
+                                                           class=' btn btn-default btn-block h6 text-center'><i
+                                                                class=' fas fa-file-signature Orange m-1'></i>ویرایش نام
+                                                            متغیر</a></li>
+                                                    <li><a onclick='SingleAdStock(@item.Id)'
+                                                           class=' btn btn-default btn-block h6 text-center'><i
+                                                                class=' fas fa-file-signature Orange m-1'></i> انبار
+                                                            محصول</a></li>
+                                                    <li>
+                                                        <button onclick='DeleteChild(@item.Id)' type='button'
+                                                                class='btn btn-default btn-block'><i
+                                                                class=' fas fa-trash Red m-1'></i>حذف محصول
+                                                        </button>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                    break;
-                                case 5:
+                                break;
+                            case 5:
 
-                                    <tr>
-                                        <td>@item.ProductId</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.Code</td>
-                                        <td>@item.VariationName</td>
-                                        <td>
+                                <tr>
+                                    <td>@item.ProductId</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Code</td>
+                                    <td>@item.VariationName</td>
+                                    <td>
+                                        <div class='btn-group'>
                                             <div class='btn-group'>
-                                                <div class='btn-group'>
-                                                    <button type='button' class='btn btn-default dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='true'>
-                                                        <i class='icon-options'></i><i class='icon-arrow-down'></i>
-                                                    </button>
-                                                    <ul class='dropdown-menu' style=''>
-                                                        <li><a href='/Admin/Products/CreateOrUpdate/@item.Id' class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i>ویرایش</a></li>
-                                                        <li><a onclick='SingleAdStock(@item.Id)' class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i> انبار محصول</a></li>
-                                                        <li><button onclick='DeleteChild(@item.Id)' type='button' class='btn btn-default btn-block'><i class=' fas fa-trash Red m-1'></i>حذف محصول</button></li>
-                                                    </ul>
-                                                </div>
+                                                <button type='button' class='btn btn-default dropdown-toggle'
+                                                        data-bs-toggle='dropdown' aria-expanded='true'>
+                                                    <i class='icon-options'></i><i class='icon-arrow-down'></i>
+                                                </button>
+                                                <ul class='dropdown-menu' style=''>
+                                                    <li><a href='/Admin/Products/CreateOrUpdate/@item.Id'
+                                                           class=' btn btn-default btn-block h6 text-center'><i
+                                                                class=' fas fa-file-signature Orange m-1'></i>ویرایش</a>
+                                                    </li>
+                                                    <li><a onclick='SingleAdStock(@item.Id)'
+                                                           class=' btn btn-default btn-block h6 text-center'><i
+                                                                class=' fas fa-file-signature Orange m-1'></i> انبار
+                                                            محصول</a></li>
+                                                    <li>
+                                                        <button onclick='DeleteChild(@item.Id)' type='button'
+                                                                class='btn btn-default btn-block'><i
+                                                                class=' fas fa-trash Red m-1'></i>حذف محصول
+                                                        </button>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                    break;
+                                break;
 
-                                default:
-                                    break;
-                            }
-
+                            default:
+                                break;
                         }
+                    }
                     </tbody>
                 </table>
             </div>
@@ -108,10 +134,13 @@
                 <h3 class="title">
                     <i class="icon-note Orange"></i>
                     انبارداری محصول
-                </h3><small>بهترین قیمت :  <span class=" Blue font-weight-bold">شناسه @Model.product.BestStockId</span>   بهترین قیمت در دسته بندی کاربران: <span class=" Blue font-weight-bold">شناسه @Model.product.BestStockUserCateguryId</span></small>
+                </h3><small>بهترین قیمت : <span class=" Blue font-weight-bold">شناسه @Model.product.BestStockId</span>
+                    بهترین قیمت در دسته بندی کاربران: <span
+                        class=" Blue font-weight-bold">شناسه @Model.product.BestStockUserCateguryId</span></small>
             </div><!-- /.portlet-title -->
             <div class="buttons-box">
-                <button class='btn btn-sm btn-success btn-round hover-green' onclick='ShowAddStockProduct(@Model.productId)'><i class='icon-plus'></i></button>
+                <button class="btn btn-sm btn-success btn-round hover-green"
+                        onclick="ShowAddStockProduct(@Model.productId)"><i class="icon-plus"></i></button>
 
             </div>
         </div><!-- /.portlet-heading -->
@@ -119,247 +148,374 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>شناسه</th>
+                    <tr>
+                        <th>شناسه</th>
 
-                            <th>نام</th>
+                        <th>نام</th>
 
-                            <th>فروشنده</th>
-                            <th>انبار</th>
-                            <th>موجودی</th>
-                            <th>قیمت</th>
+                        <th>فروشنده</th>
+                        <th>انبار</th>
+                        <th>موجودی</th>
+                        <th>قیمت</th>
 
-                            <th>عملیات</th>
-                        </tr>
+                        <th>عملیات</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @if (User.IsInRole("Store"))
+                    @if (User.IsInRole("Store"))
+                    {
+                        @foreach (var item in Model.ChildsAndStock.ProductStockDtos)
                         {
-                            @foreach (var item in Model.ChildsAndStock.ProductStockDtos)
+                            var userCategury = "";
+                            if (item.CateguryOfUserId != null)
                             {
-                                string userCategury = "";
-                                if(item.CateguryOfUserId!=null){
-                                    if (item.CateguryOfUserType == CateguryOfUserType.ShowDiscoutProductForUserCategury.ToString()){
-                                        userCategury = "ویژه همکاران بانک ملی ایران - مشاهده محصول با تخفیف";
-                                    }
-                                    else{
-                                        userCategury = "ویژه همکاران بانک ملی ایران ";
-                                    }
-                                }
-
-                                switch (item.TypeId)
+                                if (item.CateguryOfUserType == CateguryOfUserType.ShowDiscoutProductForUserCategury.ToString())
                                 {
-                                    case 1:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>محصول ساده </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick="DeleteStock(@item.RepId,@item.Id)' type='button" class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    case 2:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>متغیر </small><br /><small class="Blue">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        break;
-
-                                    case 3:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه محصول </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick="DeleteStock(@item.RepId,@item.Id)' type='button" class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-
-                                        break;
-                                    case 4:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>باندل </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    case 5:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity <br /><small>تعداد در هر پک: @item.QuantityPerBundle</small></td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick='ShowChangeQuantityPerBundleModal(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>تغییر در موجودی هر پک</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        break;
-
-                                    default:
-                                        break;
+                                    userCategury = "ویژه همکاران بانک ملی ایران - مشاهده محصول با تخفیف";
+                                }
+                                else
+                                {
+                                    userCategury = "ویژه همکاران بانک ملی ایران ";
                                 }
                             }
-                        }
-                        else
-                        {
-                            @foreach (var item in Model.ChildsAndStock.ProductStockDtos)
+
+                            switch (item.TypeId)
                             {
-                                string userCategury = "";
-                                if (item.CateguryOfUserId != null)
-                                {
-                                    if (item.CateguryOfUserType == CateguryOfUserType.ShowDiscoutProductForUserCategury.ToString())
-                                    {
-                                        userCategury = "ویژه همکاران بانک ملی ایران - مشاهده محصول با تخفیف";
-                                    }
-                                    else
-                                    {
-                                        userCategury = "ویژه همکاران بانک ملی ایران ";
-                                    }
-                                }
-                                switch (item.TypeId)
-                                {
-                                    case 1:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>محصول ساده </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
+                                case 1:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>محصول
+                                                ساده </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button
+                                                    onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)'
+                                                    type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick="DeleteStock(@item.RepId,@item.Id)' type='button"
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    break;
+                                case 2:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small
+                                                class='Orange font-weight-bold'>متغیر </small><br/><small
+                                                class="Blue">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                        </tr>
-                                        break;
-                                    case 2:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>متغیر </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
+                                    break;
 
-                                        </tr>
-
-                                        break;
-
-                                    case 3:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه محصول </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
-
-                                        </tr>
+                                case 3:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه
+                                                محصول </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button
+                                                    onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)'
+                                                    type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick="DeleteStock(@item.RepId,@item.Id)' type='button"
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
 
 
-                                        break;
-                                    case 4:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>باندل </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity</td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
+                                    break;
+                                case 4:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small
+                                                class='Orange font-weight-bold'>باندل </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    break;
+                                case 5:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity <br/><small>تعداد در هر پک: @item.QuantityPerBundle</small>
+                                        </td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button
+                                                    onclick='ShowQuickProductRepresentationModal(@item.Id,@item.RepId)'
+                                                    type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick='ShowChangeQuantityPerBundleModal(@item.Id)'
+                                                        type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>تغییر در موجودی
+                                                    هر پک
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                        </tr>
-                                        break;
-                                    case 5:
-                                        <tr>
-                                            <td>@item.Id <br /><small class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
-                                            <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه </small><br /><small class="Blue font-weight-bold">@userCategury</small></td>
-                                            <td class='small'>@item.StoreName</td>
-                                            <td class='small'>@item.RepName</td>
-                                            <td>@item.Quantity <br /><small>تعداد در هر پک: @item.QuantityPerBundle</small></td>
-                                            <td>@item.SalePrice.ToString("#,0")<br /><small class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small></td>
-                                            <td>
-                                                <div class='btn-group'>
-                                                    <button onclick='SubmitGetPrice(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-money-bill-transfer Green m-1'></i>قیمت</button>
-                                                    <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>موجودی</button>
-                                                    <button onclick='ShowChangeQuantityPerBundleModal(@item.Id)' type='button' class='btn btn-default'><i class='fas fa-file-circle-plus Orange m-1'></i>تغییر در موجودی هر پک</button>
-                                                    <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button' class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف</button>
-                                                </div>
-                                            </td>
+                                    break;
 
-                                        </tr>
-
-                                        break;
-
-                                    default:
-                                        break;
-                                }
+                                default:
+                                    break;
                             }
                         }
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.ChildsAndStock.ProductStockDtos)
+                        {
+                            var userCategury = "";
+                            if (item.CateguryOfUserId != null)
+                            {
+                                if (item.CateguryOfUserType == CateguryOfUserType.ShowDiscoutProductForUserCategury.ToString())
+                                {
+                                    userCategury = "ویژه همکاران بانک ملی ایران - مشاهده محصول با تخفیف";
+                                }
+                                else
+                                {
+                                    userCategury = "ویژه همکاران بانک ملی ایران ";
+                                }
+                            }
+
+                            switch (item.TypeId)
+                            {
+                                case 1:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>محصول
+                                                ساده </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)'
+                                                        type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    break;
+                                case 2:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small
+                                                class='Orange font-weight-bold'>متغیر </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                    break;
+
+                                case 3:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه
+                                                محصول </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)'
+                                                        type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+
+                                    break;
+                                case 4:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small
+                                                class='Orange font-weight-bold'>باندل </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    break;
+                                case 5:
+                                    <tr>
+                                        <td>@item.Id <br/><small
+                                                class='Orange font-weight-bold'>محصول @item.ProductId </small></td>
+                                        <td class='small'>@item.ProductName <small class='Orange font-weight-bold'>زیرمجموعه </small><br/><small
+                                                class="Blue font-weight-bold">@userCategury</small></td>
+                                        <td class='small'>@item.StoreName</td>
+                                        <td class='small'>@item.RepName</td>
+                                        <td>@item.Quantity <br/><small>تعداد در هر پک: @item.QuantityPerBundle</small>
+                                        </td>
+                                        <td>@item.SalePrice.ToString("#,0")<br/><small
+                                                class='Red font-weight-bold'>@item.DiscountPrice.ToString("#,0")</small>
+                                        </td>
+                                        <td>
+                                            <div class='btn-group'>
+                                                <button onclick='SubmitGetPrice(@item.Id)' type='button'
+                                                        class='btn btn-default'><i
+                                                        class='fas fa-money-bill-transfer Green m-1'></i>قیمت
+                                                </button>
+                                                <button onclick='ShowProductRepresentationModal(@item.Id,@item.RepId)'
+                                                        type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>موجودی
+                                                </button>
+                                                <button onclick='ShowChangeQuantityPerBundleModal(@item.Id)'
+                                                        type='button' class='btn btn-default'><i
+                                                        class='fas fa-file-circle-plus Orange m-1'></i>تغییر در موجودی
+                                                    هر پک
+                                                </button>
+                                                <button onclick='DeleteStock(@item.RepId,@item.Id)' type='button'
+                                                        class='btn btn-default'><i class='fas fa-trash Red m-1'></i>حذف
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     </tbody>
                 </table>
             </div>

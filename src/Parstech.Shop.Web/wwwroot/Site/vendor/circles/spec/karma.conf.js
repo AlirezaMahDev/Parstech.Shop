@@ -8,17 +8,15 @@ basePath = '';
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  '../circles.js',
-  '*Spec.js'
+    JASMINE,
+    JASMINE_ADAPTER,
+    '../circles.js',
+    '*Spec.js'
 ];
 
 
 // list of files to exclude
-exclude = [
-  
-];
+exclude = [];
 
 
 // test results reporter to use

@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Products.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Products.IndexModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -16,7 +17,8 @@
 
                 <div class=" ">
 
-                    <button class="btn btn-sm btn-green font-weight-bold hover-green" data-bs-toggle="modal" data-bs-target="#SerachProductModal">
+                    <button class="btn btn-sm btn-green font-weight-bold hover-green" data-bs-toggle="modal"
+                            data-bs-target="#SerachProductModal">
                         درخواست ثبت محصول
                     </button>
 
@@ -45,12 +47,13 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="ProductStoresModal" class="modal fade" role="dialog" >
+                <div id="ProductStoresModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -67,29 +70,30 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <form method="post" asp-page-handler="GetData" 
+            <form method="post" asp-page-handler="GetData"
                   data-ajax="true"
                   data-ajax-method="POST"
                   data-ajax-begin="OnLoadingData"
                   data-ajax-complete="OnCompleteData"
                   data-ajax-failure="OnErrorData">
-               
+
                 <div class="row">
 
-                    <div class="col-lg-5" >
+                    <div class="col-lg-5">
                         <div class="form-group ">
                             <label>فیلتر کالا</label>
                             <select asp-for="Parameter.Filter" id="ProductsSelect" class="form-control select2">
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-4" >
+                    <div class="col-lg-4">
                         <div class="form-group ">
                             <label>دسته بندی ها</label>
                             <select asp-for="Parameter.Categury" id="CategurySelect" class="form-control select2">
@@ -106,7 +110,7 @@
 
                             </select>
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-lg-1">
                         <button type="submit" class="btn btn-blue text-white font-weight-bold mt-4 pt-2">فیلتر</button>
                     </div>
@@ -115,7 +119,7 @@
             </form>
             <div class="portlet-body" style="">
                 <div class="d-flex mb-2" id="pagingHeader">
-                   
+
                 </div>
                 <div class="table-responsive">
 
@@ -162,8 +166,8 @@
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
     <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
-    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
-    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type" />
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury"/>
+    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type"/>
     <
     <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
 </form>
@@ -225,7 +229,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="EditOrCreateProduct" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="EditOrCreateProduct" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingProductEC"
@@ -243,19 +248,22 @@
                             <div class="col-md-12 col-lg-12 m-auto m-b-10">
                                 <label> عنوان محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Name" id="ProductDto_Name" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Name" id="ProductDto_Name" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-12 m-auto m-b-10">
                                 <label> عنوان لاتین محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.LatinName" id="ProductDto_LatinName" type="text" class="form-control">
+                                    <input asp-for="ProductDto.LatinName" id="ProductDto_LatinName" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 m-auto m-b-10">
                                 <label>کد محصول</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Code" id="ProductDto_Code" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Code" id="ProductDto_Code" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 m-auto m-b-10">
@@ -275,7 +283,8 @@
                                 <label>فروش تکی<br/> <small class="text-warning" id="ParentText"></small></label>
                                 <div class="form-group round">
                                     <small class="Orange">در صورت انتخاب نوع محصول (زیرمجموعه باندل)</small>
-                                    <select class="form-control" asp-for="ProductDto.SingleSale" id="ProductDto_SingleSale">
+                                    <select class="form-control" asp-for="ProductDto.SingleSale"
+                                            id="ProductDto_SingleSale">
                                         <option value="true">فروش به صورت تکی</option>
                                         <option value="false">فروش فقط به صورت باندل</option>
                                     </select>
@@ -285,7 +294,8 @@
 
                                 <label>عنوان مختصر متغیر</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.VariationName" id="ProductDto_VariationName" type="text" class="form-control">
+                                    <input asp-for="ProductDto.VariationName" id="ProductDto_VariationName" type="text"
+                                           class="form-control">
                                 </div>
 
                             </div>
@@ -294,7 +304,8 @@
                                 <label>جستجوی محصول</label>
 
                                 <div class="input-group">
-                                    <input type="text" class="form-control " id="SearchProduct" placeholder="شناسه و یا عنوان محصول را جستجو کنید">
+                                    <input type="text" class="form-control " id="SearchProduct"
+                                           placeholder="شناسه و یا عنوان محصول را جستجو کنید">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" onclick="SearchProductParents()" type="button">
                                             جستجو
@@ -322,7 +333,8 @@
 
                                     <small class="Orange">محصول از جنس زیر مجموعه باندل باشد</small>
                                     <div class="form-group round">
-                                        <input asp-for="ProductDto.QuantityPerBundle" id="ProductDto_QuantityPerBundle" type="number" class="form-control">
+                                        <input asp-for="ProductDto.QuantityPerBundle" id="ProductDto_QuantityPerBundle"
+                                               type="number" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -370,13 +382,15 @@
                             <div class="col-md-6 col-lg-6 m-auto m-b-10">
                                 <label>امتیاز</label>
                                 <div class="form-group round">
-                                    <input asp-for="ProductDto.Score" id="ProductDto_Score" type="text" class="form-control">
+                                    <input asp-for="ProductDto.Score" id="ProductDto_Score" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-12 m-auto m-b-10">
                                 <label>توضیح کوتاه</label>
                                 <div class="form-group round">
-                                    <textarea asp-for="ProductDto.ShortDescription" id="ProductDto_ShortDescription" type="text" class="form-control"></textarea>
+                                    <textarea asp-for="ProductDto.ShortDescription" id="ProductDto_ShortDescription"
+                                              type="text" class="form-control"></textarea>
                                 </div>
                             </div>
 
@@ -414,7 +428,9 @@
                 <div class="col-lg-12">
 
                     <div>
-                        <button type="button" class="btn btn-xs btn-success hover-green" onclick="showAddCatModal()">افزودن دسته بندی</button>
+                        <button type="button" class="btn btn-xs btn-success hover-green" onclick="showAddCatModal()">
+                            افزودن دسته بندی
+                        </button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
@@ -458,7 +474,8 @@
                         <div class="form-group">
                             <label>جستجوی دسته بندی</label>
                             <div class="input-group">
-                                <input type="text" class="form-control " id="SearchCatText" placeholder="عنوان دسته بندی را جستجو نمایید">
+                                <input type="text" class="form-control " id="SearchCatText"
+                                       placeholder="عنوان دسته بندی را جستجو نمایید">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" onclick="SearchCat()" type="button">
                                         جستجو
@@ -476,7 +493,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">ثبت </button>
+                            <button type="submit" class="btn btn-primary">ثبت</button>
                         </div>
 
                     </form>
@@ -516,7 +533,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">ثبت </button>
+                            <button type="submit" class="btn btn-primary">ثبت</button>
                         </div>
 
                     </form>
@@ -545,7 +562,7 @@
                         <input type="hidden" name="productId" class="productId"/>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">دوبل کردن محصول </button>
+                            <button type="submit" class="btn btn-primary">دوبل کردن محصول</button>
                         </div>
 
                     </form>
@@ -569,13 +586,15 @@
             <div class="modal-body">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <strong>نام محصول درخواستی خود را وارد نمایید در صورت وجود محصول در فروشگاه میتوانید فروشنده آن شوید</strong>
+                        <strong>نام محصول درخواستی خود را وارد نمایید در صورت وجود محصول در فروشگاه میتوانید فروشنده آن
+                            شوید</strong>
                         <input type="text" class="form-control" name="Filter" id="SroreSearchProduct"/>
                     </div>
 
                     <div class="form-group">
-                        <button type="button" onclick="SearchProducts()"  class="btn btn-primary">جستجوی محصول </button>
-                        <a href="/Admin/Products/CreateOrUpdate" class="btn btn-sm btn-green font-weight-bold hover-green">
+                        <button type="button" onclick="SearchProducts()" class="btn btn-primary">جستجوی محصول</button>
+                        <a href="/Admin/Products/CreateOrUpdate"
+                           class="btn btn-sm btn-green font-weight-bold hover-green">
                             میخواهم محصول جدید ایجاد کنم
 
                         </a>
@@ -617,11 +636,12 @@
 } *@
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
     <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

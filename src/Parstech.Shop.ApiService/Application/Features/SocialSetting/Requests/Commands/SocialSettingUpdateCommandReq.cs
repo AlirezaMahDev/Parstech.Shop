@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.SocialSetting;
+﻿using MediatR;
 
-namespace Shop.Application.Features.SocialSetting.Requests.Commands
-{
+using Parstech.Shop.ApiService.Application.DTOs;
 
-    public record SocialSettingUpdateCommandReq(SocialSettingDto socialSettingDto) : IRequest<SocialSettingDto>;
-}
+namespace Parstech.Shop.ApiService.Application.Features.SocialSetting.Requests.Commands;
+
+public record SocialSettingUpdateCommandReq(SocialSettingDto socialSettingDto) : IRequest<SocialSettingDto>;

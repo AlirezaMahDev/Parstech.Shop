@@ -3,7 +3,7 @@
 ------------------------------------*/
 
 @each $color, $value in $theme-colors {
-	/* #{$color} text button */
+  /* #{$color} text button */
   .btn-text-#{$color} {
     @if $color == "light" {
       @include button-text($value, $gray-400);

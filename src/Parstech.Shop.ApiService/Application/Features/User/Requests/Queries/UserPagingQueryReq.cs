@@ -1,12 +1,7 @@
-﻿using Shop.Application.DTOs.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 
-namespace Shop.Application.Features.User.Requests.Queries
-{
-    public record UserPagingQueryReq(UserParameterDto UserParameterDto) : IRequest<UserPageingDto>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+
+public record UserPagingQueryReq(UserParameterDto UserParameterDto) : IRequest<UserPageingDto>;

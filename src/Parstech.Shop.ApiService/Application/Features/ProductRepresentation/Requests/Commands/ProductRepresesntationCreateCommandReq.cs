@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.ProductRepresentation;
+﻿using MediatR;
 
-namespace Shop.Application.Features.ProductRepresentation.Requests.Commands
-{
-    public record ProductRepresesntationCreateCommandReq
-        (ProductRepresentationDto ProductRepresentationDto) : IRequest<ProductRepresentationDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
+namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 
-    public record ProductRepresesntationQuickCreateCommandReq(ProductRepresentationDto ProductRepresentationDto) : IRequest<ProductRepresentationDto>;
-}
+public record ProductRepresesntationCreateCommandReq(ProductRepresentationDto ProductRepresentationDto)
+    : IRequest<ProductRepresentationDto>;
+
+public record ProductRepresesntationQuickCreateCommandReq(ProductRepresentationDto ProductRepresentationDto)
+    : IRequest<ProductRepresentationDto>;

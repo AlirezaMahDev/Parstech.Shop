@@ -6,8 +6,7 @@ function OnCompleteAddVariation(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد");
@@ -20,13 +19,13 @@ function OnCompleteAddVariation(xhr) {
             dataSet = [];
 
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError("عملیات امکان پذیر نیست")
         }
 
     }
 }
+
 //Add
 
 //Update
@@ -34,14 +33,14 @@ function GetUpdateVariation(id) {
     variationId.value = id;
     $("#EditVariationModal").modal('show');
 }
+
 function OnCompleteEditVariation(xhr) {
 
     var result = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد");
@@ -54,8 +53,7 @@ function OnCompleteEditVariation(xhr) {
             dataSet = [];
 
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError("عملیات امکان پذیر نیست")
         }
 
@@ -70,12 +68,12 @@ function SingleAdStock(id) {
     dublicateProductId.value = id;
     $("#AddStockModal").modal('show');
 }
+
 function OnCompleteAddSingleStock(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         $("#ProductDuplicateModal").modal('hide');
 
@@ -90,15 +88,13 @@ function OnCompleteAddSingleStock(xhr) {
             dataSet = [];
 
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError(" انبار تکراری ! موجودی انبار از قبل وجود دارد ")
         }
     }
 }
+
 //Add Single Stock
-
-
 
 
 //Delete
@@ -126,16 +122,15 @@ function DeleteChild(id) {
     }).catch(swal.noop);
 
 
-
 }
+
 function OnCompleteDeleteChild(xhr) {
     console.log(xhr);
     var result = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد");
@@ -146,14 +141,14 @@ function OnCompleteDeleteChild(xhr) {
 
             $("#GetDataForm").submit();
 
-        }
-        else {
+        } else {
             ToastError("عملیات حذف به دلیل وجود انبار امکان پذیر نیست")
         }
 
 
     }
 }
+
 //Delete
 
 

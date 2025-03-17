@@ -5,7 +5,9 @@
 
     @each $prop, $abbrev in (width: w) {
       @each $size, $length in $sizes {
-        .#{$abbrev}#{$infix}-#{$size} { #{$prop}: $length !important; }
+        .#{$abbrev}#{$infix}-#{$size} {
+          #{$prop}: $length !important;
+        }
       }
     }
   }

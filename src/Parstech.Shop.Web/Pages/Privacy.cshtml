@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Parstech.Shop.Web.Pages
 @model PrivacyModel
 @{
     Layout = "Shared/SiteAuth_Layout";
@@ -11,12 +13,13 @@
             <div class="col-xl-4 col-lg-5 col-md-7 col-12 mx-auto">
                 <div class="logo-area text-center mb-3 ">
 
-                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;" alt="logo"></a>
+                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;"
+                                     alt="logo"></a>
 
                 </div>
-               
+
                 <div class="auth-wrapper form-ui border pt-4 shadow-1200">
-                   @*  <div class="section-title title-wide mb-1 no-after-title-wide">
+                    @*  <div class="section-title title-wide mb-1 no-after-title-wide">
                         <h2 class="font-weight-bold">ورود</h2>
                     </div> *@
                     <div class="logo-area text-center mb-3 ">
@@ -34,7 +37,7 @@
                         <div class="form-row mt-3">
                             <button class="btn-primary-cm btn BgOrange btn-with-icon mx-auto w-100">
                                 <i class="mdi mdi-login-variant"></i>
-                                ورود با کد یکبار مصرف 
+                                ورود با کد یکبار مصرف
                             </button>
                         </div>
 
@@ -65,7 +68,7 @@
                             <span class="font-weight-bold">میخواهید ثبت نام کنید؟</span>
                             <a href="#" class="mr-3 mt-2 Orange">ثبت نام در پارس تک</a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -74,14 +77,15 @@
 </main>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 
-    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet" />
-    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet" />
-    <link href="~/site/productdetail/main.css" rel="stylesheet" />
+    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/main.css" rel="stylesheet"/>
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

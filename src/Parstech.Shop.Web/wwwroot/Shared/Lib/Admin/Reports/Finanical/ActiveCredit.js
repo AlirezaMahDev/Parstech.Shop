@@ -32,18 +32,18 @@ function GetData() {
             FillData(response);
         },
         failure: function (response) {
-            
+
         },
         error: function (response) {
-            
+
         }
     });
- 
+
 }
 
 
-
 let DataSection = document.getElementById("DataSection");
+
 function FillData(Data) {
     page = Data.currentPage;
     DataSection.innerHTML = null;
@@ -68,24 +68,21 @@ function FillData(Data) {
                     break;
             }
             if (element.start) {
-                Start="شروع دوره"
-            }
-            else {
+                Start = "شروع دوره"
+            } else {
                 Start = "شروع نشده"
             }
             if (element.active) {
                 Active = "در حال استفاده"
-            }
-            else {
+            } else {
                 Active = "خاتمه دوره"
             }
             listSection.insertAdjacentHTML("beforebegin", "<tr role='row'><td class='small text-center'>" + element.firstName + " " + element.lastName + "</td><td class='small text-center'>" + Start + "</td><td class='small text-center'>" + Active + "</td><td class='small text-center'>" + element.trackingCode + "</td><td class='small text-center'>" + element.createDateShamsi + "</td><td class='small text-center font-weight-bold'>" + separate(element.price) + "</td><td class='small text-center'>" + Type + "</td><td class='small text-center'>" + element.month + " ماهه</td><td class='small text-center'>" + element.persent + " %</td><td class='small text-center font-weight-bold'>" + element.firstDate + "</td><td class='small text-center font-weight-bold'>" + element.lastDate + "</td><td class='small text-center'><a onclick='GetAghsat(" + element.id + ")'>مشاهده</a></td></tr>");
         });
+    } else {
+        listSection.insertAdjacentHTML("beforebegin", "<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
     }
-    else {
-        listSection.insertAdjacentHTML("beforebegin","<h5 class='Red font-weight-bold'>اطلاعاتی جهت نمایش یافت نشد.</h5>")
-    }
-    
+
 }
 
 function OnComplete(xhr) {
@@ -102,15 +99,14 @@ function GenerateExcel() {
     extoDate.value = toDate.value;
     $("#ExcelForm").submit();
 }
+
 function RunPaging(type) {
     if (type == "next") {
         currentPage.value = page += 1;
-    }
-    else {
+    } else {
         if (currentPage.value == 1) {
             currentPage.value = 1;
-        }
-        else {
+        } else {
             currentPage.value = page -= 1;
         }
     }
@@ -125,7 +121,7 @@ function GetAghsat(id) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: {"id":id},
+        data: {"id": id},
         success: function (response) {
             fillAghsat(response);
         },
@@ -140,6 +136,7 @@ function GetAghsat(id) {
 }
 
 let aghsats = document.getElementById("aghsats");
+
 function fillAghsat(data) {
     $("#AghsatModal").modal('show');
     aghsats.innerHTML = null;

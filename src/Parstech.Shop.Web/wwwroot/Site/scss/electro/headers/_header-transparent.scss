@@ -8,18 +8,18 @@
 
     @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
       &#{$infix} {
-  			&:not(.js-header-fix-moment) {
-  	      @include media-breakpoint-up($breakpoint) {
-  	        .u-search-push-top[style*="display: block"] {
-  	        	+ .u-header__section {
-  	        		background-color: $header-bg;
-  	        	}
-  	        }
+        &:not(.js-header-fix-moment) {
+          @include media-breakpoint-up($breakpoint) {
+            .u-search-push-top[style*="display: block"] {
+              + .u-header__section {
+                background-color: $header-bg;
+              }
+            }
 
-  	        .u-header__section {
-  						background-color: transparent;
-  						box-shadow: none;
-  	        }
+            .u-header__section {
+              background-color: transparent;
+              box-shadow: none;
+            }
           }
         }
 
@@ -74,13 +74,13 @@
   }
 
   @include media-breakpoint-down(sm) {
-	  .u-header__navbar-nav {
-			background-color: $header-bg;
-		}
+    .u-header__navbar-nav {
+      background-color: $header-bg;
+    }
 
-  	.u-header__navbar-nav {
-	  	padding: $header-transparent-navbar-nav-padding;
-	  	padding-top: 1rem;
-	  }
+    .u-header__navbar-nav {
+      padding: $header-transparent-navbar-nav-padding;
+      padding-top: 1rem;
+    }
   }
 }

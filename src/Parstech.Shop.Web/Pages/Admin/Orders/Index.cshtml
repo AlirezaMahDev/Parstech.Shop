@@ -1,21 +1,21 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Orders.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Orders.IndexModel
 @{
-	Layout = "Shared/Admin_Layout";
-	
+    Layout = "Shared/Admin_Layout";
 }
 
 <div class="row">
-	<div class="col-lg-12">
-		<div class="portlet box border shadow">
-			<div class="portlet-heading">
-				<div class="portlet-title">
-					<h3 class="title">
-						<i class="icon-settings"></i>
-						لیست سفارشات
-					</h3>
-				</div>
-				@*<div class="buttons-box">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست سفارشات
+                    </h3>
+                </div>
+                @*<div class="buttons-box">
 				<button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddOrEditCateguryModal">
 				<i class="icon-plus"></i>
 				<div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
@@ -23,193 +23,197 @@
 				</button>
 
 				</div>*@
-				<div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							@*<div class="modal-header">
+                <div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            @*<div class="modal-header">
 							<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
 							<h4 class="modal-title">افزودن سفارش</h4>
 							</div>*@
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<p class="text-center m-t-30 m-b-40" id="image">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-center m-t-30 m-b-40" id="image">
 
-										</p>
-									</div>
+                                        </p>
+                                    </div>
 
-									<div class="col-lg-12">
-									</div><!-- /col-lg-12 -->
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="portlet-body" style="">
-				<div class="d-flex mb-2" id="pagingHeader">
-				</div>
+                                    <div class="col-lg-12">
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body" style="">
+                <div class="d-flex mb-2" id="pagingHeader">
+                </div>
 
-				<form method="post" asp-page-handler="Search" id="SerachForm"
-					  data-ajax="true"
-					  data-ajax-method="POST"
-					  data-ajax-begin="OnLoadingData"
-					  data-ajax-complete="OnCompleteData"
-					  data-ajax-failure="OnErrorData">
-					<input type="hidden" asp-for="Parameter.CurrentPage" id="currentPage" />
-					<div class="row">
-						<div class="col-lg-2">
-							<div class="form-group">
-								<label>فیلتر سفارش</label>
-								<select asp-for="Parameter.Filter" id="Pfilter" class="form-control select2">
-									<option value="">انتخاب نشده</option>
-									@foreach (var item in Model.orderFilterDto.ordercodes)
-									{
-										<option value="@item.OrderCode">@item.OrderCode</option>
-									}
-								</select>
-
-
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<div class="form-group">
-								<label>فیلتر فروشنده</label>
-								<select asp-for="Parameter.store" id="Pstore" class="form-control select2">
-									<option value="">انتخاب نشده</option>
-									@foreach (var item in Model.orderFilterDto.stores)
-									{
-										<option value="@item.UserId">@item.StoreName</option>
-									}
-								</select>
+                <form method="post" asp-page-handler="Search" id="SerachForm"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoadingData"
+                      data-ajax-complete="OnCompleteData"
+                      data-ajax-failure="OnErrorData">
+                    <input type="hidden" asp-for="Parameter.CurrentPage" id="currentPage"/>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>فیلتر سفارش</label>
+                                <select asp-for="Parameter.Filter" id="Pfilter" class="form-control select2">
+                                    <option value="">انتخاب نشده</option>
+                                    @foreach (var item in Model.orderFilterDto.ordercodes)
+                                    {
+                                        <option value="@item.OrderCode">@item.OrderCode</option>
+                                    }
+                                </select>
 
 
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<div class="form-group ">
-								<label>فیلتر وضعیت</label>
-								<select asp-for="Parameter.Status" id="Pstatus" class="form-control select2">
-									<option value="">انتخاب نشده</option>
-									@foreach (var item in Model.orderFilterDto.statuses)
-									{
-										<option value="@item.Id">@item.StatusName</option>
-									}
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<div class="form-group ">
-								<label>فیلتر تسویه</label>
-								<select asp-for="Parameter.PayType" id="PpayType" class="form-control select2">
-									<option value="">انتخاب نشده</option>
-									@foreach (var item in Model.orderFilterDto.pays)
-									{
-										<option value="@item.Id">@item.TypeName</option>
-									}
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<div class="form-group ">
-								<label>از تاریخ</label>
-								<input type="text" asp-for="Parameter.FromDate" id="fromDate" class="has-persian-datepicker form-control">
-
-							</div>
-						</div><div class="col-lg-2">
-							<div class="form-group ">
-								<label>تا تاریخ</label>
-								<input type="text" asp-for="Parameter.ToDate" id="toDate" class="has-persian-datepicker form-control">
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<div class="form-group">
-								<label>فیلتر مشتری</label>
-								<select asp-for="Parameter.UserId" id="PuserId" class="form-control select2">
-									<option value="">انتخاب نشده</option>
-									@foreach (var item in Model.orderFilterDto.customers)
-									{
-										<option value="@item.Id">@item.FirstName @item.LastName</option>
-									}
-								</select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>فیلتر فروشنده</label>
+                                <select asp-for="Parameter.store" id="Pstore" class="form-control select2">
+                                    <option value="">انتخاب نشده</option>
+                                    @foreach (var item in Model.orderFilterDto.stores)
+                                    {
+                                        <option value="@item.UserId">@item.StoreName</option>
+                                    }
+                                </select>
 
 
-							</div>
-						</div>
-						<div class="col-lg-10">
-							<div class="form-group mt-4">
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group ">
+                                <label>فیلتر وضعیت</label>
+                                <select asp-for="Parameter.Status" id="Pstatus" class="form-control select2">
+                                    <option value="">انتخاب نشده</option>
+                                    @foreach (var item in Model.orderFilterDto.statuses)
+                                    {
+                                        <option value="@item.Id">@item.StatusName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group ">
+                                <label>فیلتر تسویه</label>
+                                <select asp-for="Parameter.PayType" id="PpayType" class="form-control select2">
+                                    <option value="">انتخاب نشده</option>
+                                    @foreach (var item in Model.orderFilterDto.pays)
+                                    {
+                                        <option value="@item.Id">@item.TypeName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group ">
+                                <label>از تاریخ</label>
+                                <input type="text" asp-for="Parameter.FromDate" id="fromDate"
+                                       class="has-persian-datepicker form-control">
 
-								<button type="submit" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
-								<a href="/Admin/Orders/" class="btn btn-red text-white font-weight-bold">بازگردانی</a>
-							</div>
-						</div>
-					</div>
-				</form>
-
-				<div class="table-responsive">
-					<table class="table table-bordered table-hover table-striped" id="data-table">
-						
-						<thead>
-							<tr>
-							</tr>
-						</thead>
-						<tbody id="detail">
-							<tr>
-							</tr>
-
-						</tbody>
-
-					</table>
-
-				</div>
-				<div class="d-flex mb-2" id="paging">
-				</div>
-			</div><!-- /.portlet-body -->
-		</div><!-- /.portlet -->
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group ">
+                                <label>تا تاریخ</label>
+                                <input type="text" asp-for="Parameter.ToDate" id="toDate"
+                                       class="has-persian-datepicker form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>فیلتر مشتری</label>
+                                <select asp-for="Parameter.UserId" id="PuserId" class="form-control select2">
+                                    <option value="">انتخاب نشده</option>
+                                    @foreach (var item in Model.orderFilterDto.customers)
+                                    {
+                                        <option value="@item.Id">@item.FirstName @item.LastName</option>
+                                    }
+                                </select>
 
 
-	</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group mt-4">
+
+                                <button type="submit" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
+                                <a href="/Admin/Orders/" class="btn btn-red text-white font-weight-bold">بازگردانی</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="data-table">
+
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody id="detail">
+                        <tr>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="d-flex mb-2" id="paging">
+                </div>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+
+    </div>
 </div>
 
 <div id="StatusOfOrderModal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title">وضعیت سفارش</h4>
-			</div>
-			<div class="modal-body">
-				<div class="row" id="StatusOfOrderSection">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">وضعیت سفارش</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="StatusOfOrderSection">
 
-					
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
-			</div>
-		</div>
-	</div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!--FORMS-->
 <form method="post" id="GetDataForm" asp-page-handler="Data"
-	  data-ajax="true"
-	  data-ajax-method="POST"
-	  data-ajax-begin="OnLoadingData"
-	  data-ajax-complete="OnCompleteData"
-	  data-ajax-failure="OnErrorData">
-	<input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
-	<input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
 </form>
 <form method="post" id="GetOrderForm" asp-page-handler="ShowOrderDetail"
-	  data-ajax="true"
-	  data-ajax-method="POST"
-	  data-ajax-begin="OnLoadingGetItem"
-	  data-ajax-complete="OnCompleteGetItem"
-	  data-ajax-failure="OnErrorGetItem">
-	<input type="hidden" asp-for="OrderId" class="OrderId" />
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGetItem"
+      data-ajax-complete="OnCompleteGetItem"
+      data-ajax-failure="OnErrorGetItem">
+    <input type="hidden" asp-for="OrderId" class="OrderId"/>
 </form>
 
 
@@ -217,404 +221,405 @@
 <!--modal-->
 <!--Start Show Order Detail -->
 <div id="ShowOrderDetailModal" class="modal fade" role="dialog" tabindex="-1">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title"><i class=" fas fa-file-circle-check Orange m-1"></i> <b>اطلاعات سفارش</b></h4><br />
-				<div class="pt-2">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-file-circle-check Orange m-1"></i> <b>اطلاعات سفارش</b></h4>
+                <br/>
+                <div class="pt-2">
 
 
-					<div class="form-group" id="OrderHeader">
-					</div>
+                    <div class="form-group" id="OrderHeader">
+                    </div>
 
-				</div>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-
-
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
 
 
-					<div class="col-6">
+                    <div class="col-6">
 
 
-						<h4 class="title"><i class=" far fa-address-card Orange m-1"></i> <b>اطلاعات مشتری</b> </h4>
-						<div class="form-group" id="UserInfo">
-						</div>
+                        <h4 class="title"><i class=" far fa-address-card Orange m-1"></i> <b>اطلاعات مشتری</b></h4>
+                        <div class="form-group" id="UserInfo">
+                        </div>
 
 
-					</div>
-					<div class="col-6">
+                    </div>
+                    <div class="col-6">
 
-						<div class="d-flex">
-							<span class="title"><i class=" fas fa-location-dot Orange m-1"></i> <b>مشخصات محل سکونت</b> </span>
+                        <div class="d-flex">
+                            <span class="title"><i class=" fas fa-location-dot Orange m-1"></i> <b>مشخصات محل سکونت</b> </span>
 
-							<button class="btn" onclick="OrderShippingChange()"><i class="fas Blue fa-pencil icon-button"></i></button>
-						</div>
-						<div class="form-group" id="OrderShipping">
-						</div>
-
-
-					</div>
-					<div class="col-12">
-						<hr />
-						<h4 class="title"><i class=" fas fa-cart-shopping Orange m-1"></i> <b>اقلام</b></h4>
-						<table class="table ">
-							<thead class="bordered-darkorange">
-								<tr>
-									<th>
-										ردیف
-									</th>
-									<th>
-										نام قلم
-									</th>
-									<th>
-										فروشنده
-									</th>
-									<th>
-										تعداد
-									</th>
-									<th>
-										مبلغ
-									</th>
-									<th>
-										جمع
-									</th>
-									<th>
-										مالیات
-									</th>
-									<th>
-										تخفیف
-									</th>
-									<th>
-										جمع کل
-									</th>
-
-								</tr>
-							</thead>
-							<tbody id="Products">
-							</tbody>
-						</table>
+                            <button class="btn" onclick="OrderShippingChange()"><i
+                                    class="fas Blue fa-pencil icon-button"></i></button>
+                        </div>
+                        <div class="form-group" id="OrderShipping">
+                        </div>
 
 
-					</div>
-				</div><!-- /col-lg-12 -->
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
-				<button class="btn btn-green btn-round text-white" onclick="OpenOrderSetting()">تکمیل و تغییر سفارش</button>
-				<form method="post" asp-page-handler="OrderWord">
-					<input type="hidden" asp-for="OrderId" class="OrderId" />
-					<button type="submit" class="btn btn-warning btn-round">دریافت فایل Word</button>
-				</form>
-			</div>
-			
-		</div>
-	</div>
+                    </div>
+                    <div class="col-12">
+                        <hr/>
+                        <h4 class="title"><i class=" fas fa-cart-shopping Orange m-1"></i> <b>اقلام</b></h4>
+                        <table class="table ">
+                            <thead class="bordered-darkorange">
+                            <tr>
+                                <th>
+                                    ردیف
+                                </th>
+                                <th>
+                                    نام قلم
+                                </th>
+                                <th>
+                                    فروشنده
+                                </th>
+                                <th>
+                                    تعداد
+                                </th>
+                                <th>
+                                    مبلغ
+                                </th>
+                                <th>
+                                    جمع
+                                </th>
+                                <th>
+                                    مالیات
+                                </th>
+                                <th>
+                                    تخفیف
+                                </th>
+                                <th>
+                                    جمع کل
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="Products">
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                <button class="btn btn-green btn-round text-white" onclick="OpenOrderSetting()">تکمیل و تغییر سفارش
+                </button>
+                <form method="post" asp-page-handler="OrderWord">
+                    <input type="hidden" asp-for="OrderId" class="OrderId"/>
+                    <button type="submit" class="btn btn-warning btn-round">دریافت فایل Word</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
 </div>
 <!--End Show Order Detail -->
 <!--Start Show Status-->
 <div id="ShowStatusModal" class="modal fade" role="dialog" tabindex="-1">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>تغییر حالت</b></h4><br />
-				<div class="pt-2">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>تغییر حالت</b></h4><br/>
+                <div class="pt-2">
 
 
-					<div class="form-group" id="OrderHeader">
-					</div>
+                    <div class="form-group" id="OrderHeader">
+                    </div>
 
-				</div>
-			</div>
-			<div class="modal-body">
+                </div>
+            </div>
+            <div class="modal-body">
 
-				<form asp-page-handler="StatusChange" method="post" enctype="multipart/form-data"
-					  data-ajax="true"
-					  data-ajax-method="POST"
-					  data-ajax-begin="OnLoadingStatus"
-					  data-ajax-complete="OnCompleteStatus"
-					  data-ajax-failure="OnErrorStatus">
-					<input type="hidden" asp-for="OrderStatusDto.OrderId" class="OrderId" />
+                <form asp-page-handler="StatusChange" method="post" enctype="multipart/form-data"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoadingStatus"
+                      data-ajax-complete="OnCompleteStatus"
+                      data-ajax-failure="OnErrorStatus">
+                    <input type="hidden" asp-for="OrderStatusDto.OrderId" class="OrderId"/>
 
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label> وضعیت</label>
-						<div class="form-group round">
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label> وضعیت</label>
+                        <div class="form-group round">
 
-							<select class="form-control" asp-for="OrderStatusDto.StatusId">
+                            <select class="form-control" asp-for="OrderStatusDto.StatusId">
 
-								@foreach (var item in Model.orderFilterDto.statuses)
-								{
-									<option value="@item.Id">@item.StatusName</option>
-								}
-							</select>
+                                @foreach (var item in Model.orderFilterDto.statuses)
+                                {
+                                    <option value="@item.Id">@item.StatusName</option>
+                                }
+                            </select>
 
-						</div>
-					</div>
+                        </div>
+                    </div>
 
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label> توضیحات</label>
-						<div class="form-group round">
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label> توضیحات</label>
+                        <div class="form-group round">
 
-							<textarea asp-for="OrderStatusDto.Comment" class="form-control"></textarea>
+                            <textarea asp-for="OrderStatusDto.Comment" class="form-control"></textarea>
 
-						</div>
-					</div>
+                        </div>
+                    </div>
 
 
-					<div class="form-group relative">
-						<input  type="file" name="file" class="form-control">
-						<label>آپلود فایل</label>
-						<div class="input-group round">
-							<input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
-							<span class="input-group-btn">
+                    <div class="form-group relative">
+                        <input type="file" name="file" class="form-control">
+                        <label>آپلود فایل</label>
+                        <div class="input-group round">
+                            <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                            <span class="input-group-btn">
 								<button type="button" class="btn btn-info">
 									<i class="icon-picture"></i>
 									آپلود پیوست
-									<div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+									<div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                            class="paper-ripple__waves"></div></div>
 								</button>
 							</span>
-						</div><!-- /.input-group -->
-						<div class="help-block"></div>
-					</div><!-- /.form-group -->
+                        </div><!-- /.input-group -->
+                        <div class="help-block"></div>
+                    </div><!-- /.form-group -->
 
-					<button type="submit" class="btn btn-info btn-round btn-block mb-2">
-						ثبت
-						<div class="paper-ripple">
-							<div class="paper-ripple__background"></div>
-							<div class="paper-ripple__waves"></div>
-						</div>
-					</button>
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        ثبت
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
 
-				</form>
+                </form>
 
-			</div>
+            </div>
 
 
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 <!--End Show Status-->
 <!--Start Order Shipping Change-->
 <div id="OrderShippingChangeModal" class="modal fade" role="dialog" tabindex="-1">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-			<div class="modal-header">
-				<button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title"><i class=" fas fa-pencil Blue m-1"></i> <b>تغییر حمل و نقل سفارش</b></h4><br />
-				
-			</div>
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Blue m-1"></i> <b>تغییر حمل و نقل سفارش</b></h4><br/>
 
-			<div class="modal-body">
+            </div>
 
-				<form method ="post" id="OrderShippingChange" asp-page-handler="OrderShippingChange"
-							data-ajax="true"
-							data-ajax-method="POST"
-							data-ajax-begin="OnLoadingOrderShipping"
-							data-ajax-complete="OnCompleteOrderShipping"
-							data-ajax-failure="OnErrorOrderShipping">
-					<input type="hidden" asp-for="OrderId" class="OrderId">
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>حمل و نقل های کاربر</label>
-						<div class="form-group round">
-							
-							<select class="form-control" asp-for="UserShippingId" id="UserShippingList">
-							</select>
+            <div class="modal-body">
 
-						</div>
-					</div>
+                <form method="post" id="OrderShippingChange" asp-page-handler="OrderShippingChange"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoadingOrderShipping"
+                      data-ajax-complete="OnCompleteOrderShipping"
+                      data-ajax-failure="OnErrorOrderShipping">
+                    <input type="hidden" asp-for="OrderId" class="OrderId">
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>حمل و نقل های کاربر</label>
+                        <div class="form-group round">
 
-					<button type="submit" class="btn btn-info btn-round btn-block mb-2">
-						ثبت
-						<div class="paper-ripple">
-							<div class="paper-ripple__background"></div>
-							<div class="paper-ripple__waves"></div>
-						</div>
-					</button>
-				</form>
+                            <select class="form-control" asp-for="UserShippingId" id="UserShippingList">
+                            </select>
 
-			</div>
+                        </div>
+                    </div>
 
-		</div>
-	</div>
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        ثبت
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
 </div>
 <!--End Order Shipping Change-->
 
 
 <div id="orderSettingModal" class="modal fade" role="dialog" tabindex="-1">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>روش های پرداخت</b></h4><br />
-				
-				<div class="pt-2">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>روش های پرداخت</b></h4><br/>
+
+                <div class="pt-2">
 
 
-					
-
-				</div>
-			</div>
-			<div class="modal-body">
-				<button class="btn btn-success" onclick="AddOrderPayForm()">افزودن روش پرداخت</button>
-				<div  id="orderPays">
-					
-					
-				</div>
-				<form method="post" id="OrderShippingChange" asp-page-handler="Complete"
-					  data-ajax="true"
-					  data-ajax-method="POST"
-					  
-					  data-ajax-complete="OnCompleteOrderComplete"
-					  >
-					<input type="hidden" name="orderId" class="OrderId" id="Oid">
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>کیف پول کاربر</label>
-						<div class="form-group round">
-
-							<select class="form-control" name="typeName" >
-
-								<option value=null>انتخاب نشده</option>
-								<option value="Amount">کیف پول پیش فرض</option>
-								<option value="Fecilities">تسهیلات</option>
-								<option value="OrgCredit">اعتبار سازمانی</option>
-							</select>
-
-						</div>
-					</div>
-
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>تعداد ماه</label>
-						<div class="form-group round">
-
-							<input type="number" class="form-control" name="month"/>
-
-						</div>
-					</div>
-
-					<button type="submit" class="btn btn-info btn-round btn-block mb-2">
-						تکمیل سفارش
-						<div class="paper-ripple">
-							<div class="paper-ripple__background"></div>
-							<div class="paper-ripple__waves"></div>
-						</div>
-					</button>
-				</form>
-
-			</div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-success" onclick="AddOrderPayForm()">افزودن روش پرداخت</button>
+                <div id="orderPays">
 
 
-		</div>
-	</div>
+                </div>
+                <form method="post" id="OrderShippingChange" asp-page-handler="Complete"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+
+                      data-ajax-complete="OnCompleteOrderComplete"
+                >
+                    <input type="hidden" name="orderId" class="OrderId" id="Oid">
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>کیف پول کاربر</label>
+                        <div class="form-group round">
+
+                            <select class="form-control" name="typeName">
+
+                                <option value="null">انتخاب نشده</option>
+                                <option value="Amount">کیف پول پیش فرض</option>
+                                <option value="Fecilities">تسهیلات</option>
+                                <option value="OrgCredit">اعتبار سازمانی</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>تعداد ماه</label>
+                        <div class="form-group round">
+
+                            <input type="number" class="form-control" name="month"/>
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        تکمیل سفارش
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
 </div>
 
 <div id="AddOrderPayModal" class="modal fade" role="dialog" tabindex="-1">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close " data-bs-dismiss="modal">&times;</button>
-				<h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>افزودن روش پرداخت</b></h4><br />
-				<div class="pt-2">
-				</div>
-			</div>
-			<div class="modal-body">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>افزودن روش پرداخت</b></h4><br/>
+                <div class="pt-2">
+                </div>
+            </div>
+            <div class="modal-body">
 
-				<div id="orderPays">
-				</div>
-				<form method="post" id="OrderShippingChange" asp-page-handler="AddOrderPay"
-					  data-ajax="true"
-					  data-ajax-method="POST"
-					 
-					  data-ajax-complete="OnCompleteAddPay"
-					 >
-					<input type="hidden" asp-for="orderPayDto.OrderId" class="OrderId">
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>روش پرداخت</label>
-						<div class="form-group round">
+                <div id="orderPays">
+                </div>
+                <form method="post" id="OrderShippingChange" asp-page-handler="AddOrderPay"
+                      data-ajax="true"
+                      data-ajax-method="POST"
 
-							<select class="form-control" asp-for="orderPayDto.PayTypeId">
-								@foreach (var item in Model.orderFilterDto.pays)
-								{
-									<option value="@item.Id">@item.TypeName</option>
-								}
-								
-							</select>
+                      data-ajax-complete="OnCompleteAddPay"
+                >
+                    <input type="hidden" asp-for="orderPayDto.OrderId" class="OrderId">
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>روش پرداخت</label>
+                        <div class="form-group round">
 
-						</div>
-					</div>
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>مبلغ پرداختی</label>
-						<div class="form-group round">
+                            <select class="form-control" asp-for="orderPayDto.PayTypeId">
+                                @foreach (var item in Model.orderFilterDto.pays)
+                                {
+                                    <option value="@item.Id">@item.TypeName</option>
+                                }
 
-							<input type="number" class="form-control" asp-for="orderPayDto.Price" />
+                            </select>
 
-						</div>
-					</div>
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>توضیحات</label>
-						<div class="form-group round">
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>مبلغ پرداختی</label>
+                        <div class="form-group round">
 
-							<input type="text" class="form-control" asp-for="orderPayDto.Description" />
+                            <input type="number" class="form-control" asp-for="orderPayDto.Price"/>
 
-						</div>
-					</div>
-					<div class="col-md-12 col-lg-12 m-auto m-b-10">
-						<label>وضعیت</label>
-						<div class="form-group round">
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>توضیحات</label>
+                        <div class="form-group round">
 
-							<select class="form-control" asp-for="orderPayDto.PayStatusTypeId">
+                            <input type="text" class="form-control" asp-for="orderPayDto.Description"/>
 
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>وضعیت</label>
+                        <div class="form-group round">
 
-								<option value="1">در انتظار پرداخت</option>
-								<option value="2">پرداخت با موفقیت انجام شده</option>
-								<option value="3">پرداخت لغو شده</option>
-								<option value="4">ثبت نحوه پرداخت</option>
-								
-							</select>
-
-						</div>
-					</div>
-					<button type="submit" class="btn btn-info btn-round btn-block mb-2">
-						تکمیل سفارش
-						<div class="paper-ripple">
-							<div class="paper-ripple__background"></div>
-							<div class="paper-ripple__waves"></div>
-						</div>
-					</button>
-				</form>
-
-			</div>
+                            <select class="form-control" asp-for="orderPayDto.PayStatusTypeId">
 
 
-		</div>
-	</div>
+                                <option value="1">در انتظار پرداخت</option>
+                                <option value="2">پرداخت با موفقیت انجام شده</option>
+                                <option value="3">پرداخت لغو شده</option>
+                                <option value="4">ثبت نحوه پرداخت</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        تکمیل سفارش
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
 </div>
 
 @section Styles {
-	<link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
-	<link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
-	<link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
-	<link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+    <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
 }
+
 @section Scripts {
-	<script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
-	<script src="~/shared/lib/shared/toast/toast.js"></script>
-	<script src="~/shared/lib/shared/toast/mytoast.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
 
-	<script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
-	<script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
 
-	<script src="~/shared/lib/admin/Orders/Index.js"></script>
-	<script src="~/shared/lib/admin/Orders/OrderEdit.js"></script>
-	<script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
-	<script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
-	<script src="~/Admin/js/pages/select2.js"></script>
-	<script src="~/Admin/plugins/persian-date/persian-date.min.js"></script>
+    <script src="~/shared/lib/admin/Orders/Index.js"></script>
+    <script src="~/shared/lib/admin/Orders/OrderEdit.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+    <script src="~/Admin/plugins/persian-date/persian-date.min.js"></script>
 
-	<script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
-	<script src="~/Admin/js/pages/calendar.js"></script>
+    <script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
+    <script src="~/Admin/js/pages/calendar.js"></script>
 
 }

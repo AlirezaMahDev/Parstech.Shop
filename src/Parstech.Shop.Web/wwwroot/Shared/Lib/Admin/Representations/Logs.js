@@ -18,13 +18,13 @@ var PrColor = [];
 var chartPr = document.getElementById("chartPr");
 
 
-
 function FilterPriceLog() {
     PriceLogtableMain
         .clear()
         .draw();
     PriceLogdataSet = [];
 }
+
 function FilterPrLog() {
     PrableMain
         .clear()
@@ -34,9 +34,9 @@ function FilterPrLog() {
 
 
 function FillPriceLogDataSet(Data) {
-   // console.log(Data);
+    // console.log(Data);
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
                 "<h5>" + element.createDateShamsi + "</h5>",
@@ -50,9 +50,9 @@ function FillPriceLogDataSet(Data) {
 }
 
 function FillPrLogDataSet(Data) {
-   console.log(Data);
+    console.log(Data);
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
         const data =
             [
                 "<h5>" + element.uniqeCode + "</h5>",
@@ -64,6 +64,7 @@ function FillPrLogDataSet(Data) {
         PrdataSet.push(data);
     });
 }
+
 function OnLoadingGetLogs() {
     sale = [];
     base = [];
@@ -79,7 +80,7 @@ function OnLoadingGetLogs() {
     PrCount = [];
     PrColor = [];
     chartPr.innerHTML = null;
-    
+
     if (PriceLogdataSet.length > 0) {
         FilterPriceLog();
     }
@@ -87,8 +88,9 @@ function OnLoadingGetLogs() {
         FilterPrLog();
     }
 }
+
 function OnCompleteGetLogs(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     //chart Price
     var Data = xhr.responseJSON.object.logDto;
     Data.baseLogDtos.forEach(function (element) {
@@ -109,7 +111,6 @@ function OnCompleteGetLogs(xhr) {
     });
     chartPrice.insertAdjacentHTML("afterbegin", "<canvas id='line2' class='min-height-300'></canvas>")
     ConfigChart();
-    
 
 
     //Table Price
@@ -121,11 +122,11 @@ function OnCompleteGetLogs(xhr) {
         data: PriceLogdataSet,
         columns: [
 
-            { title: 'تاریخ' },
-            { title: 'تغییر' },
-            { title: 'قیمت قبلی' },
-            { title: 'قیمت ویرایش شده' },
-            { title: 'توسط' },
+            {title: 'تاریخ'},
+            {title: 'تغییر'},
+            {title: 'قیمت قبلی'},
+            {title: 'قیمت ویرایش شده'},
+            {title: 'توسط'},
         ],
         "pageLength": 25
     });
@@ -145,12 +146,12 @@ function OnCompleteGetLogs(xhr) {
             return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
         };
         PrColor.push(randomColor);
-        
+
     });
-   // console.log(PrColor);
+    // console.log(PrColor);
     chartPr.insertAdjacentHTML("afterbegin", " <canvas id='pie1'></canvas>")
     ConfigChart2();
-    
+
     //pr Table
     var DataPrLog = xhr.responseJSON.object.productRepresntationPaging;
     FillPrLogDataSet(DataPrLog);
@@ -160,12 +161,12 @@ function OnCompleteGetLogs(xhr) {
         data: PrdataSet,
         columns: [
 
-            { title: 'شناسه' },
-            { title: 'تاریخ' },
-            { title: 'درخواست' },
-            { title: 'تعداد' },
-            { title: 'توسط' },
-           
+            {title: 'شناسه'},
+            {title: 'تاریخ'},
+            {title: 'درخواست'},
+            {title: 'تعداد'},
+            {title: 'توسط'},
+
         ],
         "pageLength": 25
     });
@@ -174,14 +175,10 @@ function OnCompleteGetLogs(xhr) {
 
     $("#LogsModal").modal("show");
 }
+
 function OnErrorGetLogs() {
 
 }
-
-
-
-
-
 
 
 function ConfigChart() {
@@ -200,23 +197,23 @@ function ConfigChart() {
             }
                 , {
 
-                borderColor: "#ff7800",
-                borderWidth: 2,
-                label: "قیمت فروش",
-                data: sale,
-            }, {
+                    borderColor: "#ff7800",
+                    borderWidth: 2,
+                    label: "قیمت فروش",
+                    data: sale,
+                }, {
 
-                borderColor: "#ff006f",
-                borderWidth: 2,
-                label: "قیمت تخفیف",
-                data: discount,
-            }, {
+                    borderColor: "#ff006f",
+                    borderWidth: 2,
+                    label: "قیمت تخفیف",
+                    data: discount,
+                }, {
 
-                borderColor: "#40e5e9",
-                borderWidth: 2,
-                label: "قیمت خام",
-                data: base,
-            }]
+                    borderColor: "#40e5e9",
+                    borderWidth: 2,
+                    label: "قیمت خام",
+                    data: base,
+                }]
         },
         options: {
             maintainAspectRatio: false,
@@ -253,8 +250,9 @@ function ConfigChart() {
     var ctx = document.getElementById("line2").getContext("2d");
     window.line2 = new Chart(ctx, config2);
 }
+
 function ConfigChart2() {
-   // console.log(PrCount);
+    // console.log(PrCount);
     Chart.defaults.global.defaultFontFamily = "IranSans";
     var config1 = {
         type: 'pie',
@@ -262,12 +260,12 @@ function ConfigChart2() {
             labels: PrName,
             datasets: [{
                 backgroundColor: [
-                    
-                    
+
+
                     "#31e100",
                     "#ff003b",
                     "#ff9014",
-                    
+
                     "#206bff",
                 ],
                 borderWidth: 3,
@@ -281,12 +279,11 @@ function ConfigChart2() {
     };
 
     /*window.onload = function () {*/
-        var ctx1 = document.getElementById("pie1").getContext("2d");
-        window.pie1 = new Chart(ctx1, config1);
+    var ctx1 = document.getElementById("pie1").getContext("2d");
+    window.pie1 = new Chart(ctx1, config1);
     //};
 
 }
-
 
 
 function ShowLogModal(id) {
@@ -294,7 +291,8 @@ function ShowLogModal(id) {
     $("#GetLogsForm").submit();
 
 }
-    //window.onload = function () {
 
-    //};
+//window.onload = function () {
+
+//};
 

@@ -20,14 +20,17 @@
   background-image: linear-gradient(to right, $hs-start-color, $hs-mid-color $hs-color-stop, $hs-end-color);
   background-repeat: no-repeat;
 }
+
 @mixin gradient-y-three-colors($hs-start-color: #00b3ee, $hs-mid-color: #7a43b6, $hs-color-stop: 50%, $hs-end-color: #c3325f) {
   background-image: linear-gradient($hs-start-color, $hs-mid-color $hs-color-stop, $hs-end-color);
   background-repeat: no-repeat;
 }
+
 @mixin gradient-radial($hs-inner-color: #555, $hs-outer-color: #333) {
   background-image: radial-gradient(circle, $hs-inner-color, $hs-outer-color);
   background-repeat: no-repeat;
 }
+
 @mixin gradient-striped($hs-color: rgba(255,255,255,.15), $hs-angle: 45deg) {
   background-image: linear-gradient($hs-angle, $hs-color 25%, transparent 25%, transparent 50%, $hs-color 50%, $hs-color 75%, transparent 75%, transparent);
 }

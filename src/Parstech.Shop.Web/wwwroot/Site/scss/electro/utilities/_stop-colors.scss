@@ -3,8 +3,8 @@
 ------------------------------------*/
 
 .stop-color {
-	&-white {
-  	stop-color: $white !important;
+  &-white {
+    stop-color: $white !important;
   }
 
   &-primary {
@@ -15,8 +15,8 @@
     }
 
     &-lighter {
-  		stop-color: $primary-lighter !important;
-  	}
+      stop-color: $primary-lighter !important;
+    }
   }
 
   &-warning {

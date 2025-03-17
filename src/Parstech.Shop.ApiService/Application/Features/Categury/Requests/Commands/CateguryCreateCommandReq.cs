@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Categury;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Categury.Requests.Commands
-{
-    public record CateguryCreateCommandReq(CateguryDto CateguryDto) : IRequest<CateguryDto>;
-}
+using Parstech.Shop.ApiService.Application.DTOs;
+
+namespace Parstech.Shop.ApiService.Application.Features.Categury.Requests.Commands;
+
+public record CateguryCreateCommandReq(CateguryDto CateguryDto) : IRequest<CateguryDto>;

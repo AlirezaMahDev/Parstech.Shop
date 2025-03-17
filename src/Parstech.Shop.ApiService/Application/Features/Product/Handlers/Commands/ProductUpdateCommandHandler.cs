@@ -1,69 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.User;
-using Shop.Application.Features.Product.Requests.Commands;
-using Shop.Application.Features.User.Requests.Commands;
 
-namespace Shop.Application.Features.Product.Handlers.Commands
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
+
+namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Commands;
+
+public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommandReq, ProductDto>
 {
-    public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommandReq, ProductDto>
+    private readonly IProductRepository _productRep;
+    private readonly IUserStoreRepository _userStoreRep;
+    private readonly IMapper _mapper;
+    private readonly IMediator _madiiator;
+    private readonly IProductStockPriceRepository _productStockRep;
+
+    public ProductUpdateCommandHandler(IProductRepository productRep,
+        IUserStoreRepository userStoreRep,
+        IMapper mapper,
+        IMediator madiiator,
+        IProductStockPriceRepository productStockRep)
     {
+        _productRep = productRep;
+        _userStoreRep = userStoreRep;
+        _mapper = mapper;
+        _madiiator = madiiator;
+        _productStockRep = productStockRep;
+    }
 
-        private readonly IProductRepository _productRep;
-        private readonly IUserStoreRepository _userStoreRep;
-        private readonly IMapper _mapper;
-        private readonly IMediator _madiiator;
-        private readonly IProductStockPriceRepository _productStockRep;
+    public async Task<ProductDto> Handle(ProductUpdateCommandReq request, CancellationToken cancellationToken)
+    {
+        ProductDto result = new();
+        Domain.Models.Product? product = _mapper.Map<Domain.Models.Product>(request.ProductDto);
+        //var Store = await _userStoreRep.GetAsync(product.StoreId);
+        //product.RepId = Store.RepId;
 
-        public ProductUpdateCommandHandler(IProductRepository productRep,
-            IUserStoreRepository userStoreRep,
-            IMapper mapper, IMediator madiiator,
-            IProductStockPriceRepository productStockRep)
+        if (product.TypeId != 5)
         {
-            _productRep = productRep;
-           _userStoreRep = userStoreRep;
-            _mapper = mapper;
-            _madiiator = madiiator;
-            _productStockRep = productStockRep;
+            product.SingleSale = true;
         }
-       
-        public async Task<ProductDto> Handle(ProductUpdateCommandReq request, CancellationToken cancellationToken)
+
+        if (product.TypeId == 1 || product.TypeId == 5)
         {
-            ProductDto result=new ProductDto();
-            var product = _mapper.Map<Domain.Models.Product>(request.ProductDto);
-            //var Store = await _userStoreRep.GetAsync(product.StoreId);
-            //product.RepId = Store.RepId;
-
-            if (product.TypeId != 5)
+            List<Domain.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
+            if (childs.Count > 0)
             {
-                product.SingleSale = true;
+                return result;
             }
-            if(product.TypeId==1||product.TypeId==5)
-            {
-                var childs=await _productRep.GetProductsByParrentId(product.Id);
-                if (childs.Count > 0)
-                {
-                    return result;
-                }
-                var productResult = await _productRep.UpdateAsync(product);
 
-                return _mapper.Map<ProductDto>(productResult);
-            }
-            else
-            {
-                var productResult = await _productRep.UpdateAsync(product);
+            Domain.Models.Product productResult = await _productRep.UpdateAsync(product);
 
-                return _mapper.Map<ProductDto>(productResult);
-            }
-            
-            
+            return _mapper.Map<ProductDto>(productResult);
+        }
+        else
+        {
+            Domain.Models.Product productResult = await _productRep.UpdateAsync(product);
+
+            return _mapper.Map<ProductDto>(productResult);
         }
     }
 }

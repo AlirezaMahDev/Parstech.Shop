@@ -55,6 +55,7 @@ function CleanProduct() {
     serached.innerHTML = null;
 
 }
+
 function FillProdcut(element) {
     console.log(element);
     ProductDto_Id.value = element.id;
@@ -79,28 +80,18 @@ function FillProdcut(element) {
 
     if (element.parentProductName != null) {
         ParentText.innerText = element.parentProductName
-    }
-    else {
+    } else {
         ParentText.innerText = null;
     }
 
     if (element.variationName != null) {
         VariationSection.classList.remove('hidden');
         VariationSection.classList.add('show');
-    }
-    else {
+    } else {
         VariationSection.classList.add('hidden');
         VariationSection.classList.remove('show');
     }
 }
-
-
-
-
-
-
-
-
 
 
 $(window).on('resize', function () {
@@ -110,24 +101,23 @@ $(window).on('resize', function () {
 
 $(document).ready(function () {
     Parameter_CurrentPage.value = 1;
-    
+
     $("#GetDataForm").submit();
 
-    fetch('/Components/GetProductsSelect') 
+    fetch('/Components/GetProductsSelect')
         .then(response => response.text())
         .then(html => {
             document.getElementById("ProductsSelect").innerHTML = html;
         })
         .catch(error => console.error('Error:', error));
 
-    fetch('/Components/GetCategurySelect') 
+    fetch('/Components/GetCategurySelect')
         .then(response => response.text())
         .then(html => {
             document.getElementById("CategurySelect").innerHTML = html;
         })
         .catch(error => console.error('Error:', error));
 });
-
 
 
 function Filter() {
@@ -140,6 +130,7 @@ function Filter() {
     Parameter_Filter.value = FilterInput.value;
     $("#GetDataForm").submit();
 }
+
 function BlankFilter() {
 
     tableMain
@@ -162,37 +153,35 @@ function FillDataSet(data) {
         serached.innerText = "موارد پیدا شده:" + Data.searched;
     }
     let buttons;
-    
+
     Data.productDtos.forEach(function (element) {
 
         if (object2 == "Store") {
             buttons = "<div class='btn-group'><div class='btn-group'><button type='button' class='btn btn-default dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='true'><i class='icon-options'></i><i class='icon-arrow-down'></i></button><ul class='dropdown-menu' style=''><li><a href='/Admin/Products/CreateOrUpdate/" + element.productId + "'class=' btn hover-green btn-block h6 text-center'>میخواهم فروشنده این محصول باشم</a></li></ul></div> </div >"
-        }
-        else {
+        } else {
             buttons = "<div class='btn-group'><div class='btn-group'><button type='button' class='btn btn-default dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='true'><i class='icon-options'></i><i class='icon-arrow-down'></i></button><ul class='dropdown-menu' style=''><li><a href='/Admin/Products/CreateOrUpdate/" + element.productId + "'class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i>ویرایش</a></li><li><button onclick='Delete(" + element.productId + ")' type='button' class='btn btn-default btn-block'><i class='  fas fa-trash Red m-1'></i>حذف محصول</button></li></ul></div> </div >"
 
         }
         let activeStatus;
         if (element.isActive) {
             activeStatus = "<small class='Green font-weight-bold'>منتشر شده</small>";
-        }
-        else {
+        } else {
             activeStatus = "<small class='Red font-weight-bold'>در انتظار انتشار</small>";
         }
         const data =
             [
-                
+
                 "<h6 class='font-weight-bold'><img width='50' src='/shared/images/Products/" + element.image + "'/>" + element.name + " <br/> </h6>",
                 "<small><strong class='font-weight-bold'>کد محصول:</strong><strong class='text-warning'> " + element.code + "</strong></small>",
 
                 "<small>" + element.typeName + "</small>",
-                
+
                 "<small>" + element.createDateShamsi + "</small>",
-                "<a class='pointer' onclick='GetProductStores("+element.productId+")'>مشاهده</a>",
+                "<a class='pointer' onclick='GetProductStores(" + element.productId + ")'>مشاهده</a>",
                 activeStatus,
                 buttons
                 //"<div class='btn-group'><div class='btn-group'><button type='button' class='btn btn-default dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='true'><i class='icon-options'></i><i class='icon-arrow-down'></i></button><ul class='dropdown-menu' style=''><li><button onclick='GetProductSubmit(" + element.id + ")' type='button' class='btn btn-default btn-block'><i class=' fas fa-pen-to-square Green m-1'></i>ویرایش سریع</button></li><li><a href='/Admin/Products/CreateOrUpdate/" + element.id + "'class=' btn btn-default btn-block h6 text-center'><i class=' fas fa-file-signature Orange m-1'></i>ویرایش</a></li><li><button onclick='GetCategury(" + element.id + ")' type='button' class='btn btn-default btn-block' > <i class=' fas fa-folder-closed Blue m-1'></i>دسته بندی</button ></li><li><button onclick='GetDulicateProduct(" + element.id + ")' type='button' class='btn btn-default btn-block'><i class=' fas  fas fa-file-export Cyen m-1'></i>کپی محصول</button></li><li><button onclick='GetCopyProduct(" + element.id + ")' type='button' class='btn btn-default btn-block'><i class='  fas fa-file-circle-plus Pink m-1'></i>دوبل کردن</button></li><li><button onclick='Delete(" + element.id + ")' type='button' class='btn btn-default btn-block'><i class='  fas fa-trash Red m-1'></i>حذف محصول</button></li></ul></div> </div >"
-                ];
+            ];
         dataSet.push(data);
     });
 
@@ -209,10 +198,10 @@ function FillDataSet(data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -226,6 +215,7 @@ var Parameter_Type = document.getElementById("Parameter_Type");
 var ProductsSelect = document.getElementById("ProductsSelect");
 var CategurySelect = document.getElementById("CategurySelect");
 var TypeSelect = document.getElementById("TypeSelect");
+
 function RunPaging(page) {
     tableMain
         .clear()
@@ -245,12 +235,11 @@ function OnLoadingData() {
 }
 
 function OnCompleteData(xhr) {
-   
+
     var Data = xhr.responseJSON;
-   
+
     console.log(Data);
     FillDataSet(Data);
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -258,19 +247,19 @@ function OnCompleteData(xhr) {
         "paging": false,
         data: dataSet,
         columns: [
-            { title: 'عنوان محصول' },
-            
-            
-            { title: 'شناسه' },
-            { title: 'نوع' },
-            { title: 'تاریخ ایجاد' },
-            { title: 'فروشندگان' },
-            { title: 'انتشار' },
-            
-            
-            { title: 'عملیات' },
+            {title: 'عنوان محصول'},
+
+
+            {title: 'شناسه'},
+            {title: 'نوع'},
+            {title: 'تاریخ ایجاد'},
+            {title: 'فروشندگان'},
+            {title: 'انتشار'},
+
+
+            {title: 'عملیات'},
         ],
-        
+
         "pageLength": 25
     });
     tableMain.destroy();
@@ -301,8 +290,9 @@ function GetProductSubmit(id) {
 function OnLoadingProdcut() {
     //CleanProduct();
 }
+
 function OnCompleteProdcut(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillProdcut(xhr.responseJSON.object);
     SelectParentSection.classList.remove('show');
     SelectParentSection.classList.add('hidden');
@@ -314,18 +304,17 @@ function OnErrorProdcut() {
 }
 
 
-
 function OnLoadingProductEC() {
     //CleanProduct();
 }
+
 function OnCompleteProductEC(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillProdcut(xhr.responseJSON.object);
         $("#EditProductModal").modal("show");
         ToastSuccess("عملیات با موفقیت انجام شد")
@@ -337,6 +326,7 @@ function OnCompleteProductEC(xhr) {
 function OnErrorProductEC() {
 
 }
+
 //...................................
 
 var SelectParentSection = document.getElementById("SelectParentSection");
@@ -355,13 +345,11 @@ variableSelector.addEventListener("change", (e) => {
         VariationSection.classList.remove('hidden');
         VariationSection.classList.add('show');
         Type.value = 1;
-    }
-    else if (targetValue == 5) {
+    } else if (targetValue == 5) {
         SelectParentSection.classList.remove('hidden');
         SelectParentSection.classList.add('show');
         Type.value = 2;
-    }
-    else {
+    } else {
         SelectParentSection.classList.remove('show');
         SelectParentSection.classList.add('hidden');
 
@@ -369,6 +357,7 @@ variableSelector.addEventListener("change", (e) => {
         VariationSection.classList.remove('show');
     }
 });
+
 function SearchProductParents(type) {
     var FilterParrents = document.getElementById("FilterParrents");
     console.log(SearchProduct.value);
@@ -377,6 +366,7 @@ function SearchProductParents(type) {
     console.log(FilterParrents.value);
     $("#ProductParentsForm").submit();
 }
+
 function OnLoadingProductParents() {
 
 }
@@ -393,13 +383,13 @@ function GetDulicateProduct(id) {
     IproductIdForInputs(id);
     $("#ProductDuplicateModal").modal('show');
 }
+
 function OnCompleteDublicate(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
-       
+    } else {
+
         $("#ProductDuplicateModal").modal('hide');
         ToastSuccess("عملیات با موفقیت انجام شد");
         Filter();
@@ -411,12 +401,12 @@ function GetCopyProduct(id) {
     IproductIdForInputs(id);
     $("#ProductCopyModal").modal('show');
 }
+
 function OnCompleteCopy(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         $("#ProductCopyModal").modal('hide');
         ToastSuccess("عملیات با موفقیت انجام شد");
@@ -449,7 +439,6 @@ function Delete(id) {
     }).catch(swal.noop);
 
 
-
 }
 
 function OnCompleteDelete(xhr) {
@@ -458,16 +447,14 @@ function OnCompleteDelete(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد");
             BlankFilter();
             Parameter_CurrentPage.value = 1;
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError("عملیات حذف به دلیل وجود کالا در انبارها امکان پذیر نیست")
         }
 
@@ -475,7 +462,8 @@ function OnCompleteDelete(xhr) {
 }
 
 //Search Product For Store
-let SroreSearchProduct=document.getElementById("SroreSearchProduct");
+let SroreSearchProduct = document.getElementById("SroreSearchProduct");
+
 function SearchProducts() {
     $.ajax({
         type: "POST",
@@ -484,7 +472,7 @@ function SearchProducts() {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "Filter": SroreSearchProduct.value },
+        data: {"Filter": SroreSearchProduct.value},
         success: function (response) {
             FillSearchedProoductForStore(response.object);
         },
@@ -498,6 +486,7 @@ function SearchProducts() {
 }
 
 let SearchedProductSection = document.getElementById("SearchedProductSection");
+
 function FillSearchedProoductForStore(Data) {
     SearchedProductSection.innerHTML = null;
     Data.forEach(function (element) {
@@ -515,7 +504,7 @@ function GetProductStores(productId) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        data: { "ProductId": productId },
+        data: {"ProductId": productId},
         success: function (response) {
             FillProductStores(response.object);
         },
@@ -529,6 +518,7 @@ function GetProductStores(productId) {
 }
 
 let ProductStoresSection = document.getElementById("ProductStoresSection");
+
 function FillProductStores(Data) {
     ProductStoresSection.innerHTML = null;
     Data.forEach(function (element) {

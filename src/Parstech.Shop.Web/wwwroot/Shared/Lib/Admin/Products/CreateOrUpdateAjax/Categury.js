@@ -4,7 +4,6 @@
 }
 
 
-
 var Cats = document.getElementById("CatsData");
 
 var categuriesSelect = document.getElementById("categuriesSelect");
@@ -13,9 +12,11 @@ var SearchCatText = document.getElementById("SearchCatText");
 var SearchCatText2 = document.getElementById("SearchCatText2");
 var FilterCatForm = document.getElementById("FilterCatForm");
 var FilterCatForm2 = document.getElementById("FilterCatForm2");
+
 function OnLoadingCateguries() {
     Cats.innerHTML = null;
 }
+
 function OnCompleteCateguries(xhr) {
     // console.log(xhr.responseJSON.object);
     $("#CateguriesModal").modal('show');
@@ -26,14 +27,14 @@ function OnCompleteCateguries(xhr) {
     Data.forEach(function (element) {
         if (element.isParnet) {
             Cats.insertAdjacentHTML("beforeend", " <tr><td colspan='2'>" + element.groupTitle + "</td><td><button onclick='DeleteCategury(" + element.id + ")' class='btn btn-danger'>حذف</button></td></tr>")
-        }
-        else {
+        } else {
             Cats.insertAdjacentHTML("beforeend", " <tr><td></td><td>" + element.groupTitle + "</td><td><button onclick='DeleteCategury(" + element.id + ")' class='btn btn-danger'>حذف</button></td></tr>")
         }
     });
 
 
 }
+
 function OnFailureCateguries() {
 
 }
@@ -43,6 +44,7 @@ function DeleteCategury(id) {
     IdForProductIdInputs(id);
     $("#DeleteCatForm").submit();
 }
+
 function OnCompleteDeleteCat(xhr) {
     IdForProductIdInputs(xhr.responseJSON.object);
 
@@ -59,6 +61,7 @@ function OnCompleteDeleteCat(xhr) {
 function showAddCatModal() {
     $("#GetAllCatForm").submit();
 }
+
 function OnCompleteGetAllCat(xhr) {
     var Data = xhr.responseJSON.object;
     // console.log(Data);
@@ -66,8 +69,7 @@ function OnCompleteGetAllCat(xhr) {
     Data.forEach(function (element) {
         if (element.isParnet) {
             categuriesSelect.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>دسته بندی اصلی (" + element.groupTitle + ")</option>")
-        }
-        else {
+        } else {
             categuriesSelect.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>" + element.groupTitle + "</option>")
         }
 
@@ -81,11 +83,6 @@ function SearchCat() {
 }
 
 
-
-
-
-
-
 function OnCompleteGetAllCat2(xhr) {
     var Data = xhr.responseJSON.object;
     // console.log(Data);
@@ -94,8 +91,7 @@ function OnCompleteGetAllCat2(xhr) {
     Data.forEach(function (element) {
         if (element.isParnet) {
             categuriesSelect2.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>دسته بندی اصلی (" + element.groupTitle + ")</option>")
-        }
-        else {
+        } else {
             categuriesSelect2.insertAdjacentHTML("beforeend", "<option value='" + element.groupId + "'>" + element.groupTitle + "</option>")
         }
 

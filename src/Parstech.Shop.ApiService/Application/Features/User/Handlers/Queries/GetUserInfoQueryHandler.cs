@@ -1,50 +1,48 @@
 ﻿using AutoMapper;
+
 using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Convertor;
-using Shop.Application.DTOs.User;
-using Shop.Application.Features.User.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.User.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.Convertor;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
+
+public class GetUserInfoQueryHandler : IRequestHandler<GetUserInfoQueryReq, UserInfoDto>
 {
-    public class GetUserInfoQueryHandler : IRequestHandler<GetUserInfoQueryReq, UserInfoDto>
+    private readonly IUserRepository _userRep;
+    private readonly IMapper _mapper;
+    private readonly IUserBillingRepository _userBillingRep;
+
+    public GetUserInfoQueryHandler(IUserRepository userRep,
+        IMapper mapper,
+        IUserBillingRepository userBillingRep)
     {
-        private readonly IUserRepository _userRep;
-        private readonly IMapper _mapper;
-        private readonly IUserBillingRepository _userBillingRep;
+        _userRep = userRep;
+        _mapper = mapper;
+        _userBillingRep = userBillingRep;
+    }
 
-        public GetUserInfoQueryHandler(IUserRepository userRep,
-            IMapper mapper,
-            IUserBillingRepository userBillingRep)
+    public async Task<UserInfoDto> Handle(GetUserInfoQueryReq request, CancellationToken cancellationToken)
+    {
+        UserInfoDto? userInfo = new();
+        if (request.userName != null)
         {
-            _userRep = userRep;
-            _mapper = mapper;
-            _userBillingRep = userBillingRep;
-        }
-        public async Task<UserInfoDto> Handle(GetUserInfoQueryReq request, CancellationToken cancellationToken)
-        {
-            var userInfo = new UserInfoDto();
-            if (request.userName != null)
-            {
-                var user = await _userRep.GetUserByUserName(request.userName);
-                var userBilling = await _userBillingRep.GetUserBillingByUserId(user.Id);
-                var userRoles = await _userRep.GetUserRoles(user.UserId);
+            Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+            Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(user.Id);
+            List<IUserRoleDto> userRoles = await _userRep.GetUserRoles(user.UserId);
 
-                userInfo.FullName = $"{userBilling.FirstName} {userBilling.LastName}";
-                userInfo.Role = userRoles.FirstOrDefault().PersianRoleName;
-                userInfo.LastLoginShamsi = $"{user.LastLoginDate.ToShamsi()}";
-            }
-            else
-            {
-                userInfo.FullName = "-";
-            }
-            userInfo.Position = request.position;
-            return userInfo;
+            userInfo.FullName = $"{userBilling.FirstName} {userBilling.LastName}";
+            userInfo.Role = userRoles.FirstOrDefault().PersianRoleName;
+            userInfo.LastLoginShamsi = $"{user.LastLoginDate.ToShamsi()}";
         }
+        else
+        {
+            userInfo.FullName = "-";
+        }
+
+        userInfo.Position = request.position;
+        return userInfo;
     }
 }

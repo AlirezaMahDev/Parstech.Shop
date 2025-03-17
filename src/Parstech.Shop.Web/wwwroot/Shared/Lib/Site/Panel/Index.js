@@ -1,5 +1,4 @@
-﻿
-$(window).on('resize', function () {
+﻿$(window).on('resize', function () {
     $('#data-table').css("width", "100%");
 });
 
@@ -46,6 +45,7 @@ function CleanBilling() {
     UserBillingDto_NationalCode.value = null;
 
 }
+
 function FillBilling(element) {
     UserBillingDto_Id.value = element.id;
     UserBillingDto_UserId.value = element.userId;
@@ -66,14 +66,12 @@ function FillBilling(element) {
 }
 
 
-
-
 function OnLoadingBillingGet() {
     CleanBilling();
 }
 
 function OnCompleteBillingGet(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillBilling(xhr.responseJSON.object);
 }
 
@@ -82,17 +80,12 @@ function OnErrorBillingGet() {
 }
 
 
-
-
-
-
-
 function OnLoadingUpdate() {
     CleanBilling();
 }
 
 function OnCompleteUpdate(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -102,8 +95,7 @@ function OnCompleteUpdate(xhr) {
         FillBilling(xhr.responseJSON.object);
         ToastSuccess(Response.message);
 
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

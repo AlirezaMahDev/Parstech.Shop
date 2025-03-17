@@ -1,107 +1,103 @@
 ﻿using Dapper;
+
 using MediatR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Dapper.Helper;
-using Shop.Application.Dapper.Product.Queries;
-using Shop.Application.DTOs.Product;
-using Shop.Application.DTOs.ProductStockPrice;
-using Shop.Application.Features.Product.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Product.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.Dapper.Helper;
+using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
+
+public class
+    GetChildsAndProductStocksQueryHandler : IRequestHandler<GetChildsAndProductStocksQueryReq, ChildsAndStock>
 {
-    public class
-        GetChildsAndProductStocksQueryHandler : IRequestHandler<GetChildsAndProductStocksQueryReq, ChildsAndStock>
+    private readonly IProductQueries _productQueries;
+    private readonly IProductRepository _productRep;
+    private readonly IUserStoreRepository _userStoreRep;
+    private readonly IRepresentationRepository _representationRep;
+    private string _connectionString;
+
+    public GetChildsAndProductStocksQueryHandler(IConfiguration configuration,
+        IProductQueries productQueries,
+        IRepresentationRepository representationRep,
+        IUserStoreRepository userStoreRep,
+        IProductRepository productRep)
     {
-        private readonly IProductQueries _productQueries;
-        private readonly IProductRepository _productRep;
-        private readonly IUserStoreRepository _userStoreRep;
-        private readonly IRepresentationRepository _representationRep;
-        private string _connectionString;
+        _productQueries = productQueries;
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+        _representationRep = representationRep;
+        _userStoreRep = userStoreRep;
+        _productRep = productRep;
+    }
 
-        public GetChildsAndProductStocksQueryHandler(IConfiguration configuration,
-            IProductQueries productQueries,
-            IRepresentationRepository representationRep,
-            IUserStoreRepository userStoreRep,
-            IProductRepository productRep)
+    public async Task<ChildsAndStock> Handle(GetChildsAndProductStocksQueryReq request,
+        CancellationToken cancellationToken)
+    {
+        ChildsAndStock result = new();
+        string productQuery = $"select * from Product where ParentId={request.productId}";
+        result.ProductDtos =
+            DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<ProductDto>(productQuery).ToList());
+
+        result.ProductStockDtos = new();
+        string productStockQuery = $"select* from ProductStockPrice where ProductId={request.productId} ";
+        List<ProductStockPriceDto> ps = DapperHelper.ExecuteCommand(_connectionString,
+            conn => conn.Query<ProductStockPriceDto>(productStockQuery).ToList());
+        foreach (ProductStockPriceDto item in ps)
         {
-            _productQueries = productQueries;
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");
-            _representationRep = representationRep;
-            _userStoreRep = userStoreRep;
-            _productRep = productRep;
-        }
+            Domain.Models.UserStore? store = await _userStoreRep.GetAsync(item.StoreId);
 
-        public async Task<ChildsAndStock> Handle(GetChildsAndProductStocksQueryReq request,
-            CancellationToken cancellationToken)
-        {
-            ChildsAndStock result = new ChildsAndStock();
-            var productQuery = $"select * from Product where ParentId={request.productId}";
-            result.ProductDtos = DapperHelper.ExecuteCommand<List<ProductDto>>(_connectionString,conn => conn.Query<ProductDto>(productQuery).ToList());
-
-            result.ProductStockDtos = new List<ProductStockPriceDto>();
-            var productStockQuery = $"select* from ProductStockPrice where ProductId={request.productId} ";
-            var ps = DapperHelper.ExecuteCommand<List<ProductStockPriceDto>>(_connectionString,conn => conn.Query<ProductStockPriceDto>(productStockQuery).ToList());
-            foreach (var item in ps)
+            if (request.storeId == 0 || request.storeId == store.Id)
             {
-                var store = await _userStoreRep.GetAsync(item.StoreId);
-
-                if (request.storeId == 0 || request.storeId == store.Id)
-                {
-                }
-                else
-                {
-                    continue;
-                }
-
-                var rep = await _representationRep.GetAsync(item.RepId);
-                var product = await _productRep.GetAsync(item.ProductId);
-                item.StoreName = store.StoreName;
-                item.RepName = rep.Name;
-                item.ProductName = product.Name;
-                item.TypeId = product.TypeId;
-                result.ProductStockDtos.Add(item);
+            }
+            else
+            {
+                continue;
             }
 
+            Domain.Models.Representation? rep = await _representationRep.GetAsync(item.RepId);
+            Domain.Models.Product? product = await _productRep.GetAsync(item.ProductId);
+            item.StoreName = store.StoreName;
+            item.RepName = rep.Name;
+            item.ProductName = product.Name;
+            item.TypeId = product.TypeId;
+            result.ProductStockDtos.Add(item);
+        }
 
-            foreach (var item in result.ProductDtos)
+
+        foreach (ProductDto item in result.ProductDtos)
+        {
+            string productStockQuery2 = $"select* from ProductStockPrice where ProductId={item.Id} ";
+            List<ProductStockPriceDto> productStocks = DapperHelper.ExecuteCommand(_connectionString,
+                conn => conn.Query<ProductStockPriceDto>(productStockQuery2).ToList());
+
+
+            if (productStocks.Count > 0)
             {
-               var productStockQuery2 = $"select* from ProductStockPrice where ProductId={item.Id} ";
-                var productStocks = DapperHelper.ExecuteCommand<List<ProductStockPriceDto>>(_connectionString, conn => conn.Query<ProductStockPriceDto>(productStockQuery2).ToList());
-
-
-                if (productStocks.Count > 0)
+                foreach (ProductStockPriceDto productStock in productStocks)
                 {
-                    foreach (var productStock in productStocks)
+                    Domain.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
+
+                    if (request.storeId == 0 || request.storeId == store.Id)
                     {
-                        var store = await _userStoreRep.GetAsync(productStock.StoreId);
-
-                        if (request.storeId == 0 || request.storeId == store.Id)
-                        {
-                        }
-                        else
-                        {
-                            continue;
-                        }
-
-                        var rep = await _representationRep.GetAsync(productStock.RepId);
-                        var product = await _productRep.GetAsync(productStock.ProductId);
-                        productStock.StoreName = store.StoreName;
-                        productStock.RepName = rep.Name;
-                        productStock.ProductName = product.Name;
-                        productStock.TypeId = product.TypeId;
-                        result.ProductStockDtos.Add(productStock);
                     }
+                    else
+                    {
+                        continue;
+                    }
+
+                    Domain.Models.Representation? rep = await _representationRep.GetAsync(productStock.RepId);
+                    Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+                    productStock.StoreName = store.StoreName;
+                    productStock.RepName = rep.Name;
+                    productStock.ProductName = product.Name;
+                    productStock.TypeId = product.TypeId;
+                    result.ProductStockDtos.Add(productStock);
                 }
             }
-
-            return result;
         }
+
+        return result;
     }
 }

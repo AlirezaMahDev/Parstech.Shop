@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.Brand;
+﻿using MediatR;
 
-namespace Shop.Application.Features.Brand.Requests.Commands
-{
-    public record BrandCreateCommandReq(BrandDto BrandDto) : IRequest<BrandDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
+
+public record BrandCreateCommandReq(BrandDto BrandDto) : IRequest<BrandDto>;

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.SiteSetting;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class SiteSettingMapping : Profile
 {
-    public class SiteSettingMapping:Profile
+    public SiteSettingMapping()
     {
-        public SiteSettingMapping()
-        {
-            CreateMap<SiteSetting, SiteDto>().ReverseMap();
-            CreateMap<SiteSetting, SeoDto>().ReverseMap();
-        }
+        CreateMap<SiteSetting, SiteDto>().ReverseMap();
+        CreateMap<SiteSetting, SeoDto>().ReverseMap();
     }
 }

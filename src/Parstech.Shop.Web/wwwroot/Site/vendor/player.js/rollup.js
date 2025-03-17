@@ -50,7 +50,7 @@ async function generateBundle() {
 
         cache = bundle;
 
-        const { code, map } = await bundle.generate({
+        const {code, map} = await bundle.generate({
             format: 'umd',
             name: 'Vimeo.Player',
             sourcemap: true,
@@ -98,9 +98,10 @@ async function generateBundle() {
             await generateBundle();
         }
 
-    } catch(error) {
+    } catch (error) {
         console.log(error);
-    };
+    }
+    ;
 };
 
 generateBundle();

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shop.Domain.Models;
+﻿namespace Parstech.Shop.ApiService.Domain.Models;
 
 public partial class Tax
 {

@@ -6,6 +6,6 @@ var tableMain = $('#data-table').DataTable({
     "pageLength": 25
 });
 
-$(window).on( 'resize', function () {
+$(window).on('resize', function () {
     $('#data-table').css("width", "100%");
-} );
+});

@@ -1,31 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using Parstech.Shop.Web.Services.GrpcClients;
+
 using System.Security.Claims;
 
-namespace Parstech.Shop.Web.ViewComponents
+namespace Parstech.Shop.Web.ViewComponents;
+
+[ViewComponent(Name = "PanelSideBar")]
+public class PanelSideBarViewComponent : ViewComponent
 {
-    [ViewComponent(Name = "PanelSideBar")]
-    public class PanelSideBarViewComponent : ViewComponent
+    private readonly UserProfileGrpcClient _userProfileClient;
+    private readonly WalletGrpcClient _walletClient;
+
+    public PanelSideBarViewComponent(UserProfileGrpcClient userProfileClient, WalletGrpcClient walletClient)
     {
-        private readonly UserProfileGrpcClient _userProfileClient;
-        private readonly WalletGrpcClient _walletClient;
+        _userProfileClient = userProfileClient;
+        _walletClient = walletClient;
+    }
 
-        public PanelSideBarViewComponent(UserProfileGrpcClient userProfileClient, WalletGrpcClient walletClient)
-        {
-            _userProfileClient = userProfileClient;
-            _walletClient = walletClient;
-        }
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name);
+        var user = await _userProfileClient.GetUserByUsernameAsync(username);
+        var wallet = await _walletClient.GetWalletByUserIdAsync(user.Id);
 
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var username = User.FindFirstValue(ClaimTypes.Name);
-            var user = await _userProfileClient.GetUserByUsernameAsync(username);
-            var wallet = await _walletClient.GetWalletByUserIdAsync(user.Id);
+        ViewBag.User = user;
+        ViewBag.Wallet = wallet;
 
-            ViewBag.User = user;
-            ViewBag.Wallet = wallet;
-
-            return View();
-        }
+        return View();
     }
 }

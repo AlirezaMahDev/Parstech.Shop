@@ -3,14 +3,14 @@
 ------------------------------------*/
 
 .u-slick {
-	position: relative;
+  position: relative;
 }
 
 // Disable transform effect
 .u-slick--transform-off {
-	&.slick-transform-off .slick-track {
-		transform: none !important;
-	}
+  &.slick-transform-off .slick-track {
+    transform: none !important;
+  }
 }
 
 // Thumb Progress

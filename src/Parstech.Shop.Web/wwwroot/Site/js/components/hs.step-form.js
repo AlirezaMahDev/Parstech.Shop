@@ -6,103 +6,103 @@
  *
  */
 ;(function ($) {
-  'use strict';
+    'use strict';
 
-  $.HSCore.components.HSStepForm = {
-    /**
-     *
-     *
-     * @var Object _baseConfig
-     */
-    _baseConfig: {},
+    $.HSCore.components.HSStepForm = {
+        /**
+         *
+         *
+         * @var Object _baseConfig
+         */
+        _baseConfig: {},
 
-    /**
-     *
-     *
-     * @var jQuery pageCollection
-     */
-    pageCollection: $(),
+        /**
+         *
+         *
+         * @var jQuery pageCollection
+         */
+        pageCollection: $(),
 
-    /**
-     * Initialization of Step form wrapper.
-     *
-     * @param String selector (optional)
-     * @param Object config (optional)
-     *
-     * @return jQuery pageCollection - collection of initialized items.
-     */
+        /**
+         * Initialization of Step form wrapper.
+         *
+         * @param String selector (optional)
+         * @param Object config (optional)
+         *
+         * @return jQuery pageCollection - collection of initialized items.
+         */
 
-    init: function (selector, config) {
+        init: function (selector, config) {
 
-      this.collection = selector && $(selector).length ? $(selector) : $();
-      if (!$(selector).length) return;
+            this.collection = selector && $(selector).length ? $(selector) : $();
+            if (!$(selector).length) return;
 
-      this.config = config && $.isPlainObject(config) ?
-        $.extend({}, this._baseConfig, config) : this._baseConfig;
+            this.config = config && $.isPlainObject(config) ?
+                $.extend({}, this._baseConfig, config) : this._baseConfig;
 
-      this.config.itemSelector = selector;
+            this.config.itemSelector = selector;
 
-      this.initStepForm();
+            this.initStepForm();
 
-      return this.pageCollection;
+            return this.pageCollection;
 
-    },
+        },
 
-    initStepForm: function () {
-      //Variables
-      var $self = this,
-        collection = $self.pageCollection;
+        initStepForm: function () {
+            //Variables
+            var $self = this,
+                collection = $self.pageCollection;
 
-      //Actions
-      this.collection.each(function (i, el) {
-        //Variables
-        var $this = $(el),
-          progressID = $this.data('progress-id'),
-          $progressItems = $(progressID).find('> *'),
-          stepsID = $this.data('steps-id'),
-          $stepsItems = $(stepsID).find('> *'),
-          $stepsActiveItem = $(stepsID).find('> .active');
+            //Actions
+            this.collection.each(function (i, el) {
+                //Variables
+                var $this = $(el),
+                    progressID = $this.data('progress-id'),
+                    $progressItems = $(progressID).find('> *'),
+                    stepsID = $this.data('steps-id'),
+                    $stepsItems = $(stepsID).find('> *'),
+                    $stepsActiveItem = $(stepsID).find('> .active');
 
-        $stepsItems.not('.active').hide();
-        $progressItems.eq($stepsActiveItem.index()).addClass('active');
+                $stepsItems.not('.active').hide();
+                $progressItems.eq($stepsActiveItem.index()).addClass('active');
 
-        $('[data-next-step]').on('click', function (e) {
-          if ((!$(el).valid())) {
-            return false;
-          }
+                $('[data-next-step]').on('click', function (e) {
+                    if ((!$(el).valid())) {
+                        return false;
+                    }
 
-          e.preventDefault();
+                    e.preventDefault();
 
-          var $this = $(this),
-            nextID = $this.data('next-step');
+                    var $this = $(this),
+                        nextID = $this.data('next-step');
 
-          $progressItems.removeClass('active');
-          $progressItems.eq($(nextID).index() - 1).addClass('u-checked');
-          $progressItems.eq($(nextID).index()).addClass('active');
+                    $progressItems.removeClass('active');
+                    $progressItems.eq($(nextID).index() - 1).addClass('u-checked');
+                    $progressItems.eq($(nextID).index()).addClass('active');
 
-          $stepsItems.hide().removeClass('active');
-          $(nextID).fadeIn(400).addClass('active');
-        });
+                    $stepsItems.hide().removeClass('active');
+                    $(nextID).fadeIn(400).addClass('active');
+                });
 
-        $('[data-previous-step]').on('click', function (e) {
-          e.preventDefault();
+                $('[data-previous-step]').on('click', function (e) {
+                    e.preventDefault();
 
-          var $this = $(this),
-            prevID = $this.data('previous-step');
+                    var $this = $(this),
+                        prevID = $this.data('previous-step');
 
-          $progressItems.removeClass('active');
-          $progressItems.eq($(prevID).index() - 1).addClass('u-checked');
-          $progressItems.eq($(prevID).index()).addClass('active');
+                    $progressItems.removeClass('active');
+                    $progressItems.eq($(prevID).index() - 1).addClass('u-checked');
+                    $progressItems.eq($(prevID).index()).addClass('active');
 
-          $stepsItems.hide().removeClass('active');
-          $(prevID).fadeIn(400).addClass('active');
-        });
+                    $stepsItems.hide().removeClass('active');
+                    $(prevID).fadeIn(400).addClass('active');
+                });
 
-        //Actions
-        collection = collection.add($this);
-      });
-    }
+                //Actions
+                collection = collection.add($this);
+            });
+        }
 
-  };
+    };
 
 })(jQuery);

@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Shop.Web.Pages.ErrorPages
+namespace Parstech.Shop.Web.Pages.ErrorPages;
+
+public class IpErrorModel : PageModel
 {
-    public class IpErrorModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

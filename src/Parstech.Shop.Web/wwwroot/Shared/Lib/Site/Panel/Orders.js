@@ -17,9 +17,9 @@ $(document).ready(function () {
 
 
 function FillDataSet(Data) {
-    
+
     Data.list.forEach(function (element) {
-       // console.log(element);
+        // console.log(element);
 
         OrdersSection.insertAdjacentHTML("beforebegin", "<tr><td><h6 class='Red'>" + element.orderCode + "</h6></td><td><i class='" + element.statusIcon + " Blue m-1'></i>" + element.status + "</td><td>" + element.costumer + "</td><td><h6 class='font-weight-bold'>" + separate(element.total) + " تومان </h6></td><td><button onclick='GetOrderSubmit(" + element.orderId + ")' class='btn btn-default'><i class='fas fa-circle-info Blue m-1'></i>نمایش جزییات</button></td></tr>")
 
@@ -38,10 +38,10 @@ function FillDataSet(Data) {
         privious = Data.currentPage;
     }
 
-   // console.log("first" + first);
-   // console.log("perivous" + privious);
-   // console.log("next" + next);
-   // console.log("last" + last);
+    // console.log("first" + first);
+    // console.log("perivous" + privious);
+    // console.log("next" + next);
+    // console.log("last" + last);
     paging.innerHTML = null;
     pagingHeader.innerHTML = null;
     pagingHeader.insertAdjacentHTML("beforeend", "<h6 class='m-2'>صفحه " + current + " از " + last + "</h5>");
@@ -50,7 +50,7 @@ function FillDataSet(Data) {
 }
 
 function RunPaging(page) {
-   // console.log(OrdersSection.innerHTML);
+    // console.log(OrdersSection.innerHTML);
     var rowCount = table.rows.length;
     for (var i = 1; i < rowCount; i++) {
         table.deleteRow(i);
@@ -60,14 +60,13 @@ function RunPaging(page) {
 }
 
 
-
 function OnLoading() {
-   
+
     CleanItem();
 }
 
 function OnComplete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var Data = xhr.responseJSON.object;
     FillDataSet(Data);
 }
@@ -104,7 +103,7 @@ function CleanItem() {
     UserInfo.innerHTML = null;
     OrderShipping.innerHTML = null;
     Products.innerHTML = null;
-   
+
 }
 
 
@@ -119,39 +118,36 @@ function FillItem(Data) {
         Radif++;
     });
     Products.insertAdjacentHTML("beforeend", "<tr><td colspan='7'> جمع </td><td colspan='7'> " + separate(Data.order.orderSum) + " </td></tr> <tr><td colspan='7'> مالیات </td><td colspan='7'> " + separate(Data.order.tax) + " </td></tr> <tr><td colspan='7'> تخفیف </td><td colspan='7'> " + separate(Data.order.discount) + " </td></tr> <tr><td colspan='7'> جمع کل </td><td colspan='7'> " + separate(Data.order.total) + " </td></tr>")
-    
+
 }
 
 
 function OnLoadingGetItem() {
     CleanItem();
 }
+
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillItem(xhr.responseJSON.object);
     $("#ShowOrderDetailModal").modal("show");
 }
+
 function OnErrorGetItem() {
 
 }
 
 
-
-
-
-
-
 function OnLoadingAE() {
     //CleanProduct();
 }
+
 function OnCompleteAE(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         FillItem(xhr.responseJSON.object);
         $("#ShowOrderDetailModal").modal("hide");
 
@@ -171,8 +167,6 @@ function OnErrorAE() {
 }
 
 
-
-
 function ShowStatusModal(OrderId) {
     IdForInputs(OrderId);
     $("#ShowStatusModal").modal("show");
@@ -182,14 +176,14 @@ function ShowStatusModal(OrderId) {
 function OnLoadingStatus() {
     //CleanProduct();
 }
+
 function OnCompleteStatus(xhr) {
     //console.log(xhr);
 
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         $("#ShowStatusModal").modal("hide");
 

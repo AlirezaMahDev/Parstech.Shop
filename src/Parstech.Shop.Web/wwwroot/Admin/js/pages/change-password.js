@@ -1,14 +1,14 @@
 $.validator.setDefaults({
-    highlight: function(element) {
+    highlight: function (element) {
         $(element).closest('.input-group').addClass('has-error').removeClass("has-success");
     },
-    unhighlight: function(element) {
+    unhighlight: function (element) {
         $(element).closest('.input-group').removeClass('has-error').addClass("has-success");
     },
     errorElement: 'span',
     errorClass: 'help-block',
-    errorPlacement: function(error, element) {
-        if(element.parent('.input-group').length) {
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length) {
             error.insertAfter(element.parent());
         } else {
             error.insertAfter(element);
@@ -16,7 +16,7 @@ $.validator.setDefaults({
     }
 });
 
-$( "#form" ).validate( {
+$("#form").validate({
     rules: {
         old_password: {
             required: true,
@@ -34,17 +34,17 @@ $( "#form" ).validate( {
     },
     messages: {
         old_password: {
-                required: "رمز عبور قدیم را وارد نمائید",
-                minlength: "رمز عبور قدیم دست کم باید 5 کاراکتر باشد"
+            required: "رمز عبور قدیم را وارد نمائید",
+            minlength: "رمز عبور قدیم دست کم باید 5 کاراکتر باشد"
         },
         password: {
-                required: "رمز عبور را وارد نمائید",
-                minlength: "رمز عبور دست کم باید 5 کاراکتر باشد"
+            required: "رمز عبور را وارد نمائید",
+            minlength: "رمز عبور دست کم باید 5 کاراکتر باشد"
         },
         confirm_password: {
-                required: "تائید رمزعبور را وارد نمائید",
-                minlength: "تائید رمز عبور دست کم باید 5 کاراکتر باشد",
-                equalTo: "رمزهای عبور یکسان نیستند"
+            required: "تائید رمزعبور را وارد نمائید",
+            minlength: "تائید رمز عبور دست کم باید 5 کاراکتر باشد",
+            equalTo: "رمزهای عبور یکسان نیستند"
         }
     }
-} );
+});

@@ -1,33 +1,31 @@
 ﻿using MediatR;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.Features.Wallet.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Wallet.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Wallet.Handlers.Queries;
+
+public class WalletBlockOrUnblockQueryHandler : IRequestHandler<WalletBlockOrUnblockQueryReq>
 {
-    public class WalletBlockOrUnblockQueryHandler : IRequestHandler<WalletBlockOrUnblockQueryReq>
+    private readonly IWalletRepository _walletRep;
+
+    public WalletBlockOrUnblockQueryHandler(IWalletRepository walletRep)
     {
-        private readonly IWalletRepository _walletRep;
-        public WalletBlockOrUnblockQueryHandler(IWalletRepository walletRep)
+        _walletRep = walletRep;
+    }
+
+    public async Task Handle(WalletBlockOrUnblockQueryReq request, CancellationToken cancellationToken)
+    {
+        Domain.Models.Wallet? wallet = await _walletRep.GetAsync(request.walletId);
+        if (request.block)
         {
-            _walletRep = walletRep;
+            wallet.IsBlock = true;
         }
-        public async Task Handle(WalletBlockOrUnblockQueryReq request, CancellationToken cancellationToken)
+        else
         {
-            var wallet = await _walletRep.GetAsync(request.walletId);
-            if (request.block)
-            {
-                wallet.IsBlock = true;
-            }
-            else
-            {
-                wallet.IsBlock = false;
-            }
-            await _walletRep.UpdateAsync(wallet);
+            wallet.IsBlock = false;
         }
+
+        await _walletRep.UpdateAsync(wallet);
     }
 }

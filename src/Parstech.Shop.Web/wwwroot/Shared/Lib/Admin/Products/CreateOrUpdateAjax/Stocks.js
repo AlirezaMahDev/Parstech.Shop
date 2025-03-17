@@ -1,5 +1,5 @@
 ﻿function ShowAddStockProduct(id) {
-    
+
     $("#AddStockModal").modal('show');
 }
 
@@ -16,6 +16,7 @@ function OnCompleteGetPrice(xhr) {
     FillPriceItem(Data);
     $("#PriceModal").modal("show");
 }
+
 //price
 
 //Change Price
@@ -25,8 +26,7 @@ function OnCompleteEditPrice(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
         if (xhr.responseJSON.isSuccessed) {
             var Data = xhr.responseJSON.object;
             FillPriceItem(Data);
@@ -39,8 +39,7 @@ function OnCompleteEditPrice(xhr) {
             dataSet = [];
 
             $("#GetDataForm").submit();
-        }
-        else {
+        } else {
             ToastError("اطلاعات وارد شده با خطا بارگذاری شده اند")
             console.log(xhr.responseJSON);
             xhr.responseJSON.errors.forEach(function (element) {
@@ -68,8 +67,7 @@ function OnCompleteAddPr(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         Filter();
         ToastSuccess("عملیات با موفقیت انجام شد")
@@ -114,16 +112,15 @@ function DeleteStock(rep, id) {
     }).catch(swal.noop);
 
 
-
 }
+
 function OnCompleteDeleteProductStock(xhr) {
     console.log(xhr);
     var result = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         if (result.isSuccessed) {
             ToastSuccess("عملیات با موفقیت انجام شد");
@@ -134,14 +131,14 @@ function OnCompleteDeleteProductStock(xhr) {
 
             $("#GetDataForm").submit();
 
-        }
-        else {
+        } else {
             ToastError("عملیات حذف به دلیل وجود موجودی زیرمجموعه و یا سفارش از این کالا امکان پذیر نیست")
         }
 
 
     }
 }
+
 //DeleteStocke
 
 //Quick Change Stock
@@ -156,8 +153,7 @@ function OnCompleteQuickAddPr(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         Filter();
         ToastSuccess("عملیات با موفقیت انجام شد")
@@ -182,12 +178,12 @@ function ShowChangeQuantityPerBundleModal(id) {
     productStockPriceId.value = id;
     $("#ChangeQuantityPerBundleModal").modal("show");
 }
+
 function OnCompleteChangeQuantityPerBundle(xhr) {
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
 
-    }
-    else {
+    } else {
 
         Filter();
         ToastSuccess("عملیات با موفقیت انجام شد")

@@ -1,11 +1,12 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Products.Detail.EditContentModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Products.Detail.EditContentModel
 @{
     Layout = null;
 }
 
 
-<input type="hidden" id="productId" value="@Model.productId" />
+<input type="hidden" id="productId" value="@Model.productId"/>
 
 <div class="portlet box border shadow">
     <div class="portlet-heading">
@@ -14,12 +15,15 @@
                 <i class="icon-picture Orange"></i>
                 گالری محصول
             </h3>
-            <div class="buttons-box" >
-                @if(Model.productId!=0){
-                    <button class='btn btn-sm btn-success btn-round hover-green'  data-bs-toggle='modal' data-bs-target='#GalleryModal'><i class='icon-plus'></i></button>
+            <div class="buttons-box">
+                @if (Model.productId != 0)
+                {
+                    <button class='btn btn-sm btn-success btn-round hover-green' data-bs-toggle='modal'
+                            data-bs-target='#GalleryModal'><i class='icon-plus'></i></button>
                     @* <button class='btn btn-sm btn-success btn-round  hover-green' style="width: 115px;"  data-bs-toggle='modal' data-bs-target='#GalleryMultipleModal'>افزودن چند تصویر</button> *@
                 }
-                else{
+                else
+                {
                     <small class='Orange font-weight-bold'>ذخیره محصول الزامیست</small>
                 }
             </div>
@@ -28,10 +32,9 @@
     </div>
     <div class="portlet-body">
         <div class="portlet-body">
-            <div class="row" >
+            <div class="row">
                 @foreach (var item in Model.GalleryDtos)
                 {
-
                     <div class='col-md-2 col-sm-6 m-1 w-15'>
                         <div class='effect sides-effect'>
                             <a href='#'>
@@ -44,15 +47,20 @@
                         </div>
                         @if (item.IsMain)
                         {
-                            <button disabled class='btn btn-default w-100 btn-round font-weight-bold font-size-10 mb-2'>تصویر اصلی </button>
+                            <button disabled class='btn btn-default w-100 btn-round font-weight-bold font-size-10 mb-2'>
+                                تصویر اصلی
+                            </button>
                         }
                         else
                         {
-                            <button onclick="ChangeMain(@item.Id)" class="btn BgYellow w-100 btn-round font-weight-bold text-white mb-2">تصویر اصلی شود</button>
-
+                            <button onclick="ChangeMain(@item.Id)"
+                                    class="btn BgYellow w-100 btn-round font-weight-bold text-white mb-2">تصویر اصلی شود
+                            </button>
                         }
 
-                        <button onclick='DeleteGalleryShowModal(@item.Id)' class='btn btn-red w-100 btn-round font-weight-bold text-white'>حذف تصویر</button>
+                        <button onclick='DeleteGalleryShowModal(@item.Id)'
+                                class='btn btn-red w-100 btn-round font-weight-bold text-white'>حذف تصویر
+                        </button>
                     </div>
                 }
             </div>
@@ -76,16 +84,19 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddGallery" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddGallery" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingGallery"
                           data-ajax-complete="OnCompleteGallery"
                           data-ajax-failure="OnErrorGallery">
-                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId" />
+                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId"/>
 
                         <div class="form-group relative">
-                            <input type="file" class="form-control" data-val="true" data-val-required="The LogoFile field is required." asp-for="Gallery.File" id="Gallery_File">
+                            <input type="file" class="form-control" data-val="true"
+                                   data-val-required="The LogoFile field is required." asp-for="Gallery.File"
+                                   id="Gallery_File">
                             <label>تصویر محصول</label>
                             <div class="input-group round">
                                 <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
@@ -97,7 +108,8 @@
                                             <div class="paper-ripple__background"></div>
                                             <div class="paper-ripple__waves"></div>
                                         </div>
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -147,14 +159,15 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="DeleteGallery" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="DeleteGallery" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingGallery"
                           data-ajax-complete="OnCompleteGallery"
                           data-ajax-failure="OnErrorGallery">
-                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId" />
-                        <input type="hidden" asp-for="GalleryId" class="GalleryId" />
+                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId"/>
+                        <input type="hidden" asp-for="GalleryId" class="GalleryId"/>
 
                         <div class="form-group relative">
                             <h5>آیا از حذف تصویر محصول مورد نظر مطمئن هستید؟</h5>
@@ -193,16 +206,18 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12">
-                    <form method="post" asp-page-handler="AddMultipleGallery" class="form-horizontal" role="form" enctype="multipart/form-data"
+                    <form method="post" asp-page-handler="AddMultipleGallery" class="form-horizontal" role="form"
+                          enctype="multipart/form-data"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-begin="OnLoadingGallery"
                           data-ajax-complete="OnCompleteGallery"
                           data-ajax-failure="OnErrorGallery">
-                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId" />
+                        <input type="hidden" asp-for="Gallery.ProductId" value="@Model.productId"/>
 
                         <div class="form-group relative">
-                            <input type="file" class="form-control" data-val="true" data-val-required="The LogoFile field is required." id="files" name="Files"  multiple>
+                            <input type="file" class="form-control" data-val="true"
+                                   data-val-required="The LogoFile field is required." id="files" name="Files" multiple>
                             <label>تصویر محصول</label>
                             <div class="input-group round">
                                 <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
@@ -214,7 +229,8 @@
                                             <div class="paper-ripple__background"></div>
                                             <div class="paper-ripple__waves"></div>
                                         </div>
-                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div
+                                                class="paper-ripple__waves"></div></div>
                                     </button>
                                 </span>
                             </div><!-- /.input-group -->
@@ -246,7 +262,7 @@
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteChangeMain">
 
-    <input type="hidden" asp-for="GalleryId" class="GalleryId" />
-    <input type="hidden" asp-for="productId" value="@Model.productId" />
+    <input type="hidden" asp-for="GalleryId" class="GalleryId"/>
+    <input type="hidden" asp-for="productId" value="@Model.productId"/>
 
 </form>

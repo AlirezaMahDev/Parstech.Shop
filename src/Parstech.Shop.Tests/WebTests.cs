@@ -1,3 +1,5 @@
+using Aspire.Hosting;
+
 using Microsoft.Extensions.Logging;
 
 namespace Parstech.Shop.Tests;
@@ -10,7 +12,8 @@ public class WebTests
     public async Task GetWebResourceRootReturnsOkStatusCode()
     {
         // Arrange
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.Parstech_Shop_AppHost>();
+        IDistributedApplicationTestingBuilder? appHost =
+            await DistributedApplicationTestingBuilder.CreateAsync<Projects.Parstech_Shop_AppHost>();
         appHost.Services.AddLogging(logging =>
         {
             logging.SetMinimumLevel(LogLevel.Debug);
@@ -24,13 +27,13 @@ public class WebTests
             clientBuilder.AddStandardResilienceHandler();
         });
 
-        await using var app = await appHost.BuildAsync().WaitAsync(DefaultTimeout);
+        await using DistributedApplication? app = await appHost.BuildAsync().WaitAsync(DefaultTimeout);
         await app.StartAsync().WaitAsync(DefaultTimeout);
 
         // Act
-        var httpClient = app.CreateHttpClient("webfrontend");
+        HttpClient? httpClient = app.CreateHttpClient("webfrontend");
         await app.ResourceNotifications.WaitForResourceHealthyAsync("webfrontend").WaitAsync(DefaultTimeout);
-        var response = await httpClient.GetAsync("/");
+        HttpResponseMessage? response = await httpClient.GetAsync("/");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

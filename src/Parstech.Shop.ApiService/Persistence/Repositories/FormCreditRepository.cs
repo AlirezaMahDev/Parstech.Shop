@@ -1,34 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Application.Contracts.Persistance;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class FormCreditRepository : GenericRepository<FormCredit>, IFormCreditRepository
 {
-    public class FormCreditRepository:GenericRepository<FormCredit>,IFormCreditRepository
-    {
-        private readonly DatabaseContext _context;
-        public FormCreditRepository(DatabaseContext context):base(context)
-        {
-            _context = context;
-        }
+    private readonly DatabaseContext _context;
 
-        public async Task<List<FormCredit>> Search(string Filter, string FromDate,string ToDate)
+    public FormCreditRepository(DatabaseContext context) : base(context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<FormCredit>> Search(string Filter, string FromDate, string ToDate)
+    {
+        IQueryable<FormCredit> Result = _context.FormCredits;
+        if (Filter != null && Filter != "")
         {
-            IQueryable<FormCredit> Result = _context.FormCredits;
-            if (Filter != null && Filter != "")
-            {
-                Result = Result.Where(u =>
+            Result = Result.Where(u =>
                 u.Name.Contains(Filter) ||
                 u.Family.Contains(Filter));
-            }
-            
-            return await Result.OrderByDescending(u => u.Id).ToListAsync();
         }
+
+        return await Result.OrderByDescending(u => u.Id).ToListAsync();
     }
 }

@@ -4,18 +4,18 @@
 
 // Reveal v1
 .u-cubeportfolio {
-	&--reveal-v1 {
-		.cbp-l-caption-body {
-			transform: translateY(-100%);
-			transition: $transition-timing-md $transition-function;
-		}
+  &--reveal-v1 {
+    .cbp-l-caption-body {
+      transform: translateY(-100%);
+      transition: $transition-timing-md $transition-function;
+    }
 
-		.cbp-caption {
-			&:hover {
-				.cbp-l-caption-body {
-					transform: translateY(0%);
-				}
-			}
-		}
-	}
+    .cbp-caption {
+      &:hover {
+        .cbp-l-caption-body {
+          transform: translateY(0%);
+        }
+      }
+    }
+  }
 }

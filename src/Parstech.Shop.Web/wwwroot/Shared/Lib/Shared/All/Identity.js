@@ -8,9 +8,6 @@ var registeraddress = document.getElementById("registeraddress");
 var registerMeliCode = document.getElementById("registerMeliCode");
 
 
-
-
-
 function RegisterUser() {
     $.ajax({
         type: "POST",
@@ -31,9 +28,8 @@ function RegisterUser() {
         success: function (response) {
             if (response.isSuccessed) {
                 RunSwl("به فروشگاه پارس تک خوش آمدید", "success", response.message);
-            }
-            else {
-                RunSwl("خطایی رخ داده است", "error",response.message);
+            } else {
+                RunSwl("خطایی رخ داده است", "error", response.message);
             }
             console.log(response);
 
@@ -46,8 +42,6 @@ function RegisterUser() {
         }
     });
 }
-
-
 
 
 var loginmobile = document.getElementById("loginmobile");
@@ -69,15 +63,14 @@ function LoginReqUser() {
         },
         success: function (response) {
             if (response.isSuccessed) {
-               
+
                 smsSection.classList.remove("show");
                 smsSection.classList.add("hidden");
                 loginSection.classList.remove("hidden");
                 loginSection.classList.add("show");
                 loginSection.insertAdjacentHTML("afterbegin", "<span class='Yellow'>کد تائید برای شما ارسال گردید</span>");
-                
-            }
-            else {
+
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
             console.log(response);
@@ -109,11 +102,10 @@ function LoginUser() {
             if (response.isSuccessed) {
                 console.log(response.object2);
                 localStorage.setItem('ActiveSite', response.object2.object);
-                
+
                 RunSwl("ورود موفق", "success", response.message);
                 setTimeout(Refresh, 2000);
-            }
-            else {
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
             console.log(response);
@@ -133,7 +125,6 @@ function Refresh() {
 }
 
 
-
 function LogoutUser() {
     $.ajax({
         type: "POST",
@@ -150,11 +141,10 @@ function LogoutUser() {
                 localStorage.removeItem('ActiveSite');
                 setTimeout(Home, 2000);
 
-            }
-            else {
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
-            
+
 
         },
         failure: function (response) {
@@ -171,22 +161,19 @@ function Home() {
 }
 
 
-
 function RunSwl(caption, type, message) {
     console.log(message);
     swal({
-        title: caption,
-        type: type,
-        text: message,
-        showCancelButton: false,
-        confirmButtonColor: '#45ff89',
-        cancelButtonColor: '#777',
-        confirmButtonText: 'متوجه شدم'
-    }
+            title: caption,
+            type: type,
+            text: message,
+            showCancelButton: false,
+            confirmButtonColor: '#45ff89',
+            cancelButtonColor: '#777',
+            confirmButtonText: 'متوجه شدم'
+        }
     );
 }
-
-
 
 
 var PasswordloginSection = document.getElementById("PasswordloginSection");
@@ -198,6 +185,7 @@ function PasswordLoginReqUser() {
     PasswordloginSection.classList.remove("hidden");
     PasswordloginSection.classList.add("show");
 }
+
 function PasswordLoginUser() {
     $.ajax({
         type: "POST",
@@ -215,10 +203,9 @@ function PasswordLoginUser() {
                 console.log(response.object2);
                 localStorage.setItem('ActiveSite', response.object2.object);
                 RunSwl("ورود موفق", "success", response.message);
-                
+
                 setTimeout(Refresh, 2000);
-            }
-            else {
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
             console.log(response);

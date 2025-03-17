@@ -1,30 +1,28 @@
 ﻿using Dapper;
+
 using MediatR;
-using Microsoft.Extensions.Configuration;
-using Shop.Application.Dapper.Helper;
-using Shop.Application.DTOs.User;
-using Shop.Application.Features.User.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.User.Handlers.Queries
+using Parstech.Shop.ApiService.Application.Dapper.Helper;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
+
+public class UserFilterDataQueryHandler : IRequestHandler<UserFilterDataQueryReq, List<UserFilterDto>>
 {
-    public class UserFilterDataQueryHandler : IRequestHandler<UserFilterDataQueryReq, List<UserFilterDto>>
-    {
-        private readonly string _connectionString;
-        public UserFilterDataQueryHandler(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");   
-        }
-        public async Task<List<UserFilterDto>> Handle(UserFilterDataQueryReq request, CancellationToken cancellationToken)
-        {
-            var query = "select dbo.[User].Id,dbo.[User].UserName,dbo.UserBilling.FirstName,dbo.UserBilling.LastName,dbo.UserBilling.EconomicCode,dbo.UserBilling.NationalCode,dbo.UserBilling.Mobile from dbo.[User] inner join dbo.UserBilling on dbo.[User].Id=dbo.UserBilling.UserId";
-            var res = DapperHelper.ExecuteCommand<List<UserFilterDto>>(_connectionString, conn => conn.Query<UserFilterDto>(query).ToList());
-            return res;
+    private readonly string _connectionString;
 
-        }
+    public UserFilterDataQueryHandler(IConfiguration configuration)
+    {
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+    }
+
+    public async Task<List<UserFilterDto>> Handle(UserFilterDataQueryReq request, CancellationToken cancellationToken)
+    {
+        string? query =
+            "select dbo.[User].Id,dbo.[User].UserName,dbo.UserBilling.FirstName,dbo.UserBilling.LastName,dbo.UserBilling.EconomicCode,dbo.UserBilling.NationalCode,dbo.UserBilling.Mobile from dbo.[User] inner join dbo.UserBilling on dbo.[User].Id=dbo.UserBilling.UserId";
+        List<UserFilterDto>? res =
+            DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<UserFilterDto>(query).ToList());
+        return res;
     }
 }

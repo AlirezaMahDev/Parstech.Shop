@@ -2,7 +2,8 @@ instafeed.js
 ============
 [![Build Status](https://travis-ci.org/stevenschobert/instafeed.js.svg?branch=master)](https://travis-ci.org/stevenschobert/instafeed.js)
 
-Instafeed is a dead-simple way to add Instagram photos to your website. No jQuery required, just good 'ol plain javascript.
+Instafeed is a dead-simple way to add Instagram photos to your website. No jQuery required, just good 'ol plain
+javascript.
 
 __Examples:__
 
@@ -18,6 +19,7 @@ are securely handled through [Stripe](http://stripe.com).
 **[Leave me a tip &rarr;](https://plasso.co/spschobert@gmail.com)**
 
 ## Installation
+
 Setting up Instafeed is pretty straight-forward. Just download the script and include it in your HTML:
 
 ```html
@@ -60,13 +62,17 @@ Here's how easy it is to get all images tagged with __#awesome__:
 </script>
 ```
 
-Instafeed with automatically look for a `<div id="instafeed"></div>` and fill it with linked thumbnails. Of course, you can easily change this behavior using [standard options](#standard-options). Also check out the [advanced options](#advanced-options) for some advanced ways of customizing __Instafeed.js__.
+Instafeed with automatically look for a `<div id="instafeed"></div>` and fill it with linked thumbnails. Of course, you
+can easily change this behavior using [standard options](#standard-options). Also check out
+the [advanced options](#advanced-options) for some advanced ways of customizing __Instafeed.js__.
 
 ## Requirements
 
-The only thing you'll need to get going is a valid __client id__ from Instagram's API. You can easily register for one on [Instagram's website](http://instagram.com/developer/register/).
+The only thing you'll need to get going is a valid __client id__ from Instagram's API. You can easily register for one
+on [Instagram's website](http://instagram.com/developer/register/).
 
-If you need help with that step, just try Googling ["How to get an Instagram client ID"](https://google.com/search?q=How%20to%20get%20an%20instagram%20client%20id).
+If you need help with that step, just try
+Googling ["How to get an Instagram client ID"](https://google.com/search?q=How%20to%20get%20an%20instagram%20client%20id).
 
 ## Standard Options
 
@@ -124,11 +130,13 @@ var feed = new Instafeed({
 feed.run();
 ```
 
-To see a full list of properties that `image` has, see [issue #21](https://github.com/stevenschobert/instafeed.js/issues/21).
+To see a full list of properties that `image` has,
+see [issue #21](https://github.com/stevenschobert/instafeed.js/issues/21).
 
 ## Templating
 
-The easiest way to control the way Instafeed.js looks on your website is to use the __template__ option. You can write your own HTML markup and it will be used for every image that Instafeed.js fetches.
+The easiest way to control the way Instafeed.js looks on your website is to use the __template__ option. You can write
+your own HTML markup and it will be used for every image that Instafeed.js fetches.
 
 Here's a quick example:
 
@@ -144,8 +152,8 @@ Here's a quick example:
 </script>
 ```
 
-Notice the `{{link}}` and `{{image}}`? The templating option provides several tags for you to use to control where variables are inserted into your HTML markup. Available keywors are:
-
+Notice the `{{link}}` and `{{image}}`? The templating option provides several tags for you to use to control where
+variables are inserted into your HTML markup. Available keywors are:
 
 - `{{type}}` - the image's type. Can be `image` or `video`.
 - `{{width}}` - contains the image's width, in pixels.
@@ -153,12 +161,14 @@ Notice the `{{link}}` and `{{image}}`? The templating option provides several ta
 - `{{orientation}}` - contains the image's orientation. Can be `square`, `portrait`, or `landscape`.
 - `{{link}}` - URL to view the image on Instagram's website.
 - `{{image}}` - URL of the image source. The size is inherited from the `resolution` option.
-- `{{id}}` - Unique ID of the image. Useful if you want to use [iPhone hooks](http://instagram.com/developer/iphone-hooks/) to open the images directly in the Instagram app.
+- `{{id}}` - Unique ID of the image. Useful if you want to
+  use [iPhone hooks](http://instagram.com/developer/iphone-hooks/) to open the images directly in the Instagram app.
 - `{{caption}}` - Image's caption text. Defaults to empty string if there isn't one.
 - `{{likes}}` - Number of likes the image has.
 - `{{comments}}` - Number of comments the image has.
 - `{{location}}` - Name of the location associated with the image. Defaults to empty string if there isn't one.
-- `{{model}}` - Full JSON object of the image. If you want to get a property of the image that isn't listed above you access it using dot-notation. (ex: `{{model.filter}}` would get the filter used.)
+- `{{model}}` - Full JSON object of the image. If you want to get a property of the image that isn't listed above you
+  access it using dot-notation. (ex: `{{model.filter}}` would get the filter used.)
 
 ## Portrait and Landscape Photos
 
@@ -171,7 +181,7 @@ to the API change by editing your Instagram API client, and clicking on the "Mig
 <img width="757" alt="screen shot 2015-10-31 at 2 02 56 pm" src="https://cloud.githubusercontent.com/assets/896486/10865600/560ad6a6-7fde-11e5-8e14-2013e51eda7c.png">
 
 > Note: If you have the `resolution` option set to `thumbnail` (default), all images will
-be square regardless of your API settings.
+> be square regardless of your API settings.
 
 #### Image Size Template Helpers
 
@@ -196,9 +206,11 @@ var userFeed = new Instafeed({
 userFeed.run();
 ```
 
-> Note: `YOUR_USER_ID` option corresponds to your Instagram **account ID (eg: 4385108)**, not your username. If you do not know your
-account ID, do a quick google search for ["What is my Instagram account ID?"](https://google.com/search?q=What%20is%20my%20Instagram%20account%20ID%3F).
-There a several free tools available online that will look it up for you.
+> Note: `YOUR_USER_ID` option corresponds to your Instagram **account ID (eg: 4385108)**, not your username. If you do
+> not know your
+> account ID, do a quick google search
+> for ["What is my Instagram account ID?"](https://google.com/search?q=What%20is%20my%20Instagram%20account%20ID%3F).
+> There a several free tools available online that will look it up for you.
 
 ## Pagination
 
@@ -229,9 +241,11 @@ loadButton.addEventListener('click', function() {
 // run our feed!
 feed.run();
 ```
+
 ## Contributing to Development
 
-This isn't a large project by any means, but I'm definitely welcome to any pull requests and contributions. Everything is written and tested in [CoffeeScript](http://coffeescript.org).
+This isn't a large project by any means, but I'm definitely welcome to any pull requests and contributions. Everything
+is written and tested in [CoffeeScript](http://coffeescript.org).
 
 You can get your copy up and running for development quickly by cloning the repo and running [npm](http://npmjs.org/):
 
@@ -239,9 +253,11 @@ You can get your copy up and running for development quickly by cloning the repo
 $ npm install
 ```
 
-This will install all the necessary test tools for testing. There is also a Makefile in the repo to make your tests quick and easy:
+This will install all the necessary test tools for testing. There is also a Makefile in the repo to make your tests
+quick and easy:
 
-- `make test` will run all the tests using [Mocha](https://github.com/mochajs/mocha) + [Chai](http://chaijs.com/) + [CoffeeLint](http://www.coffeelint.org/)
+- `make test` will run all the tests
+  using [Mocha](https://github.com/mochajs/mocha) + [Chai](http://chaijs.com/) + [CoffeeLint](http://www.coffeelint.org/)
 - `make min` will create the minified version
 - `make` will run both the previous steps and compile everything
 
@@ -255,9 +271,11 @@ __1.4.0__
 
 - `accessToken` is no longer required to fetch images from user accounts!
 - New template helpers for working with the new portrait and landscape images.
-- `target` can now accept a DOM node directly, instead of just a string ID, thanks [@juhamust](https://github.com/juhamust)!
+- `target` can now accept a DOM node directly, instead of just a string ID,
+  thanks [@juhamust](https://github.com/juhamust)!
 - Squashed the last (hopefully!) of the IE8 bugs.
-- Fixed image loading errors when using Instafeed.js on a local file protocol (`file://`). Thanks [@spoonben](https://github.com/spoonben)!
+- Fixed image loading errors when using Instafeed.js on a local file protocol (`file://`).
+  Thanks [@spoonben](https://github.com/spoonben)!
 - Added support from AMD and CommonJS.
 - Improved error messaging when Instafeed.js can't find it's target element on the page.
 - Instafeed.js no longer complains when trying to use strings for the `userId`, `locationId`, and `limit` options.
@@ -287,7 +305,8 @@ __1.2.1__
 __1.2.0__
 
 - Added the ability to sort images! Use the __sortBy__ option.
-- Added __{{likes}}__, __{{comments}}__, __{{id}}__, __{{caption}}__, __{{location}}__, and __{{model}}__, tags to the __template__ option.
+- Added __{{likes}}__, __{{comments}}__, __{{id}}__, __{{caption}}__, __{{location}}__, and __{{model}}__, tags to the _
+  _template__ option.
 
 __1.1.0__
 

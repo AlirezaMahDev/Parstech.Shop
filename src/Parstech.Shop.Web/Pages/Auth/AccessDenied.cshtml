@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Parstech.Shop.Web.Pages.Auth
 @model AccessDeniedModel
 @{
     ViewData["Title"] = "Access denied";
@@ -8,7 +10,7 @@
 
     <div class="container">
         <div class="row">
-            <partial name="Site/_PanelSideBar" />
+            <partial name="Site/_PanelSideBar"/>
 
             <div class="col-lg-9 order-lg-1">
                 <div class="pb-7 mb-7">
@@ -32,8 +34,6 @@
                         </div><!-- /.panel-body -->
                     </div>
                     <!-- End Title -->
-
-
 
 
                 </div>

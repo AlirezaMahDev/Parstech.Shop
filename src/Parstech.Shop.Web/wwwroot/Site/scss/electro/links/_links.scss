@@ -54,7 +54,7 @@
 
 /* Link Light */
 .link-light {
-	color: $link-light-color;
+  color: $link-light-color;
   border-bottom: $link-light-border-width dashed $link-light-border-color;
 
   &:hover {
@@ -66,7 +66,7 @@
 /* Link Muted */
 .link-muted {
   color: $link-muted-color;
-	border-bottom: $link-muted-border-width dashed $link-muted-border-color;
+  border-bottom: $link-muted-border-width dashed $link-muted-border-color;
 
   &:hover {
     border-color: $link-hover-color;

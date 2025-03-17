@@ -18,7 +18,7 @@
         }
 
         timer = setTimeout(
-            function() {
+            function () {
                 timer = null;
                 $.event.trigger('exitintent');
             }, $.exitIntent.settings.sensitivity);
@@ -31,7 +31,7 @@
         }
     }
 
-    $.exitIntent = function(enable, options) {
+    $.exitIntent = function (enable, options) {
         $.exitIntent.settings = $.extend($.exitIntent.settings, options);
 
         if (enable == 'enable') {

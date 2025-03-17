@@ -34,6 +34,7 @@ $(document).ready(function () {
         })
         .catch(error => console.error('Error:', error));
 });
+
 function IdForInputs(id) {
 
     var IdList = document.querySelectorAll('.RepId');
@@ -41,7 +42,6 @@ function IdForInputs(id) {
         input.value = id;
     });
 }
-
 
 
 function Filter() {
@@ -54,6 +54,7 @@ function Filter() {
     Parameter_CurrentPage.value = 1;
     //$("#GetDataForm").submit();
 }
+
 function BlankFilter() {
     tableMain
         .clear()
@@ -72,54 +73,51 @@ function FillDataSet(Data) {
         var typeHtml;
         var ActionHtml;
         var ShowInPanel;
-        var CateguryOfUserId="";
+        var CateguryOfUserId = "";
 
 
-        
-        
-            switch (element.typeId) {
-                case 1:
-                    typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-success'>ساده</h5>"
-                    ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
-                    break;
-                case 2:
-                    typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-danger'>متغیر</h5>"
-                    ActionHtml = "";
-                    break;
-                case 3:
-                    typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-warning'>زیرمجموعه</h5>"
-                    ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
+        switch (element.typeId) {
+            case 1:
+                typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-success'>ساده</h5>"
+                ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
+                break;
+            case 2:
+                typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-danger'>متغیر</h5>"
+                ActionHtml = "";
+                break;
+            case 3:
+                typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-warning'>زیرمجموعه</h5>"
+                ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
 
-                    break;
-                case 4:
-                    typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-info'>باندل</h5>"
-                    ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
+                break;
+            case 4:
+                typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-info'>باندل</h5>"
+                ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
 
-                    break;
-                case 5:
-                    typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-info'>زیرمجموعه باندل</h5>"
-                    ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
+                break;
+            case 5:
+                typeHtml = "<small>" + element.id + "</small><h5 class='badge badge-info'>زیرمجموعه باندل</h5>"
+                ActionHtml = "<div class='btn-group'><button onclick='GetModal(" + element.productStockPriceId + ")' type='button' class='btn btn-default'>ویرایش</button></div>"
 
-                    break;
+                break;
         }
         if (element.showInDiscountPanels == true) {
-           ShowInPanel= "<h5 class='badge badge-success BgGreen'>نمایش در پنل تخفیف</h5>"
-        }
-        else {
-           ShowInPanel= "<h5 class='badge badge-danger BgRed'>عدم نمایش در پنل تخفیف</h5>"
+            ShowInPanel = "<h5 class='badge badge-success BgGreen'>نمایش در پنل تخفیف</h5>"
+        } else {
+            ShowInPanel = "<h5 class='badge badge-danger BgRed'>عدم نمایش در پنل تخفیف</h5>"
         }
 
         if (element.categuryOfUserId != null) {
             CateguryOfUserId = "<h5 class='badge badge-success BgBlue'>ویژه همکاران بانک ملی ایران</h5>"
         }
-        
-        
+
+
         console.log(element);
 
         const data =
             [
                 typeHtml,
-                "<h5>" + element.name + " " + CateguryOfUserId +"</h5><h5 class='Orange font-weight-bold'>" + element.code + "</h5>",
+                "<h5>" + element.name + " " + CateguryOfUserId + "</h5><h5 class='Orange font-weight-bold'>" + element.code + "</h5>",
                 "<h5 class=' font-weight-bold'>" + element.quantity + " عدد</h5>",
                 "<h5 class=' font-weight-bold'>" + separate(element.salePrice) + " تومان</h5><h5 class='Red font-weight-bold'>" + separate(element.discountPrice) + " تومان <small>(قیمت شگفت انگیز)</small></h5>",
                 ShowInPanel,
@@ -189,6 +187,7 @@ var CategurySelect = document.getElementById("CategurySelect");
 //var TypeSelect = document.getElementById("TypeSelect");
 var Parameter_SectionId = document.getElementById("Parameter_SectionId");
 var SectionSelect = document.getElementById("SectionSelect");
+
 function DataSubmit() {
     // console.log(Rep.value);
     IdForInputs(Rep.value);
@@ -206,6 +205,7 @@ function DataSubmit() {
     console.log(ProductsSelect.value);
     $("#GetDataForm").submit();
 }
+
 function RunPaging(page) {
     tableMain
         .clear()
@@ -230,24 +230,23 @@ function OnCompleteData(xhr) {
     FillDataSet(Data);
 
 
-
     tableMain = $('#data-table').DataTable({
         "searching": false,
         "paging": false,
         data: dataSet,
         columns: [
 
-            { title: 'نوع' },
-            { title: 'نام محصول' },
-            { title: 'موجودی' },
-            { title: 'قیمت فروش(تومان)' },
-            { title: 'پنل تخفیف' },
-            { title: 'عملیات' },
+            {title: 'نوع'},
+            {title: 'نام محصول'},
+            {title: 'موجودی'},
+            {title: 'قیمت فروش(تومان)'},
+            {title: 'پنل تخفیف'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
-            "targets": [1,3],
+            "targets": [1, 3],
             "className": 'w-30',
-           
+
 
         }],
         "pageLength": 25
@@ -262,9 +261,6 @@ function OnErrorData() {
 }
 
 
-
-
-
 function IdForProductInputs(id) {
 
     var IdList = document.querySelectorAll('.ProductId');
@@ -272,6 +268,7 @@ function IdForProductInputs(id) {
         input.value = id;
     });
 }
+
 function IdForProductStockPriceInputs(id) {
 
     var IdList = document.querySelectorAll('.productStockPriceId');
@@ -281,14 +278,10 @@ function IdForProductStockPriceInputs(id) {
 }
 
 
-
 //section
 var showInPanel = document.getElementById("showInPanel");
 var addSection = document.getElementById("addSection");
 var sections = document.getElementById("sections");
-
-
-
 
 
 function GetModal(id) {
@@ -301,6 +294,7 @@ function OnLoadingGet() {
 
 
 }
+
 function OnCompleteGet(xhr) {
     var Data = xhr.responseJSON;
     console.log(Data);
@@ -314,13 +308,12 @@ function FillSectionItem(Data) {
     IdForProductStockPriceInputs(Data.produtSrockPriceId);
     if (Data.showInDiscountPanels == true) {
 
-        showInPanel.insertAdjacentHTML("beforeend", "<button class='btn round BgYellow font-weight-bold'>نمایش در پنل تخفیف</button><button class='btn round BgGray font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.produtSrockPriceId +",0)'>عدم نمایش در پنل تخفیف</button>");
-    }
-    else {
-        showInPanel.insertAdjacentHTML("beforeend", "        <button class='btn round font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.produtSrockPriceId +",1)'>نمایش در پنل تخفیف</button><button class='btn round BgYellow BgGray font-weight-bold' >عدم نمایش در پنل تخفیف</button>");
+        showInPanel.insertAdjacentHTML("beforeend", "<button class='btn round BgYellow font-weight-bold'>نمایش در پنل تخفیف</button><button class='btn round BgGray font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.produtSrockPriceId + ",0)'>عدم نمایش در پنل تخفیف</button>");
+    } else {
+        showInPanel.insertAdjacentHTML("beforeend", "        <button class='btn round font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.produtSrockPriceId + ",1)'>نمایش در پنل تخفیف</button><button class='btn round BgYellow BgGray font-weight-bold' >عدم نمایش در پنل تخفیف</button>");
     }
     Data.sections.forEach(function (element) {
-        sections.insertAdjacentHTML("beforeend", "<tr role='row' ><td class=''><h5 class=''>" + element.sectionName + "</h5></td><td class=' w-50'><button onclick='DeleteSection(" + element.id + "," + Data.produtSrockPriceId +")' class='btn btn-sm btn-block BgRed text-white curve m-1'>حذف </button></td></tr>");
+        sections.insertAdjacentHTML("beforeend", "<tr role='row' ><td class=''><h5 class=''>" + element.sectionName + "</h5></td><td class=' w-50'><button onclick='DeleteSection(" + element.id + "," + Data.produtSrockPriceId + ")' class='btn btn-sm btn-block BgRed text-white curve m-1'>حذف </button></td></tr>");
     });
 
 }
@@ -330,54 +323,54 @@ function OnErrorGet() {
 }
 
 var SectionId = document.getElementById("SectionId");
-function DeleteSection(id,productStockPriceId) {
+
+function DeleteSection(id, productStockPriceId) {
     IdForProductStockPriceInputs(productStockPriceId);
     SectionId.value = id;
     $("#DeleteSetionsOfProductStockPrice").submit();
 }
 
 
-
 var isShow = document.getElementById("isShow");
-function ChangeShowInDiscountPanel(id,show) {
+
+function ChangeShowInDiscountPanel(id, show) {
     IdForProductStockPriceInputs(id);
     isShow.value = show;
     $("#ChangeShowInDiscountPanelForm").submit();
 }
+
 function OnCompleteChange(xhr) {
     var Data = xhr.responseJSON;
     console.log(xhr);
-    if (xhr.status==200) {
+    if (xhr.status == 200) {
         ToastSuccess("عملیات با موفقیت انجام شد");
         showInPanel.innerHTML = null;
         if (Data.showInDiscountPanels == true) {
 
             showInPanel.insertAdjacentHTML("beforeend", "<button class='btn round BgYellow font-weight-bold'>نمایش در پنل تخفیف</button><button class='btn round BgGray font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.id + ",0)'>عدم نمایش در پنل تخفیف</button>");
-        }
-        else {
+        } else {
             showInPanel.insertAdjacentHTML("beforeend", "        <button class='btn round font-weight-bold' OnClick='ChangeShowInDiscountPanel(" + Data.id + ",1)'>نمایش در پنل تخفیف</button><button class='btn round BgYellow BgGray font-weight-bold' >عدم نمایش در پنل تخفیف</button>");
         }
-    }
-    else {
+    } else {
         ToastError("عملیات با خطا روبه رو شد");
     }
-    
+
 
 }
+
 function OnCompleteChangeSection(xhr) {
     var Data = xhr.responseJSON;
     console.log(xhr);
-    if (xhr.status==200) {
+    if (xhr.status == 200) {
         ToastSuccess("عملیات با موفقیت انجام شد");
         sections.innerHTML = null;
         Data.sections.forEach(function (element) {
             sections.insertAdjacentHTML("beforeend", "<tr role='row' ><td class=''><h5 class=''>" + element.sectionName + "</h5></td><td class=' w-50'><button onclick='DeleteSection(" + element.id + "," + Data.produtSrockPriceId + ")' class='btn btn-sm btn-block BgRed text-white curve m-1'>حذف </button></td></tr>");
         });
-    }
-    else {
+    } else {
         ToastError("عملیات با خطا روبه رو شد");
     }
-    
+
 
 }
 

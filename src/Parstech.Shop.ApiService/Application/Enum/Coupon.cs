@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Enum;
 
-namespace Shop.Application.Enum
+public enum CouponEnum
 {
-	public enum CouponEnum
-	{
-		All,
-		Each,
-		
-		Categury,
-		Products,
-		Users,
+    All,
+    Each,
 
-		Yes,
-		No,
-	}
+    Categury,
+    Products,
+    Users,
+
+    Yes,
+    No
 }

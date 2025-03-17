@@ -193,7 +193,9 @@ defaultOptions.ui.showStatus = false;
 defaultOptions.ui.spanError = function (options, key) {
     "use strict";
     var text = options.i18n.t(key);
-    if (!text) { return ''; }
+    if (!text) {
+        return '';
+    }
     return '<span style="color: #d52929">' + text + '</span>';
 };
 defaultOptions.ui.popoverError = function (options) {

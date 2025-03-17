@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Enum;
 
-namespace Shop.Application.Enum
+//حالت های نمایش محصول برای دسته بندی کاربران
+public enum CateguryOfUserType
 {
-    //حالت های نمایش محصول برای دسته بندی کاربران
-    public enum CateguryOfUserType
-    {
-        ShowDiscoutProductForUserCategury,//مشاهده تخفیف محصولات
-        ShowProductJustForUserCategury//مشاده کل محصول فقط برای دسته بندی
-    }
+    ShowDiscoutProductForUserCategury, //مشاهده تخفیف محصولات
+    ShowProductJustForUserCategury //مشاده کل محصول فقط برای دسته بندی
 }

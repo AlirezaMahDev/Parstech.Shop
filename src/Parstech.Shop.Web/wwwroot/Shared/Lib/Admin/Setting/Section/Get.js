@@ -1,25 +1,24 @@
 ﻿function SectionGetSubmit(id) {
     SectionIdForIllInput(id);
     $("#SectionForm").submit();
-    
+
 }
 
 function SectionDetailGetSubmit(id) {
-   
+
     SectionDetailIdForIllInput(id);
     $("#SectionDetailForm").submit();
-   
-}
 
+}
 
 
 //section
 function OnLoadingSection() {
-   // console.log("Loading");
+    // console.log("Loading");
 }
 
 function OnCompleteSection(xhr) {
-   //console.log(xhr.responseJSON);
+    //console.log(xhr.responseJSON);
     response = xhr.responseJSON.object;
 
     $('#CreateSectionModal').modal('show');
@@ -28,27 +27,26 @@ function OnCompleteSection(xhr) {
     Section_Sort.value = response.sort;
     Section_ProductId.value = response.productId;
     Section_CateguryId.value = response.categuryId;
-    
 
-    
+
 }
+
 function OnErrorSection() {
 
 }
 
 //sectionDetail
 function OnLoadingSectionDetail() {
-  //  console.log("Loading");
+    //  console.log("Loading");
     image.innerHTML = null;
 }
-
 
 
 function OnCompleteSectionDetail(xhr) {
     response = xhr.responseJSON.object;
     $('#CreateSectionDetailModal').modal('show');
-  //  console.log(SectionDetail_Caption.value);
-  //  console.log(response.sectionTypeId);
+    //  console.log(SectionDetail_Caption.value);
+    //  console.log(response.sectionTypeId);
 
 
     SectionDetail_Caption.value = response.caption;
@@ -63,8 +61,8 @@ function OnCompleteSectionDetail(xhr) {
     if (response.image != null) {
         image.insertAdjacentHTML("beforeend", "<img width='170' src='/Shared/Images/" + response.image + "'/>");
     }
-   
-    
+
+
     SectionDetail_Alt.value = response.alt;
     SectionDetail_SectionTypeId.value = response.sectionTypeId;
     SectionDetail_SectionId.value = response.sectionId;
@@ -72,6 +70,7 @@ function OnCompleteSectionDetail(xhr) {
     SectionDetail_BackgroundColor.value = response.backgroundColor;
     SectionDetail_ColSpace.value = response.colSpace;
 }
+
 function OnErrorSectionDetail() {
     $('#modal').modal('show');
 }

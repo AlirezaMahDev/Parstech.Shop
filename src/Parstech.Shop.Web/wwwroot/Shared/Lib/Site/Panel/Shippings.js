@@ -6,6 +6,7 @@ function IdForInputs(id) {
         input.value = id;
     });
 }
+
 $(document).ready(function () {
     $("#GetDataForm").submit();
 })
@@ -15,10 +16,9 @@ function OnLoading() {
 }
 
 function OnComplete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     var list = xhr.responseJSON.object;
     list.forEach(function (element) {
-
 
 
         AddressData.insertAdjacentHTML("afterbegin", "<div class='portlet box border shadow round'><div class='portlet-heading'><div class='portlet-title'><h5 class='title'><i class=' fas fa-house-user p-1'></i>" + element.firstName + " " + element.lastName + "</h5></div><div class='buttons-box'><button type='button' class='btn BgOrange' onclick='GetShippingSubmit(" + element.id + ")'><i class=' fas fa-pen-to-square White'></i></button><button type='button'class='btn BgRed' onclick='DeleteSubmit(" + element.id + ")'><i class=' fas fa-trash White'></i></button></div></div><div class='portlet-body'><h6><i class=' fas fa-mobile-button p-1'></i>" + element.mobile + "</h6><h6><i class=' fas fa-magnifying-glass-location p-1'></i> " + element.postCode + "</h6><h6><i class=' fas fa-map-location-dot p-1'></i>" + element.country + " " + element.state + " " + element.city + " " + element.address + "</h6></div></div >")
@@ -29,7 +29,6 @@ function OnComplete(xhr) {
 function OnError() {
 
 }
-
 
 
 var UserShippingId = document.getElementById("UserShippingId");
@@ -65,6 +64,7 @@ function CleanShipping() {
 
 
 }
+
 function FillShipping(element) {
     UserShippingDto_Id.value = element.id;
     UserShippingDto_UserId.value = element.userId;
@@ -93,15 +93,10 @@ function OnLoadingGetItem() {
 }
 
 function OnCompleteGetItem(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     FillShipping(xhr.responseJSON.object);
     $('#ShippingCreateUpdateModal').modal('show');
 }
-
-
-
-
-
 
 
 function OnLoadingShippingEC() {
@@ -109,7 +104,7 @@ function OnLoadingShippingEC() {
 }
 
 function OnCompleteShippingEC(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -119,8 +114,7 @@ function OnCompleteShippingEC(xhr) {
         ToastSuccess(Response.message);
         $('#ShippingCreateUpdateModal').modal('hide');
         $("#GetDataForm").submit();
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 
@@ -132,13 +126,12 @@ function OnErrorShippingEC() {
 }
 
 
-
 function OnLoadingShippingDelete() {
     CleanShipping();
 }
 
 function OnCompleteShippingDelete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -148,8 +141,7 @@ function OnCompleteShippingDelete(xhr) {
         ToastSuccess(Response.message);
         $('#ShippingDataModal').modal('hide');
 
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 
@@ -164,6 +156,7 @@ function openModal() {
     CleanShipping();
     $('#ShippingCreateUpdateModal').modal('show');
 }
+
 function closeModal() {
     $('#ShippingCreateUpdateModal').modal('hide');
 }
@@ -186,22 +179,20 @@ function DeleteSubmit(id, code) {
                 'لغو گردید',
                 'از حذف آدرس خود منصرف شدید',
                 'error',
-               
             ).catch(swal.noop);
         }
     }).catch(swal.noop);
 
 
-
 }
-
 
 
 function OnLoadingDelete() {
-   
+
 }
+
 function OnCompleteDelete(xhr) {
-   // console.log(xhr);
+    // console.log(xhr);
     Response = xhr.responseJSON;
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
@@ -210,8 +201,7 @@ function OnCompleteDelete(xhr) {
     if (Response.isSuccessed) {
         ToastSuccess(Response.message);
         $("#GetDataForm").submit();
-    }
-    else {
+    } else {
 
         ToastError(Response.message);
 

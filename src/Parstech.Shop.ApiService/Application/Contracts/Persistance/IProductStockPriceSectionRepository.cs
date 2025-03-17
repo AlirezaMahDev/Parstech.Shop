@@ -1,14 +1,8 @@
-﻿using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IProductStockPriceSectionRepository : IGenericRepository<ProductStockPriceSection>
 {
-    public interface IProductStockPriceSectionRepository:IGenericRepository<ProductStockPriceSection>
-    {
-        Task<List<ProductStockPriceSection>> GetSectionOfProductStockPrice(int id);
-    }
+    Task<List<ProductStockPriceSection>> GetSectionOfProductStockPrice(int id);
 }

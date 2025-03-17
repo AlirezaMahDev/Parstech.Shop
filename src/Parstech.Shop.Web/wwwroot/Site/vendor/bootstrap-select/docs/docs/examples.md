@@ -1,6 +1,7 @@
 # Basic examples
 
 ---
+
 ## Standard select boxes
 
 <div class="bs-docs-example">
@@ -118,7 +119,8 @@ Add key words to options to improve their searchability using `data-tokens`.
 
 # Limit the number of selections
 
-Limit the number of options that can be selected via the `data-max-options` attribute. It also works for option groups. Customize the message displayed when the limit is reached with `maxOptionsText`.
+Limit the number of options that can be selected via the `data-max-options` attribute. It also works for option groups.
+Customize the message displayed when the limit is reached with `maxOptionsText`.
 
 <div class="bs-docs-example">
   <select class="selectpicker" multiple data-max-options="2">
@@ -167,6 +169,7 @@ Limit the number of options that can be selected via the `data-max-options` attr
 ---
 
 ## Placeholder
+
 <p id="titleMultiples"></p>
 Using the `title` attribute will set the default placeholder text when nothing is selected. This works for both multiple and standard select boxes:
 
@@ -218,6 +221,7 @@ Set the `title` attribute on individual options to display alternative text when
   <option title="Combo 3">Sugar, Spice and all things nice</option>
 </select>
 ```
+
 ## Selected text format
 
 <p id="titleMultiplesFormat"></p>
@@ -226,7 +230,8 @@ Specify how the selection is displayed with the `data-selected-text-format` attr
 The supported values are:
 
 * `values`: A comma delimited list of selected values (default)
-* `count`: If one item is selected, then the option value is shown. If more than one is selected then the number of selected items is displayed, e.g. `2 of 6 selected`
+* `count`: If one item is selected, then the option value is shown. If more than one is selected then the number of
+  selected items is displayed, e.g. `2 of 6 selected`
 * `count > x`: Where `x` is the number of items selected when the display format changes from `values` to `count`
 * `static`: Always show the select title (placeholder), regardless of selection
 
@@ -490,7 +495,9 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
 
 <div id="data-width"></div>
 
-Alternatively, use the `data-width` attribute to set the width of the select. Set `data-width` to `'auto'` to automatically adjust the width of the select to its widest option. `'fit'` automatically adjusts the width of the select to the width of its currently selected option. An exact value can also be specified, e.g., `300px` or `50%`.
+Alternatively, use the `data-width` attribute to set the width of the select. Set `data-width` to `'auto'` to
+automatically adjust the width of the select to its widest option. `'fit'` automatically adjusts the width of the select
+to the width of its currently selected option. An exact value can also be specified, e.g., `300px` or `50%`.
 
 <div class="bs-docs-example">
   <div class="row">
@@ -610,6 +617,7 @@ Insert custom HTML into the option with the `data-content` attribute:
 ```
 
 ## Subtext
+
 Add subtext to an option or optgroup with the `data-subtext` attribute:
 
 <div class="bs-docs-example">
@@ -655,7 +663,9 @@ Add subtext to an option or optgroup with the `data-subtext` attribute:
 
 ## Menu size
 
-The `size` option is set to `'auto'` by default. When `size` is set to `'auto'`, the menu always opens up to show as many items as the window will allow without being cut off. Set `size` to `false` to always show all items. The size of the menu can also be specifed using the `data-size` attribute.
+The `size` option is set to `'auto'` by default. When `size` is set to `'auto'`, the menu always opens up to show as
+many items as the window will allow without being cut off. Set `size` to `false` to always show all items. The size of
+the menu can also be specifed using the `data-size` attribute.
 
 <div class="bs-docs-example">
   <select class="selectpicker">
@@ -828,7 +838,9 @@ Append the select to a specific element, e.g. `container: 'body'` or `data-conta
 
 ## Dropup menu
 
-`dropupAuto` is set to true by default, which automatically determines whether or not the menu should display above or below the select box. If `dropupAuto` is set to false, manually make the select a dropup menu by adding the `.dropup` class to the select.
+`dropupAuto` is set to true by default, which automatically determines whether or not the menu should display above or
+below the select box. If `dropupAuto` is set to false, manually make the select a dropup menu by adding the `.dropup`
+class to the select.
 
 <div class="bs-docs-example">
   <select class="selectpicker dropup">

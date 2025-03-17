@@ -3,7 +3,7 @@
 ------------------------------------*/
 
 @each $color, $value in $theme-colors {
-	/* #{$color} button :hover, :focus, :active effects */
+  /* #{$color} button :hover, :focus, :active effects */
   .btn-#{$color} {
     &[href],
     &[type] {

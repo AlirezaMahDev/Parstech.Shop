@@ -15,7 +15,7 @@ function GetList() {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         },
-        
+
         success: function (response) {
             console.log(response);
             ResponseData(response);
@@ -26,18 +26,14 @@ function GetList() {
         error: function (response) {
             console.log(response);
         }
-    }); 
+    });
 }
-
-
 
 
 function ResponseData(Data) {
     // console.log(xhr);
 
     FillDataSet(Data)
-    
-
 
 
     tableMain = $('#data-table').DataTable({
@@ -46,15 +42,15 @@ function ResponseData(Data) {
         data: dataSet,
         columns: [
 
-            { title: 'نوع' },
-            { title: 'نام محصول' },
-           
-            { title: 'قیمت فروش(تومان)' },
-            { title: 'موجودی' },
+            {title: 'نوع'},
+            {title: 'نام محصول'},
+
+            {title: 'قیمت فروش(تومان)'},
+            {title: 'موجودی'},
         ],
         "columnDefs": [{
 
-            "targets": [2,3],
+            "targets": [2, 3],
             "className": 'w-10',
 
         }],
@@ -68,7 +64,7 @@ function FillDataSet(Data) {
     console.log(Data);
     Data.object.list.forEach(function (element) {
 
-        
+
         var ActionHtml;
         var type;
         switch (element.typeId) {
@@ -99,7 +95,7 @@ function FillDataSet(Data) {
         const found = productItems.some(el => el.id === element.id);
 
         if (found) {
-            
+
             const changedItem = productItems.find(u => u.id === element.id);
 
             nameh5 = "<h5 class='Red font-weight-bold' id='n" + element.id + "'>" + element.name + " <small class='Gray p-2'>قیمت قبلی:" + element.salePrice + "</small><small class='Gray'>موجودی قبلی:" + element.quantity + "</small></h5>";
@@ -140,20 +136,14 @@ function FillDataSet(Data) {
 }
 
 
-
-
-
-
-
-
 //change items
 
 let productItems = [];
 
 function changeTextboxValue(id) {
 
-    const quantityInput = document.getElementById("q"+id);
-    const priceInput = document.getElementById("p"+id);
+    const quantityInput = document.getElementById("q" + id);
+    const priceInput = document.getElementById("p" + id);
     const name = document.getElementById("n" + id);
 
     //var oldValue = quantityInput.attr("data-initial-value");
@@ -166,24 +156,17 @@ function changeTextboxValue(id) {
         productExist.quantity = quantityInput.value;
 
 
-    }
-    else {
-        const newProductItem = { id: id, price: priceInput.value, quantity: quantityInput.value };
+    } else {
+        const newProductItem = {id: id, price: priceInput.value, quantity: quantityInput.value};
         productItems.push(newProductItem);
     }
-    
+
 
     name.classList.add("Red");
     name.classList.add("font-weight-bold");
     // Log the array to the console
     console.log(productItems);
 }
-
-
-
-
-
-
 
 
 //Paging
@@ -200,15 +183,15 @@ function RunPaging(page) {
 
 function OnLoadingData() {
 }
+
 function OnCompleteData(xhr) {
-  
+
     var Data = xhr.responseJSON;
     ResponseData(Data);
 }
+
 function OnErrorData() {
 }
-
-
 
 
 //SaveChange
@@ -226,7 +209,7 @@ function SaveChanges() {
         success: function (response) {
             if (response.isSuccessed) {
                 ToastSuccess("عملیات با موفقیت انجام شد")
-                
+
                 tableMain
                     .clear()
                     .draw();
@@ -234,7 +217,7 @@ function SaveChanges() {
                 productItems = [];
                 GetList();
             }
-            
+
         },
         failure: function (response) {
             ToastError("در خواست شما با شکست مواجه شده است")

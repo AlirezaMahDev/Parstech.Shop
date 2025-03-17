@@ -24,6 +24,7 @@
         .card-header {
           @include border-top-radius($card-border-radius);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius(0);
@@ -38,6 +39,7 @@
         .card-header {
           @include border-top-radius(0);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius($card-border-radius);
@@ -69,6 +71,7 @@
         .card-header {
           @include border-top-radius($card-border-radius);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius(0);
@@ -83,6 +86,7 @@
         .card-header {
           @include border-top-radius(0);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius($card-border-radius);
@@ -114,6 +118,7 @@
         .card-header {
           @include border-top-radius($card-border-radius);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius(0);
@@ -128,6 +133,7 @@
         .card-header {
           @include border-top-radius(0);
         }
+
         .card-img-bottom,
         .card-footer {
           @include border-bottom-radius($card-border-radius);

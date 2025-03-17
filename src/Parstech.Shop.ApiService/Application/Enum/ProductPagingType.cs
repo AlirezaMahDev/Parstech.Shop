@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Parstech.Shop.ApiService.Application.Enum;
 
-namespace Shop.Application.Enum
+public enum ProductPagingType
 {
-    public enum ProductPagingType
-    {
-        Top,
-        New,
-        LowPrice,
-        HighPrice
-    }
+    Top,
+    New,
+    LowPrice,
+    HighPrice
 }

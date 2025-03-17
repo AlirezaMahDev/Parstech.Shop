@@ -72,12 +72,11 @@ Note that some event names have been updated to match their equivalent name in
 the HTML spec:
 
 | old          | new        |
-| ------------ | ---------- |
+|--------------|------------|
 | playProgress | timeupdate |
 | loadProgress | progress   |
 | finish       | ended      |
 | seek         | seeked     |
-
 
 ## Step 5: Update method calls, getters, and setters
 

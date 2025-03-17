@@ -1,12 +1,10 @@
-﻿
+﻿function OnLoadingSectionCU() {
 
-function OnLoadingSectionCU() {
-  
 }
 
 function OnCompleteSectionCU(xhr) {
     Response = xhr.responseJSON;
-   // console.log(xhr);
+    // console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
     }
@@ -15,8 +13,7 @@ function OnCompleteSectionCU(xhr) {
         ToastSuccess(Response.message)
         $('#CreateSectionModal').modal('hide');
         setTimeout(Refresh, 2000);
-    }
-    else {
+    } else {
         ToastError(Response.message);
     }
 }
@@ -26,17 +23,13 @@ function OnErrorSectionCU() {
 }
 
 
-
-
-
-
 function OnLoadingSectionDetailCU() {
-   
+
 }
 
 function OnCompleteSectionDetailCU(xhr) {
     Response = xhr.responseJSON;
-   // console.log(xhr);
+    // console.log(xhr);
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
     }
@@ -45,8 +38,7 @@ function OnCompleteSectionDetailCU(xhr) {
         ToastSuccess(Response.message)
         $('#CreateSectionDetailModal').modal('hide');
         setTimeout(Refresh, 2000);
-    }
-    else {
+    } else {
         ToastError(Response.message);
     }
 }

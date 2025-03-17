@@ -1,259 +1,262 @@
 ﻿using Dapper;
-using Dto.Response.Payment;
+
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
-using Shop.Application.Dapper.Helper;
-using Shop.Application.Dapper.Order.Commands;
-using Shop.Application.Dapper.Product.Commands;
-using Shop.Application.Dapper.Product.Queries;
-using Shop.Application.DTOs.Order;
-using Shop.Application.Enum;
-using Shop.Application.Features.Order.Requests.Queries;
-using Shop.Application.Features.OrderStatus.Requests.Queries;
-using Shop.Application.Url;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
+using Parstech.Shop.ApiService.Application.Dapper.Helper;
+using Parstech.Shop.ApiService.Application.Dapper.Order.Commands;
+using Parstech.Shop.ApiService.Application.Dargah.ZarrinPal.Models;
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Application.Enum;
+using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Order.Handler.Queries
+using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
+
+namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
+
+//درگاه سداد
+public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
 {
+    private readonly IOrderCommand _orderCommand;
+    private readonly string _connectionString;
 
-    //درگاه سداد
-    public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
+    public DargaQueryHandler(IOrderCommand orderCommand,
+        IConfiguration configuration)
     {
-        private readonly IOrderCommand _orderCommand;
-        private readonly string _connectionString;
-        public DargaQueryHandler(IOrderCommand orderCommand,
-            IConfiguration configuration)
+        _orderCommand = orderCommand;
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+    }
+
+    public async Task<string> Handle(DargaQueryReq request, CancellationToken cancellationToken)
+    {
+        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+            conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
+                .FirstOrDefault());
+
+
+        string merchantId = "000000140332776";
+        string terminalId = "24086411";
+        string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
+
+
+        long Amount = request.price * 10;
+        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
+
+
+        byte[]? byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
+
+        SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
+        algorithm.Mode = CipherMode.ECB;
+        algorithm.Padding = PaddingMode.PKCS7;
+
+        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
+
+        var data = new
         {
-            _orderCommand=  orderCommand;
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");
+            MerchantId = merchantId,
+            TerminalId = terminalId,
+            Amount,
+            order.OrderId,
+            LocalDateTime = DateTime.Now,
+            ReturnUrl = "https://Parstech.co/Sadad/CallBack",
+            SignData = signData
+        };
+
+
+        RequestPaymentResult? res =
+            CallApi<RequestPaymentResult>("https://sadad.shaparak.ir/api/v0/Request/PaymentRequest", data).Result;
+        if (res.ResCode == 0)
+        {
+            return $"https://sadad.shaparak.ir/Purchase/Index?token={res.Token}";
         }
-        public async Task<string> Handle(DargaQueryReq request, CancellationToken cancellationToken)
+        else
         {
-            var order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString, conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { @orderCode = request.orderCode }).FirstOrDefault());
-
-            
-            string merchantId = "000000140332776";
-            string terminalId = "24086411";
-            string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
-
-
-            var Amount = request.price*10;
-            string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
-
-
-            var byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
-
-            var algorithm = SymmetricAlgorithm.Create("TripleDes");
-            algorithm.Mode = CipherMode.ECB;
-            algorithm.Padding = PaddingMode.PKCS7;
-
-            var encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
-            string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
-
-            var data = new
-            {
-                
-                MerchantId = merchantId,
-                TerminalId = terminalId,
-                Amount = Amount,
-                OrderId =order.OrderId,
-                LocalDateTime = DateTime.Now,
-                ReturnUrl = "https://Parstech.co/Sadad/CallBack",
-                SignData = signData
-            };
-
-
-            var res = CallApi<RequestPaymentResult>("https://sadad.shaparak.ir/api/v0/Request/PaymentRequest", data).Result;
-            if (res.ResCode == 0)
-            {
-                return $"https://sadad.shaparak.ir/Purchase/Index?token={res.Token}";
-            }
-            else
-            {
-                return $"{res.Description}";
-            }
-        }
-        public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
-        {
-            using (var client = new HttpClient())
-            {
-
-                client.BaseAddress = new Uri(apiUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-
-                var json = JsonConvert.SerializeObject(value);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var w = client.PostAsync(apiUrl, content);
-                w.Wait();
-
-                HttpResponseMessage response = w.Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = response.Content.ReadAsStringAsync();
-                    result.Wait();
-                    return JsonConvert.DeserializeObject<T>(result.Result);
-                }
-
-                return new T();
-            }
+            return $"{res.Description}";
         }
     }
 
-
-    //درگاه زرین پال
-    public class ZarrinPalQueryHandler : IRequestHandler<ZarrinPalQueryReq, string>
+    public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
     {
-        private readonly IOrderCommand _orderCommand;
-        private readonly IMediator _mediator;
-        private readonly string _connectionString;
-        public ZarrinPalQueryHandler(IOrderCommand orderCommand,
-            IConfiguration configuration,
-            IMediator mediator)
+        using (HttpClient? client = new())
         {
-            _orderCommand = orderCommand;
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");
-            _mediator = mediator;
+            client.BaseAddress = new(apiUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            string? json = JsonConvert.SerializeObject(value);
+            StringContent content = new(json, Encoding.UTF8, "application/json");
+
+            Task<HttpResponseMessage> w = client.PostAsync(apiUrl, content);
+            w.Wait();
+
+            HttpResponseMessage response = w.Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Task<string> result = response.Content.ReadAsStringAsync();
+                result.Wait();
+                return JsonConvert.DeserializeObject<T>(result.Result);
+            }
+
+            return new();
         }
-        public async Task<string> Handle(ZarrinPalQueryReq request, CancellationToken cancellationToken)
+    }
+}
+
+//درگاه زرین پال
+public class ZarrinPalQueryHandler : IRequestHandler<ZarrinPalQueryReq, string>
+{
+    private readonly IOrderCommand _orderCommand;
+    private readonly IMediator _mediator;
+    private readonly string _connectionString;
+
+    public ZarrinPalQueryHandler(IOrderCommand orderCommand,
+        IConfiguration configuration,
+        IMediator mediator)
+    {
+        _orderCommand = orderCommand;
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+        _mediator = mediator;
+    }
+
+    public async Task<string> Handle(ZarrinPalQueryReq request, CancellationToken cancellationToken)
+    {
+        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+            conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
+                .FirstOrDefault());
+        //var payment = new ZarinpalSandbox.Payment(Convert.ToInt32(order.Total));
+        //var res = payment.PaymentRequest($"پرداخت صورتحساب {order.OrderCode}", $"{BaseUrl.GetUrl()}/Zarrinpal/Callback/{order.OrderId}");
+        //if (res.Result.Status == 100)
+        //{
+        //    await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(OrderStatusType.OrderAwaitingPayment.ToString(), order.OrderId, order.UserId));
+
+        //    return $"https://sandbox.zarinpal.com/pg/StartPay/{res.Result.Authority}";
+        //}
+        //else
+        //{
+
+        //    await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(OrderStatusType.CancellationOrderPayment.ToString(), order.OrderId, order.UserId));
+        //    return "";
+        //}
+        Dargah.ZarrinPal.ZarinPal zarinpal = Dargah.ZarrinPal.ZarinPal.Get();
+
+        string MerchantID = "85cab9c2-ac10-45a1-8489-1f8650ed6dee";
+        string CallbackURL = $"http://parstech.co//Zarrinpal/Callback/{order.OrderId}";
+        long Amount = order.Total;
+        string Description = $"پرداخت صورتحساب {order.OrderCode}";
+
+        PaymentRequest pr = new ZarinPal.PaymentRequest(MerchantID, Amount, CallbackURL, Description);
+
+        zarinpal.DisableSandboxMode();
+        PaymentResponse? res = zarinpal.InvokePaymentRequest(pr);
+        if (res.Status == 100)
         {
-            var order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString, conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { @orderCode = request.orderCode }).FirstOrDefault());
-            //var payment = new ZarinpalSandbox.Payment(Convert.ToInt32(order.Total));
-            //var res = payment.PaymentRequest($"پرداخت صورتحساب {order.OrderCode}", $"{BaseUrl.GetUrl()}/Zarrinpal/Callback/{order.OrderId}");
-            //if (res.Result.Status == 100)
-            //{
-            //    await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(OrderStatusType.OrderAwaitingPayment.ToString(), order.OrderId, order.UserId));
+            return res.PaymentURL;
+        }
+        else
+        {
+            await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
+                OrderStatusType.CancellationOrderPayment.ToString(),
+                order.OrderId,
+                order.UserId));
+            return "";
+        }
+    }
+}
 
-            //    return $"https://sandbox.zarinpal.com/pg/StartPay/{res.Result.Authority}";
-            //}
-            //else
-            //{
+//درگاه نوپی پیشگامان
+public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
+{
+    private readonly IOrderCommand _orderCommand;
+    private readonly string _connectionString;
 
-            //    await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(OrderStatusType.CancellationOrderPayment.ToString(), order.OrderId, order.UserId));
-            //    return "";
-            //}
-            ZarinPal.ZarinPal zarinpal = ZarinPal.ZarinPal.Get();
-            
-            String MerchantID = "85cab9c2-ac10-45a1-8489-1f8650ed6dee";
-            String CallbackURL = $"http://parstech.co//Zarrinpal/Callback/{order.OrderId}";
-            long Amount = order.Total;
-            string Description = $"پرداخت صورتحساب {order.OrderCode}";
-            
-            ZarinPal.PaymentRequest pr = new ZarinPal.PaymentRequest(MerchantID, Amount, CallbackURL, Description);
+    public NoPayQueryHandler(IOrderCommand orderCommand,
+        IConfiguration configuration)
+    {
+        _orderCommand = orderCommand;
+        _connectionString = configuration.GetConnectionString("DatabaseConnection");
+    }
 
-            zarinpal.DisableSandboxMode();
-            var res = zarinpal.InvokePaymentRequest(pr);
-            if (res.Status == 100)
-            {
-                return res.PaymentURL;
-            }
-            else
-            {
+    public async Task<string> Handle(NoPayQueryReq request, CancellationToken cancellationToken)
+    {
+        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+            conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
+                .FirstOrDefault());
 
-                await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(OrderStatusType.CancellationOrderPayment.ToString(), order.OrderId, order.UserId));
-                return "";
-            }
+
+        string merchantId = "000000140332776";
+        string terminalId = "24086411";
+        string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
+
+
+        long Amount = request.price * 10;
+        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
+
+
+        byte[]? byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
+
+        SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
+        algorithm.Mode = CipherMode.ECB;
+        algorithm.Padding = PaddingMode.PKCS7;
+
+        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
+
+        var data = new
+        {
+            MerchantId = merchantId,
+            TerminalId = terminalId,
+            Amount,
+            order.OrderId,
+            ReturnUrl = "https://parstech.co/Sadad/BnplCallBack",
+            UserId = order.UserName,
+            ApplicationName = "Bnpl",
+            PanAuthenticationType = 0,
+            NationalCode = "",
+            CardHolderIdentity = "",
+            SourcePanList = "",
+            NationalCodeEnc = "",
+            SignData = signData
+        };
+
+
+        NoPayResponseGenKey? res = CallApi<NoPayResponseGenKey>("https://bnpl.sadadpsp.ir/Bnpl/GenerateKey", data)
+            .Result;
+        if (res.ResponseCode == 0)
+        {
+            return $"https://bnpl.sadadpsp.ir/Home?key={res.BnplKey}";
+        }
+        else
+        {
+            return $"{res.Message}";
         }
     }
 
-
-
-    //درگاه نوپی پیشگامان
-    public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
+    public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
     {
-        private readonly IOrderCommand _orderCommand;
-        private readonly string _connectionString;
-        public NoPayQueryHandler(IOrderCommand orderCommand,
-            IConfiguration configuration)
+        using (HttpClient? client = new())
         {
-            _orderCommand = orderCommand;
-            _connectionString = configuration.GetConnectionString("DatabaseConnection");
-        }
-        public async Task<string> Handle(NoPayQueryReq request, CancellationToken cancellationToken)
-        {
-            var order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString, conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { @orderCode = request.orderCode }).FirstOrDefault());
+            client.BaseAddress = new(apiUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
 
+            string? json = JsonConvert.SerializeObject(value);
+            StringContent content = new(json, Encoding.UTF8, "application/json");
 
-            string merchantId = "000000140332776";
-            string terminalId = "24086411";
-            string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
+            Task<HttpResponseMessage> w = client.PostAsync(apiUrl, content);
+            w.Wait();
 
-
-            var Amount = request.price * 10;
-            string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
-
-
-            var byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
-
-            var algorithm = SymmetricAlgorithm.Create("TripleDes");
-            algorithm.Mode = CipherMode.ECB;
-            algorithm.Padding = PaddingMode.PKCS7;
-
-            var encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
-            string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
-
-            var data = new
+            HttpResponseMessage response = w.Result;
+            if (response.IsSuccessStatusCode)
             {
-
-                MerchantId = merchantId,
-                TerminalId = terminalId,
-                Amount = Amount,
-                OrderId = order.OrderId,
-                
-                ReturnUrl = "https://parstech.co/Sadad/BnplCallBack",
-                UserId=order.UserName,
-                ApplicationName= "Bnpl",
-                PanAuthenticationType=0,
-                NationalCode="",
-                CardHolderIdentity="",
-                SourcePanList="",
-                NationalCodeEnc="",
-                SignData = signData
-            };
-
-
-            var res = CallApi<NoPayResponseGenKey>("https://bnpl.sadadpsp.ir/Bnpl/GenerateKey", data).Result;
-            if (res.ResponseCode == 0)
-            {
-                return $"https://bnpl.sadadpsp.ir/Home?key={res.BnplKey}";
+                Task<string> result = response.Content.ReadAsStringAsync();
+                result.Wait();
+                return JsonConvert.DeserializeObject<T>(result.Result);
             }
-            else
-            {
-                return $"{res.Message}";
-            }
-        }
-        public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
-        {
-            using (var client = new HttpClient())
-            {
 
-                client.BaseAddress = new Uri(apiUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-
-                var json = JsonConvert.SerializeObject(value);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var w = client.PostAsync(apiUrl, content);
-                w.Wait();
-
-                HttpResponseMessage response = w.Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = response.Content.ReadAsStringAsync();
-                    result.Wait();
-                    return JsonConvert.DeserializeObject<T>(result.Result);
-                }
-
-                return new T();
-            }
+            return new();
         }
     }
 }

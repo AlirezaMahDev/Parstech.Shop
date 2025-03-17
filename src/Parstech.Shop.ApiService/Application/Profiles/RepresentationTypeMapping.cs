@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Shop.Application.DTOs.RepresentationType;
-using Shop.Domain.Models;
+﻿using AutoMapper;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class RepresentationTypeMapping : Profile
+
 {
-    public class RepresentationTypeMapping:Profile
-
+    public RepresentationTypeMapping()
     {
-        public RepresentationTypeMapping()
-        {
-            CreateMap<RepresentationTypeDto, RepresentationType>().ReverseMap();
-        }
+        CreateMap<RepresentationTypeDto, RepresentationType>().ReverseMap();
     }
 }

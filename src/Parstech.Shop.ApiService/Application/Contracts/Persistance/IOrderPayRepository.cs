@@ -1,16 +1,10 @@
-﻿using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IOrderPayRepository : IGenericRepository<OrderPay>
 {
-    public interface IOrderPayRepository:IGenericRepository<OrderPay>
-    {
-        Task<OrderPay> GetByOrderId(int OrderId);
-        Task<bool> HasOrderPay(int OrderId);
-        Task<List<OrderPay>> GetListByOrderId(int OrderId);
-    }
+    Task<OrderPay> GetByOrderId(int OrderId);
+    Task<bool> HasOrderPay(int OrderId);
+    Task<List<OrderPay>> GetListByOrderId(int OrderId);
 }

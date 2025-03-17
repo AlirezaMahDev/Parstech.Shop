@@ -1,13 +1,7 @@
 ﻿using MediatR;
-using Shop.Application.DTOs.Order;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Features.Order.Requests.Queries
-{
-    public record ContractOrderQueryReq(int orderId,string Store):IRequest<ContractsDto>;
+using Parstech.Shop.ApiService.Application.DTOs;
 
-}
+namespace Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+
+public record ContractOrderQueryReq(int orderId, string Store) : IRequest<ContractsDto>;

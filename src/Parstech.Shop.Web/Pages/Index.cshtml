@@ -1,12 +1,12 @@
 ﻿@page
-@using Microsoft.AspNetCore.Antiforgery;
-@model Shop.Web.Pages.IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.IndexModel
 @{
 }
 @Html.AntiForgeryToken()
 
 <main id="content" role="main">
-   
+
     @*section1*@
     @if (Model.Sections.Count > 0)
     {
@@ -22,13 +22,12 @@
                     @await Component.InvokeAsync("LandingPageSection", item.Id)
                 </div>
             }
-
         }
     }
-        
-        
 
-    <div id="CooiesModal2" class="modal fade" role="dialog" >
+
+
+    <div id="CooiesModal2" class="modal fade" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
 
@@ -36,11 +35,14 @@
                     <div class="col-lg-12">
                         <div class="col-12 m-auto m-b-10" style="text-align:justify;">
                             <h5 class="font-weiht-bold">پذیرش کوکی ها</h5>
-                            <p>ما از کوکی‌ها برای ارائه بهترین تجربه ممکن استفاده می‌کنیم. آیا استفاده ما از کوکی‌ها را تأیید می‌کنید؟</p>
+                            <p>ما از کوکی‌ها برای ارائه بهترین تجربه ممکن استفاده می‌کنیم. آیا استفاده ما از کوکی‌ها را
+                                تأیید می‌کنید؟</p>
                         </div><!-- /.col-md-8 -->
                     </div><!-- /col-lg-12 -->
-                    <button type="button" onclick="acceptCookies()" class="btn btn-default btn-round">تائید کوکی ها</button>
-                    <button type="button" onclick="rejectCookies()" class="btn btn-default btn-round" >رد کردن کوکی ها</button>
+                    <button type="button" onclick="acceptCookies()" class="btn btn-default btn-round">تائید کوکی ها
+                    </button>
+                    <button type="button" onclick="rejectCookies()" class="btn btn-default btn-round">رد کردن کوکی ها
+                    </button>
 
                 </div>
 
@@ -69,13 +71,13 @@
 
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
-    
-    
+
+
     <script src="~/shared/lib/Site/Landing/Index.js"></script>
     <script type="text/javascript">
         $(function () {
             $("#btnGet").click(function () {
-                
+
             });
         });
     </script>

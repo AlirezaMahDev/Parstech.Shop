@@ -14,26 +14,27 @@ function GetTransaction(id) {
     WTParameter_CurrentPage.value = 1;
     $("#DataTransactionsForm").submit();
 }
+
 function GetAghsat(id) {
     IdForInputs(id);
     walletType.value = "Fecilities";
     WTParameter_CurrentPage.value = 1;
     $("#DataTransactionsForm").submit();
 }
+
 function GetSazman(id) {
     IdForInputs(id);
     walletType.value = "OrgCredit";
     WTParameter_CurrentPage.value = 1;
     $("#DataTransactionsForm").submit();
 }
+
 function GetCoins(id) {
     IdForInputs(id);
     walletType.value = "Coin";
     WTParameter_CurrentPage.value = 1;
     $("#DataTransactionsForm").submit();
 }
-
-
 
 
 function TFilter() {
@@ -117,12 +118,12 @@ function OnCompleteDataTransactions(xhr) {
         "paging": false,
         data: TdataSet,
         columns: [
-            { title: 'مبلغ' },
-            { title: 'نوع تراکنش' },
-            { title: 'تاریخ ایجاد' },
-            { title: 'مهلت پرداخت' },
-            { title: 'کد پیگیری' },
-            { title: 'عملیات' },
+            {title: 'مبلغ'},
+            {title: 'نوع تراکنش'},
+            {title: 'تاریخ ایجاد'},
+            {title: 'مهلت پرداخت'},
+            {title: 'کد پیگیری'},
+            {title: 'عملیات'},
         ],
         "columnDefs": [{
             "targets": 5,
@@ -152,10 +153,9 @@ function CleanItem() {
 function FillItem(Data) {
     console.log(Data);
     if (Data.typeId == 6) {
-        TransactionDto.insertAdjacentHTML("afterbegin", "<div class='row'><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-money-bill-wave Orange'></i> مبلغ: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'> " + Data.price + " </label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' fas fa-stream Orange'></i> نوع:</label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.typeName + "</label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' icon-magnifier Orange'></i> کد پیگیری: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.trackingCode + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-plus Orange'></i> تاریخ ایجاد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.createDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تاریخ پایان: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.expireDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> درصد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.persent + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تعداد ماه: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.month + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> وضعیت شروع اقساط: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.startName + "</label></div></div><div class='col-12  m-auto m-b-10'><label><i class=' far fa-file-lines Orange'></i> توضیحات: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.description + "</label></div></div><div class='col-12  m-auto m-b-10'><a href='" + Data.fileName + "'><i class='fas fa-download Blue'></i> دانلود </a><a class='btn btn-blue' href='#' onclick='TasviyeGhest("+Data.id+")'>تسویه </a></div></div>");
+        TransactionDto.insertAdjacentHTML("afterbegin", "<div class='row'><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-money-bill-wave Orange'></i> مبلغ: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'> " + Data.price + " </label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' fas fa-stream Orange'></i> نوع:</label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.typeName + "</label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' icon-magnifier Orange'></i> کد پیگیری: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.trackingCode + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-plus Orange'></i> تاریخ ایجاد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.createDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تاریخ پایان: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.expireDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> درصد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.persent + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تعداد ماه: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.month + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> وضعیت شروع اقساط: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.startName + "</label></div></div><div class='col-12  m-auto m-b-10'><label><i class=' far fa-file-lines Orange'></i> توضیحات: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.description + "</label></div></div><div class='col-12  m-auto m-b-10'><a href='" + Data.fileName + "'><i class='fas fa-download Blue'></i> دانلود </a><a class='btn btn-blue' href='#' onclick='TasviyeGhest(" + Data.id + ")'>تسویه </a></div></div>");
 
-    }
-    else {
+    } else {
         TransactionDto.insertAdjacentHTML("afterbegin", "<div class='row'><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-money-bill-wave Orange'></i> مبلغ: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'> " + Data.price + " </label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' fas fa-stream Orange'></i> نوع:</label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.typeName + "</label></div></div> <div class='col-6  m-auto m-b-10'><label><i class=' icon-magnifier Orange'></i> کد پیگیری: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.trackingCode + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-plus Orange'></i> تاریخ ایجاد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.createDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تاریخ پایان: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.expireDateShamsi + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> درصد: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.persent + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> تعداد ماه: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.month + "</label></div></div><div class='col-6  m-auto m-b-10'><label><i class=' fas fa-calendar-xmark Orange'></i> وضعیت شروع اقساط: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.startName + "</label></div></div><div class='col-12  m-auto m-b-10'><label><i class=' far fa-file-lines Orange'></i> توضیحات: </label><div class='form-group round m-auto'><label class='control-label font-weight-bold'>" + Data.description + "</label></div></div><div class='col-12  m-auto m-b-10'><a href='" + Data.fileName + "'><i class='fas fa-download Blue'></i> دانلود </a></div></div>");
 
     }
@@ -164,6 +164,7 @@ function FillItem(Data) {
 function OnLoadingTransactionDetail() {
     CleanItem();
 }
+
 function OnCompleteTransactionDetail(xhr) {
     // console.log(xhr);
     FillItem(xhr.responseJSON.object);
@@ -180,6 +181,7 @@ function TransactionDetail(id) {
 }
 
 let TasviyeGhestId = document.getElementById("TasviyeGhestId");
+
 function TasviyeGhest(id) {
     swal({
         title: 'از ثبت این عملیات مطمئن هستید؟',
@@ -187,7 +189,7 @@ function TasviyeGhest(id) {
         showCancelButton: true,
         confirmButtonColor: '#f44336',
         cancelButtonColor: '#777',
-        
+
         confirmButtonText: 'بله، تسویه شود. '
     }).then(function () {
         console.log("ghghgh");
@@ -205,19 +207,15 @@ function TasviyeGhest(id) {
 }
 
 
-
 function OnCompleteTasviyeGhest(xhr) {
-    
+
     if (xhr.status != 200) {
         ToastError("در خواست شما با شکست مواجه شده است")
-    }
-
-    else if (xhr.responseJSON.isSuccessed) {
+    } else if (xhr.responseJSON.isSuccessed) {
         ToastSuccess("عملیات با موفقیت انجام شد");
 
-        
-    }
-    else {
+
+    } else {
         ToastError(xhr.responseJSON.message);
         //$("#FecilitiesModal").modal("hide");
     }

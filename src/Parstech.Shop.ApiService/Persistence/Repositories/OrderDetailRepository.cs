@@ -1,105 +1,101 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
-using Shop.Application.Calculator;
-using Shop.Application.Contracts.Persistance;
-using Shop.Application.DTOs.OrderDetail;
-using Shop.Domain.Models;
-using Shop.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Persistence.Repositories
+using Parstech.Shop.ApiService.Application.Calculator;
+using Parstech.Shop.ApiService.Application.Contracts.Persistance;
+using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.ApiService.Persistence.Context;
+
+namespace Parstech.Shop.ApiService.Persistence.Repositories;
+
+public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetailRepository
 {
-    public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetailRepository
+    private readonly DatabaseContext _context;
+    private readonly IMapper _mapper;
+    private readonly IProductRepository _productRep;
+    private readonly ITaxRepository _taxRep;
+
+    public OrderDetailRepository(DatabaseContext context,
+        IMapper mapper,
+        IProductRepository productRep,
+        ITaxRepository taxRep) : base(context)
     {
-        private readonly DatabaseContext _context;
-        private readonly IMapper _mapper;
-        private readonly IProductRepository _productRep;
-        private readonly ITaxRepository _taxRep;
+        _context = context;
+        _mapper = mapper;
+        _productRep = productRep;
+        _taxRep = taxRep;
+    }
 
-        public OrderDetailRepository(DatabaseContext context,
-            IMapper mapper,
-            IProductRepository productRep, ITaxRepository taxRep) : base(context)
+
+    public async Task<List<OrderDetail>> GetOrderDetailsByOrderId(int orderId)
+    {
+        List<OrderDetail>? list = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
+        return list;
+    }
+
+    public async Task CalculateOrderDetailTax(int orderId)
+    {
+        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        foreach (OrderDetail? orderDetail in orderDetails)
         {
-            _context = context;
-            _mapper = mapper;
-            _productRep = productRep;
-            _taxRep = taxRep;
+            //var product = await _context.Products.FirstOrDefaultAsync(z => z.Id == orderDetail.ProductId);
+            //if(product.TaxId == 1)
+            //{
+            //    orderDetail.Tax = 0;
+            //}
+            //else
+            //{
+            //    var Price = ((int)orderDetail.Price - orderDetail.Discount) * orderDetail.Count;
+            //    orderDetail.Tax = await _taxRep.TaxCalculate(Price);
+            //}
+            await UpdateAsync(orderDetail);
         }
+    }
 
+    public async Task<int> CountOfSaleByProductId(int productId)
+    {
+        // var sales=await _context.OrderDetails.Where(u => u.ProductId == productId).ToListAsync();
+        //return sales.Count;
+        return 0;
+    }
 
-        public async Task<List<OrderDetail>> GetOrderDetailsByOrderId(int orderId)
+    public async Task<OrderDetail> RefreshOrderDetail(int detailId)
+    {
+        OrderDetail? detail = await GetAsync(detailId);
+        detail.DetailSum = detail.Price * detail.Count;
+        detail.Tax = PersentCalculator.PersentCalculatorByPrice(detail.DetailSum, 9);
+        detail.Total = detail.DetailSum + detail.Tax - detail.Discount;
+        return await UpdateAsync(detail);
+    }
+
+    public async Task<bool> ProductIdExistInOrderDetails(int orderId, int productId)
+    {
+        if (await _context.OrderDetails.AnyAsync(u => u.OrderId == orderId && u.ProductStockPriceId == productId))
         {
-            var list = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
-            return list;
+            return true;
         }
-        public async Task CalculateOrderDetailTax(int orderId)
+        else
         {
-            var orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
-            foreach (var orderDetail in orderDetails)
-            {
-                //var product = await _context.Products.FirstOrDefaultAsync(z => z.Id == orderDetail.ProductId);
-                //if(product.TaxId == 1)
-                //{
-                //    orderDetail.Tax = 0;
-                //}
-                //else
-                //{
-                //    var Price = ((int)orderDetail.Price - orderDetail.Discount) * orderDetail.Count;
-                //    orderDetail.Tax = await _taxRep.TaxCalculate(Price);
-                //}
-                await UpdateAsync(orderDetail);
-            }
+            return false;
         }
+    }
 
-        public async Task<int> CountOfSaleByProductId(int productId)
+    public async Task<int> GetCountOfOrder(int orderId)
+    {
+        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
+        return orderDetails.Count;
+    }
+
+    public async Task<bool> ExistOrderDetailforProductStockPrice(int ProductStockPricId)
+    {
+        if (await _context.OrderDetails.AnyAsync(u => u.ProductStockPriceId == ProductStockPricId))
         {
-            // var sales=await _context.OrderDetails.Where(u => u.ProductId == productId).ToListAsync();
-            //return sales.Count;
-            return 0;
+            return true;
         }
-
-        public async Task<OrderDetail> RefreshOrderDetail(int detailId)
+        else
         {
-            var detail = await GetAsync(detailId);
-            detail.DetailSum = detail.Price * detail.Count;
-            detail.Tax = PersentCalculator.PersentCalculatorByPrice(detail.DetailSum, 9);
-            detail.Total = detail.DetailSum + detail.Tax - detail.Discount;
-            return await UpdateAsync(detail);
-        }
-
-        public async Task<bool> ProductIdExistInOrderDetails(int orderId, int productId)
-        {
-            if (await _context.OrderDetails.AnyAsync(u => u.OrderId == orderId && u.ProductStockPriceId == productId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-        }
-
-        public async Task<int> GetCountOfOrder(int orderId)
-        {
-            var orderDetails = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
-            return orderDetails.Count;
-        }
-
-        public async Task<bool> ExistOrderDetailforProductStockPrice(int ProductStockPricId)
-        {
-            if (await _context.OrderDetails.AnyAsync(u => u.ProductStockPriceId == ProductStockPricId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

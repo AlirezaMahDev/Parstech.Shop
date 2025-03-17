@@ -1,5 +1,6 @@
 ﻿@page
-@model Shop.Web.Pages.Admin.Setting.DiscountPanelModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Pages.Admin.Setting.DiscountPanelModel
 @{
     Layout = "Shared/Admin_Layout";
 }
@@ -40,7 +41,9 @@
                             <div class="col-lg-2">
                                 <div class="form-group ">
                                     <label>فیلتر انبار</label>
-                                    <select asp-for="RepId" id="RepId" onchange="DataSubmit()" class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                    <select asp-for="RepId" id="RepId" onchange="DataSubmit()"
+                                            class="form-control select2 round select2-hidden-accessible" tabindex="-1"
+                                            aria-hidden="true">
                                         <option value="">انتخاب انبار</option>
                                         @foreach (var item in Model.Representations)
                                         {
@@ -52,7 +55,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group ">
                                     <label>فیلتر کالا </label>
-                                    <select asp-for="Parameter.Filter" id="ProductsSelect" onchange="DataSubmit()" class="form-control round select2">
+                                    <select asp-for="Parameter.Filter" id="ProductsSelect" onchange="DataSubmit()"
+                                            class="form-control round select2">
                                     </select>
                                 </div>
                             </div>
@@ -60,14 +64,16 @@
                             <div class="col-lg-2">
                                 <div class="form-group ">
                                     <label>دسته بندی ها</label>
-                                    <select asp-for="Parameter.Categury" id="CategurySelect" onchange="DataSubmit()" class="form-control round select2">
+                                    <select asp-for="Parameter.Categury" id="CategurySelect" onchange="DataSubmit()"
+                                            class="form-control round select2">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group ">
                                     <label>فیلتر پنل تخفیف</label>
-                                    <select asp-for="Parameter.SectionId" id="SectionSelect" onchange="DataSubmit()" class="form-control round select2">
+                                    <select asp-for="Parameter.SectionId" id="SectionSelect" onchange="DataSubmit()"
+                                            class="form-control round select2">
                                     </select>
                                 </div>
                             </div>
@@ -75,7 +81,8 @@
                             <div class="col-lg-2">
                                 <div class="form-group ">
                                     <label>فیلتر موجودی</label>
-                                    <select asp-for="Parameter.Exist" id="ExistSelect" onchange="DataSubmit()" class="form-control select2">
+                                    <select asp-for="Parameter.Exist" id="ExistSelect" onchange="DataSubmit()"
+                                            class="form-control select2">
                                         <option value="">انتخاب نشده</option>
                                         <option value="Exist">دارای موجودی</option>
                                         <option value="NotExist">عدم موجودی</option>
@@ -110,12 +117,12 @@
                         <table class="table table-bordered " id="data-table">
 
                             <thead>
-                                <tr>
-                                </tr>
+                            <tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                </tr>
+                            <tr>
+                            </tr>
 
                             </tbody>
 
@@ -139,12 +146,12 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="Parameter.RepId" class="RepId" />
-    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
-    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
-    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist" />
-    <input type="hidden" asp-for="Parameter.SectionId" id="Parameter_SectionId" />
-    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+    <input type="hidden" asp-for="Parameter.RepId" class="RepId"/>
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury"/>
+    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist"/>
+    <input type="hidden" asp-for="Parameter.SectionId" id="Parameter_SectionId"/>
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
 </form>
 <form method="post" id="GetSetionsOfProductStockPrice" asp-page-handler="GetSetionsOfProductStockPrice"
       data-ajax="true"
@@ -152,23 +159,23 @@
       data-ajax-begin="OnLoadingGet"
       data-ajax-complete="OnCompleteGet"
       data-ajax-failure="OnErrorGet">
-    <input type="hidden" name="productStockPriceId" class="productStockPriceId" />
+    <input type="hidden" name="productStockPriceId" class="productStockPriceId"/>
 
 </form>
 <form method="post" id="DeleteSetionsOfProductStockPrice" asp-page-handler="DeleteSetionsOfProductStockPrice"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteChangeSection">
-    <input type="hidden" name="ProductStockPriceSectionId" id="SectionId" />
-    <input type="hidden" name="ProductStockPriceId" class="productStockPriceId" />
+    <input type="hidden" name="ProductStockPriceSectionId" id="SectionId"/>
+    <input type="hidden" name="ProductStockPriceId" class="productStockPriceId"/>
 
 </form>
 <form method="post" id="ChangeShowInDiscountPanelForm" asp-page-handler="ChangeShowInDiscountPanel"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-complete="OnCompleteChange">
-    <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId" />
-    <input type="hidden" name="isShow" id="isShow" />
+    <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId"/>
+    <input type="hidden" name="isShow" id="isShow"/>
 
 </form>
 
@@ -183,16 +190,17 @@
             </div>
             <div class="modal-body">
                 <div class="col-md-8 col-lg-6 m-auto" id="showInPanel">
-                    
+
                 </div>
                 <div class="col-lg-12" id="addSection">
-                    <form method="post" id="AddProductStockPriceSectionForm" asp-page-handler="AddProductStockPriceSection"
+                    <form method="post" id="AddProductStockPriceSectionForm"
+                          asp-page-handler="AddProductStockPriceSection"
                           data-ajax="true"
                           data-ajax-method="POST"
                           data-ajax-complete="OnCompleteChangeSection">
-                        <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId" />
-                        
-                       
+                        <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId"/>
+
+
                         <div class="col-md-8 col-lg-6 m-auto ">
                             <div class="form-group ">
                                 <label> پنل تخفیف</label>
@@ -212,21 +220,25 @@
                         </div><!-- /.col-md-8 -->
                     </form>
                 </div>
-                <div class="col-lg-12" >
+                <div class="col-lg-12">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped no-footer" id="data-table2" role="grid" aria-describedby="data-table2_info">
+                        <table class="table table-bordered table-hover table-striped no-footer" id="data-table2"
+                               role="grid" aria-describedby="data-table2_info">
 
                             <thead>
-                                
-                                <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1" aria-label="نام ویژگی: activate to sort column descending" style="width: 345px;" aria-sort="ascending">نام ویژگی</th>
-                                    <th class="w-50" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1" aria-label="عملیات: activate to sort column ascending" style="width: 345px;">عملیات</th>
-                                </tr>
+
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1"
+                                    aria-label="نام ویژگی: activate to sort column descending" style="width: 345px;"
+                                    aria-sort="ascending">نام ویژگی
+                                </th>
+                                <th class="w-50" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1"
+                                    aria-label="عملیات: activate to sort column ascending" style="width: 345px;">عملیات
+                                </th>
+                            </tr>
                             </thead>
                             <tbody id="sections">
 
-
-                               
 
                         </table>
 
@@ -241,12 +253,14 @@
         </div>
     </div>
 </div>
+
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 
 }
+
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

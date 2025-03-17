@@ -3,18 +3,18 @@
 ------------------------------------*/
 
 .u-header-sidebar {
-	&__footer-offset {
-		height: 100%;
-  	box-sizing: border-box;
-		padding-bottom: 10.625rem;
-	}
+  &__footer-offset {
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10.625rem;
+  }
 
-	&__content {
-		padding: 1.5rem 3rem 3rem;
-	}
+  &__content {
+    padding: 1.5rem 3rem 3rem;
+  }
 
-	&__navbar-brand {
-		display: block;
+  &__navbar-brand {
+    display: block;
     width: 6.25rem;
     padding-top: 0;
     padding-bottom: 0;
@@ -24,20 +24,20 @@
   }
 
   &__footer {
-		position: absolute;
+    position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
-  	width: 100%;
-		padding: 1rem 3rem;
+    width: 100%;
+    padding: 1rem 3rem;
 
-		&-link {
-			color: $white-color-70;
-			font-size: ($font-size-base * .75);
+    &-link {
+      color: $white-color-70;
+      font-size: ($font-size-base * .75);
 
-			&:hover {
-				color: $white-color-hover;
-			}
-		}
+      &:hover {
+        color: $white-color-hover;
+      }
+    }
   }
 }

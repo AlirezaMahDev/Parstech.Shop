@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Shop.Application.DTOs.UserBilling;
+﻿using MediatR;
 
-namespace Shop.Application.Features.UserBilling.Requests.Commands
-{
-    public record UserBillingDeleteCommandReq(int id) : IRequest<Unit>;
-}
+namespace Parstech.Shop.ApiService.Application.Features.UserBilling.Requests.Commands;
+
+public record UserBillingDeleteCommandReq(int id) : IRequest<Unit>;

@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
-using Shop.Application.DTOs.WalletTransaction;
-using Shop.Application.DTOs.WalletTypes;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shop.Application.Profiles
+using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.ApiService.Domain.Models;
+
+namespace Parstech.Shop.ApiService.Application.Profiles;
+
+public class WalletTypesMapping : Profile
 {
-    public class WalletTypesMapping : Profile
+    public WalletTypesMapping()
     {
-        public WalletTypesMapping()
-        {
-            CreateMap<WalletType, WalletTypesDto>().ReverseMap();
-        }
+        CreateMap<WalletType, WalletTypesDto>().ReverseMap();
     }
 }

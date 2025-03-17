@@ -58,7 +58,7 @@ var ui = {};
             result.$errors = ui.findElement($container, options.ui.viewports.errors, "ul.error-list");
         }
         result.$score = ui.findElement($container, options.ui.viewports.score,
-                                       "span.password-score");
+            "span.password-score");
 
         options.instances.viewports = result;
         return result;
@@ -103,17 +103,17 @@ var ui = {};
 
     ui.initVerdict = function (options, $el) {
         ui.initHelper(options, $el, "<span class='password-verdict'></span>",
-                      options.ui.viewports.verdict);
+            options.ui.viewports.verdict);
     };
 
     ui.initErrorList = function (options, $el) {
         ui.initHelper(options, $el, "<ul class='error-list'></ul>",
-                      options.ui.viewports.errors);
+            options.ui.viewports.errors);
     };
 
     ui.initScore = function (options, $el) {
         ui.initHelper(options, $el, "<span class='password-score'></span>",
-                      options.ui.viewports.score);
+            options.ui.viewports.score);
     };
 
     ui.initPopover = function (options, $el) {
@@ -130,7 +130,9 @@ var ui = {};
         if (options.ui.showPopover) {
             ui.initPopover(options, $el);
         } else {
-            if (options.ui.showErrors) { ui.initErrorList(options, $el); }
+            if (options.ui.showErrors) {
+                ui.initErrorList(options, $el);
+            }
             if (options.ui.showVerdicts && !options.ui.showVerdictsInsideProgressBar) {
                 ui.initVerdict(options, $el);
             }
@@ -196,7 +198,9 @@ var ui = {};
         var $score = ui.getUIElements(options, $el).$score,
             html = "";
 
-        if (!remove) { html = score.toFixed(2); }
+        if (!remove) {
+            html = score.toFixed(2);
+        }
         $score.html(html);
     };
 
@@ -206,8 +210,8 @@ var ui = {};
             hide = true;
 
         if (options.ui.showVerdicts &&
-                !options.ui.showVerdictsInsideProgressBar &&
-                verdictText.length > 0) {
+            !options.ui.showVerdictsInsideProgressBar &&
+            verdictText.length > 0) {
             html = "<h5><span class='password-verdict'>" + verdictText +
                 "</span></h5>";
             hide = false;
@@ -224,7 +228,9 @@ var ui = {};
             return;
         }
 
-        if (options.ui.bootstrap2) { popover = $el.data("popover"); }
+        if (options.ui.bootstrap2) {
+            popover = $el.data("popover");
+        }
 
         if (popover.$arrow && popover.$arrow.parents("body").length > 0) {
             $el.find("+ .popover .popover-content").html(html);
@@ -252,19 +258,25 @@ var ui = {};
             if (options.ui.bootstrap3) {
                 css = "has-" + css;
             } else if (!options.ui.bootstrap2) { // BS4
-                if (css === "error") { css = "danger"; }
+                if (css === "error") {
+                    css = "danger";
+                }
                 css = "border-" + css;
             }
             $target.removeClass(css);
         });
 
-        if (remove) { return; }
+        if (remove) {
+            return;
+        }
 
         cssClass = statusClasses[Math.floor(cssClass / 2)];
         if (options.ui.bootstrap3) {
             cssClass = "has-" + cssClass;
         } else if (!options.ui.bootstrap2) { // BS4
-            if (cssClass === "error") { cssClass = "danger"; }
+            if (cssClass === "error") {
+                cssClass = "danger";
+            }
             cssClass = "border-" + cssClass;
         }
         $target.addClass(cssClass);
@@ -282,7 +294,9 @@ var ui = {};
     ui.getVerdictAndCssClass = function (options, score) {
         var level, verdict;
 
-        if (score === undefined) { return ['', 0]; }
+        if (score === undefined) {
+            return ['', 0];
+        }
 
         if (score <= options.ui.scores[0]) {
             level = 0;

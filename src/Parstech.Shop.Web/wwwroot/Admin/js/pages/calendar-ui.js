@@ -6,7 +6,7 @@ $('.has-datepicker').datepicker({
     yearRange: '-70:-1'
 });
 
-$(".has-datepicker-now").each(function() {    
+$(".has-datepicker-now").each(function () {
     $(this).datepicker({
         'setDate': $(this).val(),
         dateFormat: 'yy/mm/dd'

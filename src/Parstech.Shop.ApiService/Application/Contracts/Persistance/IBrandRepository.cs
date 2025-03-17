@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Application.DTOs.Brand;
-using Shop.Application.DTOs.Paging;
-using Shop.Application.DTOs.Property;
-using Shop.Domain.Models;
+﻿using Parstech.Shop.ApiService.Domain.Models;
 
-namespace Shop.Application.Contracts.Persistance
+namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
+
+public interface IBrandRepository : IGenericRepository<Brand>
 {
-    public interface IBrandRepository:IGenericRepository<Brand>
-    {
-        int GetCountOfBrands();
-    }
+    int GetCountOfBrands();
 }

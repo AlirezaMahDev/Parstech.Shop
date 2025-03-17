@@ -1,46 +1,43 @@
-﻿
-    const firstInput = document.getElementById('firstInput');
-    const secondInput = document.getElementById('secondInput');
-    const thirdInput = document.getElementById('thirdInput');
-    const forthInput = document.getElementById('forthInput');
-    const SubmitButton = document.getElementById('SubmitButton');
+﻿const firstInput = document.getElementById('firstInput');
+const secondInput = document.getElementById('secondInput');
+const thirdInput = document.getElementById('thirdInput');
+const forthInput = document.getElementById('forthInput');
+const SubmitButton = document.getElementById('SubmitButton');
 
-    firstInput.addEventListener('input', function (event) {
-            // بررسی وقتی یک رقم وارد شده
-            if (event.target.value.length > 0) {
+firstInput.addEventListener('input', function (event) {
+    // بررسی وقتی یک رقم وارد شده
+    if (event.target.value.length > 0) {
         // تغییر فوکوس به ورودی دوم بعد از وارد شدن عدد
         secondInput.focus();
-            }
-        });
-    secondInput.addEventListener('input', function (event) {
-            // بررسی وقتی یک رقم وارد شده
-            if (event.target.value.length > 0) {
+    }
+});
+secondInput.addEventListener('input', function (event) {
+    // بررسی وقتی یک رقم وارد شده
+    if (event.target.value.length > 0) {
         // تغییر فوکوس به ورودی دوم بعد از وارد شدن عدد
         thirdInput.focus();
-            }
-        });
-    thirdInput.addEventListener('input', function (event) {
-            // بررسی وقتی یک رقم وارد شده
-            if (event.target.value.length > 0) {
+    }
+});
+thirdInput.addEventListener('input', function (event) {
+    // بررسی وقتی یک رقم وارد شده
+    if (event.target.value.length > 0) {
         // تغییر فوکوس به ورودی دوم بعد از وارد شدن عدد
         forthInput.focus();
-            }
-        });
-    forthInput.addEventListener('input', function (event) {
-            // بررسی وقتی یک رقم وارد شده
-            if (event.target.value.length > 0) {
+    }
+});
+forthInput.addEventListener('input', function (event) {
+    // بررسی وقتی یک رقم وارد شده
+    if (event.target.value.length > 0) {
         // تغییر فوکوس به ورودی دوم بعد از وارد شدن عدد
         SubmitButton.focus();
-            }
-        });
-
+    }
+});
 
 
 var loginmobile = document.getElementById("loginmobile");
 var smsSection = document.getElementById("smsSection");
 var loginSection = document.getElementById("loginSection");
 var ActiveRegister;
-
 
 
 function LoginReqUser() {
@@ -65,8 +62,7 @@ function LoginReqUser() {
                 if (response.object2.object != null) {
                     ActiveRegister = response.object2.object;
                 }
-            }
-            else {
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
             console.log(response);
@@ -105,8 +101,7 @@ function LoginUser() {
 
                 RunSwl("ورود موفق", "success", response.message);
                 setTimeout(Refresh, 2000);
-            }
-            else {
+            } else {
                 RunSwl("ورود ناموفق", "error", response.message);
             }
             console.log(response);
@@ -120,6 +115,7 @@ function LoginUser() {
         }
     });
 }
+
 function Refresh() {
     window.location.href = "/";
 }
