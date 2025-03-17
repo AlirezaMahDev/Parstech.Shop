@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Commands;
 
@@ -24,7 +24,7 @@ public class CateguryDeleteCommandHandler : IRequestHandler<CateguryDeleteComman
     public async Task<ResponseDto> Handle(CateguryDeleteCommandReq request, CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        Domain.Models.Categury? item = await _categuryRep.GetAsync(request.categuryId);
+        Shared.Models.Categury? item = await _categuryRep.GetAsync(request.categuryId);
         if (!await _productCateguryRep.ExistProductCateguryForCateguryId(item.GroupId))
         {
             response.IsSuccessed = false;

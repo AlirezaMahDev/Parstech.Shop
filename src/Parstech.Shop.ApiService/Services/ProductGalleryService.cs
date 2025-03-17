@@ -3,7 +3,7 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -23,7 +23,7 @@ public class ProductGalleryService : ProductGalleryServiceBase
     {
         try
         {
-            void galleries = await _mediator.Send(new GalleriesOfProductQueryReq(request.ProductId));
+            var galleries = await _mediator.Send(new GalleriesOfProductQueryReq(request.ProductId));
 
             var response = new ProductGalleryResponse();
             response.Galleries.AddRange(galleries.Select(g => new ProductGallery

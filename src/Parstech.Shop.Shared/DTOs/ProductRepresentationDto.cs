@@ -1,4 +1,6 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Parstech.Shop.Shared.DTOs;
 
 public class ProductRepresentationDto
 {
@@ -29,39 +31,4 @@ public class ProductRepresentationDto
 
     public string? FileName { get; set; }
     public IFormFile File { get; set; }
-}
-
-public class ProductRepresentationList
-{
-    public int RepId { get; set; }
-    public List<ProductRepresentationDto> ProductRepresentationDtos { get; set; }
-}
-
-public class ProductRepresentationPagingDto
-{
-    public int CurrentPage { get; set; }
-    public int PageCount { get; set; }
-    public int repId { get; set; }
-    public Array List { get; set; }
-}
-
-public class ProductRepresenationParameterDto
-{
-    public int CurrentPage { get; set; }
-    public int TakePage { get; set; }
-    public int PageCount { get; set; }
-    public string Filter { get; set; }
-    public int RepId { get; set; }
-    public int Id { get; set; }
-    public int ProductId { get; set; }
-    public string Type { get; set; }
-    public string Exist { get; set; }
-    public int Categury { get; set; }
-}
-
-public class ProductRepresenationChartDto
-{
-    public string Name { get; set; }
-    public int Count { get; set; }
-    public string Color { get; set; }
 }

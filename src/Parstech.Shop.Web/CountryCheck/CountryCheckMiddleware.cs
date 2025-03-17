@@ -16,8 +16,6 @@ public class CountryCheckMiddleware
         string userIP = "5.52.34.96";
 
 
-        ;
-
         try
         {
         }

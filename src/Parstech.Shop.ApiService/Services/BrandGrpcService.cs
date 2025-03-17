@@ -3,7 +3,9 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Protos.Brand;
+
+using Brand = Parstech.Shop.Shared.Models.Brand;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -20,7 +22,7 @@ public class BrandGrpcService : BrandService.BrandServiceBase
     {
         try
         {
-            void brands = await _mediator.Send(new BrandsQueryReq());
+            var brands = await _mediator.Send(new BrandsQueryReq());
 
             var response = new BrandResponse();
             foreach (var brand in brands)
@@ -52,9 +54,9 @@ public class BrandGrpcService : BrandService.BrandServiceBase
     {
         try
         {
-            void brand = await _mediator.Send(new BrandReadCommandReq(request.Id));
+            var brand = await _mediator.Send(new BrandReadCommandReq(request.Id));
 
-            return new Brand
+            return new()
             {
                 Id = brand.Id,
                 Name = brand.Name ?? string.Empty,

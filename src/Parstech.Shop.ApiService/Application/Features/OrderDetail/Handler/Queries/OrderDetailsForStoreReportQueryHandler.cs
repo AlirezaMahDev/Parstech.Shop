@@ -5,10 +5,11 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.OrderDetail.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
 
 using System.Globalization;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 

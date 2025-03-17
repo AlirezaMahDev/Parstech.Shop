@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Orders;
 
@@ -39,7 +39,7 @@ public class IndexModel : PageModel
     public int OrderId { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public OrderDetailDto OrderDetailShowDto { get; set; }
@@ -161,7 +161,7 @@ public class IndexModel : PageModel
     {
         if (OrderStatusDto == null)
         {
-            OrderStatusDto = new OrderStatusDto();
+            OrderStatusDto = new();
         }
 
         OrderStatusDto.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -186,7 +186,7 @@ public class IndexModel : PageModel
     {
         if (OrderShippingDto == null)
         {
-            OrderShippingDto = new OrderShippingDto();
+            OrderShippingDto = new();
         }
 
         OrderShippingDto.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -212,7 +212,7 @@ public class IndexModel : PageModel
         try
         {
             string fileName;
-            byte[]? fileBytes = await _orderAdminGrpcClient.GenerateOrderWordFileAsync(id, out fileName);
+            byte[] fileBytes = await _orderAdminGrpcClient.GenerateOrderWordFileAsync(id, out fileName);
 
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
         }
@@ -242,7 +242,7 @@ public class IndexModel : PageModel
     {
         if (orderPayDto == null)
         {
-            orderPayDto = new OrderPayDto();
+            orderPayDto = new();
         }
 
         orderPayDto.PaymentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");

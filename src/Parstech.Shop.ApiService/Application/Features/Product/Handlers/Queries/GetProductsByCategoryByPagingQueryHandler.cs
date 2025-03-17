@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -40,16 +40,16 @@ public class
     public async Task<ProductPageingDto> Handle(GetProductsByCategoryByPagingQueryReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Product>? all = await _productRep.GetAll();
-        List<Domain.Models.Product>?
+        IReadOnlyList<Shared.Models.Product> all = await _productRep.GetAll();
+        List<Shared.Models.Product>
             products = all.Where(z => z.TypeId == request.productTypeId && z.IsActive).ToList();
         IList<ProductListShowDto> productDto = new List<ProductListShowDto>();
-        foreach (Domain.Models.Product product in products)
+        foreach (Shared.Models.Product product in products)
         {
-            List<Domain.Models.ProductCategury> productCategories =
+            List<Shared.Models.ProductCategury> productCategories =
                 await _productCateguryRep.GetCateguriesByProduct(product.Id);
-            Domain.Models.ProductCategury productCategory = new();
-            foreach (Domain.Models.ProductCategury item in productCategories)
+            Shared.Models.ProductCategury productCategory = new();
+            foreach (Shared.Models.ProductCategury item in productCategories)
             {
                 if (item.CateguryId == request.categoryId)
                 {
@@ -60,7 +60,7 @@ public class
             ProductListShowDto x = new();
             x = _mapper.Map<ProductListShowDto>(product);
 
-            Domain.Models.ProductGallery? pic = await _gallleryRep.GetMainImageOfProduct(product.Id);
+            Shared.Models.ProductGallery? pic = await _gallleryRep.GetMainImageOfProduct(product.Id);
             x.Image = pic.ImageName;
             productDto.Add(x);
         }

@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -26,11 +26,11 @@ public class GetUserInfoQueryHandler : IRequestHandler<GetUserInfoQueryReq, User
 
     public async Task<UserInfoDto> Handle(GetUserInfoQueryReq request, CancellationToken cancellationToken)
     {
-        UserInfoDto? userInfo = new();
+        UserInfoDto userInfo = new();
         if (request.userName != null)
         {
-            Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
-            Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(user.Id);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+            Shared.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(user.Id);
             List<IUserRoleDto> userRoles = await _userRep.GetUserRoles(user.UserId);
 
             userInfo.FullName = $"{userBilling.FirstName} {userBilling.LastName}";

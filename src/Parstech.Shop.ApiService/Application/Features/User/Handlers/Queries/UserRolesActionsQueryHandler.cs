@@ -3,9 +3,9 @@
 using Microsoft.AspNetCore.Identity;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -64,7 +64,7 @@ public class UserRoleCreateQueryHandler : IRequestHandler<UserRoleCreateQueryReq
 
     public async Task<Unit> Handle(UserRoleCreateQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? muser = await _userRep.GetAsync(request.IUserRoleDto.NumberuserId);
+        Shared.Models.User? muser = await _userRep.GetAsync(request.IUserRoleDto.NumberuserId);
         IdentityUser? user = await _userManager.FindByNameAsync(muser.UserName);
         await _userManager.AddToRoleAsync(user, request.IUserRoleDto.RoleName);
         if (request.IUserRoleDto.RoleName == "BankCustomer")
@@ -104,7 +104,7 @@ public class UserRoleDeleteQueryHandler : IRequestHandler<UserRoleDeleteQueryReq
 
     public async Task<Unit> Handle(UserRoleDeleteQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? muser = await _userRep.GetUserByUserName(request.IUserRoleDto.UserName);
+        Shared.Models.User? muser = await _userRep.GetUserByUserName(request.IUserRoleDto.UserName);
         IdentityUser? user = await _userManager.FindByNameAsync(request.IUserRoleDto.UserName);
         await _userManager.RemoveFromRoleAsync(user, request.IUserRoleDto.RoleName);
         if (request.IUserRoleDto.RoleName == "BankCustomer")
@@ -112,7 +112,7 @@ public class UserRoleDeleteQueryHandler : IRequestHandler<UserRoleDeleteQueryReq
             bool existUserInCategury = await _userCatRep.ExistUserInCategury(muser.Id);
             if (existUserInCategury)
             {
-                UserCategury? uc = await _userCatRep.GetUserCateguryByUserId(muser.Id);
+                UserCategury uc = await _userCatRep.GetUserCateguryByUserId(muser.Id);
                 await _userCatRep.DeleteAsync(uc);
             }
         }

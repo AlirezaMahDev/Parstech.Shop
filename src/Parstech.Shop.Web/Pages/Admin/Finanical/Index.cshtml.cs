@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Finanical;
 
@@ -25,10 +25,10 @@ public class IndexModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
-    public WalletTransactionParameterDto WTParameter { get; set; } = new WalletTransactionParameterDto();
+    public WalletTransactionParameterDto WTParameter { get; set; } = new();
 
     //wallets
     [BindProperty]
@@ -51,7 +51,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public bool block { get; set; }

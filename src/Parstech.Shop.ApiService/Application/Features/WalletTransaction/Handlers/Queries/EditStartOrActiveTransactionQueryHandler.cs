@@ -22,7 +22,7 @@ public class EditStartOrActiveTransactionQueryHandler : IRequestHandler<EditStar
 
     public async Task Handle(EditStartOrActiveTransactionQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.WalletTransaction? Transaction = await _walletTransactionRep.GetAsync(request.transactionId);
+        Shared.Models.WalletTransaction? Transaction = await _walletTransactionRep.GetAsync(request.transactionId);
 
         switch (request.startOrActive)
         {
@@ -39,7 +39,7 @@ public class EditStartOrActiveTransactionQueryHandler : IRequestHandler<EditStar
             default: break;
         }
 
-        Domain.Models.WalletTransaction? item = _mapper.Map<Domain.Models.WalletTransaction>(Transaction);
+        Shared.Models.WalletTransaction? item = _mapper.Map<Shared.Models.WalletTransaction>(Transaction);
         await _walletTransactionRep.UpdateAsync(item);
     }
 }

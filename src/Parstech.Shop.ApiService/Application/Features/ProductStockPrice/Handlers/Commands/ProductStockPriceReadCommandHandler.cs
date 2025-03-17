@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Commands;
 

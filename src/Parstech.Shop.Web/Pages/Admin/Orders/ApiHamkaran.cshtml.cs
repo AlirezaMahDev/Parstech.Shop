@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Orders;
 
@@ -27,16 +27,16 @@ public class ApiHamkaranModel : PageModel
     public int OrderId { get; set; }
 
     [BindProperty]
-    public RahkaranOrderDto OrderDto { get; set; } = new RahkaranOrderDto();
+    public RahkaranOrderDto OrderDto { get; set; } = new();
 
     [BindProperty]
-    public RahkaranUserDto UserDto { get; set; } = new RahkaranUserDto();
+    public RahkaranUserDto UserDto { get; set; } = new();
 
     [BindProperty]
-    public RahkaranProductDto ProductDto { get; set; } = new RahkaranProductDto();
+    public RahkaranProductDto ProductDto { get; set; } = new();
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     #endregion
 

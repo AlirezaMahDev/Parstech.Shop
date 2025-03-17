@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class CouponDto
 {
@@ -33,10 +33,4 @@ public class CouponDto
     public int Persent { get; set; }
 
     public long Amount { get; set; }
-}
-
-public class ObjectCoupon
-{
-    public string Status { get; set; }
-    public List<int> idList { get; set; }
 }

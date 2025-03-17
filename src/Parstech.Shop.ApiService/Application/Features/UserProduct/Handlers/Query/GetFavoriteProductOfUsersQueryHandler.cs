@@ -6,8 +6,8 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.ProductProperty.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Query;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserProduct.Handlers.Query;
 
@@ -41,25 +41,25 @@ public class
         CancellationToken cancellationToken)
     {
         List<FavoriteDto> result = new();
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
-        List<Domain.Models.UserProduct> userProduct = DapperHelper.ExecuteCommand(_ConnectionString,
-            conn => conn.Query<Domain.Models.UserProduct>(_productPropertyQueries.GeAllFavoriteUserProductsByUserId,
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        List<Shared.Models.UserProduct> userProduct = DapperHelper.ExecuteCommand(_ConnectionString,
+            conn => conn.Query<Shared.Models.UserProduct>(_productPropertyQueries.GeAllFavoriteUserProductsByUserId,
                     new { @userId = user.Id })
                 .ToList());
 
-        foreach (Domain.Models.UserProduct product in userProduct)
+        foreach (Shared.Models.UserProduct product in userProduct)
         {
             FavoriteDto compare = new();
-            Domain.Models.Product? p = await _productRep.GetAsync(product.ProductId);
+            Shared.Models.Product? p = await _productRep.GetAsync(product.ProductId);
             compare.userProductId = product.Id;
             compare.productId = product.ProductId;
             compare.name = p.Name;
             compare.code = p.Code;
             compare.shortLink = p.ShortLink;
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _ConnectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                    .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                         new { @productId = product.ProductId })
                     .FirstOrDefault());
             compare.image = image.ImageName;

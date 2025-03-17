@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -25,7 +25,7 @@ public class
     public async Task<WalletTransactionDto> Handle(WalletTransactionDetailShowQueryReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.WalletTransaction?
+        Shared.Models.WalletTransaction?
             walletTransaction = await _walletTransactionRep.GetAsync(request.transactionId);
         WalletTransactionDto? walletTransactionDto = _mapper.Map<WalletTransactionDto>(walletTransaction);
         walletTransactionDto.CreateDateShamsi = walletTransaction.CreateDate.ToShamsi();

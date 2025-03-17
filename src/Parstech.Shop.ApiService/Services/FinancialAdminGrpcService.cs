@@ -6,11 +6,11 @@ using MediatR;
 
 using Newtonsoft.Json;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -33,12 +33,12 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey, Filter = request.Filter
             };
 
-            void pagingResult = await _mediator.Send(new WalletPagingQueryReq(parameter));
+            var pagingResult = await _mediator.Send(new WalletPagingQueryReq(parameter));
 
             // Serialize the items to bytes
             ByteString? itemsBytes = ByteString.CopyFrom(JsonConvert.SerializeObject(pagingResult.Items),
@@ -69,7 +69,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            void filters = await _mediator.Send(new UserFilterDataQueryReq());
+            var filters = await _mediator.Send(new UserFilterDataQueryReq());
 
             var response = new UserFiltersResponse();
 
@@ -119,7 +119,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
             {
                 PageId = request.PageId,
                 Take = request.Take,
@@ -131,7 +131,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
                 TypeId = request.TypeId
             };
 
-            void pagingResult = await _mediator.Send(new WalletTransactionsPagingQueryReq(parameter));
+            var pagingResult = await _mediator.Send(new WalletTransactionsPagingQueryReq(parameter));
 
             // Serialize the items to bytes
             ByteString? itemsBytes = ByteString.CopyFrom(JsonConvert.SerializeObject(pagingResult.Items),
@@ -163,7 +163,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var transaction = new Shop.Application.DTOs.WalletTransaction.WalletTransactionDto
+            var transaction = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionDto
             {
                 Id = request.Id,
                 WalletId = request.WalletId,
@@ -181,7 +181,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
                 IsVerified = request.IsVerified
             };
 
-            void result = await _mediator.Send(new CreateWalletTransactionCommandReq(transaction, true));
+            var result = await _mediator.Send(new CreateWalletTransactionCommandReq(transaction, true));
 
             return new()
             {
@@ -203,7 +203,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            void transaction = await _mediator.Send(new WalletTransactionDetailShowQueryReq(request.TransactionId));
+            var transaction = await _mediator.Send(new WalletTransactionDetailShowQueryReq(request.TransactionId));
 
             return new()
             {
@@ -238,7 +238,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            void result = await _mediator.Send(new GhestPaymentQueryReq(request.TransactionId));
+            var result = await _mediator.Send(new GhestPaymentQueryReq(request.TransactionId));
 
             return new()
             {
@@ -269,7 +269,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
 
             // When implementing, use the code below as a template:
             /*
-            var facilities = new Shop.Application.DTOs.WalletTransaction.FacilitiesDto
+            var facilities = new Parstech.Shop.Application.DTOs.WalletTransaction.FacilitiesDto
             {
                 // Map properties from request
             };
@@ -296,15 +296,15 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
         try
         {
             // Create an IFormFile from the request data
-            MemoryStream? fileData = new MemoryStream(request.FileData.ToByteArray());
-            FormFile? formFile = new(
+            MemoryStream fileData = new MemoryStream(request.FileData.ToByteArray());
+            FormFile formFile = new(
                 fileData,
                 0,
                 fileData.Length,
                 "file",
                 request.FileName) { Headers = new HeaderDictionary(), ContentType = request.ContentType };
 
-            void result = await _mediator.Send(new FacilityRegistrationByExcelQueryReq(request.Type, formFile));
+            var result = await _mediator.Send(new FacilityRegistrationByExcelQueryReq(request.Type, formFile));
 
             return new()
             {
@@ -330,15 +330,15 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
         try
         {
             // Create an IFormFile from the request data
-            MemoryStream? fileData = new MemoryStream(request.FileData.ToByteArray());
-            FormFile? formFile = new(
+            MemoryStream fileData = new MemoryStream(request.FileData.ToByteArray());
+            FormFile formFile = new(
                 fileData,
                 0,
                 fileData.Length,
                 "file",
                 request.FileName) { Headers = new HeaderDictionary(), ContentType = request.ContentType };
 
-            void result = await _mediator.Send(new FacilityPaymentByExcelQueryReq(formFile));
+            var result = await _mediator.Send(new FacilityPaymentByExcelQueryReq(formFile));
 
             return new()
             {

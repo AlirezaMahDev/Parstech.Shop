@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.SocialSetting.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.SocialSetting.Handlers.Commands;
 
@@ -21,7 +21,7 @@ public class SocialSettingReadCommandHandler : IRequestHandler<SocialSettingRead
 
     public async Task<SocialSettingDto> Handle(SocialSettingReadCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.SocialSetting? socialSetting = await _socialSettingRep.GetAsync(request.id);
+        Shared.Models.SocialSetting? socialSetting = await _socialSettingRep.GetAsync(request.id);
         return _mapper.Map<SocialSettingDto>(socialSetting);
     }
 }
@@ -41,7 +41,7 @@ public class
     public async Task<List<SocialSettingDto>> Handle(SocialSettingListReadCommandReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.SocialSetting>? socialSetting = await _socialSettingRep.GetAll();
+        IReadOnlyList<Shared.Models.SocialSetting> socialSetting = await _socialSettingRep.GetAll();
         return _mapper.Map<List<SocialSettingDto>>(socialSetting);
     }
 }

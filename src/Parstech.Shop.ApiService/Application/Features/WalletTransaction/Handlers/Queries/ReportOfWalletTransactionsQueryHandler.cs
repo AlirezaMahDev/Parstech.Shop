@@ -5,10 +5,11 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.WalletTransaction.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
 
 using System.Globalization;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 

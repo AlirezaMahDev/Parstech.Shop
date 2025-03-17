@@ -5,10 +5,10 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.FormCredit.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.FormCredit.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -44,7 +44,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
             };
 
             // Process with MediatR
-            void response = await _mediator.Send(new CreateFormCreditCommandReq(formCreditDto));
+            var response = await _mediator.Send(new CreateFormCreditCommandReq(formCreditDto));
 
             // Map response back to gRPC
             var grpcResponse = new FormCreditResponse { IsSuccess = response.IsSuccessed, Message = response.Message };
@@ -52,8 +52,8 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
             // Add form credit details if available
             if (response.Object != null && response.IsSuccessed)
             {
-                var formCredit = response.Object as Shop.Domain.Models.FormCredit;
-                grpcResponse.FormCredit = new Shop.Shared.Protos.FormCredit.FormCreditDto
+                var formCredit = response.Object as FormCredit;
+                grpcResponse.FormCredit = new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = formCredit.Id,
                     Name = formCredit.Name,
@@ -93,9 +93,9 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
     {
         try
         {
-            void formCreditDto = await _mediator.Send(new ReadFormCreditCommandReq(request.Id));
+            var formCreditDto = await _mediator.Send(new ReadFormCreditCommandReq(request.Id));
 
-            return new Shop.Shared.Protos.FormCredit.FormCreditDto
+            return new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
             {
                 Id = formCreditDto.Id,
                 Name = formCreditDto.Name,
@@ -131,7 +131,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
 
             foreach (FormCredit credit in formCredits)
             {
-                response.FormCredits.Add(new Shop.Shared.Protos.FormCredit.FormCreditDto
+                response.FormCredits.Add(new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = credit.Id,
                     Name = credit.Name,
@@ -180,7 +180,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
             // Add items to the response
             foreach (FormCredit? credit in pagedResults)
             {
-                response.FormCredits.Add(new Shop.Shared.Protos.FormCredit.FormCreditDto
+                response.FormCredits.Add(new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = credit.Id,
                     Name = credit.Name,
@@ -211,7 +211,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
     {
         try
         {
-            void response = await _mediator.Send(new ChangeStatusFormCreditQueryReq(request.Id, request.Type));
+            var response = await _mediator.Send(new ChangeStatusFormCreditQueryReq(request.Id, request.Type));
 
             return new FormCreditResponse { IsSuccess = response.IsSuccessed, Message = response.Message };
         }

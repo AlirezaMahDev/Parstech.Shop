@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserShipping.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserShipping.Handlers.Commands;
 
@@ -21,8 +21,8 @@ public class UserShippingCreateCommandHandler : IRequestHandler<UserShippingCrea
 
     public async Task<UserShippingDto> Handle(UserShippingCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserShipping? userShipping = _mapper.Map<Domain.Models.UserShipping>(request.UserShippingDto);
-        Domain.Models.UserShipping? result = await _userShippingRep.AddAsync(userShipping);
+        Shared.Models.UserShipping? userShipping = _mapper.Map<Shared.Models.UserShipping>(request.UserShippingDto);
+        Shared.Models.UserShipping result = await _userShippingRep.AddAsync(userShipping);
         return _mapper.Map<UserShippingDto>(result);
     }
 }

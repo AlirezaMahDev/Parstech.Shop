@@ -6,11 +6,12 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 
 using System.Text;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -73,7 +74,7 @@ public class IntegratedProductsPagingQueryHandler : IRequestHandler<IntegratedPr
 
         if (request.parameters.Store != null)
         {
-            Domain.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.parameters.Store);
+            Shared.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.parameters.Store);
             condition.Append($"AND us.StoreId={store.Id}");
         }
 
@@ -100,12 +101,12 @@ public class IntegratedProductsPagingQueryHandler : IRequestHandler<IntegratedPr
 
         if (request.parameters.Categury != null)
         {
-            Domain.Models.Categury? cat = await _categuryRep.GetCateguryByLatinName(request.parameters.Categury);
+            Shared.Models.Categury? cat = await _categuryRep.GetCateguryByLatinName(request.parameters.Categury);
             categuryIdQuery.Append($" CateguryId = {cat.GroupId} ");
             if (cat.IsParnet)
             {
-                List<Domain.Models.Categury> cats = await _categuryRep.GetCateguryByParentId(cat.GroupId, null);
-                foreach (Domain.Models.Categury ca in cats)
+                List<Shared.Models.Categury> cats = await _categuryRep.GetCateguryByParentId(cat.GroupId, null);
+                foreach (Shared.Models.Categury ca in cats)
                 {
                     categuryIdQuery.Append($"Or CateguryId = {ca.GroupId}");
                 }
@@ -214,10 +215,10 @@ public class IntegratedProductsPagingQueryHandler : IRequestHandler<IntegratedPr
         {
             #region Image Of List
 
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _connectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQuery.GetMainImage,
+                    .Query<Shared.Models.ProductGallery>(_productQuery.GetMainImage,
                         new { @productId = product.ProductId })
                     .FirstOrDefault());
             if (image != null)

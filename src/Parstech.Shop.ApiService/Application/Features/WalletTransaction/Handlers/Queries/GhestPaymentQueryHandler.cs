@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -31,34 +31,34 @@ public class GhestPaymentQueryHandler : IRequestHandler<GhestPaymentQueryReq, Re
     public async Task<ResponseDto> Handle(GhestPaymentQueryReq request, CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        Domain.Models.WalletTransaction? Ghest = await _walletTransactionRep.GetAsync(request.transactionId);
-        Domain.Models.WalletTransaction ParentFecilities =
+        Shared.Models.WalletTransaction? Ghest = await _walletTransactionRep.GetAsync(request.transactionId);
+        Shared.Models.WalletTransaction ParentFecilities =
             await _walletTransactionRep.GetParentFecilities(Ghest.ParentFecilitiesId.Value);
 
         Ghest.TypeId = 7;
         await _walletTransactionRep.UpdateAsync(Ghest);
 
-        List<Domain.Models.WalletTransaction> AllAghsat =
+        List<Shared.Models.WalletTransaction> AllAghsat =
             await _walletTransactionRep.GetAghsatByParentId(ParentFecilities.Id, 0);
-        List<Domain.Models.WalletTransaction> TasviyeAndBackToWalletAghsat =
+        List<Shared.Models.WalletTransaction> TasviyeAndBackToWalletAghsat =
             await _walletTransactionRep.GetAghsatByParentId(ParentFecilities.Id, 8);
-        List<Domain.Models.WalletTransaction> TasviyeAghsat =
+        List<Shared.Models.WalletTransaction> TasviyeAghsat =
             await _walletTransactionRep.GetAghsatByParentId(ParentFecilities.Id, 7);
-        List<Domain.Models.WalletTransaction> MandeAghsat =
+        List<Shared.Models.WalletTransaction> MandeAghsat =
             await _walletTransactionRep.GetAghsatByParentId(ParentFecilities.Id, 6);
 
         switch (ParentFecilities.Type)
         {
             case "OrgCredit":
                 int Sum = 0;
-                foreach (Domain.Models.WalletTransaction item in TasviyeAghsat)
+                foreach (Shared.Models.WalletTransaction item in TasviyeAghsat)
                 {
                     Sum += item.Price;
                 }
 
                 if (Sum >= 5000000)
                 {
-                    foreach (Domain.Models.WalletTransaction item in TasviyeAghsat)
+                    foreach (Shared.Models.WalletTransaction item in TasviyeAghsat)
                     {
                         item.TypeId = 8;
                         await _walletTransactionRep.UpdateAsync(item);
@@ -72,7 +72,7 @@ public class GhestPaymentQueryHandler : IRequestHandler<GhestPaymentQueryReq, Re
                         TypeId = 1,
                         Price = Sum
                     };
-                    void createdTransaction4 =
+                    var createdTransaction4 =
                         await _mediator.Send(new CreateWalletTransactionCommandReq(transaction, true));
                 }
 

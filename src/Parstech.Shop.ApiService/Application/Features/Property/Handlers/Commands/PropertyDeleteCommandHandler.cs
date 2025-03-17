@@ -20,7 +20,7 @@ public class PropertyDeleteCommandHandler : IRequestHandler<PropertyDeleteComman
 
     public async Task<Unit> Handle(PropertyDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Property? property = await _propertyRep.GetAsync(request.id);
+        Shared.Models.Property? property = await _propertyRep.GetAsync(request.id);
         await _propertyRep.DeleteAsync(property);
         return Unit.Value;
     }

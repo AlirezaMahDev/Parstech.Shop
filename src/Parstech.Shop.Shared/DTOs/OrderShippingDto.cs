@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class OrderShippingDto
 {
@@ -20,10 +20,4 @@ public class OrderShippingDto
     public string? PostCode { get; set; }
 
     public string? FullAddress { get; set; }
-}
-
-public class OrderShippingChangeDto
-{
-    public int OrderShippingId { get; set; }
-    public List<UserShippingDto> UserShippings { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using Parstech.Shop.ApiService.Domain.Models;
+﻿using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
 

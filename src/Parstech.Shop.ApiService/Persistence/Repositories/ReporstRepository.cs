@@ -9,9 +9,9 @@ using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.OrderDetail.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 

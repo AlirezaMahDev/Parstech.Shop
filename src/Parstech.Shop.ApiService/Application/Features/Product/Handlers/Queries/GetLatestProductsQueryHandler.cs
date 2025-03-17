@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -29,16 +29,16 @@ public class GetLatestProductsQueryHandler : IRequestHandler<GetLatestProductsQu
     public async Task<List<ProductListShowDto>> Handle(GetLatestProductsQueryReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Product> allProducts = await _productRep.GetAll();
-        IEnumerable<Domain.Models.Product> products =
+        IReadOnlyList<Shared.Models.Product> allProducts = await _productRep.GetAll();
+        IEnumerable<Shared.Models.Product> products =
             allProducts.Where(z => z.TypeId == request.productTypeId && z.IsActive);
         List<ProductListShowDto> productDto = new();
-        foreach (Domain.Models.Product product in products)
+        foreach (Shared.Models.Product product in products)
         {
             ProductListShowDto x = new();
             x = _mapper.Map<ProductListShowDto>(product);
             //x.DiscountPrice = (product.Price - product.DiscountPrice);
-            Domain.Models.ProductGallery? pic = await _productGallleryRep.GetMainImageOfProduct(product.Id);
+            Shared.Models.ProductGallery? pic = await _productGallleryRep.GetMainImageOfProduct(product.Id);
             x.Image = pic.ImageName;
 
             productDto.Add(x);

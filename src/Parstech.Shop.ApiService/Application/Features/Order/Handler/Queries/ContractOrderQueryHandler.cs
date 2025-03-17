@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -30,20 +30,20 @@ public class ContractOrderQueryHandler : IRequestHandler<ContractOrderQueryReq, 
 
     public async Task<ContractsDto> Handle(ContractOrderQueryReq request, CancellationToken cancellationToken)
     {
-        ContractsDto Result = new();
-        Result.Details = new();
-        Result.TotalStore = 0;
-        Result.TotalWe = 0;
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.orderId);
-        List<Domain.Models.OrderDetail> details = await _orderDetailRep.GetOrderDetailsByOrderId(order.OrderId);
-        foreach (Domain.Models.OrderDetail item in details)
+        ContractsDto result = new();
+        result.Details = new();
+        result.TotalStore = 0;
+        result.TotalWe = 0;
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.orderId);
+        List<Shared.Models.OrderDetail> details = await _orderDetailRep.GetOrderDetailsByOrderId(order.OrderId);
+        foreach (Shared.Models.OrderDetail item in details)
         {
-            void con = await _mediator.Send(new ContractOrderDetailQueryReq(item, request.Store));
-            Result.Details.Add(con);
-            Result.TotalStore += con.Store;
-            Result.TotalWe += con.We;
+            var con = await _mediator.Send(new ContractOrderDetailQueryReq(item, request.Store));
+            result.Details.Add(con);
+            result.TotalStore += con.Store;
+            result.TotalWe += con.We;
         }
 
-        return Result;
+        return result;
     }
 }

@@ -31,7 +31,7 @@ public class SocialSettingCreateCommandHandler : IRequestHandler<SocialSettingCr
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
                     "wwwroot/Shared/Images",
                     request.socialSettingDto.Image);
-                using (FileStream? stream = new(imagePath, FileMode.Create))
+                using (FileStream stream = new(imagePath, FileMode.Create))
                 {
                     request.socialSettingDto.ImageFile.CopyTo(stream);
                 }
@@ -41,7 +41,7 @@ public class SocialSettingCreateCommandHandler : IRequestHandler<SocialSettingCr
             }
         }
 
-        Domain.Models.SocialSetting? socialSetting = _mapper.Map<Domain.Models.SocialSetting>(request.socialSettingDto);
+        Shared.Models.SocialSetting? socialSetting = _mapper.Map<Shared.Models.SocialSetting>(request.socialSettingDto);
 
         socialSetting.SiteSettingId = 1;
         await _socialSettingRep.AddAsync(socialSetting);

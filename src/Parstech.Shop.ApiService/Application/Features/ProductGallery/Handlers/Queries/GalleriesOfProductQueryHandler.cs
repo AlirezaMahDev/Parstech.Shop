@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductGallery.Handlers.Queries;
 
@@ -26,16 +26,16 @@ public class GalleriesOfProductQueryHandler : IRequestHandler<GalleriesOfProduct
     public async Task<List<ProductGalleryDto>> Handle(GalleriesOfProductQueryReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
         if (product.TypeId == 3)
         {
-            Domain.Models.Product? parrent = await _productRep.GetAsync(product.ParentId.Value);
-            List<Domain.Models.ProductGallery>? result = await _productGallleryRep.GetGalleriesByProduct(parrent.Id);
+            Shared.Models.Product? parrent = await _productRep.GetAsync(product.ParentId.Value);
+            List<Shared.Models.ProductGallery> result = await _productGallleryRep.GetGalleriesByProduct(parrent.Id);
             return _mapper.Map<List<ProductGalleryDto>>(result);
         }
         else
         {
-            List<Domain.Models.ProductGallery>? result =
+            List<Shared.Models.ProductGallery> result =
                 await _productGallleryRep.GetGalleriesByProduct(request.productId);
             return _mapper.Map<List<ProductGalleryDto>>(result);
         }

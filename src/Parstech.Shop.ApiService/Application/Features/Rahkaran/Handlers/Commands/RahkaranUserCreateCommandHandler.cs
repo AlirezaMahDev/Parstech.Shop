@@ -5,9 +5,9 @@ using Dapper;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Handlers.Commands;
 
@@ -27,7 +27,7 @@ public class RahkaranUserCreateCommandHandler : IRequestHandler<RahkaranUserCrea
     public async Task<RahkaranUserDto> Handle(RahkaranUserCreateCommandReq request, CancellationToken cancellationToken)
     {
         RahkaranUser? item = _mapper.Map<RahkaranUser>(request.dto);
-        string? query =
+        string query =
             $"INSERT INTO dbo.RahkaranUser(UserId,RahkaranUserId) VALUES ({item.UserId},'{item.RahkaranUserId}')";
         DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query(query));
 

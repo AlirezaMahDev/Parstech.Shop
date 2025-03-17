@@ -63,7 +63,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public async Task<int> GetCountOfTable(TEntity entity)
     {
-        List<TEntity>? all = await _context.Set<TEntity>().ToListAsync();
+        List<TEntity> all = await _context.Set<TEntity>().ToListAsync();
         return all.Count;
     }
 }

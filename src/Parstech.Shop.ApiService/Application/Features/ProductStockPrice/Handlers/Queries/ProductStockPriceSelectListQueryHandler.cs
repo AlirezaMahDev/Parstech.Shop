@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Queries;
@@ -27,7 +27,7 @@ public class
     public async Task<List<ProductSelectDto>> Handle(ProductStockPriceSelectListQueryReq request,
         CancellationToken cancellationToken)
     {
-        string? query =
+        string query =
             $"select p.Id, product.Name as ProductName, product.Code from ProductStockPrice as p inner join Product on p.ProductId=product.Id WHERE p.RepId!={request.repId}";
         return DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<ProductSelectDto>(query).ToList());
     }

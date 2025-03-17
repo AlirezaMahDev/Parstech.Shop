@@ -6,6 +6,7 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -29,7 +30,7 @@ public class OrderCheckoutService : OrderCheckoutServiceBase
     {
         try
         {
-            void order = await _mediator.Send(new GetOpenOrderOfUserQueryReq(request.UserName));
+            var order = await _mediator.Send(new GetOpenOrderOfUserQueryReq(request.UserName));
 
             return new()
             {
@@ -87,7 +88,7 @@ public class OrderCheckoutService : OrderCheckoutServiceBase
     {
         try
         {
-            void orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+            var orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
 
             var response = new OrderDetailsResponse
             {
@@ -163,11 +164,11 @@ public class OrderCheckoutService : OrderCheckoutServiceBase
             var orderDetail = await _orderDetailRepository.GetOrderDetailById(request.DetailId);
             orderDetail.Count = request.Count;
 
-            void result = await _mediator.Send(new RefreshOrderDetailQueryReq(orderDetail));
+            var result = await _mediator.Send(new RefreshOrderDetailQueryReq(orderDetail));
 
             if (result.Status)
             {
-                void orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(orderDetail.OrderId));
+                var orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(orderDetail.OrderId));
                 var response = new OrderDetailsResponse
                 {
                     OrderId = orderDetails.OrderId,
@@ -268,7 +269,7 @@ public class OrderCheckoutService : OrderCheckoutServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new CompleteOrderQueryReq(
+            var result = await _mediator.Send(new CompleteOrderQueryReq(
                 request.OrderId,
                 request.OrderShippingId,
                 request.PayTypeId,

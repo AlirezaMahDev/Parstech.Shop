@@ -8,10 +8,10 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Commands;
 using Parstech.Shop.ApiService.Application.Dapper.ProductStockPrice.Commands;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Commands;
 
@@ -42,10 +42,10 @@ public class
     public async Task<ProductRepresentationDto> Handle(ProductRepresesntationCreateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductRepresentation item = new();
-        Domain.Models.ProductStockPrice? productStock =
+        Shared.Models.ProductRepresentation item = new();
+        Shared.Models.ProductStockPrice? productStock =
             await _productStockPriceRep.GetAsync(request.ProductRepresentationDto.ProductStockPriceId);
-        Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+        Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
 
         if (request.ProductRepresentationDto.TypeId == 2)
         {
@@ -89,7 +89,7 @@ public class
             }
         }
 
-        Domain.Models.ProductRepresentation result = await _productReoresentationRep.AddAsync(item);
+        Shared.Models.ProductRepresentation result = await _productReoresentationRep.AddAsync(item);
         await _productReoresentationRep.UpdateProductQuantityByProductRepresentationId(result.Id);
 
 
@@ -144,7 +144,7 @@ public class
     public async Task<ProductRepresentationDto> Handle(ProductRepresesntationQuickCreateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductRepresentation? item = new();
+        Shared.Models.ProductRepresentation item = new();
         //var productStock = await _productStockPriceRep.GetAsync(request.ProductRepresentationDto.ProductStockPriceId);
         //var product = await _productRep.GetAsync(productStock.ProductId);
         ProductStockPriceDto? productStock = DapperHelper.ExecuteCommand(_connectionString,
@@ -214,7 +214,7 @@ public class
             }
         }
 
-        Domain.Models.ProductRepresentation result = await _productReoresentationRep.AddAsync(item);
+        Shared.Models.ProductRepresentation result = await _productReoresentationRep.AddAsync(item);
         await _productReoresentationRep.UpdateProductQuantityByProductRepresentationId(result.Id);
 
 

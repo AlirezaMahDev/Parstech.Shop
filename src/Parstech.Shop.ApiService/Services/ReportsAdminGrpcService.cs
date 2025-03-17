@@ -4,9 +4,9 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -28,7 +28,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     {
         try
         {
-            void users = await _mediator.Send(new GetUsersForSelectListQueryReq());
+            var users = await _mediator.Send(new GetUsersForSelectListQueryReq());
 
             var response = new UsersForSelectListResponse();
 
@@ -56,7 +56,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
         {
             var parameter = MapToApplicationTransactionParameter(request);
 
-            void result = await _mediator.Send(new ReportOfWalletTransactionsQueryReq(parameter));
+            var result = await _mediator.Send(new ReportOfWalletTransactionsQueryReq(parameter));
 
             return MapToGrpcWalletTransactionPaging(result);
         }
@@ -74,7 +74,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
         {
             var parameter = MapToApplicationTransactionParameter(request);
 
-            void result = await _mediator.Send(new ReportOfActiveCreditQueryReq(parameter));
+            var result = await _mediator.Send(new ReportOfActiveCreditQueryReq(parameter));
 
             return MapToGrpcWalletTransactionPaging(result);
         }
@@ -90,7 +90,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     {
         try
         {
-            void result = await _mediator.Send(new GetAghsatQueryReq(request.UserId));
+            var result = await _mediator.Send(new GetAghsatQueryReq(request.UserId));
 
             return MapToGrpcWalletTransactionPaging(result);
         }
@@ -106,7 +106,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     {
         try
         {
-            TransactionParameterDto? parameters = new()
+            TransactionParameterDto parameters = new()
             {
                 UserFilter = request.UserFilter,
                 WalletType = request.WalletType,
@@ -118,7 +118,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
             var parameter = MapToApplicationTransactionParameter(parameters);
 
             // Get report data
-            void result = await _mediator.Send(new ReportOfWalletTransactionsQueryReq(parameter));
+            var result = await _mediator.Send(new ReportOfWalletTransactionsQueryReq(parameter));
 
             // Generate Excel file
             using var workbook = new XLWorkbook();
@@ -177,7 +177,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     {
         try
         {
-            TransactionParameterDto? parameters = new()
+            TransactionParameterDto parameters = new()
             {
                 UserFilter = request.UserFilter,
                 WalletType = request.WalletType,
@@ -189,7 +189,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
             var parameter = MapToApplicationTransactionParameter(parameters);
 
             // Get report data
-            void result = await _mediator.Send(new ReportOfActiveCreditQueryReq(parameter));
+            var result = await _mediator.Send(new ReportOfActiveCreditQueryReq(parameter));
 
             // Generate Excel file
             using var workbook = new XLWorkbook();
@@ -248,7 +248,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     private Parstech.Shop.Application.DTOs.WalletTransaction.TransactionParameterDto MapToApplicationTransactionParameter(
         TransactionParameterDto request)
     {
-        return new Shop.Application.DTOs.WalletTransaction.TransactionParameterDto
+        return new Parstech.Shop.Application.DTOs.WalletTransaction.TransactionParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
@@ -263,7 +263,7 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
     private WalletTransactionPagingDto MapToGrpcWalletTransactionPaging(
         Shop.Application.DTOs.WalletTransaction.WalletTransactionPagingDto result)
     {
-        WalletTransactionPagingDto? response = new()
+        WalletTransactionPagingDto response = new()
         {
             IsSuccessed = result.IsSuccessed,
             Message = result.Message,

@@ -3,8 +3,8 @@
 using Newtonsoft.Json;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Api.Handlers.Queries;
 
@@ -27,8 +27,8 @@ public class GetCreditOfNationalCodeQueryHandler : IRequestHandler<GetCreditOfNa
         int tomanCredit = 0;
         Root Result = new();
 
-        Domain.Models.User? user = await _userRep.GetAsync(request.userId);
-        Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(request.userId);
+        Shared.Models.User? user = await _userRep.GetAsync(request.userId);
+        Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(request.userId);
         HttpClient clients = new();
 
         string path = $"http://185.208.78.102:900/api/public/usercredits?nationalcode={request.nationalCode}";

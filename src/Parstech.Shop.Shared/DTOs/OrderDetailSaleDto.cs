@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class OrderDetailSaleDto
 {
@@ -16,25 +16,4 @@ public class OrderDetailSaleDto
     public string Name { get; set; }
     public int StoreId { get; set; }
     public string StoreName { get; set; }
-}
-
-public class SalesParameterDto
-{
-    public int CurrentPage { get; set; }
-    public int TakePage { get; set; }
-    public int PageCount { get; set; }
-    public int StoreId { get; set; }
-    public string FromDate { get; set; }
-    public string ToDate { get; set; }
-    public string OrderCode { get; set; }
-}
-
-public class SalesPagingDto
-{
-    public int Take { get; set; }
-    public int CurrentPage { get; set; }
-    public int PageCount { get; set; }
-    public Array List { get; set; }
-    public List<OrderDetailSaleDto> sales { get; set; }
-    public Array StoresSelect { get; set; }
 }

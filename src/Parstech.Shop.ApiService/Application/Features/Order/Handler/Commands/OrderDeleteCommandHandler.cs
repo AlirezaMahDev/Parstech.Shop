@@ -2,7 +2,7 @@
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Commands;
 
@@ -29,15 +29,15 @@ public class OrderDeleteCommandHandler : IRequestHandler<OrderDeleteCommandReq, 
 
     public async Task<Unit> Handle(OrderDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.OrderId);
-        Domain.Models.OrderShipping? shippig = await _orderShippingRep.GetOrderShippingByOrderId(request.OrderId);
-        List<Domain.Models.OrderPay>? pays = await _orderPayRep.GetListByOrderId(request.OrderId);
-        List<Domain.Models.OrderStatus>? statuses = await _orderStatusRep.GetByOrderId(request.OrderId);
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.OrderId);
+        Shared.Models.OrderShipping shippig = await _orderShippingRep.GetOrderShippingByOrderId(request.OrderId);
+        List<Shared.Models.OrderPay> pays = await _orderPayRep.GetListByOrderId(request.OrderId);
+        List<Shared.Models.OrderStatus> statuses = await _orderStatusRep.GetByOrderId(request.OrderId);
         OrderCoupon? coupon = await _orderCouponRep.GetByOrderId(request.OrderId);
 
         if (shippig.Id != 0) { await _orderShippingRep.DeleteAsync(shippig); }
 
-        foreach (Domain.Models.OrderPay? pay in pays)
+        foreach (Shared.Models.OrderPay? pay in pays)
         {
             if (pay.Id != 0) { await _orderPayRep.DeleteAsync(pay); }
         }
@@ -46,7 +46,7 @@ public class OrderDeleteCommandHandler : IRequestHandler<OrderDeleteCommandReq, 
 
         if (statuses.Count() > 0)
         {
-            foreach (Domain.Models.OrderStatus? status in statuses)
+            foreach (Shared.Models.OrderStatus? status in statuses)
             {
                 await _orderStatusRep.DeleteAsync(status);
             }

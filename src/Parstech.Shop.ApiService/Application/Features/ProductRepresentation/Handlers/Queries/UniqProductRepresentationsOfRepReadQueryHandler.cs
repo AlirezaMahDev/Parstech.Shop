@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Queries;
 
@@ -29,9 +29,9 @@ public class
         CancellationToken cancellationToken)
     {
         List<ProductRepresentationDto> result = new();
-        List<Domain.Models.ProductRepresentation> list =
+        List<Shared.Models.ProductRepresentation> list =
             await _productRepresentationRep.GetUniqProductRepresentationFromRepId(request.repId);
-        foreach (Domain.Models.ProductRepresentation item in list)
+        foreach (Shared.Models.ProductRepresentation item in list)
         {
             if (result.Any(u => u.ProductStockPriceId == item.ProductStockPriceId))
             {
@@ -42,7 +42,7 @@ public class
                     await _productRepresentationRep.GetLastQuantityFromProductRepresntation(item.ProductStockPriceId,
                         request.repId);
                 ProductRepresentationDto? dto = _mapper.Map<ProductRepresentationDto>(item);
-                Domain.Models.Product? product = await _productRep.GetAsync(item.ProductStockPriceId);
+                Shared.Models.Product? product = await _productRep.GetAsync(item.ProductStockPriceId);
                 dto.ProductName = product.Name;
                 dto.ProductCode = product.Code;
                 result.Add(dto);

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserBilling.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserBilling.Handlers.Commands;
 
@@ -21,7 +21,7 @@ public class UserBillingReadCommandHandler : IRequestHandler<UserBillingReadComm
 
     public async Task<UserBillingDto> Handle(UserBillingReadCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetAsync(request.id);
+        Shared.Models.UserBilling? userBilling = await _userBillingRep.GetAsync(request.id);
         return _mapper.Map<UserBillingDto>(userBilling);
     }
 }

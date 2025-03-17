@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Categuries;
 
@@ -25,7 +25,7 @@ public class IndexModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     //categuries
     [BindProperty]
@@ -45,7 +45,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public string FilterCat { get; set; }
@@ -220,7 +220,7 @@ public class IndexModel : PageModel
 
     private CateguryDto MapToCategoryDto(Shop.Shared.Protos.CategoryAdmin.CategoryDto dto)
     {
-        return new CateguryDto
+        return new()
         {
             GroupId = dto.GroupId,
             GroupTitle = dto.GroupTitle,
@@ -234,7 +234,7 @@ public class IndexModel : PageModel
 
     private Parstech.Shop.Shared.Protos.CategoryAdmin.CategoryDto MapToGrpcCategoryDto(CateguryDto category)
     {
-        return new Shop.Shared.Protos.CategoryAdmin.CategoryDto
+        return new Parstech.Shop.Shared.Protos.CategoryAdmin.CategoryDto
         {
             GroupId = category.GroupId,
             GroupTitle = category.GroupTitle ?? string.Empty,

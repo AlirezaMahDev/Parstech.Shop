@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Queries;
 
@@ -21,9 +21,9 @@ public class GetProductStockPriceStoreOfProductQueryHandler : IRequestHandler<Ge
     public async Task<List<ProductStockPriceStoreDto>> Handle(GetProductStockPriceStoreOfProductQueryReq request,
         CancellationToken cancellationToken)
     {
-        string? sql =
+        string sql =
             $"SELECT dbo.ProductStockPrice.Id, dbo.UserStore.StoreName FROM dbo.ProductStockPrice INNER JOIN dbo.UserStore ON dbo.ProductStockPrice.StoreId = dbo.UserStore.Id where ProductId={request.ProductId}";
-        List<ProductStockPriceStoreDto>? result = DapperHelper.ExecuteCommand(_connectionString,
+        List<ProductStockPriceStoreDto> result = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<ProductStockPriceStoreDto>(sql).ToList());
 
         return result;

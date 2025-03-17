@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.DataProtection;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Security.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Security.Handlers.Queries;
 

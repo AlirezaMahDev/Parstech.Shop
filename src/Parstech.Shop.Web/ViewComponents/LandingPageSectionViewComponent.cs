@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.Models;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.ViewComponents;
 
@@ -26,7 +27,7 @@ public class LandingPageSectionViewComponent : ViewComponent
         switch (section.SectionTypeId)
         {
             case 1: // Slider
-                SliderViewModel? sliderModel = new()
+                SliderViewModel sliderModel = new()
                 {
                     Desktop = section.SectionDetails.Where(d => d.Title != "Mobile").ToList(),
                     Mobile = section.SectionDetails.Where(d => d.Title == "Mobile").ToList()

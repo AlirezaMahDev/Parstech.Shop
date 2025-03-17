@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -21,7 +21,7 @@ public class OrderGetAllQueryHandler : IRequestHandler<OrderGetAllQueryReq, List
 
     public async Task<List<OrderDto>> Handle(OrderGetAllQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Order>? list = await _orderRep.GetAll();
+        IReadOnlyList<Shared.Models.Order> list = await _orderRep.GetAll();
         return _mapper.Map<List<OrderDto>>(list);
     }
 }

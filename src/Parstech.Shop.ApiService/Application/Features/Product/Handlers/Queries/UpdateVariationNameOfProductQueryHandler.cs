@@ -16,8 +16,8 @@ public class UpdateVariationNameOfProductQueryHandler : IRequestHandler<UpdateVa
 
     public async Task<bool> Handle(UpdateVariationNameOfProductQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
-        Domain.Models.Product? parentProduct = await _productRep.GetAsync(product.ParentId.Value);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.Product? parentProduct = await _productRep.GetAsync(product.ParentId.Value);
         product.VariationName = request.VariationName;
         product.Name = $"{parentProduct.Name}-{request.VariationName}";
         await _productRep.UpdateAsync(product);

@@ -42,7 +42,7 @@ public class UserAuthGrpcService : UserAuthService.UserAuthServiceBase
                 response.Message = "ورود با موفقیت انجام شد . در حال انتقال به پنل";
 
                 IdentityUser? user = await _userManager.FindByNameAsync(request.Username);
-                IList<string>? roles = await _userManager.GetRolesAsync(user);
+                IList<string> roles = await _userManager.GetRolesAsync(user);
 
                 if (roles.Contains("Customer"))
                 {
@@ -53,7 +53,7 @@ public class UserAuthGrpcService : UserAuthService.UserAuthServiceBase
                     response.RedirectUrl = "/Admin";
                 }
 
-                void protectedData = await _mediator.Send(new DataProtectQueryReq(request.Username, "protect"));
+                var protectedData = await _mediator.Send(new DataProtectQueryReq(request.Username, "protect"));
                 response.ProtectedData = protectedData;
             }
             else
@@ -78,7 +78,7 @@ public class UserAuthGrpcService : UserAuthService.UserAuthServiceBase
     {
         try
         {
-            void protectedData = await _mediator.Send(new DataProtectQueryReq(request.Data, request.Purpose));
+            var protectedData = await _mediator.Send(new DataProtectQueryReq(request.Data, request.Purpose));
             return new ProtectDataResponse { ProtectedData = protectedData };
         }
         catch (Exception ex)

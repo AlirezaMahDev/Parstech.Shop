@@ -3,9 +3,9 @@
 using Newtonsoft.Json;
 
 using Parstech.Shop.ApiService.Application.Calculator;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 using RestSharp;
 
@@ -30,7 +30,7 @@ public class RahkaranSendOrderToApiQueryHandler : IRequestHandler<RahkaranSendOr
 
     public async Task<ResponseDto> Handle(RahkaranSendOrderToApiQueryReq request, CancellationToken cancellationToken)
     {
-        RahkaranAllDto? RahkaranAll = await _mediator.Send(new RahakaranAllQueryReq(request.orderId));
+        RahkaranAllDto RahkaranAll = await _mediator.Send(new RahakaranAllQueryReq(request.orderId));
         ResponseDto response = new();
 
         List<RakaranProductItem> items = new();

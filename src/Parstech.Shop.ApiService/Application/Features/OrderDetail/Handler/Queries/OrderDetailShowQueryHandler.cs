@@ -8,11 +8,11 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.PayType.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.UserShipping.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 
@@ -79,27 +79,27 @@ public class OrderDetailShowQueryHandler : IRequestHandler<OrderDetailShowQueryR
         OrderDetailShowDto orderDetailShowDto = new();
         orderDetailShowDto.OrderDetailDto = new();
 
-        Domain.Models.Order? order = await _orderRepository.GetAsync(request.orderId);
+        Shared.Models.Order? order = await _orderRepository.GetAsync(request.orderId);
         if (order == null)
         {
             return orderDetailShowDto;
         }
 
-        List<Domain.Models.OrderDetail> orderDetails =
+        List<Shared.Models.OrderDetail> orderDetails =
             await _orderDetailRepository.GetOrderDetailsByOrderId(request.orderId);
-        Domain.Models.UserBilling? userBilling = await _userBillingRepository.GetUserBillingByUserId(order.UserId);
-        Domain.Models.OrderShipping orderShipping =
+        Shared.Models.UserBilling? userBilling = await _userBillingRepository.GetUserBillingByUserId(order.UserId);
+        Shared.Models.OrderShipping orderShipping =
             await _orderShippingRepository.GetOrderShippingByOrderId(request.orderId);
 
         orderDetailShowDto.Order = _mapper.Map<OrderDto>(order);
         orderDetailShowDto.Order.CreateDateShamsi = order.CreateDate.ToShamsi();
-        foreach (Domain.Models.OrderDetail item in orderDetails)
+        foreach (Shared.Models.OrderDetail item in orderDetails)
         {
             OrderDetailDto? dto = _mapper.Map<OrderDetailDto>(item);
-            Domain.Models.ProductStockPrice? productStock = await _productStockRep.GetAsync(item.ProductStockPriceId);
-            Domain.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
+            Shared.Models.ProductStockPrice? productStock = await _productStockRep.GetAsync(item.ProductStockPriceId);
+            Shared.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
             dto.StoreName = store.StoreName;
-            Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+            Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
             int pid = product.Id;
             if (product.ParentId != null)
             {
@@ -134,7 +134,7 @@ public class OrderDetailShowQueryHandler : IRequestHandler<OrderDetailShowQueryR
             orderDetailShowDto.OrderShipping.ShippingType = shippingType.Type;
         }
 
-        List<Domain.Models.OrderPay> orderPays = await _orderPayRep.GetListByOrderId(order.OrderId);
+        List<Shared.Models.OrderPay> orderPays = await _orderPayRep.GetListByOrderId(order.OrderId);
         orderDetailShowDto.OrderPay = _mapper.Map<List<OrderPayDto>>(orderPays);
         foreach (OrderPayDto orderPay in orderDetailShowDto.OrderPay)
         {
@@ -158,7 +158,7 @@ public class OrderDetailShowQueryHandler : IRequestHandler<OrderDetailShowQueryR
         if (await _orderCouponRep.OrderHaveCoupon(order.OrderId))
         {
             OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(order.OrderId);
-            Domain.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
+            Shared.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
             OrderCouponDto? orderCuoponDto = _mapper.Map<OrderCouponDto>(orderCoupon);
             switch (coupon.CouponTypeId)
             {

@@ -19,7 +19,7 @@ public class TorobGrpcService : TorobService.TorobServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new TorobGetProductByIdQueryReq(request.StoreId));
+            var result = await _mediator.Send(new TorobGetProductByIdQueryReq(request.StoreId));
 
             return new Torob
             {
@@ -44,7 +44,7 @@ public class TorobGrpcService : TorobService.TorobServiceBase
     {
         try
         {
-            void products = await _mediator.Send(new TorobGetProductsQueryReq(request.Page));
+            var products = await _mediator.Send(new TorobGetProductsQueryReq(request.Page));
 
             var response = new TorobProductsResponse();
             foreach (var product in products)

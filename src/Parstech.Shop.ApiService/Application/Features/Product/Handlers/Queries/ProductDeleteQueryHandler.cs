@@ -31,31 +31,31 @@ public class ProductDeleteQueryHandler : IRequestHandler<ProductDeleteQueryReq, 
 
     public async Task<bool> Handle(ProductDeleteQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
-        List<Domain.Models.ProductStockPrice>? productStockPriceList =
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
+        List<Shared.Models.ProductStockPrice> productStockPriceList =
             await _productStockPriceRep.GetAllByProductId(request.productId);
         if (productStockPriceList.Count > 0)
         {
             return false;
         }
 
-        List<Domain.Models.ProductGallery>? galleries =
+        List<Shared.Models.ProductGallery> galleries =
             await _productGalleryRep.GetGalleriesByProduct(request.productId);
-        List<Domain.Models.ProductProperty>? properties =
+        List<Shared.Models.ProductProperty> properties =
             await _productPropertyRep.GetPropertiesByProduct(request.productId);
-        List<Domain.Models.ProductCategury>? Categuries =
+        List<Shared.Models.ProductCategury> Categuries =
             await _productCateguryRep.GetCateguriesByProduct(request.productId);
-        foreach (Domain.Models.ProductGallery? gallery in galleries)
+        foreach (Shared.Models.ProductGallery? gallery in galleries)
         {
             await _productGalleryRep.DeleteAsync(gallery);
         }
 
-        foreach (Domain.Models.ProductProperty? property in properties)
+        foreach (Shared.Models.ProductProperty? property in properties)
         {
             await _productPropertyRep.DeleteAsync(property);
         }
 
-        foreach (Domain.Models.ProductCategury? categury in Categuries)
+        foreach (Shared.Models.ProductCategury? categury in Categuries)
         {
             await _productCateguryRep.DeleteAsync(categury);
         }

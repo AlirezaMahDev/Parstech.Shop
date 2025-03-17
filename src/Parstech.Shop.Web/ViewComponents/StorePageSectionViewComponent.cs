@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Parstech.Shop.Web.Services.GrpcClients;
-
 using System.Security.Claims;
+
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.ViewComponents;
 

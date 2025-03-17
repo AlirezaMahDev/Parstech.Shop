@@ -3,7 +3,6 @@
 using Newtonsoft.Json;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductCategury.Requests.Commands;
@@ -12,8 +11,9 @@ using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Com
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Images;
+using Parstech.Shop.Shared.DTOs;
 
-using Attribute = Parstech.Shop.ApiService.Application.DTOs.Attribute;
+using Attribute = Parstech.Shop.Shared.DTOs.Attribute;
 
 namespace Parstech.Shop.ApiService.Application.Features.Api.Handlers.Queries;
 
@@ -65,14 +65,14 @@ public class
 
                 foreach (WordpressDto item in Result)
                 {
-                    Domain.Models.Product currentProduct = await _productRep.GetProductByVosit(item.id);
+                    Shared.Models.Product currentProduct = await _productRep.GetProductByVosit(item.id);
                     if (currentProduct.Id != 0)
                     {
-                        List<Domain.Models.ProductStockPrice> ps =
+                        List<Shared.Models.ProductStockPrice> ps =
                             await _productStockRep.GetAllByProductId(currentProduct.Id);
                         if (ps.Count > 0)
                         {
-                            Domain.Models.ProductStockPrice? FirstPs = ps.FirstOrDefault();
+                            Shared.Models.ProductStockPrice? FirstPs = ps.FirstOrDefault();
                             switch (item.stock_status)
                             {
                                 case "instock": FirstPs.StockStatus = true; break;
@@ -117,12 +117,12 @@ public class
                                 shopname = item.store.shop_name;
                             }
 
-                            Domain.Models.UserStore store = await _userStore.GetStoreByName(shopname);
+                            Shared.Models.UserStore store = await _userStore.GetStoreByName(shopname);
                             if (store != null)
                             {
                                 FirstPs.StoreId = store.Id;
                                 FirstPs.RepId = store.RepId;
-                                foreach (Domain.Models.ProductStockPrice child in ps)
+                                foreach (Shared.Models.ProductStockPrice child in ps)
                                 {
                                     child.StoreId = store.Id;
                                     child.RepId = store.RepId;
@@ -195,7 +195,7 @@ public class
                             }
 
 
-                            Domain.Models.UserStore store = await _userStore.GetStoreByName(item.store.shop_name);
+                            Shared.Models.UserStore store = await _userStore.GetStoreByName(item.store.shop_name);
                             if (store != null)
                             {
                                 try
@@ -308,7 +308,7 @@ public class
                             {
                                 try
                                 {
-                                    Domain.Models.Categury? categury =
+                                    Shared.Models.Categury? categury =
                                         await _categuryRep.GetCateguryByName(category.name);
                                     if (categury != null)
                                     {
@@ -338,7 +338,7 @@ public class
                                 {
                                     if (await _propertyRep.ExistProperty(attr.name))
                                     {
-                                        Domain.Models.Property? property = await _propertyRep.GetByName(attr.name);
+                                        Shared.Models.Property? property = await _propertyRep.GetByName(attr.name);
                                         if (property != null)
                                         {
                                             ProductPropertyDto productProperty = new()
@@ -356,7 +356,7 @@ public class
                                         {
                                             Caption = attr.name, CateguryId = 826, PropertyCateguryId = 4
                                         };
-                                        void newproperty = await _mediator.Send(new PropertyCreateCommandReq(property));
+                                        var newproperty = await _mediator.Send(new PropertyCreateCommandReq(property));
                                         ProductPropertyDto productProperty = new()
                                         {
                                             ProductId = createdProduct.Id,
@@ -436,8 +436,8 @@ public class
         HttpClient clients = new();
         List<resultWordpress> resultWordpresses = new();
 
-        List<Domain.Models.Product> variables = await _productRep.GetAllParentVariableProduct(null);
-        foreach (Domain.Models.Product variable in variables)
+        List<Shared.Models.Product> variables = await _productRep.GetAllParentVariableProduct(null);
+        foreach (Shared.Models.Product variable in variables)
         {
             string path =
                 $"https://parstechworld.ir/wp-json/wc/v3/products/{variable.Visit}/variations?&consumer_secret=cs_8207eb826d0e6b280caaa8c21ccfe35817b4e79a&consumer_key=ck_c1c3b0cb857602948565ea902b6f153b69ac0561";
@@ -471,14 +471,14 @@ public class
                                 };
 
 
-                                void createdProduct = await _mediator.Send(new ProductCreateCommandReq(product));
+                                var createdProduct = await _mediator.Send(new ProductCreateCommandReq(product));
 
 
-                                List<Domain.Models.ProductStockPrice> VariableStockPrices =
+                                List<Shared.Models.ProductStockPrice> VariableStockPrices =
                                     await _productStockRep.GetAllByProductId(variable.Id);
                                 if (VariableStockPrices.Count > 0)
                                 {
-                                    Domain.Models.ProductStockPrice? firstVariablestock =
+                                    Shared.Models.ProductStockPrice? firstVariablestock =
                                         VariableStockPrices.FirstOrDefault();
                                     ProductStockPriceDto productStockPriceDto = new()
                                     {
@@ -631,8 +631,8 @@ public class FixproductStockPriceQueryHandler : IRequestHandler<FixproductStockP
         HttpClient clients = new();
         List<resultWordpress> resultWordpresses = new();
 
-        IReadOnlyList<Domain.Models.Product> products = await _productRep.GetAll();
-        foreach (Domain.Models.Product item in products)
+        IReadOnlyList<Shared.Models.Product> products = await _productRep.GetAll();
+        foreach (Shared.Models.Product item in products)
         {
             int ps = await _productStockRep.GetFirstProductStockPriceIdFromProductId(item.Id);
             if (ps == 0)
@@ -734,7 +734,7 @@ public class
                     }
 
 
-                    void createdProduct = await _mediator.Send(new ProductWordpressCreateCommandReq(product));
+                    var createdProduct = await _mediator.Send(new ProductWordpressCreateCommandReq(product));
                     int counter = 0;
                     foreach (Image image in item.images)
                     {
@@ -761,7 +761,7 @@ public class
                     }
 
 
-                    Domain.Models.UserStore store = await _userStore.GetStoreByName(item.store.shop_name);
+                    Shared.Models.UserStore store = await _userStore.GetStoreByName(item.store.shop_name);
                     if (store != null)
                     {
                         try
@@ -871,7 +871,7 @@ public class
                     {
                         try
                         {
-                            Domain.Models.Categury? categury = await _categuryRep.GetCateguryByName(category.name);
+                            Shared.Models.Categury? categury = await _categuryRep.GetCateguryByName(category.name);
                             if (categury != null)
                             {
                                 ProductCateguryDto productCategury = new()
@@ -897,7 +897,7 @@ public class
                         {
                             if (await _propertyRep.ExistProperty(attr.name))
                             {
-                                Domain.Models.Property? property = await _propertyRep.GetByName(attr.name);
+                                Shared.Models.Property? property = await _propertyRep.GetByName(attr.name);
                                 if (property != null)
                                 {
                                     ProductPropertyDto productProperty = new()
@@ -915,7 +915,7 @@ public class
                                 {
                                     Caption = attr.name, CateguryId = 47, PropertyCateguryId = 4
                                 };
-                                void newproperty = await _mediator.Send(new PropertyCreateCommandReq(property));
+                                var newproperty = await _mediator.Send(new PropertyCreateCommandReq(property));
                                 ProductPropertyDto productProperty = new()
                                 {
                                     ProductId = createdProduct.Id,

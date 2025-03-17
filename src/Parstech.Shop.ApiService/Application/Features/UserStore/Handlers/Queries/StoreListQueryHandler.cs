@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserStore.Handlers.Queries;
 
@@ -23,11 +23,11 @@ public class StoreListQueryHandler : IRequestHandler<StoreListQueryReq, List<Use
 
     public async Task<List<UserStoreDto>> Handle(StoreListQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.UserStore>? list = await _userStoreRep.GetAll();
+        IReadOnlyList<Shared.Models.UserStore> list = await _userStoreRep.GetAll();
         List<UserStoreDto> Result = new();
-        foreach (Domain.Models.UserStore userStore in list)
+        foreach (Shared.Models.UserStore userStore in list)
         {
-            Domain.Models.User? user = await _userRep.GetAsync(userStore.UserId);
+            Shared.Models.User? user = await _userRep.GetAsync(userStore.UserId);
             UserStoreDto? usDto = _mapper.Map<UserStoreDto>(userStore);
             usDto.UserName = user.UserName;
             Result.Add(usDto);

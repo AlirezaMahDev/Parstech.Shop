@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Coupon.Handlers.Queries;
 
@@ -26,15 +26,15 @@ public class CouponPagingQueryHandler : IRequestHandler<CouponPagingQueryReq, Pa
 
     public async Task<PagingDto> Handle(CouponPagingQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Coupon>? coupons = await _couponRepo.GetAll();
+        IReadOnlyList<Shared.Models.Coupon> coupons = await _couponRepo.GetAll();
         IList<CouponDto> couponDto = new List<CouponDto>();
 
 
-        foreach (Domain.Models.Coupon coupon in coupons)
+        foreach (Shared.Models.Coupon coupon in coupons)
         {
             CouponDto? couponD = _mapper.Map<CouponDto>(coupon);
             couponD.ExpireDateShamsi = coupon.ExpireDate.ToShamsi();
-            Domain.Models.CouponType? couponTypeName = await _couponTypeRepo.GetAsync(coupon.CouponTypeId);
+            Shared.Models.CouponType? couponTypeName = await _couponTypeRepo.GetAsync(coupon.CouponTypeId);
             couponD.CouponTypeName = couponTypeName.Type;
             couponDto.Add(couponD);
         }

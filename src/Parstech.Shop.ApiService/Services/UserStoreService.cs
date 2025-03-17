@@ -23,7 +23,7 @@ public class UserStoreService : UserStoreServiceBase
         try
         {
             var command = new UserStoreReadsCommandReq();
-            void stores = await _mediator.Send(command);
+            var stores = await _mediator.Send(command);
 
             var response = new UserStoreResponse();
             response.Stores.AddRange(stores.Select(s => new UserStore

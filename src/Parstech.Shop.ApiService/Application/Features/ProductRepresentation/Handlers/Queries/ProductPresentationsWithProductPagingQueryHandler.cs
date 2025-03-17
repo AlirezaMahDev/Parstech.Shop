@@ -4,11 +4,11 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Representation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.RepresentationType.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Queries;
 
@@ -48,23 +48,23 @@ public class
         CancellationToken cancellationToken)
     {
         IList<ProductRepresentationDto> productDto = new List<ProductRepresentationDto>();
-        IReadOnlyList<Domain.Models.ProductRepresentation> productReps = await _productRepresentationRep.GetAll();
-        IEnumerable<Domain.Models.ProductRepresentation> ProductRepList =
+        IReadOnlyList<Shared.Models.ProductRepresentation> productReps = await _productRepresentationRep.GetAll();
+        IEnumerable<Shared.Models.ProductRepresentation> ProductRepList =
             productReps.Where(z => z.ProductStockPriceId == request.Parameter.ProductId);
-        foreach (Domain.Models.ProductRepresentation item in ProductRepList)
+        foreach (Shared.Models.ProductRepresentation item in ProductRepList)
         {
             ProductRepresentationDto? PDto = _mapper.Map<ProductRepresentationDto>(item);
-            Domain.Models.ProductStockPrice? ps = await _productStockRep.GetAsync(item.ProductStockPriceId);
-            void Product = await _mediator.Send(new ProductReadCommandReq(ps.ProductId));
+            Shared.Models.ProductStockPrice? ps = await _productStockRep.GetAsync(item.ProductStockPriceId);
+            var Product = await _mediator.Send(new ProductReadCommandReq(ps.ProductId));
             PDto.ProductName = Product.Name;
 
-            void type = await _mediator.Send(new RepresentationTypeReadCommandReq(item.TypeId));
+            var type = await _mediator.Send(new RepresentationTypeReadCommandReq(item.TypeId));
             PDto.Type = type.Type;
 
-            void representation = await _mediator.Send(new RepresentationReadCommandReq(item.RepresntationId));
+            var representation = await _mediator.Send(new RepresentationReadCommandReq(item.RepresntationId));
             PDto.RepresntationName = representation.Name;
 
-            Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(item.UserId);
+            Shared.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(item.UserId);
             PDto.UserName = $"{userBilling.FirstName} {userBilling.LastName}";
             PDto.CreateDateShamsi = item.CreateDate.ToShamsi();
             productDto.Add(PDto);

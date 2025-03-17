@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
 using Parstech.Shop.Web.GrpcClients;
 
 namespace Parstech.Shop.Web.Pages.Products.Components;
@@ -24,7 +24,7 @@ public class ProductDetailModel : PageModel
     #endregion
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     public async Task<IActionResult> OnGet(string ShortLink, int StoreId)
     {

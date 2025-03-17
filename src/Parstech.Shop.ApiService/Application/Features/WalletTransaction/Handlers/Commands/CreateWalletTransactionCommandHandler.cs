@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Commands;
 
@@ -33,11 +33,11 @@ public class
         {
             if (request.TransactionDto.Active == null)
             {
-                Domain.Models.WalletTransaction? item =
-                    _mapper.Map<Domain.Models.WalletTransaction>(request.TransactionDto);
+                Shared.Models.WalletTransaction? item =
+                    _mapper.Map<Shared.Models.WalletTransaction>(request.TransactionDto);
                 item.TrackingCode = CodeGenerator.GenerateUniqCode();
                 item.CreateDate = DateTime.Now;
-                Domain.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
+                Shared.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
                 WalletTransactionDto? resultDto = _mapper.Map<WalletTransactionDto>(result);
                 await _walletRep.WalletCalculateTransaction(resultDto);
                 res.walletTransaction = resultDto;
@@ -50,11 +50,11 @@ public class
                         request.TransactionDto.TypeId,
                         request.TransactionDto.Type))
                 {
-                    Domain.Models.WalletTransaction? item =
-                        _mapper.Map<Domain.Models.WalletTransaction>(request.TransactionDto);
+                    Shared.Models.WalletTransaction? item =
+                        _mapper.Map<Shared.Models.WalletTransaction>(request.TransactionDto);
                     item.TrackingCode = CodeGenerator.GenerateUniqCode();
                     item.CreateDate = DateTime.Now;
-                    Domain.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
+                    Shared.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
                     WalletTransactionDto? resultDto = _mapper.Map<WalletTransactionDto>(result);
                     await _walletRep.WalletCalculateTransaction(resultDto);
                     res.walletTransaction = resultDto;
@@ -73,11 +73,11 @@ public class
         }
         else
         {
-            Domain.Models.WalletTransaction?
-                item = _mapper.Map<Domain.Models.WalletTransaction>(request.TransactionDto);
+            Shared.Models.WalletTransaction?
+                item = _mapper.Map<Shared.Models.WalletTransaction>(request.TransactionDto);
             item.TrackingCode = CodeGenerator.GenerateUniqCode();
             item.CreateDate = DateTime.Now;
-            Domain.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
+            Shared.Models.WalletTransaction result = await _walletTransactionRep.AddAsync(item);
             WalletTransactionDto? resultDto = _mapper.Map<WalletTransactionDto>(result);
             //await _walletRep.WalletCalculateTransaction(resultDto);
             res.walletTransaction = resultDto;

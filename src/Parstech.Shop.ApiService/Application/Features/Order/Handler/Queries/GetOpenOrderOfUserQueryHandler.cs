@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -37,8 +37,8 @@ public class GetOpenOrderOfUserQueryHandler : IRequestHandler<GetOpenOrderOfUser
 
     public async Task<OrderDto> Handle(GetOpenOrderOfUserQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
-        Domain.Models.Order? Order = await _orderRep.GetNotFinallyOrderOfUser(user.Id);
-        return _mapper.Map<OrderDto>(Order);
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        Shared.Models.Order order = await _orderRep.GetNotFinallyOrderOfUser(user.Id);
+        return _mapper.Map<OrderDto>(order);
     }
 }

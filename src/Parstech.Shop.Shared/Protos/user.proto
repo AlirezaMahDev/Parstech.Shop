@@ -1,19 +1,690 @@
 syntax = "proto3";
 
-package Shop.Application.DTOs.User;
+option csharp_namespace = "Parstech.Shop.Shared.Protos.User";
 
-message User {
-    int32 id = 1;
-    string user_name = 2;
-    string active_code = 3;
-    string? first_name = 4;
-    string? last_name = 5;
-    string? full_name = 6;
-    string? user_id = 7;
-    string? avatar = 8;
-    google.protobuf.Timestamp last_login_date = 9;
-    string last_login_date_shamsi = 10;
-    string economic_code = 11;
-    bool send_sms = 12;
-    bool? is_delete = 13;
+package user;
+
+import "google/protobuf/timestamp.proto";
+import "Protos/Common.proto";
+
+// USER SERVICE DEFINITIONS
+
+// User Authentication Service for authentication and authorization
+service UserAuthService {
+  // Authentication operations
+  rpc Login (LoginRequest) returns (AuthResponse);
+  rpc Register (RegisterRequest) returns (AuthResponse);
+  rpc RefreshToken (RefreshTokenRequest) returns (AuthResponse);
+  rpc Logout (LogoutRequest) returns (ResponseDto);
+  rpc ForgotPassword (ForgotPasswordRequest) returns (ResponseDto);
+  rpc ResetPassword (ResetPasswordRequest) returns (ResponseDto);
+  rpc ChangePassword (ChangePasswordRequest) returns (ResponseDto);
+  rpc VerifyEmail (VerifyEmailRequest) returns (ResponseDto);
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc GetCurrentUser (GetCurrentUserRequest) returns (UserResponse);
+  rpc CheckEmailExists (CheckEmailRequest) returns (CheckEmailResponse);
+  rpc CheckUsernameExists (CheckUsernameRequest) returns (CheckUsernameResponse);
+  
+  // Additional methods from user_auth.proto
+  rpc ProtectData (ProtectDataRequest) returns (ProtectDataResponse);
 }
+
+// User Profile Service for profile management
+service UserProfileService {
+  // Profile operations
+  rpc GetUserProfile (GetUserProfileRequest) returns (UserProfileResponse);
+  rpc UpdateUserProfile (UpdateUserProfileRequest) returns (UserProfileResponse);
+  rpc UpdateUserAvatar (UpdateUserAvatarRequest) returns (UpdateUserAvatarResponse);
+  rpc GetUserAddresses (GetUserAddressesRequest) returns (UserAddressesResponse);
+  rpc AddUserAddress (AddUserAddressRequest) returns (UserAddressResponse);
+  rpc UpdateUserAddress (UpdateUserAddressRequest) returns (UserAddressResponse);
+  rpc DeleteUserAddress (DeleteUserAddressRequest) returns (ResponseDto);
+  rpc SetDefaultAddress (SetDefaultAddressRequest) returns (ResponseDto);
+  rpc GetUserWishlist (GetUserWishlistRequest) returns (UserWishlistResponse);
+  rpc AddToWishlist (AddToWishlistRequest) returns (ResponseDto);
+  rpc RemoveFromWishlist (RemoveFromWishlistRequest) returns (ResponseDto);
+  rpc GetRecentlyViewedProducts (GetRecentlyViewedRequest) returns (RecentlyViewedResponse);
+  rpc AddRecentlyViewedProduct (AddRecentlyViewedRequest) returns (ResponseDto);
+}
+
+// User Admin Service for user administration
+service UserAdminService {
+  // Admin operations
+  rpc GetUsersForAdmin (GetUsersRequest) returns (GetUsersResponse);
+  rpc GetUserForAdmin (GetUserRequest) returns (GetUserResponse);
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (ResponseDto);
+  rpc BanUser (BanUserRequest) returns (ResponseDto);
+  rpc UnbanUser (UnbanUserRequest) returns (ResponseDto);
+  rpc VerifyUser (VerifyUserRequest) returns (ResponseDto);
+  rpc AssignRolesToUser (AssignRolesToUserRequest) returns (ResponseDto);
+  rpc GetUserActivityLog (GetUserActivityLogRequest) returns (UserActivityLogResponse);
+  rpc ExportUsers (ExportUsersRequest) returns (ExportUsersResponse);
+}
+
+// User Product Service for user product interactions
+service UserProductService {
+  // Product interaction operations
+  rpc RateProduct (RateProductRequest) returns (RateProductResponse);
+  rpc ReviewProduct (ReviewProductRequest) returns (ReviewProductResponse);
+  rpc GetUserReviews (GetUserReviewsRequest) returns (GetUserReviewsResponse);
+  rpc GetProductReviews (GetProductReviewsRequest) returns (GetProductReviewsResponse);
+  rpc AskProductQuestion (AskProductQuestionRequest) returns (AskProductQuestionResponse);
+  rpc AnswerProductQuestion (AnswerProductQuestionRequest) returns (AnswerProductQuestionResponse);
+  rpc GetProductQuestions (GetProductQuestionsRequest) returns (GetProductQuestionsResponse);
+  rpc GetUserQuestions (GetUserQuestionsRequest) returns (GetUserQuestionsResponse);
+}
+
+// MESSAGE DEFINITIONS
+
+message ResponseDto {
+  bool success = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+// Authentication requests
+message LoginRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool subscribe_to_newsletter = 8;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string token = 1;
+}
+
+message ForgotPasswordRequest {
+  string email = 1;
+}
+
+message ResetPasswordRequest {
+  string token = 1;
+  string email = 2;
+  string new_password = 3;
+}
+
+message ChangePasswordRequest {
+  int64 user_id = 1;
+  string current_password = 2;
+  string new_password = 3;
+}
+
+message VerifyEmailRequest {
+  string token = 1;
+  string email = 2;
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message GetCurrentUserRequest {
+  string token = 1;
+}
+
+message CheckEmailRequest {
+  string email = 1;
+}
+
+message CheckUsernameRequest {
+  string username = 1;
+}
+
+// Profile requests
+message GetUserProfileRequest {
+  int64 user_id = 1;
+}
+
+message UpdateUserProfileRequest {
+  int64 user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string phone = 5;
+  string date_of_birth = 6;
+  string gender = 7;
+  bool subscribe_to_newsletter = 8;
+  string language = 9;
+  string currency = 10;
+}
+
+message UpdateUserAvatarRequest {
+  int64 user_id = 1;
+  bytes avatar_data = 2;
+  string file_name = 3;
+  string content_type = 4;
+}
+
+message GetUserAddressesRequest {
+  int64 user_id = 1;
+}
+
+message AddUserAddressRequest {
+  int64 user_id = 1;
+  AddressDto address = 2;
+}
+
+message UpdateUserAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+  AddressDto address = 3;
+}
+
+message DeleteUserAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+}
+
+message SetDefaultAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+  string address_type = 3; // "shipping" or "billing"
+}
+
+message GetUserWishlistRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message AddToWishlistRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+message RemoveFromWishlistRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+message GetRecentlyViewedRequest {
+  int64 user_id = 1;
+  int32 limit = 2;
+}
+
+message AddRecentlyViewedRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+// Admin requests
+message GetUsersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  string role = 6;
+  bool active_only = 7;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+  bool include_orders = 2;
+  bool include_activity = 3;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool active = 8;
+  bool email_verified = 9;
+  repeated string roles = 10;
+}
+
+message UpdateUserRequest {
+  int64 user_id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool active = 8;
+  bool email_verified = 9;
+  repeated string roles = 10;
+}
+
+message DeleteUserRequest {
+  int64 user_id = 1;
+}
+
+message BanUserRequest {
+  int64 user_id = 1;
+  string reason = 2;
+  string expires_at = 3;
+}
+
+message UnbanUserRequest {
+  int64 user_id = 1;
+}
+
+message VerifyUserRequest {
+  int64 user_id = 1;
+}
+
+message AssignRolesToUserRequest {
+  int64 user_id = 1;
+  repeated string roles = 2;
+}
+
+message GetUserActivityLogRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string from_date = 4;
+  string to_date = 5;
+  string activity_type = 6;
+}
+
+message ExportUsersRequest {
+  string format = 1; // "csv", "excel", etc.
+  string from_date = 2;
+  string to_date = 3;
+  string role = 4;
+  bool active_only = 5;
+}
+
+// Product interaction requests
+message RateProductRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  int32 rating = 3;
+}
+
+message ReviewProductRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  string title = 3;
+  string content = 4;
+  int32 rating = 5;
+  bool verified_purchase = 6;
+}
+
+message GetUserReviewsRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetProductReviewsRequest {
+  int64 product_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message AskProductQuestionRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  string question = 3;
+}
+
+message AnswerProductQuestionRequest {
+  int64 user_id = 1;
+  int64 question_id = 2;
+  string answer = 3;
+  bool is_official = 4;
+}
+
+message GetProductQuestionsRequest {
+  int64 product_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetUserQuestionsRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  bool include_answers = 4;
+}
+
+// Response messages
+message AuthResponse {
+  bool success = 1;
+  string token = 2;
+  string refresh_token = 3;
+  string token_type = 4;
+  int32 expires_in = 5;
+  UserDto user = 6;
+  ResponseDto status = 7;
+}
+
+message ValidateTokenResponse {
+  bool is_valid = 1;
+  UserDto user = 2;
+  repeated string roles = 3;
+  int32 expires_in = 4;
+  ResponseDto status = 5;
+}
+
+message UserResponse {
+  UserDto user = 1;
+  ResponseDto status = 2;
+}
+
+message CheckEmailResponse {
+  bool exists = 1;
+  ResponseDto status = 2;
+}
+
+message CheckUsernameResponse {
+  bool exists = 1;
+  string suggestion = 2;
+  ResponseDto status = 3;
+}
+
+message UserProfileResponse {
+  UserProfileDto profile = 1;
+  ResponseDto status = 2;
+}
+
+message UpdateUserAvatarResponse {
+  string avatar_url = 1;
+  ResponseDto status = 2;
+}
+
+message UserAddressesResponse {
+  repeated AddressDto addresses = 1;
+  ResponseDto status = 2;
+}
+
+message UserAddressResponse {
+  AddressDto address = 1;
+  ResponseDto status = 2;
+}
+
+message UserWishlistResponse {
+  repeated WishlistItemDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message RecentlyViewedResponse {
+  repeated ProductSummaryDto products = 1;
+  ResponseDto status = 2;
+}
+
+message GetUsersResponse {
+  repeated UserDto users = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetUserResponse {
+  UserDetailDto user = 1;
+  ResponseDto status = 2;
+}
+
+message UserActivityLogResponse {
+  repeated UserActivityDto activities = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message ExportUsersResponse {
+  bool success = 1;
+  string download_url = 2;
+  int32 total_users = 3;
+  string format = 4;
+  string expires_at = 5;
+  ResponseDto status = 6;
+}
+
+message RateProductResponse {
+  bool success = 1;
+  int32 new_rating = 2;
+  int32 total_ratings = 3;
+  ResponseDto status = 4;
+}
+
+message ReviewProductResponse {
+  bool success = 1;
+  ReviewDto review = 2;
+  ResponseDto status = 3;
+}
+
+message GetUserReviewsResponse {
+  repeated ReviewDto reviews = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetProductReviewsResponse {
+  repeated ReviewDto reviews = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message AskProductQuestionResponse {
+  bool success = 1;
+  QuestionDto question = 2;
+  ResponseDto status = 3;
+}
+
+message AnswerProductQuestionResponse {
+  bool success = 1;
+  AnswerDto answer = 2;
+  ResponseDto status = 3;
+}
+
+message GetProductQuestionsResponse {
+  repeated QuestionDto questions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetUserQuestionsResponse {
+  repeated QuestionDto questions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+// Data DTOs
+message UserDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string avatar_url = 6;
+  bool email_verified = 7;
+  google.protobuf.Timestamp created_date = 8;
+  repeated string roles = 9;
+}
+
+message UserDetailDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  string gender = 8;
+  string avatar_url = 9;
+  bool active = 10;
+  bool email_verified = 11;
+  bool two_factor_enabled = 12;
+  string currency = 13;
+  string language = 14;
+  bool subscribe_to_newsletter = 15;
+  repeated string roles = 16;
+  string last_login_date = 17;
+  string last_login_ip = 18;
+  google.protobuf.Timestamp created_date = 19;
+  google.protobuf.Timestamp updated_date = 20;
+  int32 order_count = 21;
+  double total_spent = 22;
+  string customer_status = 23;
+  string notes = 24;
+  repeated AddressDto addresses = 25;
+  repeated OrderSummaryDto recent_orders = 26;
+  repeated UserActivityDto recent_activity = 27;
+}
+
+message UserProfileDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  string gender = 8;
+  string avatar_url = 9;
+  bool email_verified = 10;
+  bool two_factor_enabled = 11;
+  string currency = 12;
+  string language = 13;
+  bool subscribe_to_newsletter = 14;
+  int32 wishlist_count = 15;
+  int32 order_count = 16;
+  int32 review_count = 17;
+  google.protobuf.Timestamp created_date = 18;
+}
+
+message AddressDto {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string company = 4;
+  string address_line1 = 5;
+  string address_line2 = 6;
+  string city = 7;
+  string state = 8;
+  string postal_code = 9;
+  string country = 10;
+  string country_code = 11;
+  string phone = 12;
+  string email = 13;
+  bool is_default_billing = 14;
+  bool is_default_shipping = 15;
+}
+
+message WishlistItemDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  string product_image = 4;
+  double price = 5;
+  string formatted_price = 6;
+  bool in_stock = 7;
+  google.protobuf.Timestamp added_date = 8;
+}
+
+message ProductSummaryDto {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  string image_url = 4;
+  double price = 5;
+  double sale_price = 6;
+  bool on_sale = 7;
+  int32 rating = 8;
+  bool in_stock = 9;
+  string category_name = 10;
+  google.protobuf.Timestamp viewed_date = 11;
+}
+
+message UserActivityDto {
+  int64 id = 1;
+  string activity_type = 2;
+  string description = 3;
+  string ip_address = 4;
+  string user_agent = 5;
+  google.protobuf.Timestamp date = 6;
+  string object_type = 7;
+  string object_id = 8;
+  string details = 9;
+}
+
+message OrderSummaryDto {
+  string id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  double total = 5;
+  string formatted_total = 6;
+  int32 item_count = 7;
+}
+
+message ReviewDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int64 user_id = 4;
+  string user_name = 5;
+  string title = 6;
+  string content = 7;
+  int32 rating = 8;
+  bool is_verified_purchase = 9;
+  bool is_approved = 10;
+  google.protobuf.Timestamp created_date = 11;
+  repeated AnswerDto replies = 12;
+}
+
+message QuestionDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int64 user_id = 4;
+  string user_name = 5;
+  string question = 6;
+  bool is_answered = 7;
+  int32 answer_count = 8;
+  google.protobuf.Timestamp created_date = 9;
+  repeated AnswerDto answers = 10;
+}
+
+message AnswerDto {
+  int64 id = 1;
+  int64 question_id = 2;
+  int64 user_id = 3;
+  string user_name = 4;
+  string answer = 5;
+  bool is_official = 6;
+  int32 helpful_votes = 7;
+  google.protobuf.Timestamp created_date = 8;
+}
+
+// Additional messages
+message ProtectDataRequest {
+  string data = 1;
+  string purpose = 2;
+  int32 expiry_minutes = 3;
+}
+
+message ProtectDataResponse {
+  string protected_data = 1;
+  string expires_at = 2;
+} 

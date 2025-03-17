@@ -8,10 +8,11 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.WalletTransaction.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
 
 using System.Globalization;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -45,11 +46,11 @@ public class
         foreach (WalletTransactionReportDto item in list)
         {
             item.CreateDateShamsi = item.CreateDate.ToShamsi();
-            List<Domain.Models.WalletTransaction> childs =
+            List<Shared.Models.WalletTransaction> childs =
                 await _walletTransactionRep.GetTransactionsByParentId(item.Id);
 
-            Domain.Models.WalletTransaction? first = childs.FirstOrDefault();
-            Domain.Models.WalletTransaction? last = childs.LastOrDefault();
+            Shared.Models.WalletTransaction? first = childs.FirstOrDefault();
+            Shared.Models.WalletTransaction? last = childs.LastOrDefault();
             item.FirstDate = first.CreateDate.ToShamsi();
             item.LastDate = last.CreateDate.ToShamsi();
         }

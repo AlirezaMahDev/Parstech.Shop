@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPriceSection.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPriceSection.Handlers.Commands;
 
@@ -25,10 +25,10 @@ public class
         CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        Domain.Models.ProductStockPriceSection item = new();
+        Shared.Models.ProductStockPriceSection item = new();
         item.ProductStockPriceId = request.productStockPriceId;
         item.SectionId = request.sectionId;
-        Domain.Models.ProductStockPriceSection additem = await _productStockPriceSectionRep.AddAsync(item);
+        Shared.Models.ProductStockPriceSection additem = await _productStockPriceSectionRep.AddAsync(item);
 
         response.IsSuccessed = true;
         response.Object = additem;

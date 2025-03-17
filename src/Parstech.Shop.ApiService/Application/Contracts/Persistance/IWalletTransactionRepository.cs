@@ -1,5 +1,5 @@
-﻿using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
+﻿using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Contracts.Persistance;
 
@@ -16,4 +16,20 @@ public interface IWalletTransactionRepository : IGenericRepository<WalletTransac
     Task<WalletTransaction> GetTransactionByTrackingCode(string trackingCode);
     Task<bool> ExistTransactionForUser(int UserId, string TracsactionCode);
     Task<List<WalletTransaction>> GetTransactionsByParentId(int parentId);
+    Task<WalletTransaction> GetByIdAsync(int transactionId);
+    Task<WalletTransaction> GetByTokenAsync(string token);
+    Task<List<WalletTransaction>> GetTransactionHistoryAsync(
+        int walletId,
+        int userId,
+        int page,
+        int pageSize,
+        string fromDate,
+        string toDate,
+        int transactionTypeId);
+    Task<int> GetTransactionHistoryCountAsync(
+        int walletId,
+        int userId,
+        string fromDate,
+        string toDate,
+        int transactionTypeId);
 }

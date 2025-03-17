@@ -8,7 +8,7 @@ public static class GetWordFromString
     {
         MatchCollection matches = Regex.Matches(input, @"\b[\w']*\b");
 
-        IEnumerable<string>? words = from m in matches.Cast<Match>()
+        IEnumerable<string> words = from m in matches.Cast<Match>()
             where !string.IsNullOrEmpty(m.Value)
             select TrimSuffix(m.Value);
 

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Representation.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Representation.Handlers.Commands;
 
@@ -26,9 +26,9 @@ public class RepresentationCreateCommandHandler : IRequestHandler<Representation
     public async Task<RepresentationDto> Handle(RepresentationCreateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.Representation? rep = _mapper.Map<Domain.Models.Representation>(request.RepresentationDto);
+        Shared.Models.Representation? rep = _mapper.Map<Shared.Models.Representation>(request.RepresentationDto);
 
-        Domain.Models.Representation? userResult = await _represntationRep.AddAsync(rep);
+        Shared.Models.Representation userResult = await _represntationRep.AddAsync(rep);
         return _mapper.Map<RepresentationDto>(userResult);
     }
 }

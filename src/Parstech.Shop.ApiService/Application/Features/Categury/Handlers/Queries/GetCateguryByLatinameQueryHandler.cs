@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Queries;
 
@@ -21,7 +21,7 @@ public class GetCateguryByLatinameQueryHandler : IRequestHandler<GetCateguryByLa
 
     public async Task<CateguryDto> Handle(GetCateguryByLatinameQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Categury? item = await _categuryRep.GetCateguryByLatinName(request.latinName);
+        Shared.Models.Categury? item = await _categuryRep.GetCateguryByLatinName(request.latinName);
         return _mapper.Map<CateguryDto>(item);
     }
 }

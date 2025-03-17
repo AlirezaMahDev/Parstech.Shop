@@ -3,8 +3,8 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -25,7 +25,7 @@ public class CategoryService : CategoryServiceBase
         try
         {
             var query = new CateguryParentsReadQueryReq();
-            void categories = await _mediator.Send(query);
+            var categories = await _mediator.Send(query);
 
             var response = new CategoryResponse();
             response.Categories.AddRange(categories.Select(c => new Category
@@ -55,7 +55,7 @@ public class CategoryService : CategoryServiceBase
         try
         {
             var query = new CateguryByParentIdReadQueryReq(request.ParentId);
-            void categories = await _mediator.Send(query);
+            var categories = await _mediator.Send(query);
 
             var response = new CategoryResponse();
             response.Categories.AddRange(categories.Select(c => new Category
@@ -85,9 +85,9 @@ public class CategoryService : CategoryServiceBase
         try
         {
             var query = new GetCateguryByLatinameQueryReq(request.LatinName);
-            void category = await _mediator.Send(query);
+            var category = await _mediator.Send(query);
 
-            return new Category
+            return new()
             {
                 Id = category.Id,
                 Name = category.Name,

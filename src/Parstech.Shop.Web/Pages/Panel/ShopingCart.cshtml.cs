@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
@@ -27,7 +27,7 @@ public class ShopingCartModel : PageModel
     public OrderDetailShowDto ShoppingCart { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public int UserId { get; set; }
@@ -45,14 +45,14 @@ public class ShopingCartModel : PageModel
     {
         var cartResponse = await _userPreferencesClient.GetShoppingCartAsync(UserId);
 
-        ShoppingCart = new OrderDetailShowDto
+        ShoppingCart = new()
         {
             OrderId = cartResponse.OrderId,
             UserName = cartResponse.UserName,
             Total = cartResponse.Total,
             Discount = cartResponse.Discount,
             FinalPrice = cartResponse.FinalPrice,
-            OrderDetails = cartResponse.Details.Select(d => new Shop.Application.DTOs.OrderDetail.OrderDetailItem
+            OrderDetails = cartResponse.Details.Select(d => new Parstech.Shop.Shared.DTOsDetail.OrderDetailItem
                 {
                     Id = d.Id,
                     OrderId = d.OrderId,

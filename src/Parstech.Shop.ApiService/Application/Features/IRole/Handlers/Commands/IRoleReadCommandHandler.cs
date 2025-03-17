@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.IRole.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.IRole.Handlers.Commands;
 
@@ -22,7 +22,7 @@ public class IRoleReadCommandHandler : IRequestHandler<IRoleReadCommandReq, IRol
 
     public async Task<IRoleDto> Handle(IRoleReadCommandReq request, CancellationToken cancellationToken)
     {
-        Irole? role = await _roleRep.GetIdentityRole(request.id);
+        Irole role = await _roleRep.GetIdentityRole(request.id);
         return _mapper.Map<IRoleDto>(role);
     }
 }
@@ -40,7 +40,7 @@ public class IRoleReadAllCommandHandler : IRequestHandler<IRoleReadAllCommandReq
 
     public async Task<List<IRoleDto>> Handle(IRoleReadAllCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Irole>? roles = await _roleRep.GetAll();
+        IReadOnlyList<Irole> roles = await _roleRep.GetAll();
         return _mapper.Map<List<IRoleDto>>(roles);
     }
 }

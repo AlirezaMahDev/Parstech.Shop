@@ -8,9 +8,9 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Commands;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -61,7 +61,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public async Task<List<Product>> GetAllParentBundleProduct(string filter)
     {
-        List<Product>? products = await _context.Products.Where(a => a.TypeId == 4).ToListAsync();
+        List<Product> products = await _context.Products.Where(a => a.TypeId == 4).ToListAsync();
         if (!string.IsNullOrEmpty(filter))
         {
             products = (List<Product>)products.Where(p =>
@@ -74,7 +74,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public async Task<List<Product>> GetAllParentVariableProduct(string filter)
     {
-        List<Product>? products = await _context.Products.Where(a => a.TypeId == 2).ToListAsync();
+        List<Product> products = await _context.Products.Where(a => a.TypeId == 2).ToListAsync();
         if (products.Count > 0 && !string.IsNullOrEmpty(filter))
         {
             products = products.Where(p =>
@@ -94,13 +94,13 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public async Task<List<Product>> GetProductsByParrentId(int parrentId)
     {
-        List<Product>? list = await _context.Products.Where(u => u.ParentId == parrentId).ToListAsync();
+        List<Product> list = await _context.Products.Where(u => u.ParentId == parrentId).ToListAsync();
         return list;
     }
 
     public async Task<List<Product>> GetSomeOfProductByCategury(int take, int categuryId)
     {
-        List<Product>? result = new();
+        List<Product> result = new();
         List<ProductCategury> productCateguries =
             await _prodyctCateguryRep.GetProductCateguriesByCateguryId(categuryId);
 
@@ -198,7 +198,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public async Task<Product?> DapperGetProductById(int id)
     {
-        Product? query = DapperHelper.ExecuteCommand<Product>(_connectionString,
+        Product query = DapperHelper.ExecuteCommand<Product>(_connectionString,
             conn => conn.Query<Product>(_commandText.GetProductById, new { @Id = id }).SingleOrDefault());
 
         return query;
@@ -243,7 +243,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         //var connecttion = new SqlConnection(_connectionString);
         //var list = connecttion.Query<DapperProductDto>(sql);
         //var result=list.ToList();
-        List<DapperProductDto>? query = DapperHelper.ExecuteCommand(_connectionString,
+        List<DapperProductDto> query = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<DapperProductDto>(_queriesText.GetListByGroup).ToList());
 
         return query;
@@ -261,7 +261,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public async Task RefreshAllBestStockProduct()
     {
-        IReadOnlyList<Product>? list = await GetAll();
+        IReadOnlyList<Product> list = await GetAll();
         foreach (Product? item in list)
         {
             item.BestStockId = await _productStockRep.GetBestStockId(item.Id);
@@ -280,9 +280,9 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         string orderBy,
         string paging)
     {
-        string? query =
+        string query =
             $"SELECT p.Id AS ProductId,p.ShortLink ,p.Name ,p.ParentId AS ParentProductId,p.TypeId ,sp.Id AS ProductStockPriceId,sp.DiscountPrice,p.CreateDate,sp.SalePrice,sp.DiscountPrice,sp.Quantity,sp.CateguryOfUserId,sp.CateguryOfUserType,us.StoreName,us.Id AS StoreId,p.BestStockId,p.BestStockUserCateguryId FROM dbo.Product p LEFT JOIN dbo.ProductStockPrice sp ON {JoinType} = sp.Id LEFT JOIN dbo.UserStore us ON sp.StoreId = us.Id WHERE {condition} {categury} {search} {orderBy} {paging}";
-        List<ProductDto>? list =
+        List<ProductDto> list =
             DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<ProductDto>(query).ToList());
         return list;
     }

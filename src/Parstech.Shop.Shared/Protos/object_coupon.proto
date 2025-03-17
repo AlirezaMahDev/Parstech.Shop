@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.Coupon;
-
-message ObjectCoupon {
-    string status = 1;
-    repeated int32 id_list = 2;
-}

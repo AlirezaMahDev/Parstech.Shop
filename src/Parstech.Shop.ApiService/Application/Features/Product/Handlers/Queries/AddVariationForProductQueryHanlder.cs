@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -25,7 +25,7 @@ public class AddVariationForProductQueryHanlder : IRequestHandler<AddVariationFo
 
     public async Task<bool> Handle(AddVariationForProductQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
 
         ProductDto newProduct = new()
         {
@@ -42,19 +42,19 @@ public class AddVariationForProductQueryHanlder : IRequestHandler<AddVariationFo
             Code = product.Code,
             VariationName = request.variationName
         };
-        Domain.Models.Product? np = _mapper.Map<Domain.Models.Product>(newProduct);
-        Domain.Models.Product res = await _productRep.AddAsync(np);
+        Shared.Models.Product? np = _mapper.Map<Shared.Models.Product>(newProduct);
+        Shared.Models.Product res = await _productRep.AddAsync(np);
 
         //ProductDto productDto = new ProductDto()
         //{
 
         //};
 
-        List<Domain.Models.ProductStockPrice> parentStocks =
+        List<Shared.Models.ProductStockPrice> parentStocks =
             await _productStockPriceRep.GetAllByProductId(request.productId);
         if (parentStocks.Count > 0)
         {
-            foreach (Domain.Models.ProductStockPrice Stock in parentStocks)
+            foreach (Shared.Models.ProductStockPrice Stock in parentStocks)
             {
                 Stock.Id = 0;
                 Stock.ProductId = res.Id;

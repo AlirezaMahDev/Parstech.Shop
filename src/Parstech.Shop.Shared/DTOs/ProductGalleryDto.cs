@@ -1,4 +1,6 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Parstech.Shop.Shared.DTOs;
 
 public class ProductGalleryDto
 {
@@ -12,9 +14,4 @@ public class ProductGalleryDto
     public string Alt { get; set; } = null!;
 
     public bool IsMain { get; set; }
-}
-
-public class UploadViewModel
-{
-    public List<IFormFile> Files { get; set; }
 }

@@ -23,7 +23,7 @@ public class OrderDetailDeleteCommandHandler : IRequestHandler<OrderDetailDelete
 
     public async Task<Unit> Handle(OrderDetailDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.OrderDetail? item = await _orderDetailRep.GetAsync(request.Id);
+        Shared.Models.OrderDetail? item = await _orderDetailRep.GetAsync(request.Id);
         int orderId = item.OrderId;
         await _orderDetailRep.DeleteAsync(item);
         if (await _orderRep.OrderExistAnyDetails(orderId))

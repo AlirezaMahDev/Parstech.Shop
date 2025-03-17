@@ -24,8 +24,8 @@ public class CreateProductRelatedCommandHandler : IRequestHandler<CreateProductR
 
     public async Task Handle(CreateProductRelatedCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductRelated? producrRelated =
-            _mapper.Map<Domain.Models.ProductRelated>(request.productRelatedDto);
+        Shared.Models.ProductRelated? producrRelated =
+            _mapper.Map<Shared.Models.ProductRelated>(request.productRelatedDto);
         await _productRelatedRep.AddAsync(producrRelated);
     }
 }

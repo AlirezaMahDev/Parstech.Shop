@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using Parstech.Shop.Web.Services.GrpcClients;
-
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+
+using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
 
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
 
-namespace Parstech.Shop.Web.Controllers;
+namespace Parstech.Shop.ApiService.Controllers;
 
 public class SadadController : Controller
 {
@@ -42,13 +40,13 @@ public class SadadController : Controller
         string terminalId = "24086411";
         string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
 
-        byte[]? byteData = Encoding.UTF8.GetBytes(result.Token);
+        byte[] byteData = Encoding.UTF8.GetBytes(result.Token);
 
         SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
         algorithm.Mode = CipherMode.ECB;
         algorithm.Padding = PaddingMode.PKCS7;
 
-        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        ICryptoTransform encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
         string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
 
         var data = new { result.Token, SignData = signData };
@@ -70,7 +68,7 @@ public class SadadController : Controller
                     transaction.TransactionId,
                     verifyRes.RetrivalRefNo.ToString());
 
-                string? redirect = $"https://parstech.co/checkout/payment/Ok";
+                string redirect = $"https://parstech.co/checkout/payment/Ok";
                 return Redirect(redirect);
             }
             else
@@ -91,13 +89,13 @@ public class SadadController : Controller
                     transaction.TransactionId,
                     verifyRes.RetrivalRefNo.ToString());
 
-                string? redirect = $"https://parstech.co/checkout/payment/Ok";
+                string redirect = $"https://parstech.co/checkout/payment/Ok";
                 return Redirect(redirect);
             }
         }
         else
         {
-            string? redirect = $"https://parstech.co/checkout/payment/NotOk";
+            string redirect = $"https://parstech.co/checkout/payment/NotOk";
             return Redirect(redirect);
         }
     }
@@ -112,7 +110,7 @@ public class SadadController : Controller
 
         if (order == null || order.OrderId == 0)
         {
-            string? redirect = $"https://parstech.co/checkout/payment/NotOk";
+            string redirect = $"https://parstech.co/checkout/payment/NotOk";
             return Redirect(redirect);
         }
 
@@ -120,13 +118,13 @@ public class SadadController : Controller
         string terminalId = "24086411";
         string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
 
-        byte[]? byteData = Encoding.UTF8.GetBytes(result.Token);
+        byte[] byteData = Encoding.UTF8.GetBytes(result.Token);
 
         SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
         algorithm.Mode = CipherMode.ECB;
         algorithm.Padding = PaddingMode.PKCS7;
 
-        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        ICryptoTransform encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
         string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
 
         var data = new { result.Token, SignData = signData };
@@ -151,7 +149,7 @@ public class SadadController : Controller
                     transaction.TransactionId,
                     verifyRes.RetrivalRefNo.ToString());
 
-                string? redirect = $"https://parstech.co/checkout/payment/Ok";
+                string redirect = $"https://parstech.co/checkout/payment/Ok";
                 return Redirect(redirect);
             }
             else
@@ -172,20 +170,20 @@ public class SadadController : Controller
                     transaction.TransactionId,
                     verifyRes.RetrivalRefNo.ToString());
 
-                string? redirect = $"https://parstech.co/checkout/payment/Ok";
+                string redirect = $"https://parstech.co/checkout/payment/Ok";
                 return Redirect(redirect);
             }
         }
         else
         {
-            string? redirect = $"https://parstech.co/checkout/payment/NotOk";
+            string redirect = $"https://parstech.co/checkout/payment/NotOk";
             return Redirect(redirect);
         }
     }
 
     public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
     {
-        using (HttpClient? client = new())
+        using (HttpClient client = new())
         {
             client.BaseAddress = new(apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();

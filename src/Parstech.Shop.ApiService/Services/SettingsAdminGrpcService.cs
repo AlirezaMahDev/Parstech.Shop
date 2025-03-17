@@ -2,9 +2,9 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.SiteSeting.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.SocialSetting.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -28,7 +28,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void siteSettings = await _mediator.Send(new SiteSettingReadCommandReq(request.Id));
+            var siteSettings = await _mediator.Send(new SiteSettingReadCommandReq(request.Id));
 
             var response = new SiteSettingsResponse
             {
@@ -77,7 +77,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            SiteDto? siteDto = new()
+            SiteDto siteDto = new()
             {
                 Id = request.Site.Id,
                 SiteName = request.Site.SiteName,
@@ -101,7 +101,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 CurrencyName = request.Site.CurrencyName
             };
 
-            void result = await _mediator.Send(new SiteSettingUpdateCommandReq(request.Id, siteDto));
+            var result = await _mediator.Send(new SiteSettingUpdateCommandReq(request.Id, siteDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -121,7 +121,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void seoSettings = await _mediator.Send(new SeoSettingReadCommandReq(request.Id));
+            var seoSettings = await _mediator.Send(new SeoSettingReadCommandReq(request.Id));
 
             var response = new SeoSettingsResponse
             {
@@ -164,7 +164,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            SeoDto? seoDto = new()
+            SeoDto seoDto = new()
             {
                 Id = request.Seo.Id,
                 MetaTitle = request.Seo.MetaTitle,
@@ -182,7 +182,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 CustomFooterScripts = request.Seo.CustomFooterScripts
             };
 
-            void result = await _mediator.Send(new SeoSettingUpdateCommandReq(request.Id, seoDto));
+            var result = await _mediator.Send(new SeoSettingUpdateCommandReq(request.Id, seoDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -202,7 +202,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void socialLinks = await _mediator.Send(new SocialSettingReadCommandReq(request.Id));
+            var socialLinks = await _mediator.Send(new SocialSettingReadCommandReq(request.Id));
 
             var response = new SocialLinksResponse
             {
@@ -259,7 +259,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 EnableGoogleLogin = request.Social.EnableGoogleLogin
             };
 
-            void result = await _mediator.Send(new SocialSettingUpdateCommandReq(request.Id, socialDto));
+            var result = await _mediator.Send(new SocialSettingUpdateCommandReq(request.Id, socialDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -278,12 +278,12 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey
             };
 
-            void result = await _mediator.Send(new GetSectionsPagingQueryReq(parameter));
+            var result = await _mediator.Send(new GetSectionsPagingQueryReq(parameter));
 
             var response = new SectionsResponse
             {
@@ -342,7 +342,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 IsFeatured = request.Section.IsFeatured
             };
 
-            void result = await _mediator.Send(new CreateSectionCommandReq(sectionDto));
+            var result = await _mediator.Send(new CreateSectionCommandReq(sectionDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -371,7 +371,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 IsFeatured = request.Section.IsFeatured
             };
 
-            void result = await _mediator.Send(new UpdateSectionCommandReq(sectionDto));
+            var result = await _mediator.Send(new UpdateSectionCommandReq(sectionDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -386,7 +386,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void result = await _mediator.Send(new DeleteSectionCommandReq(request.Id));
+            var result = await _mediator.Send(new DeleteSectionCommandReq(request.Id));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -406,12 +406,12 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey
             };
 
-            void result = await _mediator.Send(new GetRepresentationTypesPagingQueryReq(parameter));
+            var result = await _mediator.Send(new GetRepresentationTypesPagingQueryReq(parameter));
 
             var response = new RepresentationTypesResponse
             {
@@ -452,14 +452,14 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            RepresentationTypeDto? typeDto = new()
+            RepresentationTypeDto typeDto = new()
             {
                 Title = request.Type.Title,
                 IsActive = request.Type.IsActive,
                 DisplayOrder = request.Type.DisplayOrder
             };
 
-            void result = await _mediator.Send(new CreateRepresentationTypeCommandReq(typeDto));
+            var result = await _mediator.Send(new CreateRepresentationTypeCommandReq(typeDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -475,7 +475,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            RepresentationTypeDto? typeDto = new()
+            RepresentationTypeDto typeDto = new()
             {
                 Id = request.Type.Id,
                 Title = request.Type.Title,
@@ -483,7 +483,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 DisplayOrder = request.Type.DisplayOrder
             };
 
-            void result = await _mediator.Send(new UpdateRepresentationTypeCommandReq(typeDto));
+            var result = await _mediator.Send(new UpdateRepresentationTypeCommandReq(typeDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -499,7 +499,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void result = await _mediator.Send(new DeleteRepresentationTypeCommandReq(request.Id));
+            var result = await _mediator.Send(new DeleteRepresentationTypeCommandReq(request.Id));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -519,12 +519,12 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Representation.RepresentationParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Representation.RepresentationParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey, TypeId = request.TypeId
             };
 
-            void result = await _mediator.Send(new GetRepresentationsPagingQueryReq(parameter));
+            var result = await _mediator.Send(new GetRepresentationsPagingQueryReq(parameter));
 
             var response = new RepresentationsResponse
             {
@@ -538,7 +538,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
 
             foreach (var representation in result.Items)
             {
-                RepresentationDto? repDto = new()
+                RepresentationDto repDto = new()
                 {
                     Id = representation.Id,
                     Title = representation.Title,
@@ -578,7 +578,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            RepresentationDto? representationDto = new()
+            RepresentationDto representationDto = new()
             {
                 Title = request.Representation.Title,
                 TypeId = request.Representation.TypeId,
@@ -588,7 +588,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 ProductIds = request.Representation.ProductIds.ToList()
             };
 
-            void result = await _mediator.Send(new CreateRepresentationCommandReq(representationDto));
+            var result = await _mediator.Send(new CreateRepresentationCommandReq(representationDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -604,7 +604,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            RepresentationDto? representationDto = new()
+            RepresentationDto representationDto = new()
             {
                 Id = request.Representation.Id,
                 Title = request.Representation.Title,
@@ -615,7 +615,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
                 ProductIds = request.Representation.ProductIds.ToList()
             };
 
-            void result = await _mediator.Send(new UpdateRepresentationCommandReq(representationDto));
+            var result = await _mediator.Send(new UpdateRepresentationCommandReq(representationDto));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -631,7 +631,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            void result = await _mediator.Send(new DeleteRepresentationCommandReq(request.Id));
+            var result = await _mediator.Send(new DeleteRepresentationCommandReq(request.Id));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductGallery.Handlers.Commands;
 
@@ -25,9 +25,9 @@ public class ChangeMainGalleryCommandHandler : IRequestHandler<ChangeMainGallery
 
     public async Task<ResponseDto> Handle(ChangeMainGalleryCommandReq request, CancellationToken cancellationToken)
     {
-        List<Domain.Models.ProductGallery> galleries =
+        List<Shared.Models.ProductGallery> galleries =
             await _productGallleryRep.GetGalleriesByProduct(request.productId);
-        foreach (Domain.Models.ProductGallery gallery in galleries)
+        foreach (Shared.Models.ProductGallery gallery in galleries)
         {
             if (gallery.Id != request.galleryId)
             {

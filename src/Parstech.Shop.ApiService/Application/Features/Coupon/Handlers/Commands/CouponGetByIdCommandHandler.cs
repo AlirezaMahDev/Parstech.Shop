@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Coupon.Handlers.Commands;
 
@@ -24,7 +24,7 @@ public class CouponGetByIdCommandHandler : IRequestHandler<CouponGetByIdCommandR
 
     public async Task<CouponDto> Handle(CouponGetByIdCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Coupon? coupon = await _couponRepo.GetAsync(request.couponId);
+        Shared.Models.Coupon? coupon = await _couponRepo.GetAsync(request.couponId);
         CouponDto? couponDto = _mapper.Map<CouponDto>(coupon);
         couponDto.ExpireDateShamsi = coupon.ExpireDate.ToShamsi();
         return couponDto;

@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductGallery.Handlers.Commands;
 
@@ -63,8 +63,8 @@ public class ProductGalleryCreateCommandHandler : IRequestHandler<ProductGallery
                 request.ProductGalleryDto.File.CopyTo(stream);
             }
 
-            Domain.Models.ProductGallery? Pgallery =
-                _mapper.Map<Domain.Models.ProductGallery>(request.ProductGalleryDto);
+            Shared.Models.ProductGallery? Pgallery =
+                _mapper.Map<Shared.Models.ProductGallery>(request.ProductGalleryDto);
             await _productGalleryRep.AddAsync(Pgallery);
 
             Response.IsSuccessed = true;

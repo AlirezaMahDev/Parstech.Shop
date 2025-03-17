@@ -4,9 +4,9 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -31,11 +31,11 @@ public class WalletTransactionsPagingQueryHandler : IRequestHandler<WalletTransa
     public async Task<PagingDto> Handle(WalletTransactionsPagingQueryReq request, CancellationToken cancellationToken)
     {
         IList<WalletTransactionDto> walletTransactions = new List<WalletTransactionDto>();
-        IReadOnlyList<Domain.Models.WalletTransaction> transactions = await _walletTransactionRepo.GetAll();
-        IOrderedEnumerable<Domain.Models.WalletTransaction> transactionsResult = transactions
+        IReadOnlyList<Shared.Models.WalletTransaction> transactions = await _walletTransactionRepo.GetAll();
+        IOrderedEnumerable<Shared.Models.WalletTransaction> transactionsResult = transactions
             .Where(a => a.WalletId == request.Parameter.WalletId && a.Type == request.Parameter.Type)
             .OrderByDescending(u => u.CreateDate);
-        foreach (Domain.Models.WalletTransaction item in transactionsResult)
+        foreach (Shared.Models.WalletTransaction item in transactionsResult)
         {
             WalletTransactionDto walletTransactionDto = new();
             walletTransactionDto = _mapper.Map<WalletTransactionDto>(item);

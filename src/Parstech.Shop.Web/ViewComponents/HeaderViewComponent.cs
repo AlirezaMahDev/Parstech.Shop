@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.ViewComponents;
 

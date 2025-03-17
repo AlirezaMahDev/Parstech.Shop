@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserShipping.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserShipping.Handlers.Queries;
 
@@ -23,7 +23,7 @@ public class UserShippingOfUserQueryHandler : IRequestHandler<UserShippingOfUser
     public async Task<List<UserShippingDto>> Handle(UserShippingOfUserQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<UserShippingDto>? userShippingList = await _userShippingRep.GetShippingOfUser(request.userId);
+        List<UserShippingDto> userShippingList = await _userShippingRep.GetShippingOfUser(request.userId);
         return _mapper.Map<List<UserShippingDto>>(userShippingList);
     }
 }

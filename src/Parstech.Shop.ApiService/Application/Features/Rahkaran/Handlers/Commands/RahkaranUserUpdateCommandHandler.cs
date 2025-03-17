@@ -5,9 +5,9 @@ using Dapper;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Handlers.Commands;
 
@@ -27,7 +27,7 @@ public class RahkaranUserUpdateCommandHandler : IRequestHandler<RahkaranUserUpda
     public async Task<RahkaranUserDto> Handle(RahkaranUserUpdateCommandReq request, CancellationToken cancellationToken)
     {
         RahkaranUser? item = _mapper.Map<RahkaranUser>(request.dto);
-        string? query =
+        string query =
             $"UPDATE dbo.RahkaranUser SET RahkaranUserId='{item.RahkaranUserId}' Where UserId={item.UserId}";
         DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query(query));
 

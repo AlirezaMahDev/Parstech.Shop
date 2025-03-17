@@ -18,10 +18,10 @@ public class ProductLogCreateCommandHandler : IRequestHandler<ProductLogCreateCo
 
     public async Task<Unit> Handle(ProductLogCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductLog log = new();
+        Shared.Models.ProductLog log = new();
         log.CreateDate = DateTime.Now;
         log.ProductStockPriceId = request.productStockPriceId;
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
         log.UserId = user.Id;
         log.OldValue = request.oldValue;
         log.NewValue = request.newValue;

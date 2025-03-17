@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 

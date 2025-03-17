@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -20,7 +20,7 @@ public class UserProductRepository : GenericRepository<UserProduct>, IUserProduc
 
     public async Task<bool> ExistFourUserProductByUserName(string userName, string type)
     {
-        List<UserProduct>? userProducts = await GetUserProductsByUsername(userName, type);
+        List<UserProduct> userProducts = await GetUserProductsByUsername(userName, type);
         if (userProducts.Count < 4)
         {
             return false;
@@ -34,7 +34,7 @@ public class UserProductRepository : GenericRepository<UserProduct>, IUserProduc
     public async Task<List<UserProduct?>> GetUserProductsByUsername(string userName, string type)
     {
         User? user = await _userRep.GetUserByUserName(userName);
-        List<UserProduct>? userProducts =
+        List<UserProduct> userProducts =
             await _context.UserProducts.Where(u => u.UserId == user.Id && u.Type == type).ToListAsync();
 
         return userProducts;

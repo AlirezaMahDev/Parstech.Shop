@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Section.Handlers.Commands;
 
@@ -23,7 +23,7 @@ public class SectionCreateCommandHandler : IRequestHandler<SectionCreateCommandR
 
     public async Task<SectionDto> Handle(SectionCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Section? section = _mapper.Map<Domain.Models.Section>(request.SectionDto);
+        Shared.Models.Section? section = _mapper.Map<Shared.Models.Section>(request.SectionDto);
         await _sectionRep.AddAsync(section);
         var result = await _madiiator.Send(new SectionReadCommandReq(section.Id));
         return result;

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Status.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Status.Handler.Commands;
 
@@ -23,7 +23,7 @@ public class StatusReadCommandHandler : IRequestHandler<StatusReadCommandReq, Li
 
     public async Task<List<StatusDto>> Handle(StatusReadCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Status>? StatusList = await _statusRepo.GetAll();
+        IReadOnlyList<Shared.Models.Status> StatusList = await _statusRepo.GetAll();
         return _mapper.Map<List<StatusDto>>(StatusList);
     }
 }

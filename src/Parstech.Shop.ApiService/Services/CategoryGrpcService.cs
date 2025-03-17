@@ -2,8 +2,8 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -21,7 +21,7 @@ public class CategoryGrpcService : CategoryService.CategoryServiceBase
     {
         try
         {
-            void categories = await _mediator.Send(new ParentCategoriesQueryReq());
+            var categories = await _mediator.Send(new ParentCategoriesQueryReq());
 
             var response = new CategoryResponse();
             foreach (var category in categories)
@@ -42,7 +42,7 @@ public class CategoryGrpcService : CategoryService.CategoryServiceBase
     {
         try
         {
-            void categories = await _mediator.Send(new CategorySubesQueryReq(request.ParentId));
+            var categories = await _mediator.Send(new CategorySubesQueryReq(request.ParentId));
 
             var response = new CategoryResponse();
             foreach (var category in categories)
@@ -63,7 +63,7 @@ public class CategoryGrpcService : CategoryService.CategoryServiceBase
     {
         try
         {
-            void category = await _mediator.Send(new GetCategoryByLatinNameQueryReq(request.LatinName));
+            var category = await _mediator.Send(new GetCategoryByLatinNameQueryReq(request.LatinName));
 
             return MapCategoryToProto(category);
         }
@@ -78,7 +78,7 @@ public class CategoryGrpcService : CategoryService.CategoryServiceBase
     {
         try
         {
-            void categories = await _mediator.Send(new ShowCateguriesQueryReq());
+            var categories = await _mediator.Send(new ShowCateguriesQueryReq());
 
             var response = new CategoriesMenuResponse();
             foreach (var parentCategory in categories)

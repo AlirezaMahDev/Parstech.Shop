@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.SectionDetail.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.SectionDetail.Handlers.Commands;
 
@@ -27,7 +27,7 @@ public class SectionDetailUpdateCommandHandler : IRequestHandler<SectionDetailUp
     public async Task<SectionDetailDto> Handle(SectionDetailUpdateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.SectionDetail? sectionDetail = await _sectionDetailRep.GetAsync(request.SectionDetailDto.Id);
+        Shared.Models.SectionDetail? sectionDetail = await _sectionDetailRep.GetAsync(request.SectionDetailDto.Id);
         //if (request.SectionDetailDto.Image == null)
         //{
         //    request.SectionDetailDto.Image = sectionDetail.Image;
@@ -43,7 +43,7 @@ public class SectionDetailUpdateCommandHandler : IRequestHandler<SectionDetailUp
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
                     "wwwroot/Shared/Images",
                     request.SectionDetailDto.Image);
-                using (FileStream? stream = new(imagePath, FileMode.Create))
+                using (FileStream stream = new(imagePath, FileMode.Create))
                 {
                     request.SectionDetailDto.ImageFile.CopyTo(stream);
                 }

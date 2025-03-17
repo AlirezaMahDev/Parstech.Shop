@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Products;
 
@@ -29,10 +29,10 @@ public class DetailModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
-    public ProductDetailShowDto Item { get; set; } = new ProductDetailShowDto();
+    public ProductDetailShowDto Item { get; set; } = new();
 
     [BindProperty]
     public string ShortLink { get; set; }
@@ -63,7 +63,7 @@ public class DetailModel : PageModel
             var productDetail = await _productDetailClient.GetProductByShortLinkAsync(shortLink, storeId, userName);
 
             // Map to DTO
-            Item = new ProductDetailShowDto
+            Item = new()
             {
                 Id = productDetail.Id,
                 Name = productDetail.Name,
@@ -133,7 +133,7 @@ public class DetailModel : PageModel
             // Get Torob data
             string baseUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}";
             var torobData = await _torobClient.GetTorobProductAsync(storeId, baseUrl);
-            Torob = new TorobDto
+            Torob = new()
             {
                 ProductId = torobData.ProductId,
                 PageUrl = torobData.PageUrl,

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -24,9 +24,9 @@ public class
     public async Task<List<ProductSelectDto>> Handle(GetAllParentVariableProductQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.Product>? products = await _productRep.GetAllParentVariableProduct(request.filter);
+        List<Shared.Models.Product> products = await _productRep.GetAllParentVariableProduct(request.filter);
         List<ProductSelectDto> result = new();
-        foreach (Domain.Models.Product product in products)
+        foreach (Shared.Models.Product product in products)
         {
             ProductSelectDto dto = new();
             dto.ProductName = product.Name;

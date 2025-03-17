@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
@@ -28,10 +28,10 @@ public class ShippingsModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public int UserId { get; set; }
@@ -62,7 +62,7 @@ public class ShippingsModel : PageModel
         UserShippingsList = new();
         foreach (var shipping in shippings.ShippingAddresses)
         {
-            UserShippingsList.Add(new UserShippingDto
+            UserShippingsList.Add(new()
             {
                 Id = shipping.Id,
                 UserId = shipping.UserId,
@@ -88,7 +88,7 @@ public class ShippingsModel : PageModel
     {
         var shipping = await _userProfileClient.GetUserShippingByIdAsync(UserShippingId);
 
-        UserShippingDto = new UserShippingDto
+        UserShippingDto = new()
         {
             Id = shipping.Id,
             UserId = shipping.UserId,

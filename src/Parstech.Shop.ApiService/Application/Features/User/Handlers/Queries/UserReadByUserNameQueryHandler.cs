@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -21,7 +21,7 @@ public class UserReadByUserNameQueryHandler : IRequestHandler<UserReadByUserName
 
     public async Task<UserDto> Handle(UserReadByUserNameQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
         return _mapper.Map<UserDto>(user);
     }
 }

@@ -4,10 +4,11 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Commands;
 
 using System.Globalization;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Coupon.Handlers.Commands;
 
@@ -33,9 +34,9 @@ public class UpdateCouponCommandHandler : IRequestHandler<UpdateCouponCommandReq
             int.Parse(std[2]),
             new PersianCalendar()
         );
-        Domain.Models.Coupon? coupon = _mapper.Map<Domain.Models.Coupon>(request.CouponDto);
+        Shared.Models.Coupon? coupon = _mapper.Map<Shared.Models.Coupon>(request.CouponDto);
         coupon.ExpireDate = az;
-        Domain.Models.Coupon couponResult = await _couponRepo.UpdateAsync(coupon);
+        Shared.Models.Coupon couponResult = await _couponRepo.UpdateAsync(coupon);
         return _mapper.Map<CouponDto>(couponResult);
     }
 }

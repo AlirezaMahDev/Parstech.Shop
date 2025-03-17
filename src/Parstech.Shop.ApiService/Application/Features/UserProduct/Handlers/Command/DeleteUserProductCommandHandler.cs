@@ -20,7 +20,7 @@ public class DeleteUserProductCommandHandler : IRequestHandler<DeleteUserProduct
 
     public async Task Handle(DeleteUserProductCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserProduct? userProduct = await _userProductRep.GetAsync(request.userProductId);
+        Shared.Models.UserProduct? userProduct = await _userProductRep.GetAsync(request.userProductId);
         await _userProductRep.DeleteAsync(userProduct);
     }
 }

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages;
 
@@ -43,7 +43,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public List<SectionAndDetailsDto> Sections { get; set; }
@@ -120,13 +120,13 @@ public class IndexModel : PageModel
 
             Response.Object = productList;
 
-            return new JsonResult(Response);
+            return new(Response);
         }
         catch (Exception ex)
         {
             Response.IsSuccessed = false;
             Response.Message = $"Error searching products: {ex.Message}";
-            return new JsonResult(Response);
+            return new(Response);
         }
     }
 
@@ -169,7 +169,7 @@ public class IndexModel : PageModel
             Response.Message = "Please login first";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -189,7 +189,7 @@ public class IndexModel : PageModel
             Response.Message = $"Error deleting product from compare: {ex.Message}";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -223,7 +223,7 @@ public class IndexModel : PageModel
             Response.Message = "Please login first";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -243,7 +243,7 @@ public class IndexModel : PageModel
             Response.Message = $"Error adding product to cart: {ex.Message}";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -252,7 +252,7 @@ public class IndexModel : PageModel
         try
         {
             string userName = User.Identity.IsAuthenticated ? User.Identity.Name : "-";
-            List<int>? productIds = new() { productId };
+            List<int> productIds = new() { productId };
             var result = await _orderClient.CreateOrderAsync(userName, productIds, 1, 1);
 
             Response.IsSuccessed = result.Status;
@@ -264,7 +264,7 @@ public class IndexModel : PageModel
             Response.Message = $"Error creating checkout: {ex.Message}";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -283,6 +283,6 @@ public class IndexModel : PageModel
             Response.Message = "شما وارد نشده اید";
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 }

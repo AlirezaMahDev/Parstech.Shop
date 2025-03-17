@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -28,7 +28,7 @@ public class ProductQuickEditQueryHandler : IRequestHandler<ProductQuickEditQuer
 
     public async Task<ProductDto> Handle(ProductQuickEditQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.ProductQuickEditDto.ProductId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.ProductQuickEditDto.ProductId);
         product.Name = request.ProductQuickEditDto.Name;
         product.LatinName = request.ProductQuickEditDto.LatinName;
         product.Code = request.ProductQuickEditDto.Code;
@@ -38,12 +38,12 @@ public class ProductQuickEditQueryHandler : IRequestHandler<ProductQuickEditQuer
         product.ParentId = request.ProductQuickEditDto.ParentId;
         product.Score = request.ProductQuickEditDto.Score;
         product.ParentId = request.ProductQuickEditDto.ParentId;
-        Domain.Models.Product? result = await _productRep.UpdateAsync(product);
+        Shared.Models.Product result = await _productRep.UpdateAsync(product);
 
 
-        Domain.Models.ProductStockPrice? prosuctStock =
+        Shared.Models.ProductStockPrice? prosuctStock =
             await _productStockPriceRep.GetAsync(request.ProductQuickEditDto.Id);
-        Domain.Models.UserStore? store = await _userStoreRep.GetAsync(request.ProductQuickEditDto.StoreId);
+        Shared.Models.UserStore? store = await _userStoreRep.GetAsync(request.ProductQuickEditDto.StoreId);
         prosuctStock.StoreId = store.Id;
         prosuctStock.QuantityPerBundle = request.ProductQuickEditDto.QuantityPerBundle;
         prosuctStock.RepId = store.RepId;

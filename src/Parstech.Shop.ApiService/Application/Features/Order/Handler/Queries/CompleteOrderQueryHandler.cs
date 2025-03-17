@@ -4,14 +4,14 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -59,48 +59,48 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
 
     public async Task<ResponseDto> Handle(CompleteOrderQueryReq request, CancellationToken cancellationToken)
     {
-        ResponseDto Response = new();
+        ResponseDto response = new();
         if (request.orderId == 0)
         {
-            Response.IsSuccessed = false;
-            Response.Message = "سفارش معتبر نمی باشد";
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = "سفارش معتبر نمی باشد";
+            return response;
         }
 
         if (request.orderShippingId == 0)
         {
-            Response.IsSuccessed = false;
-            Response.Message = "ابتدا آدرسی برای سفارش خود ثبت و مجددا امتحان کنید";
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = "ابتدا آدرسی برای سفارش خود ثبت و مجددا امتحان کنید";
+            return response;
         }
 
         if (request.payTypeId == 0)
         {
-            Response.IsSuccessed = false;
-            Response.Message = "روش پرداخت سفارش را انتخاب نمایید";
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = "روش پرداخت سفارش را انتخاب نمایید";
+            return response;
         }
 
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.orderId);
-        Domain.Models.OrderShipping? orderShipping = await _orderShippingRep.GetAsync(request.orderShippingId);
-        Domain.Models.PayType? PayType = await _payRep.GetAsync(request.payTypeId);
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.orderId);
+        Shared.Models.OrderShipping? orderShipping = await _orderShippingRep.GetAsync(request.orderShippingId);
+        Shared.Models.PayType? payType = await _payRep.GetAsync(request.payTypeId);
         OrderCoupon? orderCuopon = await _orderCouponRep.GetByOrderId(order.OrderId);
-        Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
-        Domain.Models.User? user = await _userRep.GetAsync(order.UserId);
-        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
+        Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
+        Shared.Models.User? user = await _userRep.GetAsync(order.UserId);
+        Shared.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
 
         #region OrderPay
 
-        void res = await _mediator.Send(new ChoisePayTypeForCreateOrderPayQueryReq(PayType.Id, wallet, order));
+        var res = await _mediator.Send(new ChoisePayTypeForCreateOrderPayQueryReq(payType.Id, wallet, order));
 
         #endregion
 
         //اگر مشکل داشت
         if (!res.IsSuccessed)
         {
-            Response.IsSuccessed = false;
-            Response.Message = res.Message;
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = res.Message;
+            return response;
         }
 
         //اگر نرمال بود و فقط یک حالت پرداخت داشت
@@ -128,17 +128,17 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             order.UserId));
 
 
-                        void createdTransaction1 =
+                        var createdTransaction1 =
                             await _mediator.Send(new CreateWalletTransactionCommandReq(transaction1, false));
-                        Response.IsSuccessed = true;
-                        Response.Message = "در حال انتقال به درگاه پرداخت";
+                        response.IsSuccessed = true;
+                        response.Message = "در حال انتقال به درگاه پرداخت";
 
 
-                        Response.Object = await _mediator.Send(new DargaQueryReq(order.OrderCode,
+                        response.Object = await _mediator.Send(new DargaQueryReq(order.OrderCode,
                             createdTransaction1.walletTransaction.Id,
                             item.Price));
 
-                        Response.IsSuccessed = true;
+                        response.IsSuccessed = true;
                         //ثیت وضعیت
                         await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                             OrderStatusType.OrderAwaitingPayment.ToString(),
@@ -146,22 +146,22 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             order.UserId));
 
 
-                        return Response;
+                        return response;
 
                     //از کیف پول
                     case 2:
 
                         if (order.Total > wallet.Amount)
                         {
-                            Response.IsSuccessed = false;
-                            Response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست ";
+                            response.IsSuccessed = false;
+                            response.Message = "موجودی حساب شما جهت تسویه سفارش کافی نیست ";
                             //ثیت وضعیت
                             await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                                 OrderStatusType.CancellationOrderPayment.ToString(),
                                 order.OrderId,
                                 order.UserId));
 
-                            return Response;
+                            return response;
                         }
 
                         WalletTransactionDto transaction2 = new()
@@ -172,7 +172,7 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             TypeId = 2,
                             Price = Convert.ToInt32(order.Total)
                         };
-                        void createdTransaction2 =
+                        var createdTransaction2 =
                             await _mediator.Send(new CreateWalletTransactionCommandReq(transaction2, false));
                         //ثیت وضعیت
                         await _mediator.Send(
@@ -180,7 +180,7 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                                 order.OrderId,
                                 order.UserId));
 
-                        Response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
+                        response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
                             createdTransaction2.walletTransaction.Id,
                             null));
                         break;
@@ -190,15 +190,15 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                         //var walletFecilities = await _walletRep.GetRemainingOfWallet(order.UserId, "Fecilities");
                         if (order.Total > wallet.Fecilities)
                         {
-                            Response.IsSuccessed = false;
-                            Response.Message = "موجودی تسهیلات شما جهت تسویه سفارش کافی نیست ";
+                            response.IsSuccessed = false;
+                            response.Message = "موجودی تسهیلات شما جهت تسویه سفارش کافی نیست ";
                             //ثیت وضعیت
                             await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                                 OrderStatusType.CancellationOrderPayment.ToString(),
                                 order.OrderId,
                                 order.UserId));
 
-                            return Response;
+                            return response;
                         }
 
                         await _mediator.Send(new CreateAghsatQueryReq(order,
@@ -212,14 +212,14 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             TypeId = 2,
                             Price = Convert.ToInt32(order.Total)
                         };
-                        void createdTransaction3 =
+                        var createdTransaction3 =
                             await _mediator.Send(new CreateWalletTransactionCommandReq(transaction3, false));
-                        Response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
+                        response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
                             createdTransaction3.walletTransaction.Id,
                             null));
 
 
-                        WalletTransactionDto ExpireTransaction = new()
+                        WalletTransactionDto expireTransaction = new()
                         {
                             WalletId = wallet.WalletId,
                             Description = "ابطال تسهیلات",
@@ -227,8 +227,8 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             TypeId = 2,
                             Price = Convert.ToInt32(wallet.Fecilities)
                         };
-                        void createdExpireTransaction =
-                            await _mediator.Send(new CreateWalletTransactionCommandReq(ExpireTransaction, true));
+                        var createdExpireTransaction =
+                            await _mediator.Send(new CreateWalletTransactionCommandReq(expireTransaction, true));
 
 
                         //ثیت وضعیت
@@ -243,15 +243,15 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                         //var walletOrgCredit = await _walletRep.GetRemainingOfWallet(order.UserId, "Fecilities");
                         if (order.Total > wallet.OrgCredit)
                         {
-                            Response.IsSuccessed = false;
-                            Response.Message = "موجودی اعتبار سازمانی شما جهت تسویه سفارش کافی نیست ";
+                            response.IsSuccessed = false;
+                            response.Message = "موجودی اعتبار سازمانی شما جهت تسویه سفارش کافی نیست ";
                             //ثیت وضعیت
                             await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                                 OrderStatusType.CancellationOrderPayment.ToString(),
                                 order.OrderId,
                                 order.UserId));
 
-                            return Response;
+                            return response;
                         }
 
                         //var ApiOrderSale = await _mediator.Send(new SendCreditOfUserOrderQueryReq(order.OrderId));
@@ -277,9 +277,9 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             TypeId = 2,
                             Price = Convert.ToInt32(order.Total)
                         };
-                        void createdTransaction4 =
+                        var createdTransaction4 =
                             await _mediator.Send(new CreateWalletTransactionCommandReq(transaction4, false));
-                        Response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
+                        response = await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId,
                             createdTransaction4.walletTransaction.Id,
                             null));
 
@@ -338,17 +338,17 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             order.UserId));
 
 
-                        void createdTransaction6 =
+                        var createdTransaction6 =
                             await _mediator.Send(new CreateWalletTransactionCommandReq(transaction6, false));
-                        Response.IsSuccessed = true;
-                        Response.Message = "در حال انتقال به درگاه پرداخت";
+                        response.IsSuccessed = true;
+                        response.Message = "در حال انتقال به درگاه پرداخت";
 
 
-                        Response.Object = await _mediator.Send(new NoPayQueryReq(order.OrderCode,
+                        response.Object = await _mediator.Send(new NoPayQueryReq(order.OrderCode,
                             createdTransaction6.walletTransaction.Id,
                             item.Price));
 
-                        Response.IsSuccessed = true;
+                        response.IsSuccessed = true;
                         //ثیت وضعیت
                         await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                             OrderStatusType.OrderAwaitingPayment.ToString(),
@@ -356,7 +356,7 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                             order.UserId));
 
 
-                        return Response;
+                        return response;
                 }
             }
         }
@@ -369,7 +369,7 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                 await _mediator.Send(new CompletaOrderWithoutDargahAndStatusAndCallBackQueryReq(order.OrderId,
                     secoundOrderPay.PayTypeId,
                     secoundOrderPay.Price));
-                ResponseDto Result =
+                ResponseDto result =
                     await _mediator.Send(new CallBackCompleteOrderQueryReq(order.OrderId, 0, "CashPay".ToString()));
 
 
@@ -395,17 +395,17 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                     order.UserId));
 
 
-                void createdTransaction1 =
+                var createdTransaction1 =
                     await _mediator.Send(new CreateWalletTransactionCommandReq(transaction1, false));
-                Response.IsSuccessed = true;
-                Response.Message = "مبلغ ما به التفاوت سفارش در حال انتقال به درگاه میباشد";
+                response.IsSuccessed = true;
+                response.Message = "مبلغ ما به التفاوت سفارش در حال انتقال به درگاه میباشد";
 
 
-                Response.Object = await _mediator.Send(new DargaQueryReq(order.OrderCode,
+                response.Object = await _mediator.Send(new DargaQueryReq(order.OrderCode,
                     createdTransaction1.walletTransaction.Id,
                     dargaPay.Price));
 
-                Response.IsSuccessed = true;
+                response.IsSuccessed = true;
                 //ثیت وضعیت
                 await _mediator.Send(new CreateOrderStatusByStatusIdQueryReq(
                     OrderStatusType.OrderAwaitingPayment.ToString(),
@@ -417,13 +417,13 @@ public class CompleteOrderQueryHandler : IRequestHandler<CompleteOrderQueryReq, 
                     $"INSERT INTO dbo.SecoundPayAfterDargah(orderId, transactionId, month) VALUES ({order.OrderId}, {request.transactionId}, {request.month})";
 
                 DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query(insertQuery).ToList());
-                return Response;
+                return response;
             }
         }
 
 
         order.CreateDate = DateTime.Now;
         await _orderRep.UpdateAsync(order);
-        return Response;
+        return response;
     }
 }

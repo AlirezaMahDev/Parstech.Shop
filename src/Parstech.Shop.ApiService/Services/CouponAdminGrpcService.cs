@@ -4,11 +4,11 @@ using MediatR;
 
 using AutoMapper;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.CouponType.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Validators.Coupon;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -26,12 +26,12 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
     public override async Task<CouponPageingDto> GetCouponsForAdmin(CouponParameterRequest request,
         ServerCallContext context)
     {
-        ParameterDto? parameter = new()
+        ParameterDto parameter = new()
         {
             CurrentPage = request.CurrentPage, TakePage = request.TakePage, Filter = request.Filter
         };
 
-        void result = await _mediator.Send(new CouponPagingQueryReq(parameter));
+        var result = await _mediator.Send(new CouponPagingQueryReq(parameter));
         var response = new CouponPageingDto
         {
             CurrentPage = result.CurrentPage, PageCount = result.PageCount, RowCount = result.RowCount
@@ -47,13 +47,13 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     public override async Task<CouponDto> GetCouponById(CouponRequest request, ServerCallContext context)
     {
-        void coupon = await _mediator.Send(new CouponGetByIdCommandReq(request.CouponId));
+        var coupon = await _mediator.Send(new CouponGetByIdCommandReq(request.CouponId));
         return MapToCouponDto(coupon);
     }
 
     public override async Task<CouponTypesResponse> GetCouponTypes(EmptyRequest request, ServerCallContext context)
     {
-        void couponTypes = await _mediator.Send(new CouponTypeReadCommandReq());
+        var couponTypes = await _mediator.Send(new CouponTypeReadCommandReq());
         var response = new CouponTypesResponse();
 
         foreach (var type in couponTypes)
@@ -66,7 +66,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     public override async Task<ResponseDto> CreateCoupon(CouponDto request, ServerCallContext context)
     {
-        CouponDto? couponDto = MapFromCouponDto(request);
+        CouponDto couponDto = MapFromCouponDto(request);
 
         // Validate the coupon
         var validator = new CouponDtoValidator();
@@ -74,7 +74,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
         if (!validationResult.IsValid)
         {
-            ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+            ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
             foreach (var error in validationResult.Errors)
             {
@@ -94,7 +94,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     public override async Task<ResponseDto> UpdateCoupon(CouponDto request, ServerCallContext context)
     {
-        CouponDto? couponDto = MapFromCouponDto(request);
+        CouponDto couponDto = MapFromCouponDto(request);
 
         // Validate the coupon
         var validator = new CouponDtoValidator();
@@ -102,7 +102,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
         if (!validationResult.IsValid)
         {
-            ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+            ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
             foreach (var error in validationResult.Errors)
             {
@@ -122,7 +122,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     public override async Task<ResponseDto> DeleteCoupon(CouponRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new DeleteCouponCommandReq(request.CouponId));
+        var result = await _mediator.Send(new DeleteCouponCommandReq(request.CouponId));
 
         if (!result)
         {
@@ -156,7 +156,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     private CouponDto MapFromCouponDto(CouponDto coupon)
     {
-        return new Shop.Application.DTOs.Coupon.CouponDto
+        return new Parstech.Shop.Application.DTOs.Coupon.CouponDto
         {
             Id = coupon.Id,
             Code = coupon.Code,

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Users;
 
@@ -33,7 +33,7 @@ public class IndexModel : PageModel
     #region Properties
 
     [BindProperty]
-    public UserParameterDto Parameter { get; set; } = new UserParameterDto();
+    public UserParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
     public UserPageingDto List { get; set; }
@@ -80,7 +80,7 @@ public class IndexModel : PageModel
     public int shippingId { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     #endregion
 

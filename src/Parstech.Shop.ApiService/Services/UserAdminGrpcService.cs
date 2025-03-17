@@ -4,7 +4,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Identity;
 
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -31,12 +31,12 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
 
     public override async Task<UserPageResponse> GetUsers(UserParameterRequest request, ServerCallContext context)
     {
-        UserParameterDto? parameter = new()
+        UserParameterDto parameter = new()
         {
             PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey
         };
 
-        void result = await _mediator.Send(new GetUsersPagingQueryReq(parameter));
+        var result = await _mediator.Send(new GetUsersPagingQueryReq(parameter));
 
         var response = new UserPageResponse
         {
@@ -80,13 +80,13 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
 
     public override async Task<UserResponse> GetUser(UserIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetUserDetailQueryReq(request.UserId));
+        var result = await _mediator.Send(new GetUserDetailQueryReq(request.UserId));
 
         var response = new UserResponse { Status = result.Status, Message = result.Message, Code = result.Code };
 
         if (result.Status && result.Data != null)
         {
-            UserDto? userDto = new()
+            UserDto userDto = new()
             {
                 Id = result.Data.Id,
                 UserName = result.Data.UserName,
@@ -130,7 +130,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             IsActive = request.IsActive
         };
 
-        void result = await _mediator.Send(new CreateUserCommandReq(createUserDto));
+        var result = await _mediator.Send(new CreateUserCommandReq(createUserDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -152,14 +152,14 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             IsActive = request.IsActive
         };
 
-        void result = await _mediator.Send(new UpdateUserCommandReq(updateUserDto));
+        var result = await _mediator.Send(new UpdateUserCommandReq(updateUserDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
 
     public override async Task<LoginResponse> LoginByUser(UserIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new LoginByUserQueryReq(request.UserId));
+        var result = await _mediator.Send(new LoginByUserQueryReq(request.UserId));
 
         return new LoginResponse
         {
@@ -174,7 +174,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
     public override async Task<UserBillingListResponse> GetUserBillings(UserIdRequest request,
         ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetUserBillingListQueryReq(request.UserId));
+        var result = await _mediator.Send(new GetUserBillingListQueryReq(request.UserId));
 
         var response = new UserBillingListResponse
         {
@@ -206,7 +206,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
 
     public override async Task<UserBillingResponse> GetUserBilling(BillingIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetUserBillingDetailQueryReq(request.BillingId));
+        var result = await _mediator.Send(new GetUserBillingDetailQueryReq(request.BillingId));
 
         var response = new UserBillingResponse { Status = result.Status, Message = result.Message, Code = result.Code };
 
@@ -252,7 +252,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             Province = request.Province
         };
 
-        void result = await _mediator.Send(new CreateUserBillingCommandReq(createUserBillingDto));
+        var result = await _mediator.Send(new CreateUserBillingCommandReq(createUserBillingDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -277,14 +277,14 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             Province = request.Province
         };
 
-        void result = await _mediator.Send(new UpdateUserBillingCommandReq(updateUserBillingDto));
+        var result = await _mediator.Send(new UpdateUserBillingCommandReq(updateUserBillingDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
 
     public override async Task<ResponseDto> DeleteUserBilling(BillingIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new DeleteUserBillingCommandReq(request.BillingId));
+        var result = await _mediator.Send(new DeleteUserBillingCommandReq(request.BillingId));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -296,7 +296,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
     public override async Task<UserShippingListResponse> GetUserShippings(UserIdRequest request,
         ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetUserShippingListQueryReq(request.UserId));
+        var result = await _mediator.Send(new GetUserShippingListQueryReq(request.UserId));
 
         var response = new UserShippingListResponse
         {
@@ -329,7 +329,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
     public override async Task<UserShippingResponse> GetUserShipping(ShippingIdRequest request,
         ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetUserShippingDetailQueryReq(request.ShippingId));
+        var result = await _mediator.Send(new GetUserShippingDetailQueryReq(request.ShippingId));
 
         var response = new UserShippingResponse
         {
@@ -378,7 +378,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             IsDefault = request.IsDefault
         };
 
-        void result = await _mediator.Send(new CreateUserShippingCommandReq(createUserShippingDto));
+        var result = await _mediator.Send(new CreateUserShippingCommandReq(createUserShippingDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -403,14 +403,14 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
             IsDefault = request.IsDefault
         };
 
-        void result = await _mediator.Send(new UpdateUserShippingCommandReq(updateUserShippingDto));
+        var result = await _mediator.Send(new UpdateUserShippingCommandReq(updateUserShippingDto));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
 
     public override async Task<ResponseDto> DeleteUserShipping(ShippingIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new DeleteUserShippingCommandReq(request.ShippingId));
+        var result = await _mediator.Send(new DeleteUserShippingCommandReq(request.ShippingId));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -421,7 +421,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
 
     public override async Task<UserRoleListResponse> GetUserRoles(UserIdRequest request, ServerCallContext context)
     {
-        void result = await _mediator.Send(new GetRolesQueryReq(request.UserId));
+        var result = await _mediator.Send(new GetRolesQueryReq(request.UserId));
 
         var response = new UserRoleListResponse
         {
@@ -443,7 +443,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
     {
         var userRole = new UserRoleDto { RoleId = request.RoleId };
 
-        void result = await _mediator.Send(new AddRoleCommandReq(request.UserId, userRole));
+        var result = await _mediator.Send(new AddRoleCommandReq(request.UserId, userRole));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }
@@ -452,7 +452,7 @@ public class UserAdminGrpcService : UserAdminService.UserAdminServiceBase
     {
         var userRole = new UserRoleDto { RoleId = request.RoleId };
 
-        void result = await _mediator.Send(new DeleteRoleCommandReq(request.UserId, userRole));
+        var result = await _mediator.Send(new DeleteRoleCommandReq(request.UserId, userRole));
 
         return new() { Status = result.Status, Message = result.Message, Code = result.Code };
     }

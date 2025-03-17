@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Api.Handlers.Queries;
 
@@ -95,12 +95,12 @@ public class
         // }
 
 
-        IReadOnlyList<Domain.Models.Categury> list = await _categuryRep.GetAll();
-        foreach (Domain.Models.Categury item in list)
+        IReadOnlyList<Shared.Models.Categury> list = await _categuryRep.GetAll();
+        foreach (Shared.Models.Categury item in list)
         {
             if (item.Alt != "0")
             {
-                Domain.Models.Categury? parent = await _categuryRep.GetCateguryByLatinName(item.Alt);
+                Shared.Models.Categury? parent = await _categuryRep.GetCateguryByLatinName(item.Alt);
                 parent.IsParnet = true;
 
                 item.ParentId = parent.GroupId;

@@ -20,16 +20,16 @@ public class RefreshParentQuantityQueryHandler : IRequestHandler<RefreshParentQu
     public async Task<bool> Handle(RefreshParentQuantityQueryReq request, CancellationToken cancellationToken)
     {
         //var productStock = await _productStockPriceRep.GetAsync(request.id);
-        Domain.Models.Product? product = await _productRep.GetAsync(request.id);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.id);
 
         if (product.ParentId == null)
         {
             return true;
         }
 
-        Domain.Models.Product? parrent = await _productRep.GetAsync(product.ParentId.Value);
-        List<Domain.Models.Product>? childs = await _productRep.GetProductsByParrentId(parrent.Id);
-        Domain.Models.ProductStockPrice? parrentStock =
+        Shared.Models.Product? parrent = await _productRep.GetAsync(product.ParentId.Value);
+        List<Shared.Models.Product> childs = await _productRep.GetProductsByParrentId(parrent.Id);
+        Shared.Models.ProductStockPrice? parrentStock =
             await _productStockPriceRep.GetProductStockByProductIdAndStoreId(parrent.Id, request.storeId);
         List<int> Quantities = new();
 
@@ -39,9 +39,9 @@ public class RefreshParentQuantityQueryHandler : IRequestHandler<RefreshParentQu
             {
                 case 3:
                     int count = 0;
-                    foreach (Domain.Models.Product child in childs)
+                    foreach (Shared.Models.Product child in childs)
                     {
-                        Domain.Models.ProductStockPrice? pStock =
+                        Shared.Models.ProductStockPrice? pStock =
                             await _productStockPriceRep.GetProductStockByProductIdAndStoreId(child.Id, request.storeId);
                         if (pStock != null)
                         {
@@ -53,9 +53,9 @@ public class RefreshParentQuantityQueryHandler : IRequestHandler<RefreshParentQu
 
                     break;
                 case 5:
-                    foreach (Domain.Models.Product child in childs)
+                    foreach (Shared.Models.Product child in childs)
                     {
-                        Domain.Models.ProductStockPrice? pStock =
+                        Shared.Models.ProductStockPrice? pStock =
                             await _productStockPriceRep.GetProductStockByProductIdAndStoreId(child.Id, request.storeId);
                         //pStock.QuantityPerBundle = request.QuantityPerBundle;
 

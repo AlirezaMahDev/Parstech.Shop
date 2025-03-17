@@ -3,11 +3,11 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderShipping.Request.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -41,65 +41,65 @@ public class RefreshOrderQueryHandler : IRequestHandler<RefreshOrderQueryReq, Or
     public async Task<OrderResponse> Handle(RefreshOrderQueryReq request, CancellationToken cancellationToken)
     {
         OrderResponse result = new();
-        Domain.Models.Order? Order = await _orderRep.GetAsync(request.id);
-        if (Order == null)
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.id);
+        if (order == null)
         {
             return result;
         }
 
-        List<Domain.Models.OrderDetail> orderDetils = await _orderDetailRep.GetOrderDetailsByOrderId(request.id);
-        OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(Order.OrderId);
-        long OrderSum = 0;
-        long Discount = 0;
-        long Tax = 0;
-        long OrderTotal = 0;
+        List<Shared.Models.OrderDetail> orderDetils = await _orderDetailRep.GetOrderDetailsByOrderId(request.id);
+        OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(order.OrderId);
+        long orderSum = 0;
+        long discount = 0;
+        long tax = 0;
+        long orderTotal = 0;
 
         long orderCouponDiscount = 0;
-        foreach (Domain.Models.OrderDetail deteil in orderDetils)
+        foreach (Shared.Models.OrderDetail deteil in orderDetils)
         {
-            OrderSum += deteil.DetailSum;
+            orderSum += deteil.DetailSum;
             orderCouponDiscount += deteil.Discount;
-            Tax += deteil.Tax;
-            OrderTotal += deteil.Total;
+            tax += deteil.Tax;
+            orderTotal += deteil.Total;
         }
 
-        Order.OrderSum = OrderSum;
-        Order.Shipping =
-            await _mediator.Send(new OrderShippingChangeQueryReq("Refresh", 0, Order.OrderId, Order.OrderSum));
-        Order.Tax = Tax;
+        order.OrderSum = orderSum;
+        order.Shipping =
+            await _mediator.Send(new OrderShippingChangeQueryReq("Refresh", 0, order.OrderId, order.OrderSum));
+        order.Tax = tax;
 
-        if (await _orderCouponRep.OrderHaveCoupon(Order.OrderId))
+        if (await _orderCouponRep.OrderHaveCoupon(order.OrderId))
         {
-            OrderDto? orderDto = _mapper.Map<OrderDto>(Order);
+            OrderDto? orderDto = _mapper.Map<OrderDto>(order);
 
-            Domain.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
+            Shared.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
             if (coupon.CouponTypeId == 1 || coupon.CouponTypeId == 2)
             {
-                void DisountResult =
+                var disountResult =
                     await _mediator.Send(new CheckAndUseCouponQueryReq("Order", orderDto, null, coupon.Code));
-                Discount += DisountResult.Discount;
-                orderCouponDiscount += Discount;
-                result = DisountResult;
+                discount += disountResult.Discount;
+                orderCouponDiscount += discount;
+                result = disountResult;
             }
             else
             {
                 result.Status = true;
                 result.Message = "عملیات با موفقیت انجام شد";
-                Discount += 0;
+                discount += 0;
             }
         }
         else
         {
             result.Status = true;
             result.Message = "عملیات با موفقیت انجام شد";
-            Discount = 0;
+            discount = 0;
         }
 
-        Order.Discount = Discount;
+        order.Discount = discount;
         //var total = OrderDetailCalculator.GetTotal(Order.OrderSum, Order.Tax, orderCouponDiscount);
 
-        Order.Total = OrderTotal - Discount + Order.Shipping;
-        await _orderRep.UpdateAsync(Order);
+        order.Total = orderTotal - discount + order.Shipping;
+        await _orderRep.UpdateAsync(order);
 
         try
         {

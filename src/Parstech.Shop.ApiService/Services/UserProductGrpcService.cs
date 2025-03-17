@@ -3,7 +3,7 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Query;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -21,12 +21,12 @@ public class UserProductGrpcService : UserProductService.UserProductServiceBase
     {
         try
         {
-            var userProductDto = new Shop.Application.DTOs.UserProduct.UserProductDto
+            var userProductDto = new Parstech.Shop.Application.DTOs.UserProduct.UserProductDto
             {
                 UserName = request.UserName, ProductId = request.ProductId, Type = request.Type
             };
 
-            void result = await _mediator.Send(new UserProductCreateCommandReq(userProductDto));
+            var result = await _mediator.Send(new UserProductCreateCommandReq(userProductDto));
 
             return new UserProductResponse
             {
@@ -71,7 +71,7 @@ public class UserProductGrpcService : UserProductService.UserProductServiceBase
     {
         try
         {
-            void products = request.Type.ToLower() switch
+            var products = request.Type.ToLower() switch
             {
                 "favorite" => await _mediator.Send(new GetFavoriteProductOfUsersQueryReq(request.UserName)),
                 "compare" => await _mediator.Send(new GetCmparisonProductsOfUsersQueryReq(request.UserName)),

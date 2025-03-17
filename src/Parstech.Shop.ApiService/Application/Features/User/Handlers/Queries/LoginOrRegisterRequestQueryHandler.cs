@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -22,7 +22,7 @@ public class LoginOrRegisterRequestQueryHandler : IRequestHandler<LoginOrRegiste
         ResponseDto StatusResponse = new();
         Random random = new();
         int activeCode = random.Next(1000, 9999);
-        Domain.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
+        Shared.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
         if (item == null)
         {
             long mobile = long.Parse(request.Mobile);

@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Ticket.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Ticket.Handler.Queries;
 
@@ -26,9 +26,9 @@ public class TicketPagingQueryHandler : IRequestHandler<TicketPagingQueryReq, Pa
 
     public async Task<PagingDto> Handle(TicketPagingQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Ticket>? tickets = await _ticketRep.GetAll();
+        IReadOnlyList<Shared.Models.Ticket> tickets = await _ticketRep.GetAll();
         IList<TicketDto> TicketsDto = new List<TicketDto>();
-        foreach (Domain.Models.Ticket ticket in tickets)
+        foreach (Shared.Models.Ticket ticket in tickets)
         {
             TicketDto? TicketDto = _mapper.Map<TicketDto>(ticket);
             TicketStatus? status = await _ticketStatusesRep.GetAsync(ticket.StatusId);

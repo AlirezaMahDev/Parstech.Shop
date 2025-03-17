@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Order.Commands;
 using Parstech.Shop.ApiService.Application.Dargah.ZarrinPal.Models;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 
@@ -15,6 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -33,7 +33,7 @@ public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
 
     public async Task<string> Handle(DargaQueryReq request, CancellationToken cancellationToken)
     {
-        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+        OrderDto order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
             conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
                 .FirstOrDefault());
 
@@ -43,24 +43,24 @@ public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
         string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
 
 
-        long Amount = request.price * 10;
-        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
+        long amount = request.price * 10;
+        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{amount}";
 
 
-        byte[]? byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
+        byte[] byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
 
         SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
         algorithm.Mode = CipherMode.ECB;
         algorithm.Padding = PaddingMode.PKCS7;
 
-        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        ICryptoTransform encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
         string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
 
         var data = new
         {
             MerchantId = merchantId,
             TerminalId = terminalId,
-            Amount,
+            Amount = amount,
             order.OrderId,
             LocalDateTime = DateTime.Now,
             ReturnUrl = "https://Parstech.co/Sadad/CallBack",
@@ -68,7 +68,7 @@ public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
         };
 
 
-        RequestPaymentResult? res =
+        RequestPaymentResult res =
             CallApi<RequestPaymentResult>("https://sadad.shaparak.ir/api/v0/Request/PaymentRequest", data).Result;
         if (res.ResCode == 0)
         {
@@ -82,7 +82,7 @@ public class DargaQueryHandler : IRequestHandler<DargaQueryReq, string>
 
     public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
     {
-        using (HttpClient? client = new())
+        using (HttpClient client = new())
         {
             client.BaseAddress = new(apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();
@@ -124,7 +124,7 @@ public class ZarrinPalQueryHandler : IRequestHandler<ZarrinPalQueryReq, string>
 
     public async Task<string> Handle(ZarrinPalQueryReq request, CancellationToken cancellationToken)
     {
-        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+        OrderDto order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
             conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
                 .FirstOrDefault());
         //var payment = new ZarinpalSandbox.Payment(Convert.ToInt32(order.Total));
@@ -143,15 +143,15 @@ public class ZarrinPalQueryHandler : IRequestHandler<ZarrinPalQueryReq, string>
         //}
         Dargah.ZarrinPal.ZarinPal zarinpal = Dargah.ZarrinPal.ZarinPal.Get();
 
-        string MerchantID = "85cab9c2-ac10-45a1-8489-1f8650ed6dee";
-        string CallbackURL = $"http://parstech.co//Zarrinpal/Callback/{order.OrderId}";
-        long Amount = order.Total;
-        string Description = $"پرداخت صورتحساب {order.OrderCode}";
+        string merchantId = "85cab9c2-ac10-45a1-8489-1f8650ed6dee";
+        string callbackUrl = $"http://parstech.co//Zarrinpal/Callback/{order.OrderId}";
+        long amount = order.Total;
+        string description = $"پرداخت صورتحساب {order.OrderCode}";
 
-        PaymentRequest pr = new ZarinPal.PaymentRequest(MerchantID, Amount, CallbackURL, Description);
+        PaymentRequest pr = new(merchantId, amount, callbackUrl, description);
 
         zarinpal.DisableSandboxMode();
-        PaymentResponse? res = zarinpal.InvokePaymentRequest(pr);
+        PaymentResponse res = zarinpal.InvokePaymentRequest(pr);
         if (res.Status == 100)
         {
             return res.PaymentURL;
@@ -182,7 +182,7 @@ public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
 
     public async Task<string> Handle(NoPayQueryReq request, CancellationToken cancellationToken)
     {
-        OrderDto? order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
+        OrderDto order = DapperHelper.ExecuteCommand<OrderDto>(_connectionString,
             conn => conn.Query<OrderDto>(_orderCommand.GetOrderByOrderCode, new { request.orderCode })
                 .FirstOrDefault());
 
@@ -192,24 +192,24 @@ public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
         string merchantKey = "uIIgNnYYAUlWuL3nuPysq54HLx4ydJMl";
 
 
-        long Amount = request.price * 10;
-        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{Amount}";
+        long amount = request.price * 10;
+        string signDataBeforeEncode = $"{terminalId};{order.OrderId};{amount}";
 
 
-        byte[]? byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
+        byte[] byteData = Encoding.UTF8.GetBytes(signDataBeforeEncode);
 
         SymmetricAlgorithm? algorithm = SymmetricAlgorithm.Create("TripleDes");
         algorithm.Mode = CipherMode.ECB;
         algorithm.Padding = PaddingMode.PKCS7;
 
-        ICryptoTransform? encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
+        ICryptoTransform encryptor = algorithm.CreateEncryptor(Convert.FromBase64String(merchantKey), new byte[8]);
         string signData = Convert.ToBase64String(encryptor.TransformFinalBlock(byteData, 0, byteData.Length));
 
         var data = new
         {
             MerchantId = merchantId,
             TerminalId = terminalId,
-            Amount,
+            Amount = amount,
             order.OrderId,
             ReturnUrl = "https://parstech.co/Sadad/BnplCallBack",
             UserId = order.UserName,
@@ -223,7 +223,7 @@ public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
         };
 
 
-        NoPayResponseGenKey? res = CallApi<NoPayResponseGenKey>("https://bnpl.sadadpsp.ir/Bnpl/GenerateKey", data)
+        NoPayResponseGenKey res = CallApi<NoPayResponseGenKey>("https://bnpl.sadadpsp.ir/Bnpl/GenerateKey", data)
             .Result;
         if (res.ResponseCode == 0)
         {
@@ -237,7 +237,7 @@ public class NoPayQueryHandler : IRequestHandler<NoPayQueryReq, string>
 
     public async Task<T> CallApi<T>(string apiUrl, object value) where T : new()
     {
-        using (HttpClient? client = new())
+        using (HttpClient client = new())
         {
             client.BaseAddress = new(apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();

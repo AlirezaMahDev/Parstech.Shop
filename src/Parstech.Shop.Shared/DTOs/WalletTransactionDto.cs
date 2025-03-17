@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class WalletTransactionDto
 {
@@ -34,20 +34,4 @@ public class WalletTransactionDto
     public string ExpireDateShamsi { get; set; }
 
     public string? FileName { get; set; }
-}
-
-public class WalletTransactionParameterDto
-{
-    public int CurrentPage { get; set; }
-    public int TakePage { get; set; }
-    public int PageCount { get; set; }
-    public string Filter { get; set; }
-    public int WalletId { get; set; }
-    public string Type { get; set; }
-}
-
-public class WalletTransactionResult
-{
-    public bool isSuccessed { get; set; }
-    public WalletTransactionDto walletTransaction { get; set; }
 }

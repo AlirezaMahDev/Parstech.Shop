@@ -3,14 +3,14 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Generator;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -59,20 +59,20 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
 
     public async Task<ResponseDto> Handle(CallBackCompleteOrderQueryReq request, CancellationToken cancellationToken)
     {
-        ResponseDto Response = new();
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.orderId);
+        ResponseDto response = new();
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.orderId);
 
-        List<Domain.Models.OrderDetail> orderDetails = await _orderDetailRep.GetOrderDetailsByOrderId(order.OrderId);
+        List<Shared.Models.OrderDetail> orderDetails = await _orderDetailRep.GetOrderDetailsByOrderId(order.OrderId);
 
-        ProductRepresentationDto ProductRep = new() { UserId = order.UserId, TypeId = 2 };
-        int Coin = 0;
+        ProductRepresentationDto productRep = new() { UserId = order.UserId, TypeId = 2 };
+        int coin = 0;
 
         //کم کردن موجودی
-        foreach (Domain.Models.OrderDetail orderDetail in orderDetails)
+        foreach (Shared.Models.OrderDetail orderDetail in orderDetails)
         {
-            Domain.Models.ProductStockPrice? productStock =
+            Shared.Models.ProductStockPrice? productStock =
                 await _productStockRep.GetAsync(orderDetail.ProductStockPriceId);
-            Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+            Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
 
             if (product.TypeId == 4)
             {
@@ -80,22 +80,21 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
                     product.Id,
                     productStock.Id,
                     orderDetail.Count));
-                ;
             }
             else
             {
-                Coin += product.Score;
-                ProductRep.UniqeCode = CodeGenerator.GenerateUniqCode();
-                ProductRep.ProductStockPriceId = productStock.Id;
-                ProductRep.RepresntationId = productStock.RepId;
-                ProductRep.Quantity = orderDetail.Count;
-                await _mediator.Send(new ProductRepresesntationCreateCommandReq(ProductRep));
+                coin += product.Score;
+                productRep.UniqeCode = CodeGenerator.GenerateUniqCode();
+                productRep.ProductStockPriceId = productStock.Id;
+                productRep.RepresntationId = productStock.RepId;
+                productRep.Quantity = orderDetail.Count;
+                await _mediator.Send(new ProductRepresesntationCreateCommandReq(productRep));
             }
         }
 
         if (request.transactionId != 0)
         {
-            Domain.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
+            Shared.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
             //واریز و برداشت پس از پرداخت اینترنتی
             if (transaction.TypeId == 3)
             {
@@ -105,7 +104,7 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
                 WalletTransactionDto? transactionDto = _mapper.Map<WalletTransactionDto>(transaction);
                 await _walletRep.WalletCalculateTransaction(transactionDto);
 
-                Shop.Domain.Models.WalletTransaction Bardasht = new Shop.Domain.Models.WalletTransaction()
+                Shared.Models.WalletTransaction bardasht = new()
                 {
                     WalletId = transaction.WalletId,
                     TypeId = 1,
@@ -115,9 +114,9 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
                     Description = transaction.Description,
                     CreateDate = DateTime.Now
                 };
-                await _walletTransactionRep.AddAsync(Bardasht);
-                WalletTransactionDto? BardashtDto = _mapper.Map<WalletTransactionDto>(Bardasht);
-                await _walletRep.WalletCalculateTransaction(BardashtDto);
+                await _walletTransactionRep.AddAsync(bardasht);
+                WalletTransactionDto? bardashtDto = _mapper.Map<WalletTransactionDto>(bardasht);
+                await _walletRep.WalletCalculateTransaction(bardashtDto);
             }
             //برداشت از حساب
             else
@@ -126,32 +125,32 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
                 await _walletRep.WalletCalculateTransaction(transactionDto);
             }
 
-            Response.Object2 = transaction.Description;
+            response.Object2 = transaction.Description;
         }
 
 
-        Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
+        Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
         //امتیازات
-        Shop.Domain.Models.WalletTransaction CoinTransaction = new Shop.Domain.Models.WalletTransaction()
+        Shared.Models.WalletTransaction coinTransaction = new()
         {
             WalletId = wallet.WalletId,
             TypeId = 2,
-            Price = Coin,
+            Price = coin,
             Type = "Coin",
             TrackingCode = CodeGenerator.GenerateUniqCode(),
             Description = $"افزایش امتیاز سفارش {order.OrderCode}",
             CreateDate = DateTime.Now
         };
-        await _walletTransactionRep.AddAsync(CoinTransaction);
-        WalletTransactionDto? CoinDto = _mapper.Map<WalletTransactionDto>(CoinTransaction);
-        await _walletRep.WalletCalculateTransaction(CoinDto);
+        await _walletTransactionRep.AddAsync(coinTransaction);
+        WalletTransactionDto? coinDto = _mapper.Map<WalletTransactionDto>(coinTransaction);
+        await _walletRep.WalletCalculateTransaction(coinDto);
 
 
         // کم کردن تخفیف
         if (await _orderCouponRep.ExistInOrder(order.OrderId))
         {
             OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(order.OrderId);
-            Domain.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
+            Shared.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
             if (coupon.CouponTypeId == 2)
             {
                 coupon.Amount -= orderCoupon.DiscountPrice;
@@ -171,10 +170,10 @@ public class CallBackCompleteOrderQueryHandler : IRequestHandler<CallBackComplet
             order.UserId));
 
 
-        Response.IsSuccessed = true;
-        Response.Message = "سفارش شما با موفقیت پرداخت شد";
+        response.IsSuccessed = true;
+        response.Message = "سفارش شما با موفقیت پرداخت شد";
         //Response.Object = $"{transaction.TrackingCode}";
 
-        return Response;
+        return response;
     }
 }

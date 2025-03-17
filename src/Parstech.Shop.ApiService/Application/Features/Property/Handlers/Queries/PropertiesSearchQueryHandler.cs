@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Property.Handlers.Queries;
 
@@ -21,7 +21,7 @@ public class PropertiesSearchQueryHandler : IRequestHandler<PropertiesSearchQuer
 
     public async Task<List<PropertyDto>> Handle(PropertiesSearchQueryReq request, CancellationToken cancellationToken)
     {
-        List<Domain.Models.Property>? list =
+        List<Shared.Models.Property> list =
             await _propertyRep.GetPropertyBySearch(request.categuryId, request.PropertCateguriId, request.Filter);
         return _mapper.Map<List<PropertyDto>>(list);
     }

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -23,8 +23,8 @@ public class CreateAghsatQueryHandler : IRequestHandler<CreateAghsatQueryReq, bo
 
     public async Task<bool> Handle(CreateAghsatQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
-        Domain.Models.Wallet? wallet = await _walletRep.GetAsync(transaction.WalletId);
+        Shared.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
+        Shared.Models.Wallet? wallet = await _walletRep.GetAsync(transaction.WalletId);
 
 
         long walletAmount = 0;

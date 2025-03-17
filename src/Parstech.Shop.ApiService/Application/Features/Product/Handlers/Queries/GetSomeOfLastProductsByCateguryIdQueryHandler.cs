@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -46,7 +46,7 @@ public class
     {
         List<ProductListShowDto> Result = new();
 
-        Domain.Models.Categury? categury = await _categuryRep.GetAsync(request.CateguryId);
+        Shared.Models.Categury? categury = await _categuryRep.GetAsync(request.CateguryId);
         List<DapperProductDto> list = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<DapperProductDto>(_productQueries.GetLastListByGroup,
                     new { @categuryLatinName = categury.LatinGroupTitle })
@@ -55,10 +55,10 @@ public class
         foreach (DapperProductDto item in list)
         {
             ProductListShowDto? Dto = _mapper.Map<ProductListShowDto>(item);
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _connectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                    .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                         new { @productId = item.ProductId })
                     .FirstOrDefault());
             if (image != null)

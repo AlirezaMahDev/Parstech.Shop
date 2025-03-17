@@ -1,10 +1,10 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Coupon.Handlers.Queries;
 
@@ -31,7 +31,7 @@ public class CheckAndUseCouponQueryHandler : IRequestHandler<CheckAndUseCouponQu
     public async Task<OrderResponse> Handle(CheckAndUseCouponQueryReq request, CancellationToken cancellationToken)
     {
         OrderResponse Response = new();
-        Domain.Models.Coupon? Coupon = await _coupoonRep.GetByCouponCode(request.CouponCode);
+        Shared.Models.Coupon? Coupon = await _coupoonRep.GetByCouponCode(request.CouponCode);
 
 
         long Discount = 0;
@@ -64,7 +64,7 @@ public class CheckAndUseCouponQueryHandler : IRequestHandler<CheckAndUseCouponQu
         else
         {
             OrderDetailDto OrderDetail = request.orderDetailDto;
-            Domain.Models.Order? Order = await _orderRep.GetAsync(OrderDetail.OrderId);
+            Shared.Models.Order? Order = await _orderRep.GetAsync(OrderDetail.OrderId);
 
             List<CouponPcu> ProductList = new();
 

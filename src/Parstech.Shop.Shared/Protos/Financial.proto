@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Financial";
+
+package financial;
+
+import "Protos/Common.proto";
+
+// FINANCIAL SERVICE DEFINITIONS
+
+// Financial Admin Service for financial administration
+service FinancialAdminService {
+  // Wallet operations
+  rpc GetWalletsPaging (ParameterDto) returns (PagingDto);
+  rpc GetUserFilters (EmptyRequest) returns (UserFiltersResponse);
+  rpc BlockOrUnblockWallet (BlockWalletRequest) returns (common.ResponseDto);
+  
+  // Wallet transactions operations
+  rpc GetWalletTransactionsPaging (WalletTransactionParameterDto) returns (PagingDto);
+  rpc CreateWalletTransaction (WalletTransactionDto) returns (common.ResponseDto);
+  rpc GetWalletTransactionDetail (TransactionIdRequest) returns (WalletTransactionDto);
+  
+  // Installment operations
+  rpc PayInstallment (TransactionIdRequest) returns (common.ResponseDto);
+  
+  // Facility operations
+  rpc CreateFacilities (FacilitiesDto) returns (common.ResponseDto);
+  rpc RegisterFacilitiesByExcel (ExcelUploadRequest) returns (common.ResponseDto);
+  rpc ProcessFacilityPaymentsByExcel (ExcelUploadRequest) returns (common.ResponseDto);
+}
+
+// Reports Admin Service for financial reports
+service ReportsAdminService {
+  // Financial reports operations
+  rpc GetUsersForSelectList (EmptyRequest) returns (UsersForSelectListResponse);
+  rpc GetTransactionsReport (TransactionParameterDto) returns (WalletTransactionPagingDto);
+  rpc GetActiveCreditReport (TransactionParameterDto) returns (WalletTransactionPagingDto);
+  rpc GetActiveInstallments (UserIdRequest) returns (WalletTransactionPagingDto);
+  rpc GenerateTransactionsExcel (TransactionReportExcelRequest) returns (ExcelResponse);
+  rpc GenerateActiveCreditExcel (TransactionReportExcelRequest) returns (ExcelResponse);
+}
+
+// MESSAGE DEFINITIONS
+
+// Common message types
+message EmptyRequest {}
+
+// Parameter message types
+message ParameterDto {
+  int32 page_id = 1;
+  int32 take = 2;
+  string search_key = 3;
+  string filter = 4;
+}
+
+message WalletTransactionParameterDto {
+  int32 page_id = 1;
+  int32 take = 2;
+  string search_key = 3;
+  string filter = 4;
+  int32 wallet_id = 5;
+  string date_from = 6;
+  string date_to = 7;
+  int32 type_id = 8;
+}
+
+// Wallet messages
+message UserFiltersResponse {
+  repeated UserFilterDto filters = 1;
+}
+
+message UserFilterDto {
+  int32 id = 1;
+  string name = 2;
+  string user_name = 3;
+  string name_value = 4;
+}
+
+message BlockWalletRequest {
+  bool is_blocked = 1;
+  int32 wallet_id = 2;
+}
+
+// Paging response
+message PagingDto {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  bytes items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+  bytes filter = 8;
+}
+
+// Transaction messages
+message WalletTransactionDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  bool is_success = 6;
+  int32 type_id = 7;
+  string type_name = 8;
+  string transaction_date = 9;
+  string tracking_code = 10;
+  int32 order_id = 11;
+  string transaction_number = 12;
+  string bank_name = 13;
+  bool is_verified = 14;
+}
+
+message TransactionIdRequest {
+  int32 transaction_id = 1;
+}
+
+// Facilities messages
+message FacilitiesDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  int32 number_of_installments = 6;
+  string first_payment_date = 7;
+  double monthly_payment = 8;
+  bool with_interest = 9;
+  double interest_rate = 10;
+}
+
+// Excel upload messages
+message ExcelUploadRequest {
+  string type = 1;
+  bytes file_data = 2;
+  string file_name = 3;
+  string content_type = 4;
+}
+
+// User selection 
+message UsersForSelectListResponse {
+  repeated UserForSelectListDto users = 1;
+}
+
+message UserForSelectListDto {
+  int32 id = 1;
+  string name = 2;
+  string mobile = 3;
+  string fullname = 4;
+}
+
+message UserIdRequest {
+  int32 user_id = 1;
+}
+
+// Transaction parameters for reports
+message TransactionParameterDto {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  string user_filter = 3;
+  string wallet_type = 4;
+  int32 transaction_type = 5;
+  string from_date = 6;
+  string to_date = 7;
+}
+
+// Transaction report data
+message WalletTransactionPagingDto {
+  bool is_successed = 1;
+  string message = 2;
+  repeated WalletTransactionReportDto items = 3;
+  int32 total_row = 4;
+  int32 page_id = 5;
+  int32 take = 6;
+  TransactionParameterDto parameter = 7;
+  double total_price = 8;
+  double walletbalance = 9;
+}
+
+message WalletTransactionReportDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  bool is_success = 6;
+  int32 type_id = 7;
+  string type_name = 8;
+  string transaction_date = 9;
+  string tracking_code = 10;
+  int32 order_id = 11;
+  string transaction_number = 12;
+  string bank_name = 13;
+  string jalali_date = 14;
+  double price = 15;
+  double bank_price = 16;
+  double wallet_credit = 17;
+  double pay = 18;
+  bool is_verified = 19;
+  string wallet_name = 20;
+  bool is_payed = 21;
+  int32 user_id = 22;
+  string created_date = 23;
+}
+
+// Excel generation requests
+message TransactionReportExcelRequest {
+  string user_filter = 1;
+  string wallet_type = 2;
+  int32 transaction_type = 3;
+  string from_date = 4;
+  string to_date = 5;
+}
+
+// Excel response
+message ExcelResponse {
+  bytes excel_data = 1;
+  string file_name = 2;
+  bool is_success = 3;
+  string message = 4;
+} 

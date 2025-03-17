@@ -7,9 +7,9 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.ProductRelated.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRelated.Handlers.Queries;
 
@@ -52,7 +52,7 @@ public class
         CancellationToken cancellationToken)
     {
         List<ProductDto> Result = new();
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
         string sql =
             $"SELECT dbo.Product.Name,dbo.Product.Id, dbo.Product.LatinName, dbo.Product.Code, dbo.Product.ShortDescription, dbo.Product.ShortLink, dbo.Product.TypeId, dbo.ProductStockPrice.Id, dbo.ProductStockPrice.ProductId, dbo.ProductStockPrice.SalePrice,dbo.ProductStockPrice.DiscountPrice, dbo.ProductStockPrice.StockStatus, dbo.ProductStockPrice.Quantity, dbo.ProductStockPrice.MaximumSaleInOrder, dbo.ProductStockPrice.StoreId, dbo.ProductStockPrice.RepId,dbo.UserStore.StoreName,dbo.ProductStockPrice.CateguryOfUserId,dbo.ProductStockPrice.CateguryOfUserType FROM dbo.Product INNER JOIN dbo.ProductStockPrice ON dbo.Product.Id = dbo.ProductStockPrice.ProductId INNER JOIN dbo.UserStore ON dbo.ProductStockPrice.StoreId = dbo.UserStore.Id where dbo.Product.TypeId!=2 and( dbo.Product.ParentId={product.Id}  or dbo.ProductStockPrice.ProductId={product.Id}) ORDER BY dbo.ProductStockPrice.SalePrice asc";
 
@@ -91,10 +91,10 @@ public class
             if (valid)
             {
                 ProductDto? dto = _mapper.Map<ProductDto>(item);
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                             new { @productId = product.Id })
                         .FirstOrDefault());
                 if (image != null)

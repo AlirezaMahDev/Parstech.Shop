@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Command;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserProduct.Handlers.Command;
 
@@ -31,14 +31,14 @@ public class CreateUserProductCommandHandler : IRequestHandler<CreateUserProduct
             exist = await _userProductRep.ExistFourUserProductByUserName(request.userName, "Compare");
         }
 
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
         if (!exist)
         {
             UserProductDto userProductDto = new()
             {
                 ProductId = request.productId, UserId = user.Id, Type = request.type
             };
-            Domain.Models.UserProduct? up = _mapper.Map<Domain.Models.UserProduct>(userProductDto);
+            Shared.Models.UserProduct? up = _mapper.Map<Shared.Models.UserProduct>(userProductDto);
             await _userProductRep.AddAsync(up);
             return true;
         }

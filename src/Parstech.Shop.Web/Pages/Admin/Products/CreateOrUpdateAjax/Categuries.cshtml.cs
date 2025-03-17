@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
 using Parstech.Shop.Web.GrpcClients;
 
 namespace Parstech.Shop.Web.Pages.Admin.Products.CreateOrUpdateAjax;
@@ -39,7 +39,7 @@ public class CateguriesModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public string FilterCat { get; set; }

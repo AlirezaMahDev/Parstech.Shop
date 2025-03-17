@@ -6,8 +6,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -33,9 +33,9 @@ public class UserPagingQueryHandler : IRequestHandler<UserPagingQueryReq, UserPa
     {
         int skip = (request.UserParameterDto.CurrentPage - 1) * request.UserParameterDto.TakePage;
 
-        string? query =
+        string query =
             $"SELECT dbo.[User].Id, dbo.[User].UserId, dbo.[User].UserName, dbo.[User].Avatar, dbo.[User].LastLoginDate, dbo.[User].SendSms, dbo.[User].IsDelete, dbo.[User].ActiveCode, dbo.UserBilling.FirstName, dbo.UserBilling.LastName, dbo.UserBilling.EconomicCode FROM dbo.[User] INNER JOIN dbo.UserBilling ON dbo.[User].Id = dbo.UserBilling.UserId ORDER BY dbo.[User].Id Desc OFFSET {skip} ROWS FETCH NEXT {request.UserParameterDto.TakePage} ROWS ONLY";
-        List<UserDto>? users =
+        List<UserDto> users =
             DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<UserDto>(query).ToList());
 
 

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.FormCredit.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.FormCredit.Handlers.Commands;
 
@@ -21,7 +21,7 @@ public class ReadFormCreditCommandHandler : IRequestHandler<ReadFormCreditComman
 
     public async Task<FormCreditDto> Handle(ReadFormCreditCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.FormCredit? item = await _formCreditRep.GetAsync(request.Id);
+        Shared.Models.FormCredit? item = await _formCreditRep.GetAsync(request.Id);
         return _mapper.Map<FormCreditDto>(item);
     }
 }

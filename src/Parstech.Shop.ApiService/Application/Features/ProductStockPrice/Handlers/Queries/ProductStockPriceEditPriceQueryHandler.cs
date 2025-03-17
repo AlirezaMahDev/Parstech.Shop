@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Queries;
 
@@ -30,12 +30,12 @@ public class
     public async Task<ProductStockPriceDto> Handle(ProductStockPriceEditPriceQueryReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductStockPrice? product = await _productStockRep.GetAsync(request.product.ProductStockPriceId);
+        Shared.Models.ProductStockPrice? product = await _productStockRep.GetAsync(request.product.ProductStockPriceId);
         product.Price = request.product.Price;
         product.BasePrice = request.product.BasePrice;
         product.DiscountPrice = request.product.DiscountPrice;
         product.SalePrice = request.product.SalePrice;
-        Domain.Models.ProductStockPrice? result = await _productStockRep.UpdateAsync(product);
+        Shared.Models.ProductStockPrice result = await _productStockRep.UpdateAsync(product);
         return _mapper.Map<ProductStockPriceDto>(result);
     }
 }

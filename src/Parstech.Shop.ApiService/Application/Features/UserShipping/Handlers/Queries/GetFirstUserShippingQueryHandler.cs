@@ -16,7 +16,7 @@ public class GetFirstUserShippingQueryHandler : IRequestHandler<GetFirstUserShip
 
     public async Task<int> Handle(GetFirstUserShippingQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserShipping? item = await _userShippingRep.GetFirstShippingOfUser(request.userId);
+        Shared.Models.UserShipping? item = await _userShippingRep.GetFirstShippingOfUser(request.userId);
         if (item == null)
         {
             return 0;

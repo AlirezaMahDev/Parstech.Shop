@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.FormCredit.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.FormCredit.Handlers.Queries;
 
@@ -33,13 +33,13 @@ public class PagingFormCreditsQueryHandler : IRequestHandler<PagingFormCreditsQu
     public async Task<List<FormCreditDto>> Handle(PagingFormCreditsQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<ProductDto>? Result = new();
+        List<ProductDto> Result = new();
         ParameterDto parameter = request.Parameter;
         List<FormCreditDto>? result = new();
 
         if (parameter.Filter != null || parameter.FromDate != null || parameter.ToDate != null)
         {
-            List<Domain.Models.FormCredit> list = await _formCreditRep.Search(request.Parameter.Filter,
+            List<Shared.Models.FormCredit> list = await _formCreditRep.Search(request.Parameter.Filter,
                 request.Parameter.FromDate,
                 request.Parameter.ToDate);
             result = _mapper.Map<List<FormCreditDto>>(list);

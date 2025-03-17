@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Parstech.Shop.Web.Controllers;
+namespace Parstech.Shop.ApiService.Controllers;
 
 [Route("TorobRequest")]
 [ApiController]
@@ -52,7 +51,7 @@ public class TorobController : ControllerBase
                 Oldprice = item.SalePrice.ToString();
             }
 
-            TorobDto torobItem = new TorobDto()
+            TorobDto torobItem = new()
             {
                 product_id = item.Id.ToString(),
                 page_url = $"{baseUrl}/Products/Detail/{item.ShortLink}/{item.Id}",

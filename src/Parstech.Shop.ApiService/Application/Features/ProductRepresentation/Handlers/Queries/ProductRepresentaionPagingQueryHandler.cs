@@ -7,8 +7,8 @@ using Dapper;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Queries;
 

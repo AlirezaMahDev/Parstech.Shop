@@ -4,9 +4,9 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductLog.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductLog.Handlers.Queries;
 
@@ -35,16 +35,16 @@ public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPa
     {
         IList<ProductLogDto> productLogDto = new List<ProductLogDto>();
 
-        List<Domain.Models.ProductLog> Sale =
+        List<Shared.Models.ProductLog> Sale =
             await _producLogRep.GetSaleProductLogWithProductId(request.parameter.ProductId);
-        List<Domain.Models.ProductLog> Price =
+        List<Shared.Models.ProductLog> Price =
             await _producLogRep.GetPriceProductLogWithProductId(request.parameter.ProductId);
-        List<Domain.Models.ProductLog> Base =
+        List<Shared.Models.ProductLog> Base =
             await _producLogRep.GetBaseProductLogWithProductId(request.parameter.ProductId);
-        List<Domain.Models.ProductLog> Discount =
+        List<Shared.Models.ProductLog> Discount =
             await _producLogRep.GetDiscountProductLogWithProductId(request.parameter.ProductId);
 
-        foreach (Domain.Models.ProductLog product in Sale)
+        foreach (Shared.Models.ProductLog product in Sale)
         {
             if (product.OldValue != product.NewValue)
             {
@@ -53,13 +53,13 @@ public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPa
                 dto.CreateDateShamsi = product.CreateDate.ToShamsi();
                 ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
                 dto.ProductLogTypeName = type.Name;
-                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                Shared.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
                 dto.UserName = $"{user.FirstName} {user.LastName}";
                 productLogDto.Add(dto);
             }
         }
 
-        foreach (Domain.Models.ProductLog product in Base)
+        foreach (Shared.Models.ProductLog product in Base)
         {
             if (product.OldValue != product.NewValue)
             {
@@ -68,13 +68,13 @@ public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPa
                 dto.CreateDateShamsi = product.CreateDate.ToShamsi();
                 ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
                 dto.ProductLogTypeName = type.Name;
-                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                Shared.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
                 dto.UserName = $"{user.FirstName} {user.LastName}";
                 productLogDto.Add(dto);
             }
         }
 
-        foreach (Domain.Models.ProductLog product in Price)
+        foreach (Shared.Models.ProductLog product in Price)
         {
             if (product.OldValue != product.NewValue)
             {
@@ -83,13 +83,13 @@ public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPa
                 dto.CreateDateShamsi = product.CreateDate.ToShamsi();
                 ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
                 dto.ProductLogTypeName = type.Name;
-                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                Shared.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
                 dto.UserName = $"{user.FirstName} {user.LastName}";
                 productLogDto.Add(dto);
             }
         }
 
-        foreach (Domain.Models.ProductLog product in Discount)
+        foreach (Shared.Models.ProductLog product in Discount)
         {
             if (product.OldValue != product.NewValue)
             {
@@ -98,7 +98,7 @@ public class UniqProductLogPagingQueryHandler : IRequestHandler<UniqProductLogPa
                 dto.CreateDateShamsi = product.CreateDate.ToShamsi();
                 ProductLogType? type = await _productLogTypeRep.GetAsync(product.ProductLogTypeId);
                 dto.ProductLogTypeName = type.Name;
-                Domain.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
+                Shared.Models.UserBilling? user = await _userBillingRep.GetUserBillingByUserId(dto.UserId);
                 dto.UserName = $"{user.FirstName} {user.LastName}";
                 productLogDto.Add(dto);
             }

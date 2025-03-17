@@ -6,10 +6,13 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
+
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -55,14 +58,14 @@ public class WalletTransactionRepository : GenericRepository<WalletTransaction>,
     {
         if (typeId != 0)
         {
-            List<WalletTransaction>? list = await _context.WalletTransactions
+            List<WalletTransaction> list = await _context.WalletTransactions
                 .Where(u => u.ParentFecilitiesId == parentId && u.TypeId == typeId)
                 .ToListAsync();
             return list;
         }
         else
         {
-            List<WalletTransaction>? list = await _context.WalletTransactions
+            List<WalletTransaction> list = await _context.WalletTransactions
                 .Where(u => u.ParentFecilitiesId == parentId)
                 .ToListAsync();
             return list;
@@ -95,7 +98,7 @@ public class WalletTransactionRepository : GenericRepository<WalletTransaction>,
 
     public async Task<FecilitiesDto> CreateNewFesilities(FecilitiesDto request)
     {
-        string? Today = DateTime.Now.ToShamsi();
+        string Today = DateTime.Now.ToShamsi();
         string GhestDate = null;
         string[] std = Today.Split('/');
         int year = int.Parse(std[0]);
@@ -169,13 +172,13 @@ public class WalletTransactionRepository : GenericRepository<WalletTransaction>,
 
     public string GenerateWordOfFecilities(FecilitiesDto item)
     {
-        string? source = "wwwroot/Shared/Factors/fecilitiest.docx";
-        string? filename = "";
-        string? result = "";
+        string source = "wwwroot/Shared/Factors/fecilitiest.docx";
+        string filename = "";
+        string result = "";
 
         Wallet? wallet = _context.Wallets.Find(item.WalletId);
         UserBilling? userbilling = _context.UserBillings.FirstOrDefault(u => u.UserId == wallet.UserId);
-        List<WalletTransaction>? Transactions =
+        List<WalletTransaction> Transactions =
             _context.WalletTransactions.Where(u => u.Description == item.Serial).ToList();
 
         using (var document = DocX.Load(source))
@@ -272,7 +275,7 @@ public class WalletTransactionRepository : GenericRepository<WalletTransaction>,
 
     public async Task<List<WalletTransaction>> GetTransactionsByParentId(int parentId)
     {
-        List<WalletTransaction>? list = await _context.WalletTransactions.Where(u => u.ParentFecilitiesId == parentId)
+        List<WalletTransaction> list = await _context.WalletTransactions.Where(u => u.ParentFecilitiesId == parentId)
             .OrderBy(u => u.CreateDate)
             .ToListAsync();
         return list;
@@ -306,5 +309,98 @@ public class WalletTransactionRepository : GenericRepository<WalletTransaction>,
         {
             return false;
         }
+    }
+
+    public async Task<WalletTransaction> GetByIdAsync(int transactionId)
+    {
+        return await _context.WalletTransactions
+            .Include(x => x.TypeNavigation)
+            .FirstOrDefaultAsync(x => x.Id == transactionId);
+    }
+
+    public async Task<WalletTransaction> GetByTokenAsync(string token)
+    {
+        return await _context.WalletTransactions
+            .Include(x => x.TypeNavigation)
+            .FirstOrDefaultAsync(x => x.TrackingCode == token);
+    }
+
+    public async Task<List<WalletTransaction>> GetTransactionHistoryAsync(
+        int walletId,
+        int userId,
+        int page,
+        int pageSize,
+        string fromDate,
+        string toDate,
+        int transactionTypeId)
+    {
+        var query = _context.WalletTransactions
+            .Include(x => x.TypeNavigation)
+            .Include(x => x.Wallet)
+            .Where(x => x.WalletId == walletId);
+
+        if (userId > 0)
+        {
+            query = query.Where(x => x.Wallet.UserId == userId);
+        }
+
+        if (!string.IsNullOrEmpty(fromDate))
+        {
+            DateTime fromDateTime = DateTime.Parse(fromDate);
+            query = query.Where(x => x.CreateDate >= fromDateTime);
+        }
+
+        if (!string.IsNullOrEmpty(toDate))
+        {
+            DateTime toDateTime = DateTime.Parse(toDate);
+            query = query.Where(x => x.CreateDate <= toDateTime);
+        }
+
+        if (transactionTypeId > 0)
+        {
+            query = query.Where(x => x.TypeId == transactionTypeId);
+        }
+
+        return await query
+            .OrderByDescending(x => x.CreateDate)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<int> GetTransactionHistoryCountAsync(
+        int walletId,
+        int userId,
+        string fromDate,
+        string toDate,
+        int transactionTypeId)
+    {
+        var query = _context.WalletTransactions
+            .Include(x => x.Wallet)
+            .Where(x => x.WalletId == walletId);
+
+        if (userId > 0)
+        {
+            query = query.Where(x => x.Wallet.UserId == userId);
+        }
+
+        if (!string.IsNullOrEmpty(fromDate))
+        {
+            DateTime fromDateTime = DateTime.Parse(fromDate);
+            query = query.Where(x => x.CreateDate >= fromDateTime);
+        }
+
+        if (!string.IsNullOrEmpty(toDate))
+        {
+            DateTime toDateTime = DateTime.Parse(toDate);
+            query = query.Where(x => x.CreateDate <= toDateTime);
+        }
+
+        if (transactionTypeId > 0)
+        {
+            query = query.Where(x => x.TypeId == transactionTypeId);
+        }
+
+        return await query.CountAsync();
     }
 }

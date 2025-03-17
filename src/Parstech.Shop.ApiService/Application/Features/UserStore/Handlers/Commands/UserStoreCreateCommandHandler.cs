@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserStore.Handlers.Commands;
 
@@ -23,9 +23,9 @@ public class UserStoreCreateCommandHandler : IRequestHandler<UserStoreCreateComm
 
     public async Task<UserStoreDto> Handle(UserStoreCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserStore? userStore = _mapper.Map<Domain.Models.UserStore>(request.userStoreDto);
+        Shared.Models.UserStore? userStore = _mapper.Map<Shared.Models.UserStore>(request.userStoreDto);
 
-        Domain.Models.UserStore? userResult = await _userStoreRep.AddAsync(userStore);
+        Shared.Models.UserStore userResult = await _userStoreRep.AddAsync(userStore);
         return _mapper.Map<UserStoreDto>(userResult);
     }
 }

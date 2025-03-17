@@ -20,7 +20,7 @@ public class ProductPropertyDeleteCommandHandler : IRequestHandler<ProductProper
 
     public async Task<Unit> Handle(ProductPropertyDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductProperty? pproperty = await _productPropertyRep.GetAsync(request.id);
+        Shared.Models.ProductProperty? pproperty = await _productPropertyRep.GetAsync(request.id);
         await _productPropertyRep.DeleteAsync(pproperty);
         return Unit.Value;
     }

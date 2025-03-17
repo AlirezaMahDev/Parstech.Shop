@@ -16,7 +16,7 @@ public class WalletBlockOrUnblockQueryHandler : IRequestHandler<WalletBlockOrUnb
 
     public async Task Handle(WalletBlockOrUnblockQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Wallet? wallet = await _walletRep.GetAsync(request.walletId);
+        Shared.Models.Wallet? wallet = await _walletRep.GetAsync(request.walletId);
         if (request.block)
         {
             wallet.IsBlock = true;

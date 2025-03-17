@@ -3,10 +3,10 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderStatus.Handler.Commands;
 
@@ -45,7 +45,7 @@ public class OrderStatusCreatCommandHandler : IRequestHandler<OrderStatusCreatCo
         }
 
         await _orderStatusRepo.CancelActiveAllOrderStatusesByOrderId(request.OrderStatusDto.OrderId);
-        Domain.Models.OrderStatus? orderStatus = _mapper.Map<Domain.Models.OrderStatus>(request.OrderStatusDto);
+        Shared.Models.OrderStatus? orderStatus = _mapper.Map<Shared.Models.OrderStatus>(request.OrderStatusDto);
         orderStatus.IsActive = true;
 
 
@@ -70,18 +70,18 @@ public class OrderStatusCreatCommandHandler : IRequestHandler<OrderStatusCreatCo
         }
 
 
-        Domain.Models.OrderStatus orderStatusResult = await _orderStatusRepo.AddAsync(orderStatus);
+        Shared.Models.OrderStatus orderStatusResult = await _orderStatusRepo.AddAsync(orderStatus);
         response.Object = _mapper.Map<OrderStatusDto>(orderStatusResult);
-        Domain.Models.User? createBy = await _userRep.GetUserByUserName(orderStatusResult.CreateBy);
+        Shared.Models.User? createBy = await _userRep.GetUserByUserName(orderStatusResult.CreateBy);
         switch (orderStatusResult.StatusId)
         {
             case 6:
 
-                List<Domain.Models.OrderDetail> orderDetails =
+                List<Shared.Models.OrderDetail> orderDetails =
                     await _orderDetailRep.GetOrderDetailsByOrderId(request.OrderStatusDto.OrderId);
-                foreach (Domain.Models.OrderDetail item in orderDetails)
+                foreach (Shared.Models.OrderDetail item in orderDetails)
                 {
-                    Domain.Models.ProductStockPrice? productStockPrice =
+                    Shared.Models.ProductStockPrice? productStockPrice =
                         await _productStockPriceRep.GetAsync(item.ProductStockPriceId);
                     ProductRepresentationDto ProductRepDto = new();
                     ProductRepDto.ProductStockPriceId = item.ProductStockPriceId;
@@ -96,11 +96,11 @@ public class OrderStatusCreatCommandHandler : IRequestHandler<OrderStatusCreatCo
 
                 break;
             case 9:
-                List<Domain.Models.OrderDetail> orderDetails2 =
+                List<Shared.Models.OrderDetail> orderDetails2 =
                     await _orderDetailRep.GetOrderDetailsByOrderId(request.OrderStatusDto.OrderId);
-                foreach (Domain.Models.OrderDetail item in orderDetails2)
+                foreach (Shared.Models.OrderDetail item in orderDetails2)
                 {
-                    Domain.Models.ProductStockPrice? productStockPrice =
+                    Shared.Models.ProductStockPrice? productStockPrice =
                         await _productStockPriceRep.GetAsync(item.ProductStockPriceId);
                     ProductRepresentationDto ProductRepDto = new();
                     ProductRepDto.ProductStockPriceId = item.ProductStockPriceId;

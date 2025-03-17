@@ -19,13 +19,13 @@ public class CreateImagesOfProductsQueryHandler : IRequestHandler<CreateImagesOf
 
     public async Task<Unit> Handle(CreateImagesOfProductsQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Product> list = await _productRep.GetAll();
-        foreach (Domain.Models.Product item in list)
+        IReadOnlyList<Shared.Models.Product> list = await _productRep.GetAll();
+        foreach (Shared.Models.Product item in list)
         {
-            Domain.Models.ProductGallery gallery = new();
+            Shared.Models.ProductGallery gallery = new();
             if (await _productRep.IsChild(item.Id))
             {
-                Domain.Models.Product? parrent = await _productRep.GetAsync(item.ParentId.Value);
+                Shared.Models.Product? parrent = await _productRep.GetAsync(item.ParentId.Value);
                 gallery.IsMain = true;
                 gallery.ProductId = item.Id;
                 gallery.ImageName = $"{parrent.Code}.jpg";

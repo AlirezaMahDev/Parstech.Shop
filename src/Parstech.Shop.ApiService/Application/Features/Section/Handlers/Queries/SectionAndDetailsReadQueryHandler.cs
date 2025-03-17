@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Section.Handlers.Queries;
 
@@ -27,8 +27,8 @@ public class
     public async Task<List<SectionAndDetailsDto>> Handle(SectionAndDetailsReadsQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<SectionAndDetailsDto>? result = new();
-        List<Domain.Models.Section> sections = new();
+        List<SectionAndDetailsDto> result = new();
+        List<Shared.Models.Section> sections = new();
         if (request.storeId != null)
         {
             sections = await _sectionRep.GetSectionsOfStore(request.storeId.Value);
@@ -38,11 +38,11 @@ public class
             sections = await _sectionRep.GetSectionsOfStore(null);
         }
 
-        foreach (Domain.Models.Section section in sections.OrderBy(u => u.Sort))
+        foreach (Shared.Models.Section section in sections.OrderBy(u => u.Sort))
         {
             SectionAndDetailsDto? sectionMap = _mapper.Map<SectionAndDetailsDto>(section);
 
-            List<Domain.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
+            List<Shared.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
             List<SectionDetailShowDto>? sectionDetailMap = _mapper.Map<List<SectionDetailShowDto>>(sectionDetails);
             sectionMap.SectionDetails = sectionDetailMap;
             //sectionMap.SectionDetails = _mapper.Map<SectionAndDetailsDto>(sectionDetails).SectionDetails;
@@ -75,21 +75,21 @@ public class SectionAndDetailsReadQueryHandler : IRequestHandler<SectionAndDetai
         CancellationToken cancellationToken)
     {
         SectionAndDetailsDto result = new();
-        Domain.Models.Section section = await _sectionRep.GetByOlaviat(request.Olaviat);
+        Shared.Models.Section section = await _sectionRep.GetByOlaviat(request.Olaviat);
         if (section != null)
         {
             result = _mapper.Map<SectionAndDetailsDto>(section);
 
-            List<Domain.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
+            List<Shared.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
             List<SectionDetailShowDto> sectionDetailMap = new();
 
-            foreach (Domain.Models.SectionDetail sectionDetail in sectionDetails)
+            foreach (Shared.Models.SectionDetail sectionDetail in sectionDetails)
             {
                 {
                     SectionDetailShowDto? dto = _mapper.Map<SectionDetailShowDto>(sectionDetail);
                     if (dto.CateguryId != null)
                     {
-                        Domain.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
+                        Shared.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
                         dto.LatingCateguryName = cat.LatinGroupTitle;
                     }
 
@@ -127,21 +127,21 @@ public class
         CancellationToken cancellationToken)
     {
         SectionAndDetailsDto result = new();
-        Domain.Models.Section? section = await _sectionRep.GetAsync(request.id);
+        Shared.Models.Section? section = await _sectionRep.GetAsync(request.id);
         if (section != null)
         {
             result = _mapper.Map<SectionAndDetailsDto>(section);
 
-            List<Domain.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
+            List<Shared.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
             List<SectionDetailShowDto> sectionDetailMap = new();
 
-            foreach (Domain.Models.SectionDetail sectionDetail in sectionDetails)
+            foreach (Shared.Models.SectionDetail sectionDetail in sectionDetails)
             {
                 {
                     SectionDetailShowDto? dto = _mapper.Map<SectionDetailShowDto>(sectionDetail);
                     if (dto.CateguryId != null)
                     {
-                        Domain.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
+                        Shared.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
                         dto.LatingCateguryName = cat.LatinGroupTitle;
                     }
 
@@ -186,22 +186,22 @@ public class
     {
         SectionAndDetailsDto result = new();
 
-        Domain.Models.UserStore userstore = await _userStoreRep.GetStoreByLatinName(request.userName);
-        Domain.Models.Section section = await _sectionRep.GetByStore(userstore.Id);
+        Shared.Models.UserStore userstore = await _userStoreRep.GetStoreByLatinName(request.userName);
+        Shared.Models.Section section = await _sectionRep.GetByStore(userstore.Id);
         if (section != null)
         {
             result = _mapper.Map<SectionAndDetailsDto>(section);
 
-            List<Domain.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
+            List<Shared.Models.SectionDetail> sectionDetails = await _sectionDetailRep.GetDetailsOfSection(section.Id);
             List<SectionDetailShowDto> sectionDetailMap = new();
 
-            foreach (Domain.Models.SectionDetail sectionDetail in sectionDetails)
+            foreach (Shared.Models.SectionDetail sectionDetail in sectionDetails)
             {
                 {
                     SectionDetailShowDto? dto = _mapper.Map<SectionDetailShowDto>(sectionDetail);
                     if (dto.CateguryId != null)
                     {
-                        Domain.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
+                        Shared.Models.Categury? cat = await _categuryRep.GetAsync(dto.CateguryId.Value);
                         dto.LatingCateguryName = cat.LatinGroupTitle;
                     }
 

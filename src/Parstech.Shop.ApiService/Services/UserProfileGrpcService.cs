@@ -24,7 +24,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            void shippings = await _mediator.Send(new UserShippingOfUserQueryReq(request.UserId));
+            var shippings = await _mediator.Send(new UserShippingOfUserQueryReq(request.UserId));
 
             var response = new UserShippingListResponse();
             foreach (var shipping in shippings)
@@ -55,7 +55,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            void shipping = await _mediator.Send(new UserShippingReadCommandReq(request.ShippingId));
+            var shipping = await _mediator.Send(new UserShippingReadCommandReq(request.ShippingId));
 
             return new UserShippingResponse
             {
@@ -80,7 +80,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var shippingDto = new Shop.Application.DTOs.UserShipping.UserShippingDto
+            var shippingDto = new Parstech.Shop.Application.DTOs.UserShipping.UserShippingDto
             {
                 UserId = request.UserId,
                 Address = request.Address,
@@ -91,7 +91,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
                 IsDefault = request.IsDefault
             };
 
-            void result = await _mediator.Send(new UserShippingCreateCommandReq(shippingDto));
+            var result = await _mediator.Send(new UserShippingCreateCommandReq(shippingDto));
 
             return new UserShippingResponse
             {
@@ -116,7 +116,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var shippingDto = new Shop.Application.DTOs.UserShipping.UserShippingDto
+            var shippingDto = new Parstech.Shop.Application.DTOs.UserShipping.UserShippingDto
             {
                 Id = request.Id,
                 UserId = request.UserId,
@@ -128,7 +128,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
                 IsDefault = request.IsDefault
             };
 
-            void result = await _mediator.Send(new UserShippingUpdateCommandReq(shippingDto));
+            var result = await _mediator.Send(new UserShippingUpdateCommandReq(shippingDto));
 
             return new UserShippingResponse
             {
@@ -168,12 +168,12 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
             {
                 CurrentPage = request.Page, TakePage = request.PageSize, SearchKey = request.SearchTerm
             };
 
-            void result = await _mediator.Send(new FinallyOrdersOfUserByPagingQueryReq(request.UserId, parameter));
+            var result = await _mediator.Send(new FinallyOrdersOfUserByPagingQueryReq(request.UserId, parameter));
 
             var response = new UserOrdersResponse
             {
@@ -208,7 +208,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            void orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+            var orderDetails = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
 
             var response = new OrderDetailsResponse
             {
@@ -252,7 +252,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
             {
                 WalletId = request.WalletId,
                 CurrentPage = request.Page,
@@ -260,7 +260,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
                 Type = request.TransactionType
             };
 
-            void result = await _mediator.Send(new WalletTransactionsPagingQueryReq(parameter));
+            var result = await _mediator.Send(new WalletTransactionsPagingQueryReq(parameter));
 
             var response = new UserTransactionsResponse
             {
@@ -293,7 +293,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            void transaction = await _mediator.Send(new WalletTransactionDetailShowQueryReq(request.TransactionId));
+            var transaction = await _mediator.Send(new WalletTransactionDetailShowQueryReq(request.TransactionId));
 
             return new TransactionDetailsResponse
             {

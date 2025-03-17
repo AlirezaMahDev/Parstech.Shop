@@ -3,8 +3,8 @@
 using Newtonsoft.Json;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 using RestSharp;
 
@@ -37,9 +37,9 @@ public class SendCreditOfUserOrderQueryHandler : IRequestHandler<SendCreditOfUse
 
     public async Task<bool> Handle(SendCreditOfUserOrderQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.orderId);
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.orderId);
 
-        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
+        Shared.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
 
 
         int phone = 0;

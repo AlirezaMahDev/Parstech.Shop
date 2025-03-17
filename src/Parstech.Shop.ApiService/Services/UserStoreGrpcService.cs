@@ -19,7 +19,7 @@ public class UserStoreGrpcService : UserStoreService.UserStoreServiceBase
     {
         try
         {
-            void stores = await _mediator.Send(new StoresQueryReq());
+            var stores = await _mediator.Send(new StoresQueryReq());
 
             var response = new UserStoreResponse();
             foreach (var store in stores)
@@ -39,7 +39,7 @@ public class UserStoreGrpcService : UserStoreService.UserStoreServiceBase
     {
         try
         {
-            void store = await _mediator.Send(new StoreReadCommandReq(request.Id));
+            var store = await _mediator.Send(new StoreReadCommandReq(request.Id));
             return MapStoreToProto(store);
         }
         catch (Exception ex)
@@ -53,7 +53,7 @@ public class UserStoreGrpcService : UserStoreService.UserStoreServiceBase
     {
         try
         {
-            void store = await _mediator.Send(new UserSaleReadByLatinNameQueryReq(request.LatinName));
+            var store = await _mediator.Send(new UserSaleReadByLatinNameQueryReq(request.LatinName));
 
             return new UserStore
             {

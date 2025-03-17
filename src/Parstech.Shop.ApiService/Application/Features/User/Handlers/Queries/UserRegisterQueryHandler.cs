@@ -5,11 +5,11 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.UserBilling.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -60,7 +60,7 @@ public class UserRegisterQueryHandler : IRequestHandler<UserRegisterQueryReq, Re
             userDto.UserId = userId;
             userDto.IsDelete = false;
             userDto.LastLoginDate = DateTime.Now;
-            void mainUser = await _mediator.Send(new UserCreateCommandReq(userDto));
+            var mainUser = await _mediator.Send(new UserCreateCommandReq(userDto));
 
 
             request.UserRegisterDto.NumberuserId = mainUser.Id;

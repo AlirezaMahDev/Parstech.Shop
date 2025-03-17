@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Web.Services.GrpcClients;
-
 using System.Globalization;
 
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Representations;
 
@@ -38,7 +37,7 @@ public class IndexModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ProductRepresenationParameterDto Parameter { get; set; } = new ProductRepresenationParameterDto();
+    public ProductRepresenationParameterDto Parameter { get; set; } = new();
 
     //categuries
     [BindProperty]
@@ -47,7 +46,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     //Representations
     [BindProperty]
@@ -84,10 +83,10 @@ public class IndexModel : PageModel
     public PagingDto ProductLogPaging { get; set; }
 
     [BindProperty]
-    public ParameterLogDto LogParameter { get; set; } = new ParameterLogDto();
+    public ParameterLogDto LogParameter { get; set; } = new();
 
     [BindProperty]
-    public ProductRepresenationParameterDto PrParameter { get; set; } = new ProductRepresenationParameterDto();
+    public ProductRepresenationParameterDto PrParameter { get; set; } = new();
 
     public class logClass
     {
@@ -135,7 +134,7 @@ public class IndexModel : PageModel
     {
         Parameter.TakePage = 30;
         var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
-        List = new ProductRepresentationPagingDto
+        List = new()
         {
             List = pagingResult,
             CurrentPage = Parameter.CurrentPage,
@@ -157,7 +156,7 @@ public class IndexModel : PageModel
         Parameter.CurrentPage = 1;
         Parameter.TakePage = 30;
         var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
-        List = new ProductRepresentationPagingDto
+        List = new()
         {
             List = pagingResult,
             CurrentPage = Parameter.CurrentPage,
@@ -178,7 +177,7 @@ public class IndexModel : PageModel
         Parameter.CurrentPage = 1;
         Parameter.TakePage = 30;
         var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
-        List = new ProductRepresentationPagingDto
+        List = new()
         {
             List = pagingResult,
             CurrentPage = Parameter.CurrentPage,
@@ -194,7 +193,7 @@ public class IndexModel : PageModel
     {
         Parameter.TakePage = 30;
         var pagingResult = await _representationClient.GetProductRepresentationsAsync(Parameter.ProductId);
-        List = new ProductRepresentationPagingDto
+        List = new()
         {
             List = pagingResult,
             CurrentPage = Parameter.CurrentPage,

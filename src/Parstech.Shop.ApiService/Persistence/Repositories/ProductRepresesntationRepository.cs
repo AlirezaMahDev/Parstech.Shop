@@ -5,8 +5,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -55,7 +55,7 @@ public class ProductRepresesntationRepository : GenericRepository<ProductReprese
     public async Task<int> GetLastQuantityFromProductRepresntation(int productId, int repId)
     {
         int quantity = 0;
-        List<ProductRepresentation>? list = await _context.ProductRepresentations
+        List<ProductRepresentation> list = await _context.ProductRepresentations
             .Where(u => u.ProductStockPriceId == productId && u.RepresntationId == repId)
             .ToListAsync();
         foreach (ProductRepresentation? item in list)
@@ -162,7 +162,7 @@ public class ProductRepresesntationRepository : GenericRepository<ProductReprese
     public async Task<int> GetCountEnterProductRepresentationWithProductId(int productId)
     {
         int result = 0;
-        List<ProductRepresentation>? list = await GetEnterProductRepresentationWithProductId(productId);
+        List<ProductRepresentation> list = await GetEnterProductRepresentationWithProductId(productId);
         foreach (ProductRepresentation? item in list)
         {
             result += item.Quantity;
@@ -174,7 +174,7 @@ public class ProductRepresesntationRepository : GenericRepository<ProductReprese
     public async Task<int> GetCountGetoutProductRepresentationWithProductId(int productId)
     {
         int result = 0;
-        List<ProductRepresentation>? list = await GetGetoutProductRepresentationWithProductId(productId);
+        List<ProductRepresentation> list = await GetGetoutProductRepresentationWithProductId(productId);
         foreach (ProductRepresentation? item in list)
         {
             result += item.Quantity;
@@ -186,7 +186,7 @@ public class ProductRepresesntationRepository : GenericRepository<ProductReprese
     public async Task<int> GetCountReturnProductRepresentationWithProductId(int productId)
     {
         int result = 0;
-        List<ProductRepresentation>? list = await GetReturnProductRepresentationWithProductId(productId);
+        List<ProductRepresentation> list = await GetReturnProductRepresentationWithProductId(productId);
         foreach (ProductRepresentation? item in list)
         {
             result += item.Quantity;
@@ -198,7 +198,7 @@ public class ProductRepresesntationRepository : GenericRepository<ProductReprese
     public async Task<int> GetCountEnterManualyProductRepresentationWithProductId(int productId)
     {
         int result = 0;
-        List<ProductRepresentation>? list = await GetEnterManualyProductRepresentationWithProductId(productId);
+        List<ProductRepresentation> list = await GetEnterManualyProductRepresentationWithProductId(productId);
         foreach (ProductRepresentation? item in list)
         {
             result += item.Quantity;

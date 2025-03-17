@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -38,7 +38,7 @@ public class CreateCheckoutQueryHandler : IRequestHandler<CreateCheckoutQueryReq
         OrderDto order = await _mediator.Send(new GetOpenOrderOfUserQueryReq(request.userName));
         if (order.OrderId == 0)
         {
-            Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
             order = await _mediator.Send(new OrderCreateByUserIdQueryReq(user.Id));
         }
 

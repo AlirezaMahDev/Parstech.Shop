@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Brands;
 
@@ -25,7 +25,7 @@ public class IndexModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     //categuries
     [BindProperty]
@@ -40,7 +40,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     #endregion
 
@@ -176,9 +176,9 @@ public class IndexModel : PageModel
         return result;
     }
 
-    private BrandDto MapToBrandDto(Shop.Shared.Protos.BrandAdmin.BrandDto dto)
+    private BrandDto MapToBrandDto(Shop.Shared.Protos.Product.BrandDto dto)
     {
-        return new BrandDto
+        return new()
         {
             BrandId = dto.BrandId,
             BrandTitle = dto.BrandTitle,
@@ -191,9 +191,9 @@ public class IndexModel : PageModel
         };
     }
 
-    private Parstech.Shop.Shared.Protos.BrandAdmin.BrandDto MapToGrpcBrandDto(BrandDto brand)
+    private Shop.Shared.Protos.Product.BrandDto MapToGrpcBrandDto(BrandDto brand)
     {
-        return new Shop.Shared.Protos.BrandAdmin.BrandDto
+        return new Shop.Shared.Protos.Product.BrandDto
         {
             BrandId = brand.BrandId,
             BrandTitle = brand.BrandTitle ?? string.Empty,

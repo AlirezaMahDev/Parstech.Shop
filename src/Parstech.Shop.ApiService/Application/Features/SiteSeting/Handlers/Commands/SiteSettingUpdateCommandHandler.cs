@@ -5,7 +5,7 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.SiteSeting.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.SiteSeting.Handlers.Commands;
 

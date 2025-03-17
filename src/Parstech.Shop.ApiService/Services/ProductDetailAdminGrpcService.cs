@@ -2,8 +2,6 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-
 using System.Globalization;
 
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
@@ -16,6 +14,7 @@ using Parstech.Shop.ApiService.Application.Features.PropertyCategury.Requests.Co
 using Parstech.Shop.ApiService.Application.Features.Tax.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Validators.ProductGallery;
+using Parstech.Shop.Shared.DTOs;
 
 using RepresentationAdminService = Parstech.Shop.Shared.Protos.RepresentationAdmin;
 
@@ -43,7 +42,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void product = await _mediator.Send(new ProductReadWithAllInfoCommandReq(request.ProductId));
+            var product = await _mediator.Send(new ProductReadWithAllInfoCommandReq(request.ProductId));
             if (product == null)
             {
                 throw new RpcException(new(StatusCode.NotFound, $"Product with ID {request.ProductId} not found"));
@@ -70,7 +69,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
             if (!validationResult.IsValid)
             {
-                ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+                ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
                 foreach (var error in validationResult.Errors)
                 {
@@ -83,7 +82,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
                 return response;
             }
 
-            void result = await _mediator.Send(new ProductCreateCommandReq(productDto));
+            var result = await _mediator.Send(new ProductCreateCommandReq(productDto));
 
             return new() { IsSuccessed = true, Message = "محصول با موفقیت ثبت شد", Object = result.ToString() };
         }
@@ -106,7 +105,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
             if (!validationResult.IsValid)
             {
-                ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+                ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
                 foreach (var error in validationResult.Errors)
                 {
@@ -119,7 +118,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
                 return response;
             }
 
-            void result = await _mediator.Send(new ProductUpdateCommandReq(productDto));
+            var result = await _mediator.Send(new ProductUpdateCommandReq(productDto));
 
             return new() { IsSuccessed = true, Message = "محصول با موفقیت بروزرسانی شد", Object = result.ToString() };
         }
@@ -139,7 +138,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void galleries = await _mediator.Send(new ProductGalleryReadsByProductIdReq(request.ProductId));
+            var galleries = await _mediator.Send(new ProductGalleryReadsByProductIdReq(request.ProductId));
             var response = new ProductGalleryListResponse();
 
             foreach (var gallery in galleries)
@@ -169,7 +168,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
             if (!validationResult.IsValid)
             {
-                ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+                ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
                 foreach (var error in validationResult.Errors)
                 {
@@ -182,7 +181,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
                 return response;
             }
 
-            void result = await _mediator.Send(new ProductGalleryCreateCommandReq(galleryDto));
+            var result = await _mediator.Send(new ProductGalleryCreateCommandReq(galleryDto));
 
             return new() { IsSuccessed = true, Message = "تصویر محصول با موفقیت ثبت شد", Object = result.ToString() };
         }
@@ -205,7 +204,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
             if (!validationResult.IsValid)
             {
-                ResponseDto? response = new() { IsSuccessed = false, Object = request.ToString() };
+                ResponseDto response = new() { IsSuccessed = false, Object = request.ToString() };
 
                 foreach (var error in validationResult.Errors)
                 {
@@ -218,7 +217,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
                 return response;
             }
 
-            void result = await _mediator.Send(new ProductGalleryUpdateCommandReq(galleryDto));
+            var result = await _mediator.Send(new ProductGalleryUpdateCommandReq(galleryDto));
 
             return new()
             {
@@ -237,7 +236,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void result = await _mediator.Send(new ProductGalleryDeleteCommandReq(request.GalleryId));
+            var result = await _mediator.Send(new ProductGalleryDeleteCommandReq(request.GalleryId));
 
             return new() { IsSuccessed = true, Message = "تصویر محصول با موفقیت حذف شد", Object = result.ToString() };
         }
@@ -257,7 +256,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void properties = await _mediator.Send(new ProductPropertyReadsByProductIdReq(request.ProductId));
+            var properties = await _mediator.Send(new ProductPropertyReadsByProductIdReq(request.ProductId));
             var response = new ProductPropertiesResponse();
 
             foreach (var property in properties)
@@ -280,7 +279,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         try
         {
             var propertyDto = MapFromProductPropertyDto(request);
-            void result = await _mediator.Send(new ProductPropertyCreateCommandReq(propertyDto));
+            var result = await _mediator.Send(new ProductPropertyCreateCommandReq(propertyDto));
 
             return new() { IsSuccessed = true, Message = "ویژگی محصول با موفقیت ثبت شد", Object = result.ToString() };
         }
@@ -296,7 +295,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         try
         {
             var propertyDto = MapFromProductPropertyDto(request);
-            void result = await _mediator.Send(new ProductPropertyUpdateCommandReq(propertyDto));
+            var result = await _mediator.Send(new ProductPropertyUpdateCommandReq(propertyDto));
 
             return new()
             {
@@ -315,7 +314,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void result = await _mediator.Send(new ProductPropertyDeleteCommandReq(request.ProductPropertyId));
+            var result = await _mediator.Send(new ProductPropertyDeleteCommandReq(request.ProductPropertyId));
 
             return new() { IsSuccessed = true, Message = "ویژگی محصول با موفقیت حذف شد", Object = result.ToString() };
         }
@@ -335,7 +334,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void categories = await _mediator.Send(new ProductCategoriesReadsByProductIdReq(request.ProductId));
+            var categories = await _mediator.Send(new ProductCategoriesReadsByProductIdReq(request.ProductId));
             var response = new ProductCategoriesResponse();
 
             foreach (var category in categories)
@@ -358,7 +357,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         try
         {
             var categoryDto = MapFromProductCategoryDto(request);
-            void result = await _mediator.Send(new ProductCateguryCreateCommandReq(categoryDto));
+            var result = await _mediator.Send(new ProductCateguryCreateCommandReq(categoryDto));
 
             return new()
             {
@@ -377,7 +376,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void result = await _mediator.Send(new ProductCateguryDeleteCommandReq(request.ProductCategoryId));
+            var result = await _mediator.Send(new ProductCateguryDeleteCommandReq(request.ProductCategoryId));
 
             return new()
             {
@@ -399,7 +398,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void categories = await _mediator.Send(new CateguryReadsCommandReq());
+            var categories = await _mediator.Send(new CateguryReadsCommandReq());
             var response = new CategoriesResponse();
 
             foreach (var category in categories)
@@ -420,7 +419,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void categories = await _mediator.Send(new CateguryReadsByParentIdCommandReq(request.CategoryId));
+            var categories = await _mediator.Send(new CateguryReadsByParentIdCommandReq(request.CategoryId));
             var response = new CategoriesResponse();
 
             foreach (var category in categories)
@@ -442,7 +441,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void categories = await _mediator.Send(new PropertyCateguryReadsCommandReq());
+            var categories = await _mediator.Send(new PropertyCateguryReadsCommandReq());
             var response = new PropertyCategoriesResponse();
 
             foreach (var category in categories)
@@ -464,7 +463,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void properties = await _mediator.Send(new PropertiesReadCommandReq(request.Filter, request.CategoryId));
+            var properties = await _mediator.Send(new PropertiesReadCommandReq(request.Filter, request.CategoryId));
             var response = new PropertiesResponse();
 
             foreach (var property in properties)
@@ -488,7 +487,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void types = await _mediator.Send(new ProductTypeReadsCommandReq());
+            var types = await _mediator.Send(new ProductTypeReadsCommandReq());
             var response = new ProductTypesResponse();
 
             foreach (var type in types)
@@ -509,7 +508,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void taxes = await _mediator.Send(new TaxReadsCommandReq());
+            var taxes = await _mediator.Send(new TaxReadsCommandReq());
             var response = new TaxesResponse();
 
             foreach (var tax in taxes)
@@ -530,7 +529,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void brands = await _mediator.Send(new BrandReadsCommandReq());
+            var brands = await _mediator.Send(new BrandReadsCommandReq());
             var response = new BrandsResponse();
 
             foreach (var brand in brands)
@@ -551,7 +550,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     {
         try
         {
-            void stores = await _mediator.Send(new UserStoreReadCommandReq());
+            var stores = await _mediator.Send(new UserStoreReadCommandReq());
             var response = new UserStoresResponse();
 
             foreach (var store in stores)
@@ -601,7 +600,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
     private ProductDto MapToProductDto(Shop.Application.DTOs.Product.ProductDto source)
     {
-        ProductDto? result = new()
+        ProductDto result = new()
         {
             Id = source.Id,
             Title = source.Title ?? string.Empty,
@@ -695,7 +694,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
             DateTime.TryParse(source.LastChangeTime, out lastChangeTime);
         }
 
-        return new Shop.Application.DTOs.Product.ProductDto
+        return new Parstech.Shop.Application.DTOs.Product.ProductDto
         {
             Id = source.Id,
             Title = source.Title,
@@ -738,7 +737,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
 
     private Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto MapFromProductGalleryDto(ProductGalleryDto source)
     {
-        return new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        return new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -766,7 +765,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     private Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto MapFromProductPropertyDto(
         ProductPropertyDto source)
     {
-        return new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        return new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -792,7 +791,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     private Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto MapFromProductCategoryDto(
         ProductCategoryDto source)
     {
-        return new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        return new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -849,7 +848,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
             }
         }
 
-        return new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+        return new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -884,7 +883,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
     private Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
         ProductRepresentationDto source)
     {
-        return new Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
+        return new Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
         {
             Id = source.Id,
             ProductId = source.ProductId,

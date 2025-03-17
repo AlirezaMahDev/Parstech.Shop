@@ -5,9 +5,9 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Api.Handlers.Queries;
 
@@ -92,11 +92,11 @@ public class FixDuplicateProductsByCodeQueryHandler : IRequestHandler<FixDuplica
 
         foreach (ListItem item in FinalListItems)
         {
-            Domain.Models.Product? parrent = await _productRep.GetAsync(item.Id);
+            Shared.Models.Product? parrent = await _productRep.GetAsync(item.Id);
             foreach (DapperProductDto item2 in item.Items)
             {
-                List<Domain.Models.ProductStockPrice> stocks = await _productStockRep.GetAllByProductId(item2.Id);
-                foreach (Domain.Models.ProductStockPrice stock in stocks)
+                List<Shared.Models.ProductStockPrice> stocks = await _productStockRep.GetAllByProductId(item2.Id);
+                foreach (Shared.Models.ProductStockPrice stock in stocks)
                 {
                     stock.ProductId = parrent.Id;
                     await _productStockRep.UpdateAsync(stock);

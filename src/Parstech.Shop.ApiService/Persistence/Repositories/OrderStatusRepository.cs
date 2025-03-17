@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -17,7 +17,7 @@ public class OrderStatusRepository : GenericRepository<OrderStatus>, IOrderStatu
 
     public async Task CancelActiveAllOrderStatusesByOrderId(int orderId)
     {
-        List<OrderStatus>? allOrderStatuses =
+        List<OrderStatus> allOrderStatuses =
             await _context.OrderStatuses.Where(a => a.OrderId == orderId).ToListAsync();
         foreach (OrderStatus? orderStatus in allOrderStatuses)
         {
@@ -40,7 +40,7 @@ public class OrderStatusRepository : GenericRepository<OrderStatus>, IOrderStatu
         }
         else
         {
-            List<OrderStatus>? orderStatuses = new();
+            List<OrderStatus> orderStatuses = new();
             return orderStatuses;
         }
     }

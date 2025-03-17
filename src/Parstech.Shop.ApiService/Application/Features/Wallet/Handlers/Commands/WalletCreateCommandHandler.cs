@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Wallet.Handlers.Commands;
 
@@ -23,8 +23,8 @@ public class WalletCreateCommandHandler : IRequestHandler<WalletCreateCommandReq
 
     public async Task<WalletDto> Handle(WalletCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Wallet? item = _mapper.Map<Domain.Models.Wallet>(request.walletDto);
-        Domain.Models.Wallet? Result = await _walletRep.AddAsync(item);
+        Shared.Models.Wallet? item = _mapper.Map<Shared.Models.Wallet>(request.walletDto);
+        Shared.Models.Wallet Result = await _walletRep.AddAsync(item);
         return _mapper.Map<WalletDto>(Result);
     }
 }

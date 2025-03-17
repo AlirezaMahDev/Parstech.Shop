@@ -20,7 +20,7 @@ public class UserBillingDeleteCommandHandler : IRequestHandler<UserBillingDelete
 
     public async Task<Unit> Handle(UserBillingDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetAsync(request.id);
+        Shared.Models.UserBilling? userBilling = await _userBillingRep.GetAsync(request.id);
         await _userBillingRep.DeleteAsync(userBilling);
         return Unit.Value;
     }

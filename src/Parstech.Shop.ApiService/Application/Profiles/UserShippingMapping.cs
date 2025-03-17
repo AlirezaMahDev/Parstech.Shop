@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
-using Parstech.Shop.ApiService.Domain.Models;
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Profiles;
 

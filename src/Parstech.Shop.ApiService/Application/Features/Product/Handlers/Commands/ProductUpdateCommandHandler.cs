@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Commands;
 
@@ -32,7 +32,7 @@ public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommandR
     public async Task<ProductDto> Handle(ProductUpdateCommandReq request, CancellationToken cancellationToken)
     {
         ProductDto result = new();
-        Domain.Models.Product? product = _mapper.Map<Domain.Models.Product>(request.ProductDto);
+        Shared.Models.Product? product = _mapper.Map<Shared.Models.Product>(request.ProductDto);
         //var Store = await _userStoreRep.GetAsync(product.StoreId);
         //product.RepId = Store.RepId;
 
@@ -43,19 +43,19 @@ public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommandR
 
         if (product.TypeId == 1 || product.TypeId == 5)
         {
-            List<Domain.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
+            List<Shared.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
             if (childs.Count > 0)
             {
                 return result;
             }
 
-            Domain.Models.Product productResult = await _productRep.UpdateAsync(product);
+            Shared.Models.Product productResult = await _productRep.UpdateAsync(product);
 
             return _mapper.Map<ProductDto>(productResult);
         }
         else
         {
-            Domain.Models.Product productResult = await _productRep.UpdateAsync(product);
+            Shared.Models.Product productResult = await _productRep.UpdateAsync(product);
 
             return _mapper.Map<ProductDto>(productResult);
         }

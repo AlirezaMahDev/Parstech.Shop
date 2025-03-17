@@ -18,7 +18,7 @@ public class ProductDetailGrpcService : ProductDetailService.ProductDetailServic
     {
         try
         {
-            void productDetail = await _mediator.Send(new ProductDetailPageByShortLinkQueryReq(
+            var productDetail = await _mediator.Send(new ProductDetailPageByShortLinkQueryReq(
                 request.ShortLink,
                 request.StoreId,
                 request.UserName));

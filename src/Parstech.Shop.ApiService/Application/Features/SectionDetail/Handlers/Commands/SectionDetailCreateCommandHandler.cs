@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.SectionDetail.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.SectionDetail.Handlers.Commands;
 
@@ -98,7 +98,7 @@ public class SectionDetailCreateCommandHandler : IRequestHandler<SectionDetailCr
             }
         }
 
-        Domain.Models.SectionDetail? sectionDetail = _mapper.Map<Domain.Models.SectionDetail>(request.SectionDetailDto);
+        Shared.Models.SectionDetail? sectionDetail = _mapper.Map<Shared.Models.SectionDetail>(request.SectionDetailDto);
         await _sectionDetailRep.AddAsync(sectionDetail);
         SectionDetailDto result = await _madiiator.Send(new SectionDetailReadCommandReq(sectionDetail.Id));
         return result;

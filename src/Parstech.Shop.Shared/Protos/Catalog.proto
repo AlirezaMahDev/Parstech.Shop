@@ -1,0 +1,513 @@
+syntax = "proto3";
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Catalog";
+
+package catalog;
+
+import "google/protobuf/timestamp.proto";
+import "Protos/Common.proto";
+
+// CATALOG SERVICE DEFINITIONS
+
+// Category Service for category management
+service CategoryService {
+  // Category operations
+  rpc GetCategories (GetCategoriesRequest) returns (CategoriesResponse);
+  rpc GetCategory (GetCategoryRequest) returns (CategoryResponse);
+  rpc GetCategoryTree (GetCategoryTreeRequest) returns (CategoryTreeResponse);
+  rpc GetCategoryPath (GetCategoryPathRequest) returns (CategoryPathResponse);
+  rpc GetCategoryProducts (GetCategoryProductsRequest) returns (CategoryProductsResponse);
+  rpc GetCategoryFilters (GetCategoryFiltersRequest) returns (CategoryFiltersResponse);
+  rpc GetFeaturedCategories (GetFeaturedCategoriesRequest) returns (FeaturedCategoriesResponse);
+}
+
+// Brand Service for brand management
+service BrandService {
+  // Brand operations
+  rpc GetBrands (GetBrandsRequest) returns (BrandsResponse);
+  rpc GetBrand (GetBrandRequest) returns (BrandResponse);
+  rpc GetBrandsByCategory (GetBrandsByCategoryRequest) returns (BrandsByCategoryResponse);
+  rpc GetBrandProducts (GetBrandProductsRequest) returns (BrandProductsResponse);
+  rpc GetFeaturedBrands (GetFeaturedBrandsRequest) returns (FeaturedBrandsResponse);
+}
+
+// Property Service for product properties
+service PropertyService {
+  // Property operations
+  rpc GetProperties (GetPropertiesRequest) returns (PropertiesResponse);
+  rpc GetProperty (GetPropertyRequest) returns (PropertyResponse);
+  rpc GetPropertiesByCategory (GetPropertiesByCategoryRequest) returns (PropertiesByCategoryResponse);
+  rpc GetPropertyValues (GetPropertyValuesRequest) returns (PropertyValuesResponse);
+}
+
+// Catalog Search Service for catalog search
+service CatalogSearchService {
+  // Search operations
+  rpc Search (SearchCatalogRequest) returns (SearchCatalogResponse);
+  rpc GetSearchSuggestions (GetSearchSuggestionsRequest) returns (SearchSuggestionsResponse);
+  rpc GetPopularSearches (GetPopularSearchesRequest) returns (PopularSearchesResponse);
+}
+
+// MESSAGE DEFINITIONS
+
+// Common request/response messages
+message EmptyRequest {}
+
+message ResponseStatus {
+  bool success = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+// Category requests
+message GetCategoriesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  int64 parent_id = 5;
+  bool include_inactive = 6;
+  bool include_hidden = 7;
+}
+
+message GetCategoryRequest {
+  int64 category_id = 1;
+  string slug = 2;
+  bool include_subcategories = 3;
+  bool include_products = 4;
+  bool include_brands = 5;
+  bool include_properties = 6;
+}
+
+message GetCategoryTreeRequest {
+  int64 root_category_id = 1;
+  int32 max_depth = 2;
+  bool include_product_counts = 3;
+  bool include_inactive = 4;
+  bool include_hidden = 5;
+}
+
+message GetCategoryPathRequest {
+  int64 category_id = 1;
+  string slug = 2;
+}
+
+message GetCategoryProductsRequest {
+  int64 category_id = 1;
+  string slug = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string sort_by = 5;
+  bool sort_ascending = 6;
+  bool include_subcategories = 7;
+  repeated int64 brand_ids = 8;
+  repeated int64 property_value_ids = 9;
+}
+
+message GetCategoryFiltersRequest {
+  int64 category_id = 1;
+  bool include_subcategories = 2;
+}
+
+message GetFeaturedCategoriesRequest {
+  int32 limit = 1;
+  int64 parent_id = 2;
+  bool include_images = 3;
+}
+
+// Brand requests
+message GetBrandsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  bool featured_only = 6;
+  bool include_product_counts = 7;
+}
+
+message GetBrandRequest {
+  int64 brand_id = 1;
+  string slug = 2;
+  bool include_categories = 3;
+  bool include_products = 4;
+}
+
+message GetBrandsByCategoryRequest {
+  int64 category_id = 1;
+  bool include_product_counts = 2;
+}
+
+message GetBrandProductsRequest {
+  int64 brand_id = 1;
+  string slug = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string sort_by = 5;
+  bool sort_ascending = 6;
+  int64 category_id = 7;
+  repeated int64 property_value_ids = 8;
+}
+
+message GetFeaturedBrandsRequest {
+  int32 limit = 1;
+  bool include_logos = 2;
+  bool include_descriptions = 3;
+}
+
+// Property requests
+message GetPropertiesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  bool filterable_only = 6;
+  bool variant_only = 7;
+}
+
+message GetPropertyRequest {
+  int64 property_id = 1;
+  bool include_values = 2;
+}
+
+message GetPropertiesByCategoryRequest {
+  int64 category_id = 1;
+  bool filterable_only = 2;
+  bool variant_only = 3;
+  bool include_values = 4;
+}
+
+message GetPropertyValuesRequest {
+  int64 property_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string search = 4;
+  bool include_products_count = 5;
+}
+
+// Search requests
+message SearchCatalogRequest {
+  string query = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string sort_by = 4;
+  bool sort_ascending = 5;
+  int64 category_id = 6;
+  repeated int64 brand_ids = 7;
+  repeated int64 property_value_ids = 8;
+  double min_price = 9;
+  double max_price = 10;
+  bool faceted = 11;
+}
+
+message GetSearchSuggestionsRequest {
+  string query = 1;
+  int32 limit = 2;
+  bool include_categories = 3;
+  bool include_brands = 4;
+}
+
+message GetPopularSearchesRequest {
+  int32 limit = 1;
+  string from_date = 2;
+  string to_date = 3;
+  int64 category_id = 4;
+}
+
+// Response messages
+message CategoriesResponse {
+  repeated CategoryDto categories = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message CategoryResponse {
+  CategoryDto category = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryTreeResponse {
+  repeated CategoryTreeNodeDto categories = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryPathResponse {
+  repeated CategoryBreadcrumbDto path = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryProductsResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message CategoryFiltersResponse {
+  repeated PropertyFilterDto property_filters = 1;
+  repeated BrandFilterItemDto brand_filters = 2;
+  PriceRangeDto price_range = 3;
+  ResponseStatus status = 4;
+}
+
+message FeaturedCategoriesResponse {
+  repeated CategoryDto categories = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandsResponse {
+  repeated BrandDto brands = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message BrandResponse {
+  BrandDto brand = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandsByCategoryResponse {
+  repeated BrandDto brands = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandProductsResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message FeaturedBrandsResponse {
+  repeated BrandDto brands = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertiesResponse {
+  repeated PropertyDto properties = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message PropertyResponse {
+  PropertyDto property = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertiesByCategoryResponse {
+  repeated PropertyDto properties = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertyValuesResponse {
+  repeated PropertyValueDto values = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  PropertyDto property = 4;
+  ResponseStatus status = 5;
+}
+
+message SearchCatalogResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  repeated SearchFacetResultDto facets = 4;
+  ResponseStatus status = 5;
+}
+
+message SearchSuggestionsResponse {
+  repeated SearchSuggestionDto suggestions = 1;
+  ResponseStatus status = 2;
+}
+
+message PopularSearchesResponse {
+  repeated PopularSearchDto searches = 1;
+  ResponseStatus status = 2;
+}
+
+// Data DTOs
+message CategoryDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string slug = 4;
+  string image_url = 5;
+  int64 parent_id = 6;
+  string parent_name = 7;
+  int32 level = 8;
+  int32 display_order = 9;
+  bool is_active = 10;
+  bool is_featured = 11;
+  int32 product_count = 12;
+  repeated CategoryDto subcategories = 13;
+  SeoDto seo = 14;
+}
+
+message CategoryTreeNodeDto {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  string image_url = 4;
+  int32 product_count = 5;
+  int32 level = 6;
+  int32 display_order = 7;
+  bool is_active = 8;
+  bool is_featured = 9;
+  repeated CategoryTreeNodeDto children = 10;
+}
+
+message CategoryBreadcrumbDto {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 level = 4;
+  bool is_current = 5;
+}
+
+message BrandDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string slug = 4;
+  string logo_url = 5;
+  string website = 6;
+  string country = 7;
+  string founded_year = 8;
+  bool is_featured = 9;
+  int32 product_count = 10;
+  repeated string featured_categories = 11;
+  SeoDto seo = 12;
+}
+
+message PropertyDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string display_name = 4;
+  string type = 5;
+  string unit = 6;
+  int32 display_order = 7;
+  bool is_searchable = 8;
+  bool is_comparable = 9;
+  bool is_filterable = 10;
+  bool is_variant = 11;
+  bool is_required = 12;
+  repeated PropertyValueDto values = 13;
+}
+
+message PropertyValueDto {
+  int64 id = 1;
+  int64 property_id = 2;
+  string value = 3;
+  string display_value = 4;
+  string color_code = 5;
+  string image_url = 6;
+  int32 display_order = 7;
+  int32 product_count = 8;
+}
+
+message ProductSummaryDto {
+  int64 id = 1;
+  string name = 2;
+  string short_description = 3;
+  string sku = 4;
+  string slug = 5;
+  double base_price = 6;
+  double sale_price = 7;
+  bool on_sale = 8;
+  int32 average_rating = 9;
+  int32 review_count = 10;
+  bool in_stock = 11;
+  int32 stock_quantity = 12;
+  string thumbnail_url = 13;
+  string image_url = 14;
+  int64 category_id = 15;
+  string category_name = 16;
+  int64 brand_id = 17;
+  string brand_name = 18;
+  bool is_new = 19;
+  bool is_featured = 20;
+  google.protobuf.Timestamp created_date = 21;
+}
+
+message PropertyFilterDto {
+  int64 id = 1;
+  string name = 2;
+  string display_name = 3;
+  string type = 4;
+  int32 display_order = 5;
+  repeated PropertyFilterValueDto values = 6;
+}
+
+message PropertyFilterValueDto {
+  int64 id = 1;
+  string value = 2;
+  string display_value = 3;
+  string color_code = 4;
+  string image_url = 5;
+  int32 product_count = 6;
+  int32 display_order = 7;
+}
+
+message BrandFilterItemDto {
+  int64 id = 1;
+  string name = 2;
+  string logo_url = 3;
+  int32 product_count = 4;
+  int32 display_order = 5;
+}
+
+message PriceRangeDto {
+  double min_price = 1;
+  double max_price = 2;
+  string currency_code = 3;
+  string formatted_min_price = 4;
+  string formatted_max_price = 5;
+}
+
+message SearchFacet {
+  string field = 1;
+  string display_name = 2;
+}
+
+message SearchFacetResultDto {
+  string field = 1;
+  string display_name = 2;
+  repeated SearchFacetValueDto values = 3;
+}
+
+message SearchFacetValueDto {
+  string value = 1;
+  string display_value = 2;
+  int32 count = 3;
+  string image_url = 4;
+  string color_code = 5;
+}
+
+message SearchSuggestionDto {
+  string text = 1;
+  string type = 2;
+  int64 id = 3;
+  string url = 4;
+  string image_url = 5;
+  int32 product_count = 6;
+}
+
+message PopularSearchDto {
+  string query = 1;
+  int32 count = 2;
+  double conversion_rate = 3;
+}
+
+message SeoDto {
+  string meta_title = 1;
+  string meta_description = 2;
+  string meta_keywords = 3;
+  string canonical_url = 4;
+  bool no_index = 5;
+  bool no_follow = 6;
+} 

@@ -3,13 +3,13 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductLog.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Validators.Product;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Handlers.Queries;
 
@@ -37,7 +37,7 @@ public class QuickEditProductStockPricesQueryHandler : IRequestHandler<QuickEdit
         ResponseDto Response = new();
         foreach (QuickEditDto req in request.list)
         {
-            void currentproductStock = await _mediator.Send(new ProductStockPriceReadCommandReq(req.id));
+            var currentproductStock = await _mediator.Send(new ProductStockPriceReadCommandReq(req.id));
 
             #region Validator
 
@@ -57,10 +57,10 @@ public class QuickEditProductStockPricesQueryHandler : IRequestHandler<QuickEdit
             {
                 currentproductStock.SalePrice = req.price;
                 //currentproductStock.Quantity = req.quantity;
-                Domain.Models.ProductStockPrice?
+                Shared.Models.ProductStockPrice?
                     current = await _productStockRep.DapperGetProductStockPriceById(req.id);
                 ProductStockPriceDto? currentDto = _mapper.Map<ProductStockPriceDto>(current);
-                void edit = await _mediator.Send(new ProductStockPriceUpdateCommandReq(currentproductStock));
+                var edit = await _mediator.Send(new ProductStockPriceUpdateCommandReq(currentproductStock));
                 await _mediator.Send(new PriceConflictsCreateLogQueryReq(request.userName, currentDto, edit));
             }
 
@@ -68,11 +68,11 @@ public class QuickEditProductStockPricesQueryHandler : IRequestHandler<QuickEdit
             {
                 ProductRepresentationDto pr = new();
 
-                void user = await _mediator.Send(new UserReadByUserNameQueryReq(request.userName));
+                var user = await _mediator.Send(new UserReadByUserNameQueryReq(request.userName));
                 pr.UserId = user.Id;
                 pr.Quantity = req.quantity;
                 pr.ProductStockPriceId = req.id;
-                void res = await _mediator.Send(new ProductRepresesntationQuickCreateCommandReq(pr));
+                var res = await _mediator.Send(new ProductRepresesntationQuickCreateCommandReq(pr));
             }
 
 

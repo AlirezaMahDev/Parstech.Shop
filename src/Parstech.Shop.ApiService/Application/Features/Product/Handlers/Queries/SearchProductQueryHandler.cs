@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -38,7 +38,7 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQueryReq, 
 
     public async Task<List<ProductDto>> Handle(SearchProductQueryReq request, CancellationToken cancellationToken)
     {
-        List<ProductDto>? Result = new();
+        List<ProductDto> Result = new();
         //var list =await _productRep.SearchProducts(request.Filter,request.Take);
 
         List<DapperProductDto> list = DapperHelper.ExecuteCommand(_connectionString,
@@ -60,10 +60,10 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQueryReq, 
                 else { id = item.Id; }
 
                 ProductDto? dto = _mapper.Map<ProductDto>(item);
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
                         .FirstOrDefault());
 
                 if (image != null)

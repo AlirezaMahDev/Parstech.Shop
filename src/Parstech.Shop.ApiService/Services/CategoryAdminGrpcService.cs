@@ -4,9 +4,9 @@ using MediatR;
 
 using AutoMapper;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -24,12 +24,12 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
     public override async Task<CategoryPageingDto> GetCategoriesForAdmin(CategoryParameterRequest request,
         ServerCallContext context)
     {
-        ParameterDto? parameter = new()
+        ParameterDto parameter = new()
         {
             CurrentPage = request.CurrentPage, TakePage = request.TakePage, Filter = request.Filter
         };
 
-        void result = await _mediator.Send(new CateguryPagingQueryReq(parameter));
+        var result = await _mediator.Send(new CateguryPagingQueryReq(parameter));
         var response = new CategoryPageingDto
         {
             CurrentPage = result.CurrentPage, PageCount = result.PageCount, RowCount = result.RowCount
@@ -45,13 +45,13 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
 
     public override async Task<CategoryDto> GetCategory(CategoryRequest request, ServerCallContext context)
     {
-        void category = await _mediator.Send(new CateguryOneReadCommandReq(request.CategoryId));
+        var category = await _mediator.Send(new CateguryOneReadCommandReq(request.CategoryId));
         return MapToCategoryDto(category);
     }
 
     public override async Task<CategoryListResponse> GetCategoryParents(EmptyRequest request, ServerCallContext context)
     {
-        void parents = await _mediator.Send(new CateguryParentsReadQueryReq());
+        var parents = await _mediator.Send(new CateguryParentsReadQueryReq());
         var response = new CategoryListResponse();
 
         foreach (var parent in parents)
@@ -65,7 +65,7 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
     public override async Task<CategoryListResponse> GetAllCategories(CategoryFilterRequest request,
         ServerCallContext context)
     {
-        void categories = await _mediator.Send(new CateguryReadCommandReq(request.Filter));
+        var categories = await _mediator.Send(new CateguryReadCommandReq(request.Filter));
         var response = new CategoryListResponse();
 
         foreach (var category in categories)
@@ -94,7 +94,7 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
 
     public override async Task<ResponseDto> DeleteCategory(CategoryRequest request, ServerCallContext context)
     {
-        void response = await _mediator.Send(new CateguryDeleteCommandReq(request.CategoryId));
+        var response = await _mediator.Send(new CateguryDeleteCommandReq(request.CategoryId));
 
         return new()
         {
@@ -120,7 +120,7 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
 
     private Parstech.Shop.Application.DTOs.Categury.CateguryDto MapFromCategoryDto(CategoryDto category)
     {
-        return new Shop.Application.DTOs.Categury.CateguryDto
+        return new Parstech.Shop.Application.DTOs.Categury.CateguryDto
         {
             GroupId = category.GroupId,
             GroupTitle = category.GroupTitle,

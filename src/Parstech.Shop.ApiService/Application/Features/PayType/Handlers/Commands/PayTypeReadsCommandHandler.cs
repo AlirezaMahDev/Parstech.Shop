@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.PayType.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.PayType.Handlers.Commands;
 
@@ -23,12 +23,12 @@ public class PayTypeReadsCommandHandler : IRequestHandler<PayTypeReadsCommandReq
     {
         if (request.justactive)
         {
-            List<Domain.Models.PayType>? list = await _payTypeRep.GetActiveList();
+            List<Shared.Models.PayType> list = await _payTypeRep.GetActiveList();
             return _mapper.Map<List<PayTypeDto>>(list);
         }
         else
         {
-            IReadOnlyList<Domain.Models.PayType>? list = await _payTypeRep.GetAll();
+            IReadOnlyList<Shared.Models.PayType> list = await _payTypeRep.GetAll();
             return _mapper.Map<List<PayTypeDto>>(list);
         }
     }

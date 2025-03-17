@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.SocialSetting.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.SocialSetting.Handlers.Commands;
 
@@ -27,7 +27,7 @@ public class SocialSettingUpdateCommandHandler : IRequestHandler<SocialSettingUp
     public async Task<SocialSettingDto> Handle(SocialSettingUpdateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.SocialSetting? socialSetting = await _socialSettingRep.GetAsync(request.socialSettingDto.Id);
+        Shared.Models.SocialSetting? socialSetting = await _socialSettingRep.GetAsync(request.socialSettingDto.Id);
 
         if (request.socialSettingDto.ImageFile != null)
         {
@@ -38,7 +38,7 @@ public class SocialSettingUpdateCommandHandler : IRequestHandler<SocialSettingUp
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
                     "wwwroot/Shared/Images",
                     request.socialSettingDto.Image);
-                using (FileStream? stream = new(imagePath, FileMode.Create))
+                using (FileStream stream = new(imagePath, FileMode.Create))
                 {
                     request.socialSettingDto.ImageFile.CopyTo(stream);
                 }

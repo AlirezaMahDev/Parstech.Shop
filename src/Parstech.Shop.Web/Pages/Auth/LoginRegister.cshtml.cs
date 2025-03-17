@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Auth;
 
@@ -31,7 +31,7 @@ public class LoginRegisterModel : PageModel
     {
         var result = await _authClient.LoginOrRegisterRequestAsync(loginmobile);
         Response = result;
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     [ValidateAntiForgeryToken]
@@ -41,7 +41,7 @@ public class LoginRegisterModel : PageModel
         {
             var result = await _authClient.LoginByActiveCodeAsync(loginmobile, loginactiveCode);
             Response = result;
-            return new JsonResult(Response);
+            return new(Response);
         }
         else
         {
@@ -49,14 +49,14 @@ public class LoginRegisterModel : PageModel
             {
                 var result = await _authClient.LoginByActiveCodeAsync(loginmobile, loginactiveCode);
                 Response = result;
-                return new JsonResult(Response);
+                return new(Response);
             }
             else
             {
-                Response = new ResponseDto();
+                Response = new();
                 Response.IsSuccessed = false;
                 Response.Message = "کد تایید نادرست است";
-                return new JsonResult(Response);
+                return new(Response);
             }
         }
     }
@@ -66,6 +66,6 @@ public class LoginRegisterModel : PageModel
     {
         var result = await _authClient.LoginByPasswordAsync(loginmobile, loginpassword);
         Response = result;
-        return new JsonResult(Response);
+        return new(Response);
     }
 }

@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Commands;
 
@@ -29,7 +29,7 @@ public class ProductCreateCommandHandler : IRequestHandler<ProductCreateCommandR
 
     public async Task<ProductDto> Handle(ProductCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = _mapper.Map<Domain.Models.Product>(request.ProductDto);
+        Shared.Models.Product? product = _mapper.Map<Shared.Models.Product>(request.ProductDto);
 
 
         product.ShortLink = await _mediator.Send(new ProductShortLinkGeneratorQueryReq());
@@ -38,7 +38,7 @@ public class ProductCreateCommandHandler : IRequestHandler<ProductCreateCommandR
         product.IsActive = false;
         //product.Visit = 0;
 
-        Domain.Models.Product? productResult = await _productRep.AddAsync(product);
+        Shared.Models.Product productResult = await _productRep.AddAsync(product);
 
         //ProductGalleryDto gallery = new ProductGalleryDto()
         //{
@@ -92,7 +92,7 @@ public class ProductWordpresCreateCommandHandler : IRequestHandler<ProductWordpr
 
     public async Task<ProductDto> Handle(ProductWordpressCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = _mapper.Map<Domain.Models.Product>(request.ProductDto);
+        Shared.Models.Product? product = _mapper.Map<Shared.Models.Product>(request.ProductDto);
 
 
         product.ShortLink = await _mediator.Send(new ProductShortLinkGeneratorQueryReq());
@@ -105,7 +105,7 @@ public class ProductWordpresCreateCommandHandler : IRequestHandler<ProductWordpr
             product.SingleSale = true;
         }
 
-        Domain.Models.Product? productResult = await _productRep.AddAsync(product);
+        Shared.Models.Product productResult = await _productRep.AddAsync(product);
 
         //ProductGalleryDto gallery = new ProductGalleryDto()
         //{

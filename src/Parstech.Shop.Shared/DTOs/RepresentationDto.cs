@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class RepresentationDto
 {
@@ -7,13 +7,4 @@ public class RepresentationDto
     public string Name { get; set; } = null!;
 
     public int? StateId { get; set; }
-}
-
-public class QuickEditDto
-{
-    public int id { get; set; }
-
-    public long price { get; set; }
-
-    public int quantity { get; set; }
 }

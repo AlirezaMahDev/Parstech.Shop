@@ -3,11 +3,11 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -58,37 +58,37 @@ public class
     public async Task<ResponseDto> Handle(CompletaOrderWithoutDargahAndStatusAndCallBackQueryReq request,
         CancellationToken cancellationToken)
     {
-        ResponseDto Response = new();
+        ResponseDto response = new();
         if (request.orderId == 0)
         {
-            Response.IsSuccessed = false;
-            Response.Message = "سفارش معتبر نمی باشد";
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = "سفارش معتبر نمی باشد";
+            return response;
         }
 
         if (request.payTypeId == 0)
         {
-            Response.IsSuccessed = false;
-            Response.Message = "روش پرداخت سفارش را انتخاب نمایید";
-            return Response;
+            response.IsSuccessed = false;
+            response.Message = "روش پرداخت سفارش را انتخاب نمایید";
+            return response;
         }
 
-        Domain.Models.Order? order = await _orderRep.GetAsync(request.orderId);
+        Shared.Models.Order? order = await _orderRep.GetAsync(request.orderId);
 
-        Domain.Models.PayType? PayType = await _payRep.GetAsync(request.payTypeId);
+        Shared.Models.PayType? payType = await _payRep.GetAsync(request.payTypeId);
         OrderCoupon? orderCuopon = await _orderCouponRep.GetByOrderId(order.OrderId);
-        Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
-        Domain.Models.User? user = await _userRep.GetAsync(order.UserId);
-        Domain.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
+        Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(order.UserId);
+        Shared.Models.User? user = await _userRep.GetAsync(order.UserId);
+        Shared.Models.UserBilling? userBilling = await _userBillingRep.GetUserBillingByUserId(order.UserId);
 
         #region OrderPay
 
-        List<Domain.Models.OrderPay> res = await _orderPayRep.GetListByOrderId(order.OrderId);
+        List<Shared.Models.OrderPay> res = await _orderPayRep.GetListByOrderId(order.OrderId);
         //var res = await _mediator.Send(new ChoisePayTypeForCreateOrderPayQueryReq(PayType.Id, wallet, order));
 
         #endregion
 
-        foreach (Domain.Models.OrderPay item in res)
+        foreach (Shared.Models.OrderPay item in res)
         {
             switch (item.PayTypeId)
             {
@@ -104,7 +104,7 @@ public class
                         TypeId = 2,
                         Price = Convert.ToInt32(item.Price)
                     };
-                    void createdTransaction2 =
+                    var createdTransaction2 =
                         await _mediator.Send(new CreateWalletTransactionCommandReq(transaction2, false));
 
                     break;
@@ -123,16 +123,16 @@ public class
                         TypeId = 2,
                         Price = Convert.ToInt32(item.Price)
                     };
-                    void createdTransaction3 =
+                    var createdTransaction3 =
                         await _mediator.Send(new CreateWalletTransactionCommandReq(transaction3, false));
 
 
-                    Domain.Models.WalletTransaction? transaction =
+                    Shared.Models.WalletTransaction? transaction =
                         await _walletTransactionRep.GetAsync(createdTransaction3.walletTransaction.Id);
                     WalletTransactionDto? transactionDto = _mapper.Map<WalletTransactionDto>(transaction);
                     await _walletRep.WalletCalculateTransaction(transactionDto);
 
-                    WalletTransactionDto ExpireTransaction = new()
+                    WalletTransactionDto expireTransaction = new()
                     {
                         WalletId = wallet.WalletId,
                         Description = "ابطال تسهیلات",
@@ -140,8 +140,8 @@ public class
                         TypeId = 2,
                         Price = Convert.ToInt32(wallet.Fecilities)
                     };
-                    void createdExpireTransaction =
-                        await _mediator.Send(new CreateWalletTransactionCommandReq(ExpireTransaction, true));
+                    var createdExpireTransaction =
+                        await _mediator.Send(new CreateWalletTransactionCommandReq(expireTransaction, true));
 
 
                     break;
@@ -159,11 +159,11 @@ public class
                         TypeId = 2,
                         Price = Convert.ToInt32(item.Price)
                     };
-                    void createdTransaction4 =
+                    var createdTransaction4 =
                         await _mediator.Send(new CreateWalletTransactionCommandReq(transaction4, false));
 
 
-                    Domain.Models.WalletTransaction? transactionO =
+                    Shared.Models.WalletTransaction? transactionO =
                         await _walletTransactionRep.GetAsync(createdTransaction4.walletTransaction.Id);
                     WalletTransactionDto? transactionDto2 = _mapper.Map<WalletTransactionDto>(transactionO);
                     await _walletRep.WalletCalculateTransaction(transactionDto2);
@@ -173,6 +173,6 @@ public class
 
         order.CreateDate = DateTime.Now;
         await _orderRep.UpdateAsync(order);
-        return Response;
+        return response;
     }
 }

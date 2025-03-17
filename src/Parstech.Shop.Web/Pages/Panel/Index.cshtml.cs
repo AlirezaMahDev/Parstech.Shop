@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
@@ -28,7 +28,7 @@ public class IndexModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public int UserId { get; set; }
@@ -50,7 +50,7 @@ public class IndexModel : PageModel
         var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
         var billingResponse = await _userPreferencesClient.GetUserBillingAsync(currentUser.Id);
 
-        UserBillingDto = new UserBillingDto
+        UserBillingDto = new()
         {
             Id = billingResponse.Id,
             UserId = billingResponse.UserId,

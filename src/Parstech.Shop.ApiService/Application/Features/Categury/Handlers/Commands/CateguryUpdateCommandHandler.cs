@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Commands;
 
@@ -21,8 +21,8 @@ public class CateguryUpdateCommandHandler : IRequestHandler<CateguryUpdateComman
 
     public async Task<CateguryDto> Handle(CateguryUpdateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Categury? categury = _mapper.Map<Domain.Models.Categury>(request.CateguryDto);
-        Domain.Models.Categury? categuryResult = await _categuryRep.UpdateAsync(categury);
+        Shared.Models.Categury? categury = _mapper.Map<Shared.Models.Categury>(request.CateguryDto);
+        Shared.Models.Categury categuryResult = await _categuryRep.UpdateAsync(categury);
         return _mapper.Map<CateguryDto>(categuryResult);
     }
 }

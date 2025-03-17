@@ -2,10 +2,10 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.SectionDetail.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -28,7 +28,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
     {
         try
         {
-            void result =
+            var result =
                 await _mediator.Send(new SectionAndDetailsReadsQueryReq(request.StoreId > 0 ? request.StoreId : null));
             var response = new SectionAndDetailsListResponse();
 
@@ -53,7 +53,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
     {
         try
         {
-            void section = await _mediator.Send(new SectionReadCommandReq(request.SectionId));
+            var section = await _mediator.Send(new SectionReadCommandReq(request.SectionId));
             if (section == null)
             {
                 throw new RpcException(new(StatusCode.NotFound, $"Section with ID {request.SectionId} not found"));
@@ -76,7 +76,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
     {
         try
         {
-            void sectionDetail = await _mediator.Send(new SectionDetailReadCommandReq(request.SectionDetailId));
+            var sectionDetail = await _mediator.Send(new SectionDetailReadCommandReq(request.SectionDetailId));
             if (sectionDetail == null)
             {
                 throw new RpcException(new(StatusCode.NotFound,
@@ -100,7 +100,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         try
         {
             var sectionDto = MapFromSectionDto(request);
-            void result = await _mediator.Send(new SectionCreateCommandReq(sectionDto));
+            var result = await _mediator.Send(new SectionCreateCommandReq(sectionDto));
 
             return new() { IsSuccessed = true, Message = "آیتم جدید با موفقیت افزوده شد", Object = result.ToString() };
         }
@@ -119,7 +119,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         try
         {
             var sectionDto = MapFromSectionDto(request);
-            void result = await _mediator.Send(new SectionUpdateCommandReq(sectionDto));
+            var result = await _mediator.Send(new SectionUpdateCommandReq(sectionDto));
 
             return new() { IsSuccessed = true, Message = "ویرایش با موفقیت انجام شد", Object = result.ToString() };
         }
@@ -138,7 +138,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         try
         {
             var sectionDetailDto = MapFromSectionDetailDto(request);
-            void result = await _mediator.Send(new SectionDetailCreateCommandReq(sectionDetailDto));
+            var result = await _mediator.Send(new SectionDetailCreateCommandReq(sectionDetailDto));
 
             return new() { IsSuccessed = true, Message = "آیتم جدید با موفقیت افزوده شد", Object = result.ToString() };
         }
@@ -157,7 +157,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         try
         {
             var sectionDetailDto = MapFromSectionDetailDto(request);
-            void result = await _mediator.Send(new SectionDetailUpdateCommandReq(sectionDetailDto));
+            var result = await _mediator.Send(new SectionDetailUpdateCommandReq(sectionDetailDto));
 
             return new() { IsSuccessed = true, Message = "ویرایش با موفقیت انجام شد", Object = result.ToString() };
         }
@@ -175,7 +175,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
     {
         try
         {
-            void canDelete = await _mediator.Send(new SectionCheckQueryReq(request.SectionId));
+            var canDelete = await _mediator.Send(new SectionCheckQueryReq(request.SectionId));
             if (!canDelete)
             {
                 return new()
@@ -223,7 +223,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
     {
         try
         {
-            void result = await _mediator.Send(new SectionCheckQueryReq(request.SectionId));
+            var result = await _mediator.Send(new SectionCheckQueryReq(request.SectionId));
             return new BoolResponse { Result = result };
         }
         catch (Exception ex)
@@ -238,7 +238,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
 
     private SectionAndDetailsDto MapToSectionAndDetailsDto(Shop.Application.DTOs.Section.SectionAndDetailsDto source)
     {
-        SectionAndDetailsDto? result = new()
+        SectionAndDetailsDto result = new()
         {
             Id = source.Id,
             Title = source.Title ?? string.Empty,
@@ -264,7 +264,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
 
     private SectionDto MapToSectionDto(Shop.Application.DTOs.Section.SectionDto source)
     {
-        return new SectionDto
+        return new()
         {
             Id = source.Id,
             Title = source.Title ?? string.Empty,
@@ -280,7 +280,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
 
     private Parstech.Shop.Application.DTOs.Section.SectionDto MapFromSectionDto(SectionDto source)
     {
-        return new Shop.Application.DTOs.Section.SectionDto
+        return new Parstech.Shop.Application.DTOs.Section.SectionDto
         {
             Id = source.Id,
             Title = source.Title,
@@ -311,7 +311,7 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
 
     private Parstech.Shop.Application.DTOs.SectionDetail.SectionDetailDto MapFromSectionDetailDto(SectionDetailDto source)
     {
-        return new Shop.Application.DTOs.SectionDetail.SectionDetailDto
+        return new Parstech.Shop.Application.DTOs.SectionDetail.SectionDetailDto
         {
             Id = source.Id,
             Title = source.Title,

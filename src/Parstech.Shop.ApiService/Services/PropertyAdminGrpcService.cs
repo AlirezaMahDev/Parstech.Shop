@@ -2,8 +2,8 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -22,7 +22,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            void property = await _mediator.Send(new PropertyDetailQueryReq(request.PropertyId));
+            var property = await _mediator.Send(new PropertyDetailQueryReq(request.PropertyId));
 
             if (property == null)
             {
@@ -69,12 +69,12 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            PropertyParameterDto? parameter = new()
+            PropertyParameterDto parameter = new()
             {
                 PageIndex = request.PageIndex, PageSize = request.PageSize, SearchKey = request.SearchKey
             };
 
-            void paging = await _mediator.Send(new PropertyPagingQueryReq(parameter));
+            var paging = await _mediator.Send(new PropertyPagingQueryReq(parameter));
 
             var response = new PropertyPagingDto
             {
@@ -137,7 +137,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            PropertyDto? property = new()
+            PropertyDto property = new()
             {
                 Title = request.Title,
                 SortOrder = request.SortOrder,
@@ -145,7 +145,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
                 IsActive = request.IsActive
             };
 
-            void result = await _mediator.Send(new CreatePropertyCommandReq(property));
+            var result = await _mediator.Send(new CreatePropertyCommandReq(property));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -160,7 +160,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            PropertyDto? property = new()
+            PropertyDto property = new()
             {
                 Id = request.PropertyId,
                 Title = request.Title,
@@ -169,7 +169,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
                 IsActive = request.IsActive
             };
 
-            void result = await _mediator.Send(new UpdatePropertyCommandReq(property));
+            var result = await _mediator.Send(new UpdatePropertyCommandReq(property));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -184,7 +184,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            void result = await _mediator.Send(new DeletePropertyCommandReq(request.PropertyId));
+            var result = await _mediator.Send(new DeletePropertyCommandReq(request.PropertyId));
 
             return new() { Status = result.Status, Message = result.Message, Code = result.Code };
         }
@@ -199,7 +199,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            void categories = await _mediator.Send(new CateguryAllQueryReq());
+            var categories = await _mediator.Send(new CateguryAllQueryReq());
 
             var response = new CategoryListDto();
 
@@ -234,7 +234,7 @@ public class PropertyAdminGrpcService : PropertyAdminService.PropertyAdminServic
     {
         try
         {
-            void result =
+            var result =
                 await _mediator.Send(
                     new CreateOrUpdatePropertyCateguryCommandReq(request.PropertyId, request.CategoryId));
 

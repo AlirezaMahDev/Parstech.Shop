@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.User;
-
-message UserName {
-    string user_name = 1;
-    string position = 2;
-}

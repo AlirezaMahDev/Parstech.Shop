@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
@@ -31,13 +31,13 @@ public class TransactionsListModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public WalletDto Wallet { get; set; }
 
     [BindProperty]
-    public WalletTransactionParameterDto Parameter { get; set; } = new WalletTransactionParameterDto();
+    public WalletTransactionParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
     public PagingDto List { get; set; }
@@ -66,7 +66,7 @@ public class TransactionsListModel : PageModel
         var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
         var wallet = await _walletClient.GetWalletByUserIdAsync(currentUser.Id);
 
-        Wallet = new WalletDto
+        Wallet = new()
         {
             WalletId = wallet.WalletId,
             UserId = wallet.UserId,
@@ -85,7 +85,7 @@ public class TransactionsListModel : PageModel
             Parameter.TakePage,
             Parameter.Type);
 
-        List = new PagingDto
+        List = new()
         {
             CurrentPage = transactions.CurrentPage,
             PageCount = transactions.PageCount,
@@ -116,7 +116,7 @@ public class TransactionsListModel : PageModel
     {
         var transaction = await _userProfileClient.GetTransactionDetailsAsync(transactionId);
 
-        transactionDto = new WalletTransactionDto
+        transactionDto = new()
         {
             TransactionId = transaction.TransactionId,
             WalletId = transaction.WalletId,

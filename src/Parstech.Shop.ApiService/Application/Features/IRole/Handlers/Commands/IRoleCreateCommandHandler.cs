@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.IRole.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.IRole.Handlers.Commands;
 
@@ -26,7 +26,7 @@ public class IRoleCreateCommandHandler : IRequestHandler<IRoleCreateCommandReq, 
 
     public async Task<Irole> Handle(IRoleCreateCommandReq request, CancellationToken cancellationToken)
     {
-        IdentityRole? role = new();
+        IdentityRole role = new();
         role.Name = request.roleDto.Name;
         await _roleManager.CreateAsync(role);
         Irole irole = await _roleRep.GetIdentityRole(role.Id);

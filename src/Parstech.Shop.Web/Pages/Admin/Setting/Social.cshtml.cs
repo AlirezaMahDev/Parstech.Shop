@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Setting;
 
@@ -27,7 +27,7 @@ public class SocialModel : PageModel
     public int Id { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     public async Task<IActionResult> OnGet()
     {
@@ -41,32 +41,32 @@ public class SocialModel : PageModel
             // Map the properties from SocialDto to a list of SocialSettingDto
             if (!string.IsNullOrEmpty(socialDto.Facebook))
             {
-                List.Add(new SocialSettingDto { Id = 1, Title = "Facebook", Url = socialDto.Facebook });
+                List.Add(new() { Id = 1, Title = "Facebook", Url = socialDto.Facebook });
             }
 
             if (!string.IsNullOrEmpty(socialDto.Twitter))
             {
-                List.Add(new SocialSettingDto { Id = 2, Title = "Twitter", Url = socialDto.Twitter });
+                List.Add(new() { Id = 2, Title = "Twitter", Url = socialDto.Twitter });
             }
 
             if (!string.IsNullOrEmpty(socialDto.Instagram))
             {
-                List.Add(new SocialSettingDto { Id = 3, Title = "Instagram", Url = socialDto.Instagram });
+                List.Add(new() { Id = 3, Title = "Instagram", Url = socialDto.Instagram });
             }
 
             if (!string.IsNullOrEmpty(socialDto.Linkedin))
             {
-                List.Add(new SocialSettingDto { Id = 4, Title = "LinkedIn", Url = socialDto.Linkedin });
+                List.Add(new() { Id = 4, Title = "LinkedIn", Url = socialDto.Linkedin });
             }
 
             if (!string.IsNullOrEmpty(socialDto.Youtube))
             {
-                List.Add(new SocialSettingDto { Id = 5, Title = "YouTube", Url = socialDto.Youtube });
+                List.Add(new() { Id = 5, Title = "YouTube", Url = socialDto.Youtube });
             }
 
             if (!string.IsNullOrEmpty(socialDto.Telegram))
             {
-                List.Add(new SocialSettingDto { Id = 6, Title = "Telegram", Url = socialDto.Telegram });
+                List.Add(new() { Id = 6, Title = "Telegram", Url = socialDto.Telegram });
             }
         }
 
@@ -83,22 +83,22 @@ public class SocialModel : PageModel
             switch (Id)
             {
                 case 1:
-                    Input = new SocialSettingDto { Id = 1, Title = "Facebook", Url = socialDto.Facebook };
+                    Input = new() { Id = 1, Title = "Facebook", Url = socialDto.Facebook };
                     break;
                 case 2:
-                    Input = new SocialSettingDto { Id = 2, Title = "Twitter", Url = socialDto.Twitter };
+                    Input = new() { Id = 2, Title = "Twitter", Url = socialDto.Twitter };
                     break;
                 case 3:
-                    Input = new SocialSettingDto { Id = 3, Title = "Instagram", Url = socialDto.Instagram };
+                    Input = new() { Id = 3, Title = "Instagram", Url = socialDto.Instagram };
                     break;
                 case 4:
-                    Input = new SocialSettingDto { Id = 4, Title = "LinkedIn", Url = socialDto.Linkedin };
+                    Input = new() { Id = 4, Title = "LinkedIn", Url = socialDto.Linkedin };
                     break;
                 case 5:
-                    Input = new SocialSettingDto { Id = 5, Title = "YouTube", Url = socialDto.Youtube };
+                    Input = new() { Id = 5, Title = "YouTube", Url = socialDto.Youtube };
                     break;
                 case 6:
-                    Input = new SocialSettingDto { Id = 6, Title = "Telegram", Url = socialDto.Telegram };
+                    Input = new() { Id = 6, Title = "Telegram", Url = socialDto.Telegram };
                     break;
             }
         }

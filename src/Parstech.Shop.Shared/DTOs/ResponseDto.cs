@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Parstech.Shop.ApiService.Application.DTOs;
+namespace Parstech.Shop.Shared.DTOs;
 
 public class ResponseDto
 {
@@ -11,10 +11,13 @@ public class ResponseDto
     public object CurrentParameter { get; set; } = null!;
     public List<ValidationFailure> Errors { get; set; } = null!;
     public string? Message { get; set; }
-}
-
-public class ErrorList
-{
-    public string Caption { get; set; }
-    public string ErrorMessage { get; set; }
+    
+    // Authentication specific properties
+    public string? Token { get; set; }
+    public string? RefreshToken { get; set; }
+    public bool NeedRegister { get; set; }
+    public bool NeedActiveCode { get; set; }
+    public bool NeedPassword { get; set; }
+    public bool NeedResendActiveCode { get; set; }
+    public bool ActiveRegister { get; set; }
 }

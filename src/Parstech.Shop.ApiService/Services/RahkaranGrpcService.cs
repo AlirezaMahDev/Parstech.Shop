@@ -4,9 +4,9 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -28,13 +28,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahakaranAllQueryReq(request.OrderId));
+            var result = await _mediator.Send(new RahakaranAllQueryReq(request.OrderId));
 
             var response = new RahkaranAllResponse();
 
             if (result.order != null)
             {
-                response.Order = new Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                response.Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.order.OrderId,
                     OrderCode = result.order.OrderCode,
@@ -46,7 +46,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result.customer != null)
             {
-                response.Customer = new Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                response.Customer = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.customer.Id,
                     UserName = result.customer.UserName,
@@ -63,7 +63,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 foreach (var product in result.products)
                 {
-                    response.Products.Add(new Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                    response.Products.Add(new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
                     {
                         StockId = product.StockId ?? 0,
                         DetailId = product.DetailId ?? 0,
@@ -92,13 +92,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahkaranOrderReadCommandReq(request.Id));
+            var result = await _mediator.Send(new RahkaranOrderReadCommandReq(request.Id));
 
             var response = new RahkaranOrderResponse { IsSuccess = true, Message = "Order retrieved successfully" };
 
             if (result != null)
             {
-                response.Order = new Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                response.Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -130,13 +130,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahakaranFactorSerial = request.Order.RahakaranFactorSerial
             };
 
-            void result = await _mediator.Send(new RahkaranOrderCreateCommandReq(orderDto));
+            var result = await _mediator.Send(new RahkaranOrderCreateCommandReq(orderDto));
 
             var response = new RahkaranOrderResponse
             {
                 IsSuccess = true,
                 Message = "Order created successfully",
-                Order = new Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -168,13 +168,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahakaranFactorSerial = request.Order.RahakaranFactorSerial
             };
 
-            void result = await _mediator.Send(new RahkaranOrderUpdateCommandReq(orderDto));
+            var result = await _mediator.Send(new RahkaranOrderUpdateCommandReq(orderDto));
 
             var response = new RahkaranOrderResponse
             {
                 IsSuccess = true,
                 Message = "Order updated successfully",
-                Order = new Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -198,13 +198,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahkaranUserReadCommandReq(request.Id));
+            var result = await _mediator.Send(new RahkaranUserReadCommandReq(request.Id));
 
             var response = new RahkaranUserResponse { IsSuccess = true, Message = "User retrieved successfully" };
 
             if (result != null)
             {
-                response.User = new Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                response.User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -242,13 +242,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahkaranUserId = request.User.RahkaranUserId
             };
 
-            void result = await _mediator.Send(new RahkaranUserCreateCommandReq(userDto));
+            var result = await _mediator.Send(new RahkaranUserCreateCommandReq(userDto));
 
             var response = new RahkaranUserResponse
             {
                 IsSuccess = true,
                 Message = "User created successfully",
-                User = new Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -286,13 +286,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahkaranUserId = request.User.RahkaranUserId
             };
 
-            void result = await _mediator.Send(new RahkaranUserUpdateCommandReq(userDto));
+            var result = await _mediator.Send(new RahkaranUserUpdateCommandReq(userDto));
 
             var response = new RahkaranUserResponse
             {
                 IsSuccess = true,
                 Message = "User updated successfully",
-                User = new Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -319,13 +319,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahkaranProductReadCommandReq(request.Id));
+            var result = await _mediator.Send(new RahkaranProductReadCommandReq(request.Id));
 
             var response = new RahkaranProductResponse { IsSuccess = true, Message = "Product retrieved successfully" };
 
             if (result != null)
             {
-                response.Product = new Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                response.Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,
@@ -367,13 +367,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahkaranUnitId = request.Product.RahkaranUnitId
             };
 
-            void result = await _mediator.Send(new RahkaranProductCreateCommandReq(productDto));
+            var result = await _mediator.Send(new RahkaranProductCreateCommandReq(productDto));
 
             var response = new RahkaranProductResponse
             {
                 IsSuccess = true,
                 Message = "Product created successfully",
-                Product = new Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,
@@ -415,13 +415,13 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
                 RahkaranUnitId = request.Product.RahkaranUnitId
             };
 
-            void result = await _mediator.Send(new RahkaranProductUpdateCommandReq(productDto));
+            var result = await _mediator.Send(new RahkaranProductUpdateCommandReq(productDto));
 
             var response = new RahkaranProductResponse
             {
                 IsSuccess = true,
                 Message = "Product updated successfully",
-                Product = new Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,
@@ -449,7 +449,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahkaranSendOrderToApiQueryReq(request.OrderId));
+            var result = await _mediator.Send(new RahkaranSendOrderToApiQueryReq(request.OrderId));
 
             var response = new ApiResponse { IsSuccess = result.IsSuccessed, Message = result.Message };
 
@@ -466,7 +466,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new RahkaranFollowOrderFromApiQueryReq(request.OrderId));
+            var result = await _mediator.Send(new RahkaranFollowOrderFromApiQueryReq(request.OrderId));
 
             var response = new ApiResponse { IsSuccess = result.IsSuccessed, Message = result.Message };
 

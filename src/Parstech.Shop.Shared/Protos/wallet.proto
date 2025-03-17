@@ -1,16 +1,74 @@
 syntax = "proto3";
 
-package wallet;
-
 option csharp_namespace = "Parstech.Shop.Shared.Protos.Wallet";
 
+package wallet;
+
+import "google/protobuf/timestamp.proto";
+import "Protos/Common.proto";
+
+// WALLET SERVICE DEFINITIONS
+
+// Wallet Service for user wallet operations
 service WalletService {
-  rpc GetWalletTransaction (WalletTransactionRequest) returns (WalletTransactionResponse) {}
-  rpc GetWalletTransactionByToken (WalletTransactionTokenRequest) returns (WalletTransactionResponse) {}
-  rpc UpdateWalletTransaction (WalletTransactionUpdateRequest) returns (WalletTransactionUpdateResponse) {}
-  rpc GetUserWallet (UserWalletRequest) returns (UserWalletResponse) {}
+  // Basic wallet operations
+  rpc GetWalletByUserId (WalletRequest) returns (WalletResponse);
+  rpc GetUserWallet (UserWalletRequest) returns (UserWalletResponse);
+  rpc GetWalletBalance (WalletBalanceRequest) returns (WalletBalanceResponse);
+  rpc GetWalletTypes (EmptyRequest) returns (WalletTypesResponse);
 }
 
+// Wallet Transaction Service for wallet transactions
+service WalletTransactionService {
+  // Transaction operations
+  rpc GetWalletTransaction (WalletTransactionRequest) returns (WalletTransactionResponse);
+  rpc GetWalletTransactionByToken (WalletTransactionTokenRequest) returns (WalletTransactionResponse);
+  rpc UpdateWalletTransaction (WalletTransactionUpdateRequest) returns (WalletTransactionUpdateResponse);
+  rpc GetTransactionHistory (TransactionHistoryRequest) returns (TransactionHistoryResponse);
+  rpc GetActiveTransaction (TransactionRequest) returns (TransactionResponse);
+}
+
+// Wallet Credit Service for credit operations
+service WalletCreditService {
+  // Credit operations
+  rpc AddCredit (AddCreditRequest) returns (AddCreditResponse);
+  rpc DeductCredit (DeductCreditRequest) returns (DeductCreditResponse);
+  rpc TransferCredit (TransferCreditRequest) returns (TransferCreditResponse);
+  rpc CalculateInstallments (CalculateRequest) returns (CalculateResponse);
+}
+
+// Wallet Admin Service for admin operations
+service WalletAdminService {
+  // Admin operations
+  rpc GetWallets (GetWalletsRequest) returns (GetWalletsResponse);
+  rpc GetWalletDetails (GetWalletDetailsRequest) returns (GetWalletDetailsResponse);
+  rpc UpdateWalletStatus (UpdateWalletStatusRequest) returns (common.ResponseDto);
+  rpc ManageWalletCredit (ManageWalletCreditRequest) returns (common.ResponseDto);
+  rpc GetWalletTransactions (GetWalletTransactionsRequest) returns (GetWalletTransactionsResponse);
+  rpc GetWalletStatistics (WalletStatisticsRequest) returns (WalletStatisticsResponse);
+  rpc ExportWalletTransactions (ExportWalletTransactionsRequest) returns (ExportWalletTransactionsResponse);
+}
+
+// MESSAGE DEFINITIONS
+
+// Common messages
+message EmptyRequest {}
+
+// Wallet requests
+message WalletRequest {
+  int32 user_id = 1;
+}
+
+message UserWalletRequest {
+  string user_name = 1;
+}
+
+message WalletBalanceRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+}
+
+// Transaction requests
 message WalletTransactionRequest {
   int32 transaction_id = 1;
 }
@@ -19,10 +77,251 @@ message WalletTransactionTokenRequest {
   string token = 1;
 }
 
+message TransactionHistoryRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string from_date = 5;
+  string to_date = 6;
+  int32 transaction_type_id = 7;
+}
+
+message TransactionRequest {
+  int32 wallet_id = 1;
+  string type_name = 2;
+}
+
+message WalletTransactionUpdateRequest {
+  int32 transaction_id = 1;
+  bool is_success = 2;
+  optional string tracking_code = 3;
+}
+
+// Credit requests
+message AddCreditRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double amount = 3;
+  string description = 4;
+  int32 transaction_type_id = 5;
+}
+
+message DeductCreditRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double amount = 3;
+  string description = 4;
+  int32 transaction_type_id = 5;
+}
+
+message TransferCreditRequest {
+  int32 source_wallet_id = 1;
+  int32 target_wallet_id = 2;
+  double amount = 3;
+  string description = 4;
+}
+
+message CalculateRequest {
+  int64 price = 1;
+  int32 transaction_id = 2;
+  int32 month = 3;
+}
+
+// Admin requests
+message GetWalletsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  bool active_only = 4;
+  bool blocked_only = 5;
+}
+
+message GetWalletDetailsRequest {
+  int32 wallet_id = 1;
+  bool include_transactions = 2;
+}
+
+message UpdateWalletStatusRequest {
+  int32 wallet_id = 1;
+  bool is_active = 2;
+  bool is_blocked = 3;
+  string reason = 4;
+}
+
+message ManageWalletCreditRequest {
+  int32 wallet_id = 1;
+  double amount = 2;
+  string operation = 3; // "add", "deduct", "reset"
+  string description = 4;
+  bool notify_user = 5;
+}
+
+message GetWalletTransactionsRequest {
+  int32 wallet_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string from_date = 4;
+  string to_date = 5;
+  int32 transaction_type_id = 6;
+  bool successful_only = 7;
+}
+
+message WalletStatisticsRequest {
+  string from_date = 1;
+  string to_date = 2;
+  string group_by = 3; // "day", "week", "month"
+  int32 transaction_type_id = 4;
+}
+
+message ExportWalletTransactionsRequest {
+  int32 wallet_id = 1;
+  string from_date = 2;
+  string to_date = 3;
+  string format = 4; // "csv", "excel"
+  repeated int32 transaction_type_ids = 5;
+}
+
+// Response messages
+message WalletResponse {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double credit = 3;
+  double used_credit = 4;
+  double remaining_credit = 5;
+  string last_updated = 6;
+  common.ResponseDto status = 7;
+}
+
+message UserWalletResponse {
+  bool status = 1;
+  string message = 2;
+  optional UserWalletItem wallet = 3;
+}
+
+message WalletBalanceResponse {
+  double total_balance = 1;
+  double available_balance = 2;
+  double reserved_balance = 3;
+  double pending_balance = 4;
+  string currency_code = 5;
+  string formatted_total_balance = 6;
+  string formatted_available_balance = 7;
+  common.ResponseDto status = 8;
+}
+
+message WalletTypesResponse {
+  repeated WalletTypeDto wallet_types = 1;
+  common.ResponseDto status = 2;
+}
+
 message WalletTransactionResponse {
   bool status = 1;
   string message = 2;
   optional WalletTransactionItem transaction = 3;
+}
+
+message TransactionHistoryResponse {
+  repeated WalletTransactionItem transactions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  common.ResponseDto status = 4;
+}
+
+message TransactionResponse {
+  int32 transaction_id = 1;
+  int32 wallet_id = 2;
+  string type_name = 3; 
+  double amount = 4;
+  string description = 5;
+  string tracking_code = 6;
+  string transaction_date = 7;
+  int32 months = 8;
+  double monthly_payment = 9;
+  bool is_active = 10;
+  common.ResponseDto status = 11;
+}
+
+message WalletTransactionUpdateResponse {
+  bool status = 1;
+  string message = 2;
+  common.ResponseDto response_status = 3;
+}
+
+message AddCreditResponse {
+  bool success = 1;
+  double new_balance = 2;
+  WalletTransactionItem transaction = 3;
+  common.ResponseDto status = 4;
+}
+
+message DeductCreditResponse {
+  bool success = 1;
+  double new_balance = 2;
+  WalletTransactionItem transaction = 3;
+  common.ResponseDto status = 4;
+}
+
+message TransferCreditResponse {
+  bool success = 1;
+  double source_new_balance = 2;
+  double target_new_balance = 3;
+  WalletTransactionItem transaction = 4;
+  common.ResponseDto status = 5;
+}
+
+message CalculateResponse {
+  bool is_successed = 1;
+  string message = 2;
+  double monthly_amount = 3;
+  double total_amount = 4;
+  common.ResponseDto status = 5;
+}
+
+// Admin responses
+message GetWalletsResponse {
+  repeated WalletSummaryDto wallets = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  common.ResponseDto status = 4;
+}
+
+message GetWalletDetailsResponse {
+  WalletDetailDto wallet = 1;
+  common.ResponseDto status = 2;
+}
+
+message GetWalletTransactionsResponse {
+  repeated WalletTransactionItem transactions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  common.ResponseDto status = 4;
+}
+
+message WalletStatisticsResponse {
+  repeated WalletStatisticItemDto statistics = 1;
+  WalletSummaryStatisticsDto summary = 2;
+  common.ResponseDto status = 3;
+}
+
+message ExportWalletTransactionsResponse {
+  bool success = 1;
+  string download_url = 2;
+  int32 total_transactions = 3;
+  string format = 4;
+  string expires_at = 5;
+  common.ResponseDto status = 6;
+}
+
+// Data DTOs
+message UserWalletItem {
+  int32 id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  double credit = 4;
+  double used_credit = 5;
+  double remaining_credit = 6;
+  string last_updated = 7;
 }
 
 message WalletTransactionItem {
@@ -39,33 +338,77 @@ message WalletTransactionItem {
   int32 order_id = 11;
 }
 
-message WalletTransactionUpdateRequest {
-  int32 transaction_id = 1;
-  bool is_success = 2;
-  optional string tracking_code = 3;
+message WalletTypeDto {
+  int32 type_id = 1;
+  string type_title = 2;
+  string color = 3;
+  string description = 4;
+  bool is_active = 5;
 }
 
-message WalletTransactionUpdateResponse {
-  bool status = 1;
-  string message = 2;
-}
-
-message UserWalletRequest {
-  string user_name = 1;
-}
-
-message UserWalletResponse {
-  bool status = 1;
-  string message = 2;
-  optional UserWalletItem wallet = 3;
-}
-
-message UserWalletItem {
-  int32 id = 1;
+message WalletSummaryDto {
+  int32 wallet_id = 1;
   int32 user_id = 2;
   string user_name = 3;
-  double credit = 4;
-  double used_credit = 5;
-  double remaining_credit = 6;
-  string last_updated = 7;
+  string user_email = 4;
+  double total_credit = 5;
+  double used_credit = 6;
+  double available_credit = 7;
+  bool is_active = 8;
+  bool is_blocked = 9;
+  string created_date = 10;
+  string last_transaction_date = 11;
+}
+
+message WalletDetailDto {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  string user_email = 4;
+  string user_phone = 5;
+  double total_credit = 6;
+  double used_credit = 7;
+  double available_credit = 8;
+  double reserved_credit = 9;
+  bool is_active = 10;
+  bool is_blocked = 11;
+  string blocked_reason = 12;
+  string created_date = 13;
+  string last_updated = 14;
+  repeated WalletTransactionItem recent_transactions = 15;
+  WalletStatisticsDto statistics = 16;
+}
+
+message WalletStatisticsDto {
+  int32 total_transactions = 1;
+  int32 successful_transactions = 2;
+  int32 failed_transactions = 3;
+  double total_credit_added = 4;
+  double total_credit_used = 5;
+  double average_transaction_amount = 6;
+}
+
+message WalletStatisticItemDto {
+  string date = 1;
+  int32 transaction_count = 2;
+  double total_amount = 3;
+  double credit_added = 4;
+  double credit_used = 5;
+}
+
+message WalletSummaryStatisticsDto {
+  int32 total_wallets = 1;
+  int32 active_wallets = 2;
+  int32 blocked_wallets = 3;
+  double total_system_credit = 4;
+  double total_used_credit = 5;
+  double total_available_credit = 6;
+  double average_wallet_balance = 7;
+}
+
+message WalletTransactionPaging {
+  int32 take = 1;
+  int32 current_page = 2;
+  int32 page_count = 3;
+  repeated WalletTransactionItem wallet_transactions = 4;
 } 

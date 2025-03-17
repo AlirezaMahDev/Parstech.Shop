@@ -1,12 +1,12 @@
-IDistributedApplicationBuilder? builder = DistributedApplication.CreateBuilder(args);
+IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<SqlServerServerResource>? mssql = builder.AddSqlServer("mssql")
+IResourceBuilder<SqlServerServerResource> mssql = builder.AddSqlServer("mssql")
     .WithDataVolume();
-IResourceBuilder<SqlServerDatabaseResource>? database = mssql.AddDatabase("database");
+IResourceBuilder<SqlServerDatabaseResource> database = mssql.AddDatabase("database");
 
-IResourceBuilder<RedisResource>? cache = builder.AddRedis("cache");
+IResourceBuilder<RedisResource> cache = builder.AddRedis("cache");
 
-IResourceBuilder<ProjectResource>? apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
+IResourceBuilder<ProjectResource> apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(cache)

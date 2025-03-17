@@ -6,8 +6,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Wallet.Handlers.Queries;
 
@@ -31,9 +31,9 @@ public class WalletPagingQueryHandler : IRequestHandler<WalletPagingQueryReq, Pa
     {
         int skip = (request.Parameter.CurrentPage - 1) * request.Parameter.TakePage;
 
-        string? query =
+        string query =
             $"SELECT dbo.[User].UserName, dbo.UserBilling.FirstName, dbo.UserBilling.LastName, dbo.Wallets.WalletId, dbo.Wallets.UserId, dbo.Wallets.Amount, dbo.Wallets.Fecilities, dbo.Wallets.OrgCredit, dbo.Wallets.Coin, dbo.Wallets.IsBlock FROM dbo.[User] INNER JOIN dbo.UserBilling ON dbo.[User].Id = dbo.UserBilling.UserId INNER JOIN dbo.Wallets ON dbo.[User].Id = dbo.Wallets.UserId ORDER BY dbo.Wallets.WalletId Desc OFFSET {skip} ROWS FETCH NEXT {request.Parameter.TakePage} ROWS ONLY";
-        List<WalletDto>? wallets =
+        List<WalletDto> wallets =
             DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<WalletDto>(query).ToList());
 
 

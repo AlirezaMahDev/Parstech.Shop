@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderShipping.Request.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderShipping.Handler.Queries;
 
@@ -24,7 +24,7 @@ public class
         CancellationToken cancellationToken)
     {
         OrderShippingDto orderShippingDto = new();
-        Domain.Models.OrderShipping item = await _orderShippingRep.GetOrderShippingByOrderId(request.orderId);
+        Shared.Models.OrderShipping item = await _orderShippingRep.GetOrderShippingByOrderId(request.orderId);
         if (item.Id == 0)
         {
             return orderShippingDto;

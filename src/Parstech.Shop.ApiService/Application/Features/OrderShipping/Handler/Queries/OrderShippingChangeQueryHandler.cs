@@ -4,7 +4,7 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.OrderShipping.Request.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderShipping.Handler.Queries;
 
@@ -34,7 +34,7 @@ public class OrderShippingChangeQueryHandler : IRequestHandler<OrderShippingChan
 
     public async Task<long> Handle(OrderShippingChangeQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.OrderShipping? CurrentOrderShipping =
+        Shared.Models.OrderShipping CurrentOrderShipping =
             await _orderShippingRepository.GetOrderShippingByOrderId(request.OrderId);
         int shippingType = 0;
         if (request.Type == "Refresh")
@@ -49,7 +49,7 @@ public class OrderShippingChangeQueryHandler : IRequestHandler<OrderShippingChan
             {
                 if (CurrentOrderShipping.OrderId != 0 && CurrentOrderShipping.UserShippingId != null)
                 {
-                    Domain.Models.UserShipping? userShipping =
+                    Shared.Models.UserShipping? userShipping =
                         await _userShippingRep.GetAsync(int.Parse(CurrentOrderShipping.UserShippingId));
                     if (userShipping.State == "تهران")
                     {
@@ -72,13 +72,13 @@ public class OrderShippingChangeQueryHandler : IRequestHandler<OrderShippingChan
         }
         else
         {
-            Domain.Models.Order? Order = await _orderRepository.GetAsync(request.OrderId);
-            var orderShipping = new Shop.Domain.Models.OrderShipping();
+            Shared.Models.Order? Order = await _orderRepository.GetAsync(request.OrderId);
+            var orderShipping = new Shared.Models.OrderShipping();
 
 
             if (request.UserShippingId != 0)
             {
-                Domain.Models.UserShipping? userShipping = await _userShippingRep.GetAsync(request.UserShippingId);
+                Shared.Models.UserShipping? userShipping = await _userShippingRep.GetAsync(request.UserShippingId);
                 if (userShipping.State == "تهران")
                 {
                     shippingType = 1;
@@ -115,7 +115,7 @@ public class OrderShippingChangeQueryHandler : IRequestHandler<OrderShippingChan
 
             if (CurrentOrderShipping.Id == 0)
             {
-                CurrentOrderShipping = new Shop.Domain.Models.OrderShipping();
+                CurrentOrderShipping = new();
                 CurrentOrderShipping.FirstName = orderShipping.FirstName;
                 CurrentOrderShipping.LastName = orderShipping.LastName;
                 CurrentOrderShipping.Phone = orderShipping.Phone;

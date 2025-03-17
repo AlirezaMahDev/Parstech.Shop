@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Handlers.Commands;
 
@@ -21,8 +21,8 @@ public class RahkaranOrderReadCommandHandler : IRequestHandler<RahkaranOrderRead
 
     public async Task<RahkaranOrderDto> Handle(RahkaranOrderReadCommandReq request, CancellationToken cancellationToken)
     {
-        string? query = $"select* from dbo.RahkaranOrder where dbo.RahkaranOrder.OrderId={request.id}";
-        RahkaranOrderDto? item = DapperHelper.ExecuteCommand<RahkaranOrderDto>(_connectionString,
+        string query = $"select* from dbo.RahkaranOrder where dbo.RahkaranOrder.OrderId={request.id}";
+        RahkaranOrderDto item = DapperHelper.ExecuteCommand<RahkaranOrderDto>(_connectionString,
             conn => conn.Query<RahkaranOrderDto>(query).FirstOrDefault());
         return item;
     }

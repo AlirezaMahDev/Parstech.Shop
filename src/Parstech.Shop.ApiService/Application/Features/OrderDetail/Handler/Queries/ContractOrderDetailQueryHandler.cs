@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 
@@ -28,10 +28,10 @@ public class ContractOrderDetailQueryHandler : IRequestHandler<ContractOrderDeta
     {
         ContractDto Result = new();
 
-        Domain.Models.ProductStockPrice? productStock =
+        Shared.Models.ProductStockPrice? productStock =
             await _productStockPriceRep.GetAsync(request.detail.ProductStockPriceId);
-        Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
-        Domain.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
+        Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+        Shared.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
 
         if (request.Store == "All" || request.Store == store.LatinStoreName)
         {

@@ -3,10 +3,10 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Handlers.Queries;
 
@@ -24,8 +24,8 @@ public class RahakaranAllQueryHandler : IRequestHandler<RahakaranAllQueryReq, Ra
     public async Task<RahkaranAllDto> Handle(RahakaranAllQueryReq request, CancellationToken cancellationToken)
     {
         RahkaranAllDto result = new();
-        void order = await _mediator.Send(new OrderReadCommandReq(request.orderId));
-        void orderdetails = await _mediator.Send(new OrderDetailsOfOrderQueryReq(request.orderId));
+        var order = await _mediator.Send(new OrderReadCommandReq(request.orderId));
+        var orderdetails = await _mediator.Send(new OrderDetailsOfOrderQueryReq(request.orderId));
 
         string orderQuery =
             $"select dbo.Orders.OrderId,dbo.Orders.OrderCode,dbo.RahkaranOrder.RahkaranPishNumber,dbo.RahkaranOrder.RahakaranFactorNumber,dbo.RahkaranOrder.RahakaranFactorSerial from dbo.Orders left join dbo.RahkaranOrder on dbo.Orders.OrderId=dbo.RahkaranOrder.OrderId where dbo.Orders.OrderId={order.OrderId}";

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Handlers.Queries;
 
@@ -28,16 +28,16 @@ internal class
     public async Task Handle(CreateProductRepresentationForChildsOfBundleQueryReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductStockPrice? productStock = await _productStockPriceRep.GetAsync(request.productStockId);
-        Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+        Shared.Models.ProductStockPrice? productStock = await _productStockPriceRep.GetAsync(request.productStockId);
+        Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
 
-        List<Domain.Models.Product>? childs = await _productRep.GetProductsByParrentId(product.Id);
+        List<Shared.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
 
         List<int> Quantities = new();
-        foreach (Domain.Models.Product child in childs)
+        foreach (Shared.Models.Product child in childs)
         {
             ProductRepresentationDto ProductRep = new() { UserId = request.userId, TypeId = 2 };
-            Domain.Models.ProductStockPrice? pStock =
+            Shared.Models.ProductStockPrice? pStock =
                 await _productStockPriceRep.GetProductStockByProductIdAndStoreId(child.Id, productStock.StoreId);
             int? quantity = pStock.QuantityPerBundle * request.orderDetailCount;
             if (quantity == null)

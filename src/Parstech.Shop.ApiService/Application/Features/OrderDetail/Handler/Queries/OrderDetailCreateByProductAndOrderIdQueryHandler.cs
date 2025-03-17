@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 
@@ -42,8 +42,8 @@ public class
         CancellationToken cancellationToken)
     {
         ResponseDto result = new();
-        Domain.Models.OrderDetail item = new Shop.Domain.Models.OrderDetail();
-        Domain.Models.ProductStockPrice? productStock = await _productStockRep.GetAsync(request.productId);
+        Shared.Models.OrderDetail item = new();
+        Shared.Models.ProductStockPrice? productStock = await _productStockRep.GetAsync(request.productId);
         item.ProductStockPriceId = productStock.Id;
         long Price = 0;
 
@@ -108,7 +108,7 @@ public class
 
         //var orderDetail = _mapper.Map<Domain.Models.OrderDetail>(item);
 
-        Domain.Models.OrderDetail orderResult = await _orderDetailRep.AddAsync(item);
+        Shared.Models.OrderDetail orderResult = await _orderDetailRep.AddAsync(item);
         OrderDetailDto? refreshDetail = _mapper.Map<OrderDetailDto>(orderResult);
         await _mediator.Send(new RefreshOrderDetailQueryReq(refreshDetail));
         result.IsSuccessed = true;

@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Calculator;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -30,13 +30,13 @@ public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetai
 
     public async Task<List<OrderDetail>> GetOrderDetailsByOrderId(int orderId)
     {
-        List<OrderDetail>? list = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
+        List<OrderDetail> list = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
         return list;
     }
 
     public async Task CalculateOrderDetailTax(int orderId)
     {
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
         foreach (OrderDetail? orderDetail in orderDetails)
         {
             //var product = await _context.Products.FirstOrDefaultAsync(z => z.Id == orderDetail.ProductId);
@@ -83,7 +83,7 @@ public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetai
 
     public async Task<int> GetCountOfOrder(int orderId)
     {
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(u => u.OrderId == orderId).ToListAsync();
         return orderDetails.Count;
     }
 

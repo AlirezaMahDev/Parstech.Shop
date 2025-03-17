@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Section.Handlers.Queries;
 
@@ -24,7 +24,7 @@ public class DiscountSectionsSelectQueryHandler : IRequestHandler<DiscountSectio
     public async Task<List<SectionDto>> Handle(DiscountSectionsSelectQueryReq request,
         CancellationToken cancellationToken)
     {
-        string? query = "SELECT s.Id,s.SectionName,s.SectionTypeId from dbo.Section as s where s.SectionTypeId=3 ";
+        string query = "SELECT s.Id,s.SectionName,s.SectionTypeId from dbo.Section as s where s.SectionTypeId=3 ";
         return DapperHelper.ExecuteCommand(_conectionString, conn => conn.Query<SectionDto>(query).ToList());
     }
 }

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.PropertyCategury.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.PropertyCategury.Handlers.Commands;
 
@@ -22,7 +22,7 @@ public class PropertyCateguryReadCommandHandler : IRequestHandler<PropertyCategu
     public async Task<PropertyCateguryDto> Handle(PropertyCateguryReadCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.PropertyCategury? item = await _propertyCateguryRep.GetAsync(request.Id);
+        Shared.Models.PropertyCategury? item = await _propertyCateguryRep.GetAsync(request.Id);
         return _mapper.Map<PropertyCateguryDto>(item);
     }
 }
@@ -42,7 +42,7 @@ public class
     public async Task<List<PropertyCateguryDto>> Handle(PropertyCateguryReadsCommandReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.PropertyCategury>? list = await _propertyCateguryRep.GetAll();
+        IReadOnlyList<Shared.Models.PropertyCategury> list = await _propertyCateguryRep.GetAll();
         return _mapper.Map<List<PropertyCateguryDto>>(list);
     }
 }

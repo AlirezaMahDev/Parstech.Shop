@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -77,7 +77,7 @@ public class AddProductsByExcelQueryHandler : IRequestHandler<AddProductsByExcel
                     product.TypeId = 3;
                     if (item.Parent != "0")
                     {
-                        Domain.Models.Product parent = await _productRep.GetProductByCode(item.Parent);
+                        Shared.Models.Product parent = await _productRep.GetProductByCode(item.Parent);
                         if (parent.Id != 0)
                         {
                             product.ParentId = parent.Id;

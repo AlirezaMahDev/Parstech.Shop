@@ -3,9 +3,9 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -30,7 +30,7 @@ public class ConfigAdminGrpcService : ConfigAdminService.ConfigAdminServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new GetCreditOfNationalCodeQueryReq(
+            var result = await _mediator.Send(new GetCreditOfNationalCodeQueryReq(
                 request.SellerId,
                 request.NationalCode));
 

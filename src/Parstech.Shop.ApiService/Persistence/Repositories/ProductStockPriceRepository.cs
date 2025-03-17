@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.ProductStockPrice.Commands;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -55,7 +55,7 @@ public class ProductStockPriceRepository : GenericRepository<ProductStockPrice>,
 
     public async Task<ProductStockPrice?> DapperGetProductStockPriceById(int id)
     {
-        ProductStockPrice? query = DapperHelper.ExecuteCommand<ProductStockPrice>(_connectionString,
+        ProductStockPrice query = DapperHelper.ExecuteCommand<ProductStockPrice>(_connectionString,
             conn => conn.Query<ProductStockPrice>(_commandText.GetProductStockPriceById, new { @Id = id })
                 .SingleOrDefault());
 
@@ -152,7 +152,7 @@ public class ProductStockPriceRepository : GenericRepository<ProductStockPrice>,
     public async Task<int?> GetBestStockId(int productId)
     {
         List<ProductStockPriceDto>? stocks = await GetAllStock(productId, false);
-        List<ProductStockPriceDto>? Catstocks = await GetAllStock(productId, true);
+        List<ProductStockPriceDto> Catstocks = await GetAllStock(productId, true);
         if (stocks.Count == 0 || stocks == null)
         {
             return null;

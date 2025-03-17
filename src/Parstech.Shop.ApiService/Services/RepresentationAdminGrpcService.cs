@@ -2,9 +2,9 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Representation.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -26,7 +26,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     {
         try
         {
-            void representation = await _mediator.Send(new RepresentationDetailQueryReq(request.RepresentationId));
+            var representation = await _mediator.Send(new RepresentationDetailQueryReq(request.RepresentationId));
             return MapToRepresentationDto(representation);
         }
         catch (Exception ex)
@@ -46,7 +46,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
                 CurrentPage = request.CurrentPage, TakePage = request.TakePage, SearchKey = request.SearchKey
             };
 
-            void paging = await _mediator.Send(new RepresentationPagingQueryReq(parameter));
+            var paging = await _mediator.Send(new RepresentationPagingQueryReq(parameter));
 
             var response = new RepresentationPagingDto
             {
@@ -136,7 +136,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     {
         try
         {
-            void types = await _mediator.Send(new RepresentationTypeAllQueryReq());
+            var types = await _mediator.Send(new RepresentationTypeAllQueryReq());
 
             var response = new RepresentationTypeListResponse();
             foreach (var type in types)
@@ -158,7 +158,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     {
         try
         {
-            void type = await _mediator.Send(new RepresentationTypeDetailQueryReq(request.TypeId));
+            var type = await _mediator.Send(new RepresentationTypeDetailQueryReq(request.TypeId));
             return MapToRepresentationTypeDto(type);
         }
         catch (Exception ex)
@@ -239,7 +239,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     {
         try
         {
-            void representations = await _mediator.Send(new ProductRepresentationsOfProductQueryReq(request.ProductId));
+            var representations = await _mediator.Send(new ProductRepresentationsOfProductQueryReq(request.ProductId));
 
             var response = new ProductRepresentationListResponse();
             foreach (var rep in representations)
@@ -327,7 +327,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     {
         try
         {
-            void stockPrice = await _mediator.Send(new ProductStockPriceDetailQueryReq(request.StockPriceId));
+            var stockPrice = await _mediator.Send(new ProductStockPriceDetailQueryReq(request.StockPriceId));
             return MapToProductStockPriceDto(stockPrice);
         }
         catch (Exception ex)
@@ -372,7 +372,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
                 ProductId = request.ProductId, CurrentPage = request.CurrentPage, TakePage = request.TakePage
             };
 
-            void paging = await _mediator.Send(new ProductLogPagingQueryReq(parameter));
+            var paging = await _mediator.Send(new ProductLogPagingQueryReq(parameter));
 
             var response = new ProductLogPagingDto
             {
@@ -420,7 +420,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
 
     private Parstech.Shop.Application.DTOs.Representation.RepresentationDto MapFromRepresentationDto(RepresentationDto source)
     {
-        var result = new Shop.Application.DTOs.Representation.RepresentationDto
+        var result = new Parstech.Shop.Application.DTOs.Representation.RepresentationDto
         {
             Id = source.Id,
             Name = source.Name,
@@ -447,7 +447,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     private Parstech.Shop.Application.DTOs.RepresentationType.RepresentationTypeDto MapFromRepresentationTypeDto(
         RepresentationTypeDto source)
     {
-        return new Shop.Application.DTOs.RepresentationType.RepresentationTypeDto
+        return new Parstech.Shop.Application.DTOs.RepresentationType.RepresentationTypeDto
         {
             Id = source.Id, Name = source.Name
         };
@@ -472,7 +472,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     private Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
         ProductRepresentationDto source)
     {
-        return new Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
+        return new Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -523,7 +523,7 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
     private Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromProductStockPriceDto(
         ProductStockPriceDto source)
     {
-        var result = new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+        var result = new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
         {
             Id = source.Id,
             ProductId = source.ProductId,

@@ -3,9 +3,9 @@
 using Microsoft.AspNetCore.Identity;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Security.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -28,7 +28,7 @@ public class LoginByActiveCodeQueryHandler : IRequestHandler<LoginByActiveCodeQu
     public async Task<ResponseDto> Handle(LoginByActiveCodeQueryReq request, CancellationToken cancellationToken)
     {
         ResponseDto Response = new();
-        Domain.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
+        Shared.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
         if (item == null)
         {
             Response.IsSuccessed = false;

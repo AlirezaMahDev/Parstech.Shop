@@ -9,8 +9,8 @@ using Microsoft.Data.SqlClient;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -99,10 +99,10 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                 PDto.BrandName = product.BrandTitle;
                 PDto.LatinBrandName = product.LatinBrandTitle;
 
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                             new { @productId = product.ProductId })
                         .FirstOrDefault());
                 if (image != null)
@@ -135,12 +135,12 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                     PDto.ProductStockPriceId = product.Id;
                 }
 
-                Domain.Models.Representation? Rep = await _representationRep.GetAsync(PDto.RepId);
+                Shared.Models.Representation? Rep = await _representationRep.GetAsync(PDto.RepId);
                 PDto.RepName = Rep.Name;
 
                 if (request.ProductParameterDto.Categury != null)
                 {
-                    Domain.Models.Categury? Categury =
+                    Shared.Models.Categury? Categury =
                         await _categuryRep.GetCateguryByLatinName(request.ProductParameterDto.Categury);
                     if (Categury != null)
                     {
@@ -157,7 +157,7 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                 int CountSale = await _orderDetailep.CountOfSaleByProductId(PDto.Id);
                 PDto.CountSale = CountSale;
 
-                Domain.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
+                Shared.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
                 PDto.TypeName = Type.TypeName;
                 productDto.Add(PDto);
             }
@@ -228,10 +228,10 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                 PDto.BrandName = item.BrandTitle;
                 PDto.LatinBrandName = item.LatinBrandTitle;
 
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                             new { @productId = item.ProductId })
                         .FirstOrDefault());
                 if (image != null)
@@ -240,12 +240,12 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                 }
 
 
-                Domain.Models.Representation? Rep = await _representationRep.GetAsync(PDto.RepId);
+                Shared.Models.Representation? Rep = await _representationRep.GetAsync(PDto.RepId);
                 PDto.RepName = Rep.Name;
 
                 if (request.ProductParameterDto.Categury != null)
                 {
-                    Domain.Models.Categury? Categury =
+                    Shared.Models.Categury? Categury =
                         await _categuryRep.GetCateguryByLatinName(request.ProductParameterDto.Categury);
                     if (Categury != null)
                     {
@@ -262,7 +262,7 @@ public class ProductPagingQueryHandler : IRequestHandler<ProductPagingQueryReq, 
                 int CountSale = await _orderDetailep.CountOfSaleByProductId(PDto.Id);
                 PDto.CountSale = CountSale;
 
-                Domain.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
+                Shared.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
                 PDto.TypeName = Type.TypeName;
 
 
@@ -370,10 +370,10 @@ public class
                 else { id = item.Id; }
 
                 ProductDto? dto = _mapper.Map<ProductDto>(item);
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
                         .FirstOrDefault());
 
                 if (image != null)
@@ -392,7 +392,7 @@ public class
 
         if (request.ProductParameterDto.Store != null)
         {
-            Domain.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.ProductParameterDto.Store);
+            Shared.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.ProductParameterDto.Store);
 
             string query =
                 $"SELECT dbo.Product.Name,dbo.Product.ParentId,dbo.Product.SingleSale, dbo.Product.LatinName, dbo.Product.Code, dbo.Product.ShortDescription, dbo.Product.ShortLink, dbo.Product.TypeId, dbo.ProductStockPrice.Id as ProductStockPriceId, dbo.ProductStockPrice.ProductId, dbo.ProductStockPrice.SalePrice,dbo.ProductStockPrice.DiscountPrice, dbo.ProductStockPrice.StockStatus, dbo.ProductStockPrice.Quantity, dbo.ProductStockPrice.MaximumSaleInOrder,dbo.Brand.BrandId,dbo.Brand.BrandTitle,dbo.Brand.LatinBrandTitle,dbo.UserStore.LatinStoreName, dbo.ProductStockPrice.StoreId, dbo.ProductStockPrice.RepId,dbo.UserStore.StoreName FROM dbo.Product INNER JOIN dbo.ProductStockPrice ON dbo.Product.Id = dbo.ProductStockPrice.ProductId INNER JOIN dbo.UserStore ON dbo.ProductStockPrice.StoreId = dbo.UserStore.Id INNER JOIN dbo.Brand ON dbo.Product.BrandId = dbo.Brand.BrandId where ProductStockPrice.StoreId={store.Id} AND dbo.Product.TypeId!=2 and dbo.Product.IsActive=1 ORDER BY CreateDate Desc OFFSET {request.ProductParameterDto.Skip} ROWS FETCH NEXT 24 ROWS ONLY";
@@ -453,10 +453,10 @@ public class
                     id = product.ProductId;
                 }
 
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _connectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = id })
                         .FirstOrDefault());
                 if (image != null)
                 {
@@ -559,7 +559,7 @@ public class ProductPagingCateguryQueryHandler : IRequestHandler<ProductPagingCa
 
         ProductPageingDto response = new();
         List<ProductDto> products = new();
-        Domain.Models.Categury? categury =
+        Shared.Models.Categury? categury =
             await _categuryRep.GetCateguryByLatinName(request.ProductParameterDto.Categury);
         string storeQuery = "";
         string minQuery = "";
@@ -571,7 +571,7 @@ public class ProductPagingCateguryQueryHandler : IRequestHandler<ProductPagingCa
         string maxPrice = "";
         if (request.ProductParameterDto.Store != null)
         {
-            Domain.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.ProductParameterDto.Store);
+            Shared.Models.UserStore store = await _userStoreRep.GetStoreByLatinName(request.ProductParameterDto.Store);
             storeQuery = $"AND StoreId={store.Id}";
         }
 
@@ -658,10 +658,10 @@ public class ProductPagingCateguryQueryHandler : IRequestHandler<ProductPagingCa
 
         foreach (ProductPaginationCateguryDto product in productslist)
         {
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _connectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                    .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                         new { @productId = product.ProductId })
                     .FirstOrDefault());
             if (image != null)

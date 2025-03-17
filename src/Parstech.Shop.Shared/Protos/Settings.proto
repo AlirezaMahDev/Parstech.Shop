@@ -1,0 +1,274 @@
+syntax = "proto3";
+
+option csharp_namespace = "Parstech.Shop.Shared.Protos.Settings";
+
+package settings;
+
+import "google/protobuf/timestamp.proto";
+import "Protos/Common.proto";
+
+// SETTINGS SERVICE DEFINITIONS
+
+// Settings Admin Service for site configuration
+service SettingsAdminService {
+  // Site settings operations
+  rpc GetSiteSettings (SiteSettingsRequest) returns (SiteSettingsResponse);
+  rpc UpdateSiteSettings (UpdateSiteSettingsRequest) returns (common.ResponseDto);
+  
+  // SEO operations
+  rpc GetSeoSettings (SeoSettingsRequest) returns (SeoSettingsResponse);
+  rpc UpdateSeoSettings (UpdateSeoSettingsRequest) returns (common.ResponseDto);
+  
+  // Social links operations
+  rpc GetSocialLinks (SocialLinksRequest) returns (SocialLinksResponse);
+  rpc UpdateSocialLinks (UpdateSocialLinksRequest) returns (common.ResponseDto);
+  
+  // Sections operations
+  rpc GetSections (SectionsRequest) returns (SectionsResponse);
+  rpc UpdateSection (UpdateSectionRequest) returns (common.ResponseDto);
+  rpc CreateSection (CreateSectionRequest) returns (common.ResponseDto);
+  rpc DeleteSection (DeleteSectionRequest) returns (common.ResponseDto);
+  
+  // Discount panel operations
+  rpc GetRepresentationTypes (RepresentationTypesRequest) returns (RepresentationTypesResponse);
+  rpc CreateRepresentationType (CreateRepresentationTypeRequest) returns (common.ResponseDto);
+  rpc UpdateRepresentationType (UpdateRepresentationTypeRequest) returns (common.ResponseDto);
+  rpc DeleteRepresentationType (DeleteRepresentationTypeRequest) returns (common.ResponseDto);
+  
+  rpc GetRepresentations (RepresentationsRequest) returns (RepresentationsResponse);
+  rpc CreateRepresentation (CreateRepresentationRequest) returns (common.ResponseDto);
+  rpc UpdateRepresentation (UpdateRepresentationRequest) returns (common.ResponseDto);
+  rpc DeleteRepresentation (DeleteRepresentationRequest) returns (common.ResponseDto);
+}
+
+// MESSAGE DEFINITIONS
+
+// Site settings messages
+message SiteSettingsRequest {
+  int32 id = 1;
+}
+
+message SiteSettingsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SiteSettingsDto site = 4;
+}
+
+message SiteSettingsDto {
+  int32 id = 1;
+  string site_name = 2;
+  string site_title = 3;
+  string site_description = 4;
+  string site_copyright = 5;
+  string site_address = 6;
+  string site_phone = 7;
+  string site_email = 8;
+  string site_logo = 9;
+  string site_favicon = 10;
+  string site_slogan = 11;
+  string site_terms = 12;
+  string site_about = 13;
+  string site_privacy = 14;
+  bool enable_registration = 15;
+  bool enable_blog = 16;
+  bool enable_contact = 17;
+  bool enable_shop = 18;
+  string currency_symbol = 19;
+  string currency_name = 20;
+}
+
+message UpdateSiteSettingsRequest {
+  int32 id = 1;
+  SiteSettingsDto site = 2;
+}
+
+// SEO settings messages
+message SeoSettingsRequest {
+  int32 id = 1;
+}
+
+message SeoSettingsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SeoSettingsDto seo = 4;
+}
+
+message SeoSettingsDto {
+  int32 id = 1;
+  string meta_title = 2;
+  string meta_description = 3;
+  string meta_keywords = 4;
+  string canonical_url = 5;
+  string robots_txt = 6;
+  string google_analytics = 7;
+  string google_tag_manager = 8;
+  string google_site_verification = 9;
+  string bing_site_verification = 10;
+  bool enable_sitemap = 11;
+  bool enable_schema_markup = 12;
+  string custom_head_scripts = 13;
+  string custom_footer_scripts = 14;
+}
+
+message UpdateSeoSettingsRequest {
+  int32 id = 1;
+  SeoSettingsDto seo = 2;
+}
+
+// Social links messages
+message SocialLinksRequest {
+  int32 id = 1;
+}
+
+message SocialLinksResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SocialLinksDto social = 4;
+}
+
+message SocialLinksDto {
+  int32 id = 1;
+  string facebook = 2;
+  string twitter = 3;
+  string instagram = 4;
+  string linkedin = 5;
+  string youtube = 6;
+  string pinterest = 7;
+  string telegram = 8;
+  string whatsapp = 9;
+  bool enable_social_login = 10;
+  bool enable_facebook_login = 11;
+  bool enable_google_login = 12;
+}
+
+message UpdateSocialLinksRequest {
+  int32 id = 1;
+  SocialLinksDto social = 2;
+}
+
+// Sections messages
+message SectionsRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+}
+
+message SectionsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated SectionDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message SectionDto {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  string image_url = 4;
+  int32 display_order = 5;
+  bool is_active = 6;
+  string section_type = 7;
+  string link_url = 8;
+  string link_text = 9;
+  bool is_featured = 10;
+  string created_date = 11;
+}
+
+message CreateSectionRequest {
+  SectionDto section = 1;
+}
+
+message UpdateSectionRequest {
+  SectionDto section = 1;
+}
+
+message DeleteSectionRequest {
+  int32 id = 1;
+}
+
+// Representation types messages
+message RepresentationTypesRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+}
+
+message RepresentationTypesResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated RepresentationTypeDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message RepresentationTypeDto {
+  int32 id = 1;
+  string title = 2;
+  bool is_active = 3;
+  int32 display_order = 4;
+  string created_date = 5;
+}
+
+message CreateRepresentationTypeRequest {
+  RepresentationTypeDto type = 1;
+}
+
+message UpdateRepresentationTypeRequest {
+  RepresentationTypeDto type = 1;
+}
+
+message DeleteRepresentationTypeRequest {
+  int32 id = 1;
+}
+
+// Representations messages
+message RepresentationsRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+  int32 type_id = 4;
+}
+
+message RepresentationsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated RepresentationDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message RepresentationDto {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  string description = 6;
+  bool is_active = 7;
+  int32 discount_percentage = 8;
+  int32 type_id = 9;
+  string type_title = 10;
+  string created_date = 11;
+}
+
+message CreateRepresentationRequest {
+  RepresentationDto representation = 1;
+}
+
+message UpdateRepresentationRequest {
+  RepresentationDto representation = 1;
+}
+
+message DeleteRepresentationRequest {
+  int32 id = 1;
+} 

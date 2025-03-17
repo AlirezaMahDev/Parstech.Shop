@@ -20,14 +20,14 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
             {
                 CurrentPage = request.Page,
                 TakePage = request.PageSize,
                 SearchKey = request.SearchTerm ?? string.Empty
             };
 
-            var filter = new Shop.Application.DTOs.Product.ProductFilterDto
+            var filter = new Parstech.Shop.Application.DTOs.Product.ProductFilterDto
             {
                 CateguryId = request.CategoryId ?? 0,
                 BrandId = request.BrandId ?? 0,
@@ -38,7 +38,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
                 MaxPrice = (long)(request.MaxPrice ?? 0)
             };
 
-            void products = await _mediator.Send(new ProductsListByPagingQueryReq(parameter, filter));
+            var products = await _mediator.Send(new ProductsListByPagingQueryReq(parameter, filter));
 
             var response = new ProductListResponse
             {
@@ -77,7 +77,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            void product = await _mediator.Send(new ProductByIdQueryReq(request.ProductId));
+            var product = await _mediator.Send(new ProductByIdQueryReq(request.ProductId));
 
             return new ProductResponse
             {
@@ -120,7 +120,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            void products = await _mediator.Send(new SiteMapGenerateQueryReq());
+            var products = await _mediator.Send(new SiteMapGenerateQueryReq());
 
             var response = new SitemapProductsResponse();
             foreach (var product in products)
@@ -151,7 +151,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Product.ProductSearchParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Product.ProductSearchParameterDto
             {
                 Page = request.Page,
                 PageSize = request.PageSize,
@@ -170,7 +170,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
                 Take = request.Take
             };
 
-            void products = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(parameter));
+            var products = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(parameter));
 
             var response = new ProductPageing
             {

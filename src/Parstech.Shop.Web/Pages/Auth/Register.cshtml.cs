@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Auth;
 
@@ -26,7 +26,7 @@ public class RegisterModel : PageModel
 
     public record CaptchaResponse(string Id, string Image);
 
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public RegisterDto Inputs { get; set; }
@@ -45,14 +45,14 @@ public class RegisterModel : PageModel
         {
             Response.IsSuccessed = false;
             Response.Message = "کد امنیتی منقضی شده است";
-            return new JsonResult(Response);
+            return new(Response);
         }
 
         if (captchaValue != Inputs.CaptchaValue)
         {
             Response.IsSuccessed = false;
             Response.Message = "کد امنیتی نادرست است";
-            return new JsonResult(Response);
+            return new(Response);
         }
 
         #region Validator
@@ -65,13 +65,13 @@ public class RegisterModel : PageModel
             Response.Errors = valid.Errors;
             Response.Message = valid.Errors.FirstOrDefault().ErrorMessage;
 
-            return new JsonResult(Response);
+            return new(Response);
         }
 
         #endregion
 
 
-        UserRegisterDto input = new UserRegisterDto();
+        UserRegisterDto input = new();
         input.UserName = Inputs.Mobile;
         input.FirstName = Inputs.Name;
         input.LastName = Inputs.Family;
@@ -84,7 +84,7 @@ public class RegisterModel : PageModel
 
         var result = await _authClient.RegisterUserAsync(input);
 
-        return new JsonResult(result);
+        return new(result);
     }
 
     [ValidateAntiForgeryToken]
@@ -93,7 +93,7 @@ public class RegisterModel : PageModel
     {
         var value =
             SixLaborsCaptcha.Core.Extensions.GetUniqueKey(4, "0123456789".ToCharArray());
-        string? key = Guid.NewGuid().ToString();
+        string key = Guid.NewGuid().ToString();
         var captcha = sixLaborsCaptcha.Generate(value);
         await distributedCache.SetStringAsync(key,
             value,

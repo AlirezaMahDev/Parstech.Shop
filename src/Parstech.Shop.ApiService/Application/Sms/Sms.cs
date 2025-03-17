@@ -1,4 +1,4 @@
-﻿using Parstech.Shop.ApiService.Application.DTOs;
+﻿using Parstech.Shop.Shared.DTOs;
 
 using SmsIrRestful;
 

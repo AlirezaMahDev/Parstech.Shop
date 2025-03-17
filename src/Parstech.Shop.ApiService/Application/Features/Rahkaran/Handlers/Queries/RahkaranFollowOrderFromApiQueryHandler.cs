@@ -2,9 +2,9 @@
 
 using Newtonsoft.Json;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 using RestSharp;
 

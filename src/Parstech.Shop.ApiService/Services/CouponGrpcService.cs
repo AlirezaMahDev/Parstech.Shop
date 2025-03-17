@@ -19,7 +19,7 @@ public class CouponGrpcService : CouponService.CouponServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new UseCouponQueryReq(request.OrderId, request.Code));
+            var result = await _mediator.Send(new UseCouponQueryReq(request.OrderId, request.Code));
 
             return new UseCouponResponse
             {

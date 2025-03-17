@@ -5,8 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -25,11 +25,11 @@ public class UsersGetByRoleQueryHandler : IRequestHandler<UsersGetByRoleQueryReq
 
     public async Task<List<UserDto>> Handle(UsersGetByRoleQueryReq request, CancellationToken cancellationToken)
     {
-        List<UserDto>? result = new();
+        List<UserDto> result = new();
         IList<IdentityUser> list = await _userManager.GetUsersInRoleAsync(request.role);
         foreach (IdentityUser item in list)
         {
-            Domain.Models.User? user = await _userRep.GetUserByUserName(item.UserName);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(item.UserName);
             result.Add(_mapper.Map<UserDto>(user));
         }
 

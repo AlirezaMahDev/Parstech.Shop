@@ -42,7 +42,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Brand", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Brand", b =>
                 {
                     b.Property<int>("BrandId")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Brand", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Categury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Categury", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -139,7 +139,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Categury", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Coupon", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Coupon", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,7 +204,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Coupon", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.CouponPcu", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.CouponPcu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,7 +234,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("CouponPCU", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.CouponType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.CouponType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -252,7 +252,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("CouponType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.FormCredit", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.FormCredit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,7 +306,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("FormCredit", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Irole", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Irole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -335,7 +335,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IroleClaim", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IroleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -360,7 +360,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Iuser", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Iuser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -422,7 +422,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserClaim", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -447,7 +447,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserLogin", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -471,7 +471,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserToken", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserToken", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -492,7 +492,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("IUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Log", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Log", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -523,7 +523,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Log", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.LogCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.LogCategury", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -541,7 +541,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("LogCategury", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Order", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -612,7 +612,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderCoupon", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderCoupon", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -638,7 +638,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrderCoupon", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -680,7 +680,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrderDetail", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderPay", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderPay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -716,7 +716,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrderPay", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderShipping", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderShipping", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -767,7 +767,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrderShipping", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderStatus", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderStatus", b =>
                 {
                     b.Property<int>("Osid")
                         .ValueGeneratedOnAdd()
@@ -811,7 +811,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrderStatus", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrdersAction", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrdersAction", b =>
                 {
                     b.Property<string>("Caption")
                         .HasMaxLength(1)
@@ -828,7 +828,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("OrdersActions");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PayStatusType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PayStatusType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -850,7 +850,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("PayStatusType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PayType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PayType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -872,7 +872,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("PayType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Product", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -956,7 +956,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductCategury", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -979,7 +979,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductCategury", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductComment", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1010,7 +1010,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductComment", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductGallery", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductGallery", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1041,7 +1041,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductGallery", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductLog", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1082,7 +1082,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductLog", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductLogType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductLogType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1100,7 +1100,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductLogType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductProperty", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1128,7 +1128,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductProperty", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRating", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRating", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1153,7 +1153,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductRating", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRelated", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRelated", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1176,7 +1176,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductRelated", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRepresentation", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRepresentation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1222,7 +1222,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductRepresentation", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductStockPrice", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1280,7 +1280,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductStockPrice", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1298,7 +1298,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ProductType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Property", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Property", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1326,7 +1326,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Property", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PropertyCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PropertyCategury", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1344,7 +1344,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("PropertyCategury", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Representation", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Representation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1367,7 +1367,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Representation", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.RepresentationType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.RepresentationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1390,7 +1390,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("RepresentationType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Section", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Section", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1425,7 +1425,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Section", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SectionDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SectionDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1490,7 +1490,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("SectionDetail", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SectionType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SectionType", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int")
@@ -1506,7 +1506,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("SectionType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ShippingType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ShippingType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1527,7 +1527,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("ShippingType", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SiteSetting", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SiteSetting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1626,7 +1626,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("SiteSetting", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SocialSetting", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SocialSetting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1669,7 +1669,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("SocialSetting", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.State", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1695,7 +1695,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("States");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Status", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1725,7 +1725,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Status", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Tax", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Tax", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1743,7 +1743,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Tax", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Ticket", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Ticket", b =>
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
@@ -1779,7 +1779,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketDetail", b =>
                 {
                     b.Property<int>("DetailId")
                         .ValueGeneratedOnAdd()
@@ -1816,7 +1816,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("TicketDetails");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketStatus", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketStatus", b =>
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
@@ -1833,7 +1833,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("TicketStatuses");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketType", b =>
                 {
                     b.Property<int>("TypeId")
                         .ValueGeneratedOnAdd()
@@ -1850,7 +1850,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("TicketTypes");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.User", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1893,7 +1893,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserBilling", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserBilling", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1965,7 +1965,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("UserBilling", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserProduct", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1989,7 +1989,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("UserProduct", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserShipping", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserShipping", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2044,7 +2044,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("UserShipping", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserStore", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserStore", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2116,7 +2116,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("UserStore", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.VersionSetting", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.VersionSetting", b =>
                 {
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -2138,7 +2138,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("VersionSetting", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Wallet", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Wallet", b =>
                 {
                     b.Property<int>("WalletId")
                         .ValueGeneratedOnAdd()
@@ -2171,7 +2171,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("Wallets");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.WalletTransaction", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.WalletTransaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2235,7 +2235,7 @@ namespace Shop.Persistence.Migrations
                     b.ToTable("WalletTransaction", (string)null);
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.WalletType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.WalletType", b =>
                 {
                     b.Property<int>("TypeId")
                         .ValueGeneratedOnAdd()
@@ -2259,22 +2259,22 @@ namespace Shop.Persistence.Migrations
 
             modelBuilder.Entity("IuserRole", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Irole", null)
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Irole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shop.Domain.Models.Iuser", null)
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Iuser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Categury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Categury", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Categury", "Parent")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Categury", "Parent")
                         .WithMany("InverseParent")
                         .HasForeignKey("ParentId")
                         .HasConstraintName("FK_Categury_Categury");
@@ -2282,9 +2282,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Coupon", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Coupon", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.CouponType", "CouponType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.CouponType", "CouponType")
                         .WithMany("Coupons")
                         .HasForeignKey("CouponTypeId")
                         .IsRequired()
@@ -2293,9 +2293,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("CouponType");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.CouponPcu", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.CouponPcu", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Coupon", "Coupon")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Coupon", "Coupon")
                         .WithMany("CouponPcus")
                         .HasForeignKey("CouponId")
                         .IsRequired()
@@ -2304,9 +2304,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Coupon");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IroleClaim", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IroleClaim", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Irole", "Role")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Irole", "Role")
                         .WithMany("IroleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2315,9 +2315,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserClaim", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserClaim", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Iuser", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Iuser", "User")
                         .WithMany("IuserClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2326,9 +2326,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserLogin", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserLogin", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Iuser", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Iuser", "User")
                         .WithMany("IuserLogins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2337,9 +2337,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.IuserToken", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.IuserToken", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Iuser", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Iuser", "User")
                         .WithMany("IuserTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2348,15 +2348,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Log", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Log", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.LogCategury", "LogCategury")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.LogCategury", "LogCategury")
                         .WithMany("Logs")
                         .HasForeignKey("LogCateguryId")
                         .IsRequired()
                         .HasConstraintName("FK_Log_LogCategury");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("Logs")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2367,15 +2367,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Order", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Order", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Tax", "TaxNavigation")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Tax", "TaxNavigation")
                         .WithMany("Orders")
                         .HasForeignKey("TaxId")
                         .IsRequired()
                         .HasConstraintName("FK_Orders_Tax");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2386,15 +2386,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderCoupon", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderCoupon", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Coupon", "Coupon")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Coupon", "Coupon")
                         .WithMany("OrderCoupons")
                         .HasForeignKey("CouponId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderCoupon_Coupon");
 
-                    b.HasOne("Shop.Domain.Models.Order", "Order")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Order", "Order")
                         .WithMany("OrderCoupons")
                         .HasForeignKey("OrderId")
                         .IsRequired()
@@ -2405,15 +2405,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderDetail", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Order", "Order")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderDetail_Orders");
 
-                    b.HasOne("Shop.Domain.Models.ProductStockPrice", "ProductStockPrice")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", "ProductStockPrice")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductStockPriceId")
                         .IsRequired()
@@ -2424,21 +2424,21 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("ProductStockPrice");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderPay", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderPay", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Order", "Order")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Order", "Order")
                         .WithMany("OrderPays")
                         .HasForeignKey("OrderId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderPay_Orders");
 
-                    b.HasOne("Shop.Domain.Models.PayStatusType", "PayStatusType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.PayStatusType", "PayStatusType")
                         .WithMany("OrderPays")
                         .HasForeignKey("PayStatusTypeId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderPay_PayStatusType");
 
-                    b.HasOne("Shop.Domain.Models.PayType", "PayType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.PayType", "PayType")
                         .WithMany("OrderPays")
                         .HasForeignKey("PayTypeId")
                         .IsRequired()
@@ -2451,15 +2451,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("PayType");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderShipping", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderShipping", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Order", "Order")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Order", "Order")
                         .WithMany("OrderShippings")
                         .HasForeignKey("OrderId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderShipping_Orders");
 
-                    b.HasOne("Shop.Domain.Models.ShippingType", "ShippingType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ShippingType", "ShippingType")
                         .WithMany("OrderShippings")
                         .HasForeignKey("ShippingTypeId")
                         .IsRequired()
@@ -2470,15 +2470,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("ShippingType");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.OrderStatus", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.OrderStatus", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Order", "Order")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Order", "Order")
                         .WithMany("OrderStatuses")
                         .HasForeignKey("OrderId")
                         .IsRequired()
                         .HasConstraintName("FK_OrderStatus_Orders");
 
-                    b.HasOne("Shop.Domain.Models.Status", "Status")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Status", "Status")
                         .WithMany("OrderStatuses")
                         .HasForeignKey("StatusId")
                         .IsRequired()
@@ -2489,26 +2489,26 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Product", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Product", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Brand", "Brand")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .IsRequired()
                         .HasConstraintName("FK_Product_Brand");
 
-                    b.HasOne("Shop.Domain.Models.Product", "Parent")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Parent")
                         .WithMany("InverseParent")
                         .HasForeignKey("ParentId")
                         .HasConstraintName("FK_Product_Product");
 
-                    b.HasOne("Shop.Domain.Models.Tax", "Tax")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Tax", "Tax")
                         .WithMany("Products")
                         .HasForeignKey("TaxId")
                         .IsRequired()
                         .HasConstraintName("FK_Product_Tax");
 
-                    b.HasOne("Shop.Domain.Models.ProductType", "Type")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ProductType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("TypeId")
                         .IsRequired()
@@ -2523,15 +2523,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductCategury", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Categury", "Categury")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Categury", "Categury")
                         .WithMany("ProductCateguries")
                         .HasForeignKey("CateguryId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductCategury_Categury1");
 
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductCateguries")
                         .HasForeignKey("ProductId")
                         .IsRequired()
@@ -2542,15 +2542,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductComment", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductComment", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductComments")
                         .HasForeignKey("ProductId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductComment_Product");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("ProductComments")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2561,9 +2561,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductGallery", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductGallery", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductGalleries")
                         .HasForeignKey("ProductId")
                         .IsRequired()
@@ -2572,21 +2572,21 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductLog", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductLog", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.ProductLogType", "ProductLogType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ProductLogType", "ProductLogType")
                         .WithMany("ProductLogs")
                         .HasForeignKey("ProductLogTypeId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductLog_ProductLogType");
 
-                    b.HasOne("Shop.Domain.Models.ProductStockPrice", "ProductStockPrice")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", "ProductStockPrice")
                         .WithMany("ProductLogs")
                         .HasForeignKey("ProductStockPriceId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductLog_ProductStockPrice");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("ProductLogs")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2599,15 +2599,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductProperty", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductProperty", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductProperties")
                         .HasForeignKey("ProductId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductProperty_Product");
 
-                    b.HasOne("Shop.Domain.Models.Property", "Property")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Property", "Property")
                         .WithMany("ProductProperties")
                         .HasForeignKey("PropertyId")
                         .IsRequired()
@@ -2618,9 +2618,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRating", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRating", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductRatings")
                         .HasForeignKey("ProductId")
                         .IsRequired()
@@ -2629,15 +2629,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRelated", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRelated", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "FkProduct")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "FkProduct")
                         .WithMany("ProductRelatedFkProducts")
                         .HasForeignKey("FkProductId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductRelated_Product1");
 
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductRelatedProducts")
                         .HasForeignKey("ProductId")
                         .IsRequired()
@@ -2648,21 +2648,21 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductRepresentation", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductRepresentation", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.ProductStockPrice", "ProductStockPrice")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", "ProductStockPrice")
                         .WithMany("ProductRepresentations")
                         .HasForeignKey("ProductStockPriceId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductRepresentation_ProductStockPrice");
 
-                    b.HasOne("Shop.Domain.Models.Representation", "Represntation")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Representation", "Represntation")
                         .WithMany("ProductRepresentations")
                         .HasForeignKey("RepresntationId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductRepresentation_Representation");
 
-                    b.HasOne("Shop.Domain.Models.RepresentationType", "Type")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.RepresentationType", "Type")
                         .WithMany("ProductRepresentations")
                         .HasForeignKey("TypeId")
                         .IsRequired()
@@ -2675,21 +2675,21 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductStockPrice", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Product", "Product")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Product", "Product")
                         .WithMany("ProductStockPrices")
                         .HasForeignKey("ProductId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductStockPrice_Product");
 
-                    b.HasOne("Shop.Domain.Models.Representation", "Rep")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Representation", "Rep")
                         .WithMany("ProductStockPrices")
                         .HasForeignKey("RepId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductStockPrice_Representation");
 
-                    b.HasOne("Shop.Domain.Models.UserStore", "Store")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.UserStore", "Store")
                         .WithMany("ProductStockPrices")
                         .HasForeignKey("StoreId")
                         .IsRequired()
@@ -2702,15 +2702,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Property", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Property", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Categury", "Categury")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Categury", "Categury")
                         .WithMany("Properties")
                         .HasForeignKey("CateguryId")
                         .IsRequired()
                         .HasConstraintName("FK_Property_Categury");
 
-                    b.HasOne("Shop.Domain.Models.PropertyCategury", "PropertyCategury")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.PropertyCategury", "PropertyCategury")
                         .WithMany("Properties")
                         .HasForeignKey("PropertyCateguryId")
                         .IsRequired()
@@ -2721,9 +2721,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("PropertyCategury");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Representation", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Representation", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.State", "State")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.State", "State")
                         .WithMany("Representations")
                         .HasForeignKey("StateId")
                         .HasConstraintName("FK_Representation_States");
@@ -2731,9 +2731,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Section", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Section", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.SectionType", "SectionType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.SectionType", "SectionType")
                         .WithMany("Sections")
                         .HasForeignKey("SectionTypeId")
                         .IsRequired()
@@ -2742,15 +2742,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("SectionType");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SectionDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SectionDetail", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Section", "Section")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Section", "Section")
                         .WithMany("SectionDetails")
                         .HasForeignKey("SectionId")
                         .IsRequired()
                         .HasConstraintName("FK_SectionDetail_Section");
 
-                    b.HasOne("Shop.Domain.Models.SectionType", "SectionType")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.SectionType", "SectionType")
                         .WithMany("SectionDetails")
                         .HasForeignKey("SectionTypeId")
                         .IsRequired()
@@ -2761,9 +2761,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("SectionType");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SocialSetting", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SocialSetting", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.SiteSetting", "SiteSetting")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.SiteSetting", "SiteSetting")
                         .WithMany("SocialSettings")
                         .HasForeignKey("SiteSettingId")
                         .IsRequired()
@@ -2772,15 +2772,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("SiteSetting");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Ticket", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Ticket", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.TicketStatus", "Status")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.TicketStatus", "Status")
                         .WithMany("Tickets")
                         .HasForeignKey("StatusId")
                         .IsRequired()
                         .HasConstraintName("FK_Tickets_TicketStatuses");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2791,15 +2791,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketDetail", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketDetail", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Ticket", "Ticket")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Ticket", "Ticket")
                         .WithMany("TicketDetails")
                         .HasForeignKey("TicketId")
                         .IsRequired()
                         .HasConstraintName("FK_TicketDetails_Tickets");
 
-                    b.HasOne("Shop.Domain.Models.TicketType", "Type")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.TicketType", "Type")
                         .WithMany("TicketDetails")
                         .HasForeignKey("TypeId")
                         .IsRequired()
@@ -2810,9 +2810,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserBilling", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserBilling", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("UserBillings")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2821,9 +2821,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserShipping", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserShipping", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("UserShippings")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2832,15 +2832,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserStore", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserStore", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.Representation", "Rep")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Representation", "Rep")
                         .WithMany("UserStores")
                         .HasForeignKey("RepId")
                         .IsRequired()
                         .HasConstraintName("FK_UserStore_Representation");
 
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("UserStores")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2851,9 +2851,9 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Wallet", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Wallet", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.User", "User")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.User", "User")
                         .WithMany("Wallets")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -2862,15 +2862,15 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.WalletTransaction", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.WalletTransaction", b =>
                 {
-                    b.HasOne("Shop.Domain.Models.WalletType", "TypeNavigation")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.WalletType", "TypeNavigation")
                         .WithMany("WalletTransactions")
                         .HasForeignKey("TypeId")
                         .IsRequired()
                         .HasConstraintName("FK_WalletTransaction_WalletTypes");
 
-                    b.HasOne("Shop.Domain.Models.Wallet", "Wallet")
+                    b.HasOne("Parstech.Shop.ApiService.Domain.Models.Wallet", "Wallet")
                         .WithMany("WalletTransactions")
                         .HasForeignKey("WalletId")
                         .IsRequired()
@@ -2881,12 +2881,12 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Wallet");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Brand", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Categury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Categury", b =>
                 {
                     b.Navigation("InverseParent");
 
@@ -2895,24 +2895,24 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Properties");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Coupon", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Coupon", b =>
                 {
                     b.Navigation("CouponPcus");
 
                     b.Navigation("OrderCoupons");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.CouponType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.CouponType", b =>
                 {
                     b.Navigation("Coupons");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Irole", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Irole", b =>
                 {
                     b.Navigation("IroleClaims");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Iuser", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Iuser", b =>
                 {
                     b.Navigation("IuserClaims");
 
@@ -2921,12 +2921,12 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("IuserTokens");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.LogCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.LogCategury", b =>
                 {
                     b.Navigation("Logs");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Order", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Order", b =>
                 {
                     b.Navigation("OrderCoupons");
 
@@ -2939,17 +2939,17 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("OrderStatuses");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PayStatusType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PayStatusType", b =>
                 {
                     b.Navigation("OrderPays");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PayType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PayType", b =>
                 {
                     b.Navigation("OrderPays");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Product", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Product", b =>
                 {
                     b.Navigation("InverseParent");
 
@@ -2970,12 +2970,12 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("ProductStockPrices");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductLogType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductLogType", b =>
                 {
                     b.Navigation("ProductLogs");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductStockPrice", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductStockPrice", b =>
                 {
                     b.Navigation("OrderDetails");
 
@@ -2984,22 +2984,22 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("ProductRepresentations");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ProductType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ProductType", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Property", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Property", b =>
                 {
                     b.Navigation("ProductProperties");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.PropertyCategury", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.PropertyCategury", b =>
                 {
                     b.Navigation("Properties");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Representation", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Representation", b =>
                 {
                     b.Navigation("ProductRepresentations");
 
@@ -3008,66 +3008,66 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("UserStores");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.RepresentationType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.RepresentationType", b =>
                 {
                     b.Navigation("ProductRepresentations");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Section", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Section", b =>
                 {
                     b.Navigation("SectionDetails");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SectionType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SectionType", b =>
                 {
                     b.Navigation("SectionDetails");
 
                     b.Navigation("Sections");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.ShippingType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.ShippingType", b =>
                 {
                     b.Navigation("OrderShippings");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.SiteSetting", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.SiteSetting", b =>
                 {
                     b.Navigation("SocialSettings");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.State", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.State", b =>
                 {
                     b.Navigation("Representations");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Status", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Status", b =>
                 {
                     b.Navigation("OrderStatuses");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Tax", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Tax", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Ticket", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Ticket", b =>
                 {
                     b.Navigation("TicketDetails");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketStatus", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketStatus", b =>
                 {
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.TicketType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.TicketType", b =>
                 {
                     b.Navigation("TicketDetails");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.User", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.User", b =>
                 {
                     b.Navigation("Logs");
 
@@ -3088,17 +3088,17 @@ namespace Shop.Persistence.Migrations
                     b.Navigation("Wallets");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.UserStore", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.UserStore", b =>
                 {
                     b.Navigation("ProductStockPrices");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.Wallet", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.Wallet", b =>
                 {
                     b.Navigation("WalletTransactions");
                 });
 
-            modelBuilder.Entity("Shop.Domain.Models.WalletType", b =>
+            modelBuilder.Entity("Parstech.Shop.ApiService.Domain.Models.WalletType", b =>
                 {
                     b.Navigation("WalletTransactions");
                 });

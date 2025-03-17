@@ -6,7 +6,6 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
@@ -18,6 +17,7 @@ using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Que
 using Parstech.Shop.ApiService.Application.Features.ProductType.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Tax.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -35,7 +35,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ProductPageingDto> GetProductsForAdmin(ProductParameterRequest request,
         ServerCallContext context)
     {
-        var parameter = new Shop.Application.DTOs.Product.ProductParameterDto
+        var parameter = new Parstech.Shop.Application.DTOs.Product.ProductParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
@@ -44,8 +44,8 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
             Filter = request.Filter
         };
 
-        void result = await _mediator.Send(new ProductPagingForAdminQueryReq(parameter));
-        ProductPageingDto? response = new()
+        var result = await _mediator.Send(new ProductPagingForAdminQueryReq(parameter));
+        ProductPageingDto response = new()
         {
             CurrentPage = result.CurrentPage, PageCount = result.PageCount, RowCount = result.RowCount
         };
@@ -60,13 +60,13 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ProductDto> GetProduct(ProductRequest request, ServerCallContext context)
     {
-        void product = await _mediator.Send(new ProductReadCommandReq(request.ProductId));
+        var product = await _mediator.Send(new ProductReadCommandReq(request.ProductId));
         return MapToProductDto(product);
     }
 
     public override async Task<ResponseDto> CreateProduct(ProductDto request, ServerCallContext context)
     {
-        ProductDto? productDto = MapFromProductDto(request);
+        ProductDto productDto = MapFromProductDto(request);
         await _mediator.Send(new ProductCreateCommandReq(productDto));
 
         return new() { IsSuccessed = true, Message = "محصول با موفقیت ثبت شد", Object = Any.Pack(request) };
@@ -74,7 +74,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateProduct(ProductDto request, ServerCallContext context)
     {
-        ProductDto? productDto = MapFromProductDto(request);
+        ProductDto productDto = MapFromProductDto(request);
         await _mediator.Send(new ProductUpdateCommandReq(productDto));
 
         return new() { IsSuccessed = true, Message = "محصول با موفقیت ویرایش شد", Object = Any.Pack(request) };
@@ -83,7 +83,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ResponseDto> UpdateProductQuickEdit(ProductQuickEditDto request,
         ServerCallContext context)
     {
-        var quickEditDto = new Shop.Application.DTOs.Product.ProductQuickEditDto
+        var quickEditDto = new Parstech.Shop.Application.DTOs.Product.ProductQuickEditDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -130,7 +130,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<GalleriesResponse> GetGalleriesOfProduct(ProductRequest request,
         ServerCallContext context)
     {
-        void galleries = await _mediator.Send(new GalleriesOfProductQueryReq(request.ProductId));
+        var galleries = await _mediator.Send(new GalleriesOfProductQueryReq(request.ProductId));
         var response = new GalleriesResponse();
 
         foreach (var gallery in galleries)
@@ -150,7 +150,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ProductGalleryDto> GetGallery(GalleryRequest request, ServerCallContext context)
     {
-        void gallery = await _mediator.Send(new ProductGalleryReadCommandReq(request.GalleryId));
+        var gallery = await _mediator.Send(new ProductGalleryReadCommandReq(request.GalleryId));
 
         return new()
         {
@@ -164,7 +164,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateGallery(ProductGalleryDto request, ServerCallContext context)
     {
-        var galleryDto = new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        var galleryDto = new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             ProductId = request.ProductId, Title = request.Title, Image = request.Image, Order = request.Order
         };
@@ -176,7 +176,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateGallery(ProductGalleryDto request, ServerCallContext context)
     {
-        var galleryDto = new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        var galleryDto = new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -193,7 +193,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<PropertiesResponse> GetPropertiesOfProduct(ProductRequest request,
         ServerCallContext context)
     {
-        void properties = await _mediator.Send(new PropertiesOfProductQueryReq(request.ProductId));
+        var properties = await _mediator.Send(new PropertiesOfProductQueryReq(request.ProductId));
         var response = new PropertiesResponse();
 
         foreach (var property in properties)
@@ -214,7 +214,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ProductPropertyDto> GetProperty(PropertyRequest request, ServerCallContext context)
     {
-        void property = await _mediator.Send(new ProductPropertyReadCommandReq(request.PropertyId));
+        var property = await _mediator.Send(new ProductPropertyReadCommandReq(request.PropertyId));
 
         return new()
         {
@@ -229,7 +229,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateProperty(ProductPropertyDto request, ServerCallContext context)
     {
-        var propertyDto = new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        var propertyDto = new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             ProductId = request.ProductId,
             PropertyId = request.PropertyId,
@@ -245,7 +245,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateProperty(ProductPropertyDto request, ServerCallContext context)
     {
-        var propertyDto = new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        var propertyDto = new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -263,7 +263,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<CategoriesResponse> GetCategoriesOfProduct(ProductRequest request,
         ServerCallContext context)
     {
-        void categories = await _mediator.Send(new ProductCategoriesReadCommandReq(request.ProductId));
+        var categories = await _mediator.Send(new ProductCategoriesReadCommandReq(request.ProductId));
         var response = new CategoriesResponse();
 
         foreach (var category in categories)
@@ -282,7 +282,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ProductCateguryDto> GetCategory(CategoryRequest request, ServerCallContext context)
     {
-        void category = await _mediator.Send(new ProductCateguryReadCommandReq(request.CategoryId));
+        var category = await _mediator.Send(new ProductCateguryReadCommandReq(request.CategoryId));
 
         return new()
         {
@@ -295,7 +295,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateCategory(ProductCateguryDto request, ServerCallContext context)
     {
-        var categoryDto = new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        var categoryDto = new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             ProductId = request.ProductId, CateguryId = request.CateguryId, CateguryName = request.CateguryName
         };
@@ -307,7 +307,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateCategory(ProductCateguryDto request, ServerCallContext context)
     {
-        var categoryDto = new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        var categoryDto = new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -329,7 +329,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<CategoriesResponse> GetAllCategories(EmptyRequest request, ServerCallContext context)
     {
-        void categories = await _mediator.Send(new CateguryReadsCommandReq());
+        var categories = await _mediator.Send(new CateguryReadsCommandReq());
         var response = new CategoriesResponse();
 
         foreach (var category in categories)
@@ -346,7 +346,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ProductRepresentationDto> GetProductRepresentation(ProductRequest request,
         ServerCallContext context)
     {
-        void rep = await _mediator.Send(new ProductRepresentationsReadQueryReq(request.ProductId));
+        var rep = await _mediator.Send(new ProductRepresentationsReadQueryReq(request.ProductId));
 
         if (rep == null)
         {
@@ -365,7 +365,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ProductParentsResponse> GetProductParents(ProductParentsRequest request,
         ServerCallContext context)
     {
-        void parents = await _mediator.Send(new ProductParentsSearchQueryReq(request.Filter, request.Type));
+        var parents = await _mediator.Send(new ProductParentsSearchQueryReq(request.Filter, request.Type));
         var response = new ProductParentsResponse();
 
         foreach (var parent in parents)
@@ -378,7 +378,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ProductTypesResponse> GetProductTypes(EmptyRequest request, ServerCallContext context)
     {
-        void types = await _mediator.Send(new ProductTypeReadsCommandReq());
+        var types = await _mediator.Send(new ProductTypeReadsCommandReq());
         var response = new ProductTypesResponse();
 
         foreach (var type in types)
@@ -391,7 +391,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<TaxesResponse> GetTaxes(EmptyRequest request, ServerCallContext context)
     {
-        void taxes = await _mediator.Send(new TaxReadsCommandReq());
+        var taxes = await _mediator.Send(new TaxReadsCommandReq());
         var response = new TaxesResponse();
 
         foreach (var tax in taxes)
@@ -410,7 +410,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<BrandsResponse> GetBrands(EmptyRequest request, ServerCallContext context)
     {
-        void brands = await _mediator.Send(new BrandReadsCommandReq());
+        var brands = await _mediator.Send(new BrandReadsCommandReq());
         var response = new BrandsResponse();
 
         foreach (var brand in brands)
@@ -430,7 +430,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<UserStoresResponse> GetUserStores(EmptyRequest request, ServerCallContext context)
     {
-        void stores = await _mediator.Send(new UserStoreReadsCommandReq());
+        var stores = await _mediator.Send(new UserStoreReadsCommandReq());
         var response = new UserStoresResponse();
 
         foreach (var store in stores)
@@ -460,7 +460,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
             return null;
         }
 
-        ProductDto? productDto = new()
+        ProductDto productDto = new()
         {
             Id = product.Id,
             Name = product.Name ?? string.Empty,
@@ -520,7 +520,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     private ProductDto MapFromProductDto(ProductDto product)
     {
-        var productDto = new Shop.Application.DTOs.Product.ProductDto
+        var productDto = new Parstech.Shop.Application.DTOs.Product.ProductDto
         {
             Id = product.Id,
             Name = product.Name,

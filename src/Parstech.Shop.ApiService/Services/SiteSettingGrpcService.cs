@@ -20,7 +20,7 @@ public class SiteSettingGrpcService : SiteSettingService.SiteSettingServiceBase
     {
         try
         {
-            void settings = await _mediator.Send(new GetSettingAndSeoQueryReq());
+            var settings = await _mediator.Send(new GetSettingAndSeoQueryReq());
 
             var response = new SettingAndSeoResponse
             {

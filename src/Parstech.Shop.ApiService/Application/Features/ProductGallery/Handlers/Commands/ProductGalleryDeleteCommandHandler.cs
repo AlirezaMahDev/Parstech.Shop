@@ -20,7 +20,7 @@ public class ProductGalleryDeleteCommandHandler : IRequestHandler<ProductGallery
 
     public async Task<Unit> Handle(ProductGalleryDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductGallery? pgallery = await _productGalleryRep.GetAsync(request.id);
+        Shared.Models.ProductGallery? pgallery = await _productGalleryRep.GetAsync(request.id);
 
         string tempFile = Path.Combine(Directory.GetCurrentDirectory(),
             "wwwroot/Shared/Images/Products",

@@ -1,13 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Parstech.Shop.ApiService.Application.DTOs;
-
-public class RahkaranAllDto
-{
-    public RahkaranOrderDto order { get; set; }
-    public RahkaranUserDto customer { get; set; }
-    public List<RahkaranProductDto> products { get; set; }
-}
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class RahkaranDto
 {
@@ -23,42 +14,4 @@ public class RahkaranDto
     public string Inventory { get; set; }
     public string SalesAreaID { get; set; }
     public string BrokerId { get; set; }
-}
-
-public class RakaranProductItem
-{
-    public string ProductId { get; set; }
-    public string UnitId { get; set; }
-    public string Fee { get; set; }
-    public string Quantity { get; set; }
-}
-
-public class RahkaranResult
-{
-    public List<rMessage> Messages { get; set; }
-    public string Text { get; set; }
-    public string QuotationId { get; set; }
-}
-
-public class rMessage
-{
-    public string Text { get; set; }
-}
-
-public class QuotationFollowUpRequest
-{
-    // شناسه پیش فاکتور
-    [DataMember]
-    public long IDQ { get; set; }
-}
-
-public class QuotationFollowUpResult
-{
-    // شناسه فاکتور
-    [DataMember]
-    public long OutInvoice { get; set; }
-
-    // سریال فاکتور
-    [DataMember]
-    public string OutNumber { get; set; }
 }

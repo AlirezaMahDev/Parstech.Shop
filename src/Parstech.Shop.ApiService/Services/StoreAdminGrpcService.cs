@@ -2,11 +2,11 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.UserStore.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -29,7 +29,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
     {
         try
         {
-            SalesParameterDto? parameters = new()
+            SalesParameterDto parameters = new()
             {
                 CurrentPage = request.CurrentPage,
                 TakePage = request.TakePage,
@@ -39,7 +39,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
                 StoreId = request.StoreId
             };
 
-            void result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, request.IsAdmin));
+            var result = await _mediator.Send(new OrderDetailsForStoreReportQueryReq(parameters, request.IsAdmin));
 
             SalesPagingDto response = new()
             {
@@ -72,7 +72,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
     {
         try
         {
-            void userStores = await _mediator.Send(new UserStoreReadsCommandReq());
+            var userStores = await _mediator.Send(new UserStoreReadsCommandReq());
             var response = new UserStoresResponse();
 
             foreach (var store in userStores)
@@ -97,7 +97,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
     {
         try
         {
-            void statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
+            var statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
             var response = new OrderStatusesResponse();
 
             foreach (var status in statuses)
@@ -122,7 +122,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new ContractOrderQueryReq(request.OrderId, request.StoreName));
+            var result = await _mediator.Send(new ContractOrderQueryReq(request.OrderId, request.StoreName));
 
             return new ContractResponse
             {
@@ -188,7 +188,7 @@ public class StoreAdminGrpcService : StoreAdminService.StoreAdminServiceBase
 
     private OrderStatusDto MapToOrderStatusDto(Shop.Application.DTOs.OrderStatus.OrderStatusDto source)
     {
-        OrderStatusDto? result = new()
+        OrderStatusDto result = new()
         {
             Id = source.Id,
             OrderId = source.OrderId,

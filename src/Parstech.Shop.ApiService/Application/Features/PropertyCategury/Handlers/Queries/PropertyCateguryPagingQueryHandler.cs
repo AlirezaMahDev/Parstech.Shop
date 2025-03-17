@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.PropertyCategury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.PropertyCategury.Handlers.Queries;
 
@@ -22,9 +22,9 @@ public class PropertyCateguryPagingQueryHandler : IRequestHandler<PropertyCategu
 
     public async Task<PagingDto> Handle(PropertyCateguryPagingQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.PropertyCategury> PropCats = await _propertyCatRep.GetAll();
+        IReadOnlyList<Shared.Models.PropertyCategury> PropCats = await _propertyCatRep.GetAll();
         IList<PropertyCateguryDto> categuryDto = new List<PropertyCateguryDto>();
-        foreach (Domain.Models.PropertyCategury item in PropCats)
+        foreach (Shared.Models.PropertyCategury item in PropCats)
         {
             PropertyCateguryDto? PDto = _mapper.Map<PropertyCateguryDto>(item);
             categuryDto.Add(PDto);

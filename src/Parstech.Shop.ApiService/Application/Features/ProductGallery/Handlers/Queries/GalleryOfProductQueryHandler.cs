@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductGallery.Handlers.Queries;
 
@@ -21,7 +21,7 @@ public class GalleryOfProductQueryHandler : IRequestHandler<GalleryOfProductQuer
 
     public async Task<ProductGalleryDto> Handle(GalleryOfProductQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductGallery? result = await _productGallleryRep.GetGalleryByProduct(request.productId);
+        Shared.Models.ProductGallery? result = await _productGallleryRep.GetGalleryByProduct(request.productId);
         return _mapper.Map<ProductGalleryDto>(result);
     }
 }

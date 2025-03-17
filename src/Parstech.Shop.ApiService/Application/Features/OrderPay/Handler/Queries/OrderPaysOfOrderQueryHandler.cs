@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderPay.Handler.Queries;
 
@@ -24,12 +24,12 @@ public class OrderPaysOfOrderQueryHandler : IRequestHandler<OrderPaysOfOrderQuer
     public async Task<ResponseDto> Handle(OrderPaysOfOrderQueryReq request, CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        List<Domain.Models.OrderPay> list = await _orderPayRep.GetListByOrderId(request.orderId);
+        List<Shared.Models.OrderPay> list = await _orderPayRep.GetListByOrderId(request.orderId);
         List<OrderPayDto> listDto = new();
-        foreach (Domain.Models.OrderPay item in list)
+        foreach (Shared.Models.OrderPay item in list)
         {
             OrderPayDto? dto = _mapper.Map<OrderPayDto>(item);
-            Domain.Models.PayType? payType = await _payTypeRep.GetAsync(item.PayTypeId);
+            Shared.Models.PayType? payType = await _payTypeRep.GetAsync(item.PayTypeId);
             dto.TypeName = payType.TypeName;
             listDto.Add(dto);
         }

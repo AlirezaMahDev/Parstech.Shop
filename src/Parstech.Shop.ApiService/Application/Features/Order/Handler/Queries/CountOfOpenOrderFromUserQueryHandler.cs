@@ -22,8 +22,8 @@ public class CountOfOpenOrderFromUserQueryHandler : IRequestHandler<CountOfOpenO
 
     public async Task<int> Handle(CountOfOpenOrderFromUserQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
-        Domain.Models.Order? order = await _orderRep.GetOpenOrderOfUser(user.Id);
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        Shared.Models.Order? order = await _orderRep.GetOpenOrderOfUser(user.Id);
         if (order == null)
         {
             return 0;

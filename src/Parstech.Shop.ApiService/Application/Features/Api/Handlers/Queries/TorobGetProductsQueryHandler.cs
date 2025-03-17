@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Api.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Api.Handlers.Queries;
 
@@ -23,9 +23,9 @@ public class TorobGetProductsQueryHandler : IRequestHandler<TorobGetProductsQuer
     {
         int skip = (request.page - 1) * 100;
 
-        string? query =
+        string query =
             $"SELECT dbo.Product.Name, dbo.ProductStockPrice.Id,dbo.ProductStockPrice.DiscountDate, dbo.ProductStockPrice.SalePrice, dbo.ProductStockPrice.DiscountPrice, dbo.ProductStockPrice.Quantity, dbo.Product.ShortLink FROM  dbo.Product INNER JOIN dbo.ProductStockPrice ON dbo.Product.Id = dbo.ProductStockPrice.ProductId ORDER BY dbo.Product.CreateDate Desc OFFSET {skip} ROWS FETCH NEXT 100 ROWS ONLY";
-        List<TorobProductDto>? result =
+        List<TorobProductDto> result =
             DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<TorobProductDto>(query).ToList());
         foreach (TorobProductDto? item in result)
         {
@@ -105,9 +105,9 @@ public class TorobGetProductQueryHandler : IRequestHandler<TorobGetProductQueryR
             Oldprice = item.SalePrice.ToString();
         }
 
-        Domain.Models.ProductGallery imgQuery = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+        Shared.Models.ProductGallery imgQuery = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
             _connectionString,
-            conn => conn.Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage, new { productId })
+            conn => conn.Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage, new { productId })
                 .FirstOrDefault());
         if (imgQuery != null)
         {

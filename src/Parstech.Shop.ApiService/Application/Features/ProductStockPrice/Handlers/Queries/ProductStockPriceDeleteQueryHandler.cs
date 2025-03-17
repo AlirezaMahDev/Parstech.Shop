@@ -37,14 +37,14 @@ public class ProductStockPriceDeleteQueryHandler : IRequestHandler<ProductStockP
             return false;
         }
 
-        Domain.Models.ProductStockPrice? productStockePrice =
+        Shared.Models.ProductStockPrice? productStockePrice =
             await _productStockRep.GetAsync(request.productStockPriceId);
-        List<Domain.Models.Product>? productChildList =
+        List<Shared.Models.Product> productChildList =
             await _productRep.GetProductsByParrentId(productStockePrice.ProductId);
         int childStockCount = 0;
-        foreach (Domain.Models.Product? child in productChildList)
+        foreach (Shared.Models.Product? child in productChildList)
         {
-            List<Domain.Models.ProductStockPrice>? childStocks = await _productStockRep.GetAllByProductId(child.Id);
+            List<Shared.Models.ProductStockPrice> childStocks = await _productStockRep.GetAllByProductId(child.Id);
             if (childStocks.Count > 0)
             {
                 childStockCount += childStocks.Count;
@@ -57,17 +57,17 @@ public class ProductStockPriceDeleteQueryHandler : IRequestHandler<ProductStockP
             return false;
         }
 
-        List<Domain.Models.ProductRepresentation>? productRepresentations =
+        List<Shared.Models.ProductRepresentation> productRepresentations =
             await _productRepresentationRep.GetProductRepresentationsWithRepAndProductId(request.repId,
                 request.productStockPriceId);
-        foreach (Domain.Models.ProductRepresentation? pr in productRepresentations)
+        foreach (Shared.Models.ProductRepresentation? pr in productRepresentations)
         {
             await _productRepresentationRep.DeleteAsync(pr);
         }
 
-        List<Domain.Models.ProductLog>? productLogs =
+        List<Shared.Models.ProductLog> productLogs =
             await _productLogRep.GetProductLogWithProductId(request.productStockPriceId);
-        foreach (Domain.Models.ProductLog? pl in productLogs)
+        foreach (Shared.Models.ProductLog? pl in productLogs)
         {
             await _productLogRep.DeleteAsync(pl);
         }

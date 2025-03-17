@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPriceSection.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductStockPriceSection.Handlers.Queries;
 
@@ -34,9 +34,9 @@ public class
     {
         ProdcutStockPriceSectionDto result = new();
         List<SectionDto> sections = new();
-        List<Domain.Models.ProductStockPriceSection> list =
+        List<Shared.Models.ProductStockPriceSection> list =
             await _productStockPriceSectionRep.GetSectionOfProductStockPrice(request.productStockPriceId);
-        foreach (Domain.Models.ProductStockPriceSection item in list)
+        foreach (Shared.Models.ProductStockPriceSection item in list)
         {
             var dto = _mapper.Map<SectionDto>(item);
             dto.SectionName = item.Section.SectionName;
@@ -45,7 +45,7 @@ public class
 
         result.ProdutSrockPriceId = request.productStockPriceId;
 
-        Domain.Models.ProductStockPrice? productstockPrice =
+        Shared.Models.ProductStockPrice? productstockPrice =
             await _productStockPriceRep.GetAsync(request.productStockPriceId);
         result.ShowInDiscountPanels = productstockPrice.ShowInDiscountPanels;
         result.sections = sections;

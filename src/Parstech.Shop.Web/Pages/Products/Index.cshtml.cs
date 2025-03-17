@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Products;
 
@@ -32,13 +32,13 @@ public class IndexModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ProductSearchParameterDto Parameter { get; set; } = new ProductSearchParameterDto();
+    public ProductSearchParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
     public ProductPageingDto List { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public string Categury { get; set; }
@@ -112,7 +112,7 @@ public class IndexModel : PageModel
 
             foreach (var parent in parentCategories.Categories)
             {
-                categuries.Add(new CateguryDto
+                categuries.Add(new()
                 {
                     Id = parent.Id,
                     Name = parent.Name,
@@ -128,7 +128,7 @@ public class IndexModel : PageModel
                 var subParentCategories = await _categoryClient.GetSubCategoriesAsync(parent.GroupId);
                 foreach (var subParent in subParentCategories.Categories)
                 {
-                    categuries.Add(new CateguryDto
+                    categuries.Add(new()
                     {
                         Id = subParent.Id,
                         Name = subParent.Name,
@@ -144,7 +144,7 @@ public class IndexModel : PageModel
                     var subCategories = await _categoryClient.GetSubCategoriesAsync(subParent.GroupId);
                     foreach (var sub in subCategories.Categories)
                     {
-                        categuries.Add(new CateguryDto
+                        categuries.Add(new()
                         {
                             Id = sub.Id,
                             Name = sub.Name,
@@ -190,7 +190,7 @@ public class IndexModel : PageModel
             var productResponse = await _productClient.GetPagedProductsAsync(productRequest);
 
             // Map the response
-            List = new ProductPageingDto
+            List = new()
             {
                 Products = productResponse.Products.Select(p => new ProductDto
                     {

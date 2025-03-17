@@ -13,18 +13,19 @@
 
     <ItemGroup>
         <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.1.0"/>
+        <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0"/>
+        <PackageReference Include="DocX" Version="4.0.25105.5786"/>
         <PackageReference Include="Grpc.AspNetCore" Version="2.70.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.70.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3"/>
-
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-        <PackageReference Include="Dapper" Version="2.1.35"/>
+        <PackageReference Include="Dapper" Version="2.1.66"/>
         <PackageReference Include="EPPlus" Version="7.6.1"/>
         <PackageReference Include="ExcelDataReader" Version="3.7.0"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
         <PackageReference Include="MediatR" Version="12.4.1"/>
         <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.3"/>
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="9.0.3"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3"/>
         <PackageReference Include="RestSharp" Version="112.1.0"/>
         <PackageReference Include="SixLaborsCaptcha.Core" Version="1.0.0"/>
         <PackageReference Include="SixLaborsCaptcha.Mvc.Core" Version="1.0.0"/>
@@ -82,6 +83,10 @@
         <Folder Include="Application\Features\Ticket\Handler\Commands\"/>
         <Folder Include="Application\Features\Ticket\Requests\Commands\"/>
         <Folder Include="Persistence\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server"/>
     </ItemGroup>
 
 </Project>

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Setting;
 
@@ -35,7 +35,7 @@ public class DiscountPanelModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ProductDiscountParameterDto Parameter { get; set; } = new ProductDiscountParameterDto();
+    public ProductDiscountParameterDto Parameter { get; set; } = new();
 
     //categuries
     [BindProperty]
@@ -44,7 +44,7 @@ public class DiscountPanelModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     //Representations
     [BindProperty]
@@ -81,10 +81,10 @@ public class DiscountPanelModel : PageModel
     public PagingDto ProductLogPaging { get; set; }
 
     [BindProperty]
-    public ParameterLogDto LogParameter { get; set; } = new ParameterLogDto();
+    public ParameterLogDto LogParameter { get; set; } = new();
 
     [BindProperty]
-    public ProductRepresenationParameterDto PrParameter { get; set; } = new ProductRepresenationParameterDto();
+    public ProductRepresenationParameterDto PrParameter { get; set; } = new();
 
     public class logClass
     {

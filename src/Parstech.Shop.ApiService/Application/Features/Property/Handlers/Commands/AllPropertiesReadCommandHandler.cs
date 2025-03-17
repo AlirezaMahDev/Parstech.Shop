@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Property.Handlers.Commands;
 
@@ -22,9 +22,9 @@ public class AllPropertiesReadCommandHandler : IRequestHandler<AllPropertiesRead
     public async Task<List<PropertyDto>> Handle(AllPropertiesReadCommandReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Property>? properties = await _propertyRep.GetAll();
+        IReadOnlyList<Shared.Models.Property> properties = await _propertyRep.GetAll();
         List<PropertyDto> result = new();
-        foreach (Domain.Models.Property property in properties)
+        foreach (Shared.Models.Property property in properties)
         {
             result.Add(_mapper.Map<PropertyDto>(property));
         }

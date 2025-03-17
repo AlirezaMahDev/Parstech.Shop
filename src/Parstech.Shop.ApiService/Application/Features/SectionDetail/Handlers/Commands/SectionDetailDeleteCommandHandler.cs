@@ -16,7 +16,7 @@ public class SectionDetailDeleteCommandHandler : IRequestHandler<SectionDetailDe
 
     public async Task<Unit> Handle(SectionDetailDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.SectionDetail? sectionDetail = await _sectionDetailRep.GetAsync(request.id);
+        Shared.Models.SectionDetail? sectionDetail = await _sectionDetailRep.GetAsync(request.id);
         await _sectionDetailRep.DeleteAsync(sectionDetail);
         return Unit.Value;
     }

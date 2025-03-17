@@ -20,7 +20,7 @@ public class ProductCateguryDeleteCommandHandler : IRequestHandler<ProductCategu
 
     public async Task<int> Handle(ProductCateguryDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductCategury? pcategury = await _productCateguryRep.GetAsync(request.id);
+        Shared.Models.ProductCategury? pcategury = await _productCateguryRep.GetAsync(request.id);
         int productId = pcategury.ProductId;
         await _productCateguryRep.DeleteAsync(pcategury);
         return productId;

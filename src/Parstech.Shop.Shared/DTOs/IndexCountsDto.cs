@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class IndexCountsDto
 {
@@ -14,18 +14,4 @@ public class IndexCountsDto
     public int SouratHesabCount { get; set; }
     public List<RepresentationsSells> RepresentationsProductsForMap { get; set; }
     public List<RepresentationsProducts> RepresentationsProductsForChart { get; set; }
-}
-
-public class RepresentationsProducts
-{
-    public string RepresentationName { get; set; }
-    public int RepresentationProducts { get; set; }
-}
-
-public class RepresentationsSells
-{
-    public string RepresentationName { get; set; }
-    public double latitude { get; set; }
-    public double longitude { get; set; }
-    public long RepresentationSells { get; set; }
 }

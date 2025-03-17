@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
 
 using System.Text.RegularExpressions;
+
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
+
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -29,14 +33,14 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
 
     public string GenerateWordOfOrder(OrderDetailShowDto order)
     {
-        string? source = "wwwroot/Shared/Factors/Surathesab.docx";
-        string? filename = "";
-        string? result = "";
+        string source = "wwwroot/Shared/Factors/Surathesab.docx";
+        string filename = "";
+        string result = "";
 
 
         using (var document = DocX.Load(source))
         {
-            string? name = $"{order.Costumer.FirstName} {order.Costumer.LastName}";
+            string name = $"{order.Costumer.FirstName} {order.Costumer.LastName}";
             if (order.Costumer.Phone == null)
             {
                 order.Costumer.Phone = "-";
@@ -85,7 +89,6 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
                     for (int i = 0; i < order.OrderDetailDto.Count; i++)
                     {
                         long cell5 = order.OrderDetailDto[i].Price * 10;
-                        ;
                         long cell6 = order.OrderDetailDto[i].DetailSum * 10;
                         long cell7 = order.OrderDetailDto[i].Discount * 10;
                         long cell8 = order.OrderDetailDto[i].Tax * 10;
@@ -217,7 +220,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
 
                         for (int i = 0; i < order.OrderPay.Count; i++)
                         {
-                            string? patDesc = $"{order.OrderPay[i].DepositCode}/{order.OrderPay[i].PayTracking}";
+                            string patDesc = $"{order.OrderPay[i].DepositCode}/{order.OrderPay[i].PayTracking}";
                             long paysCell4 = order.OrderPay[i].Price * 10;
                             var paysRow = table.InsertRow(table.Rows.First());
                             paysRow.Cells[0].Paragraphs.First().ReplaceText("*", "", false, RegexOptions.IgnoreCase);
@@ -260,7 +263,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
 
                     if (order.OrderCoupon.CouponCode != null)
                     {
-                        string? coupon = $"کد تحفیف استفاده شده : {order.OrderCoupon.CouponCode}";
+                        string coupon = $"کد تحفیف استفاده شده : {order.OrderCoupon.CouponCode}";
                         var couponRow = table.InsertRow(table.Rows.First());
                         couponRow.Cells[0].Paragraphs.First().ReplaceText("*", "", false, RegexOptions.IgnoreCase);
                         couponRow.Cells[1]
@@ -331,7 +334,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
     public async Task OrderSum(int orderId)
     {
         Order? order = await _context.Orders.FirstOrDefaultAsync(z => z.OrderId == orderId);
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
         int orderSum = 0;
         foreach (OrderDetail? orderDetail in orderDetails)
         {
@@ -345,7 +348,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
     public async Task OrderDiscount(int orderId)
     {
         Order? order = await _context.Orders.FirstOrDefaultAsync(z => z.OrderId == orderId);
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
         int orderDiscount = 0;
         foreach (OrderDetail? orderDetail in orderDetails)
         {
@@ -359,7 +362,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
     public async Task OrderTax(int orderId)
     {
         Order? order = await _context.Orders.FirstOrDefaultAsync(z => z.OrderId == orderId);
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
         int orderTax = 0;
         foreach (OrderDetail? orderDetail in orderDetails)
         {
@@ -373,7 +376,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
     public async Task OrderTotal(int orderId)
     {
         Order? order = await _context.Orders.FirstOrDefaultAsync(z => z.OrderId == orderId);
-        List<OrderDetail>? orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
+        List<OrderDetail> orderDetails = await _context.OrderDetails.Where(z => z.OrderId == orderId).ToListAsync();
         int orderTotal = 0;
         foreach (OrderDetail? orderDetail in orderDetails)
         {
@@ -432,7 +435,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
         string Filter = "",
         int userId = 0)
     {
-        List<OrderDto>? res = await GetFinallyOrdersOfUser(userId);
+        List<OrderDto> res = await GetFinallyOrdersOfUser(userId);
 
         IQueryable<OrderDto> result = res.AsQueryable();
 

@@ -58,7 +58,7 @@ public class FillCodeOfProductsByExcelQueryHandler : IRequestHandler<FillCodeOfP
         foreach (res item in list.Skip(1))
         {
             //int id = int.Parse(item.id);
-            Domain.Models.Product product = await _productRepository.GetProductsByName(item.name);
+            Shared.Models.Product product = await _productRepository.GetProductsByName(item.name);
             if (product != null && item.code != null)
             {
                 product.Code = item.code;

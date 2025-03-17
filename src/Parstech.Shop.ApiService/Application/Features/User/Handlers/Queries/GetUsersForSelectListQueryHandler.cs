@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.User.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -24,7 +24,7 @@ public class
     public async Task<List<UserForSelectListDto>> Handle(GetUsersForSelectListQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<UserForSelectListDto>? list = DapperHelper.ExecuteCommand(_connectionString,
+        List<UserForSelectListDto> list = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<UserForSelectListDto>(_userQueries.GetAllUsers).ToList());
         return list;
     }

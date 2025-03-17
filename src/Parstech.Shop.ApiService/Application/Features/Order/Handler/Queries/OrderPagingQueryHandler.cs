@@ -7,10 +7,11 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 
 using System.Globalization;
+
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -46,7 +47,7 @@ public class OrderPagingQueryHandler : IRequestHandler<OrderPagingQueryReq, Pagi
 
     public async Task<PagingDto> Handle(OrderPagingQueryReq request, CancellationToken cancellationToken)
     {
-        List<OrderDto>? orders = new();
+        List<OrderDto> orders = new();
 
         string storeQuery = "";
         string payQuery = "";
@@ -63,8 +64,8 @@ public class OrderPagingQueryHandler : IRequestHandler<OrderPagingQueryReq, Pagi
 
         if (request.Parameter.store != null)
         {
-            Domain.Models.User? user = await _userRep.GetUserByUserName(request.Parameter.store);
-            Domain.Models.UserStore store = await _userStoreRep.GetStoreOfUser(user.Id);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(request.Parameter.store);
+            Shared.Models.UserStore store = await _userStoreRep.GetStoreOfUser(user.Id);
             storeQuery = $"AND dbo.UserStore.Id={store.Id}";
         }
 

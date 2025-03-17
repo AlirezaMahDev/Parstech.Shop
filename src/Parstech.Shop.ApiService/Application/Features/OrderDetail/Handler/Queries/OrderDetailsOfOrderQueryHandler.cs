@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 
@@ -26,7 +26,7 @@ public class OrderDetailsOfOrderQueryHandler : IRequestHandler<OrderDetailsOfOrd
     public async Task<List<OrderDetailDto>> Handle(OrderDetailsOfOrderQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.OrderDetail>? orderDetails =
+        List<Shared.Models.OrderDetail> orderDetails =
             await _orderDetailRepository.GetOrderDetailsByOrderId(request.orderId);
         return _mapper.Map<List<OrderDetailDto>>(orderDetails);
     }

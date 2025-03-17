@@ -19,7 +19,7 @@ public class TorobService : TorobServiceBase
     {
         try
         {
-            void torob = await _mediator.Send(new TorobGetProductQueryReq(request.StoreId, request.BaseUrl));
+            var torob = await _mediator.Send(new TorobGetProductQueryReq(request.StoreId, request.BaseUrl));
 
             return new Torob
             {

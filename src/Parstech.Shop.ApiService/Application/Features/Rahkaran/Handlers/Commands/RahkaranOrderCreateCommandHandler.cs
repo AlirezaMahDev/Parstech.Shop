@@ -5,9 +5,9 @@ using Dapper;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Rahkaran.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Rahkaran.Handlers.Commands;
 
@@ -29,7 +29,7 @@ public class RahkaranOrderCreateCommandHandler : IRequestHandler<RahkaranOrderCr
     {
         RahkaranOrder? item = _mapper.Map<RahkaranOrder>(request.dto);
 
-        string? query =
+        string query =
             $"INSERT INTO dbo.RahkaranOrder(OrderId,RahkaranPishNumber,RahakaranFactorNumber,RahakaranFactorSerial) VALUES ({item.OrderId},'{item.RahkaranPishNumber}','{item.RahakaranFactorNumber}','{item.RahakaranFactorSerial}')";
         DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query(query));
 

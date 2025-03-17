@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.WalletTransaction;
-
-message WalletTransactionResult {
-    bool is_successed = 1;
-    WalletTransaction wallet_transaction = 2;
-}

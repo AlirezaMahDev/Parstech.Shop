@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.CouponPcu;
-
-message CouponCheckPcu {
-    int32 fk_id = 1;
-    int32 coupon_id = 2;
-}

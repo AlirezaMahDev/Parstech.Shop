@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Config;
 
@@ -52,7 +52,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostWordpress(int page)
     {
-        List<WordpressProductDto>? wordpressProducts = await _configClient.GetProductsFromWordpressAsync(page);
+        List<WordpressProductDto> wordpressProducts = await _configClient.GetProductsFromWordpressAsync(page);
         // You may need to convert wordpressProducts to resultWordpress format
         return Page();
     }
@@ -91,13 +91,13 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostGetProductFromWordpressById(string pid)
     {
-        WordpressProductDto? result = await _configClient.GetProductFromWordpressByIdAsync(pid);
+        WordpressProductDto result = await _configClient.GetProductFromWordpressByIdAsync(pid);
         return Page();
     }
 
     public async Task<IActionResult> OnPostGetCateguriesFromWordpress(int pageCategury)
     {
-        List<WordpressCategoryDto>? result = await _configClient.GetCateguriesFromWordpressAsync(pageCategury);
+        List<WordpressCategoryDto> result = await _configClient.GetCateguriesFromWordpressAsync(pageCategury);
         return Page();
     }
 

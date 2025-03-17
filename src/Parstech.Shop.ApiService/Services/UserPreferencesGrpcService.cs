@@ -32,7 +32,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void billing = await _mediator.Send(new UserBillingOfUserQueryReq(request.UserId));
+            var billing = await _mediator.Send(new UserBillingOfUserQueryReq(request.UserId));
 
             return new UserBillingResponse
             {
@@ -58,7 +58,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            var billingDto = new Shop.Application.DTOs.UserBilling.UserBillingDto
+            var billingDto = new Parstech.Shop.Application.DTOs.UserBilling.UserBillingDto
             {
                 Id = request.Id,
                 UserId = request.UserId,
@@ -71,7 +71,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
                 Address = request.Address
             };
 
-            void updatedBilling = await _mediator.Send(new UserBillingUpdateCommandReq(billingDto));
+            var updatedBilling = await _mediator.Send(new UserBillingUpdateCommandReq(billingDto));
 
             return new UserBillingResponse
             {
@@ -108,7 +108,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
                 return new StatusResponse { IsSuccess = false, Message = "User not found" };
             }
 
-            IdentityResult? changePasswordResult =
+            IdentityResult changePasswordResult =
                 await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
@@ -137,7 +137,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void favorites = await _mediator.Send(new GetFavoriteProductOfUsersQueryReq(request.UserName));
+            var favorites = await _mediator.Send(new GetFavoriteProductOfUsersQueryReq(request.UserName));
 
             var response = new FavoriteProductsResponse();
 
@@ -170,7 +170,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void comparisonProducts = await _mediator.Send(new GetCmparisonProductsOfUsersQueryReq(request.UserName));
+            var comparisonProducts = await _mediator.Send(new GetCmparisonProductsOfUsersQueryReq(request.UserName));
 
             var response = new ComparisonProductsResponse();
 
@@ -202,9 +202,9 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void cart = await _mediator.Send(new NotFinallyOrderOfUserQueryReq(request.UserId));
+            var cart = await _mediator.Send(new NotFinallyOrderOfUserQueryReq(request.UserId));
 
-            var response = new ShoppingCartResponse
+            var response = new Parstech.ShoppingCartResponse
             {
                 OrderId = cart.OrderId,
                 UserName = cart.UserName ?? string.Empty,
@@ -241,7 +241,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
+            var wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
 
             return new WalletAmountResponse { Amount = wallet.Amount };
         }
@@ -255,7 +255,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
+            var wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
 
             return new WalletCoinResponse { Coin = wallet.Coin };
         }
@@ -270,7 +270,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            void wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
+            var wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(request.UserId));
 
             return new WalletFacilitiesResponse { Facilities = wallet.Fecilities };
         }

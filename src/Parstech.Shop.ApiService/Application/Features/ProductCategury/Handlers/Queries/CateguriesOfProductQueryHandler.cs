@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductCategury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductCategury.Handlers.Queries;
 
@@ -26,12 +26,12 @@ public class CateguriesOfProductQueryHandler : IRequestHandler<CateguriesOfProdu
     public async Task<List<ProductCateguryDto>> Handle(CateguriesOfProductQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.ProductCategury>? result =
+        List<Shared.Models.ProductCategury> result =
             await _productCateguryRep.GetCateguriesByProduct(request.productId);
-        List<ProductCateguryDto>? FinalResult = new();
-        foreach (Domain.Models.ProductCategury item in result)
+        List<ProductCateguryDto> FinalResult = new();
+        foreach (Shared.Models.ProductCategury item in result)
         {
-            Domain.Models.Categury? cat = await _categuryRep.GetAsync(item.CateguryId);
+            Shared.Models.Categury? cat = await _categuryRep.GetAsync(item.CateguryId);
             ProductCateguryDto? ProductCateguryDto = _mapper.Map<ProductCateguryDto>(item);
             ProductCateguryDto.GroupTitle = cat.GroupTitle;
             ProductCateguryDto.IsParnet = cat.IsParnet;

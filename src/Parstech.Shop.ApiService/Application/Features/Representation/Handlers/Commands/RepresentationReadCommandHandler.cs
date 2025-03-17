@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Representation.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Representation.Handlers.Commands;
 
@@ -22,7 +22,7 @@ public class RepresentationReadCommandHandler : IRequestHandler<RepresentationRe
     public async Task<RepresentationDto> Handle(RepresentationReadCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.Representation? item = await _representationRep.GetAsync(request.repId);
+        Shared.Models.Representation? item = await _representationRep.GetAsync(request.repId);
         return _mapper.Map<RepresentationDto>(item);
     }
 }
@@ -41,7 +41,7 @@ public class RepresentationReadsCommandHandler : IRequestHandler<RepresentationR
     public async Task<List<RepresentationDto>> Handle(RepresentationReadsCommandReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Representation>? list = await _representationRep.GetAll();
+        IReadOnlyList<Shared.Models.Representation> list = await _representationRep.GetAll();
         return _mapper.Map<List<RepresentationDto>>(list);
     }
 }

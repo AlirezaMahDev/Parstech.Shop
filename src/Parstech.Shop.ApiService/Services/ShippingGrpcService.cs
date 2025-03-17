@@ -21,8 +21,8 @@ public class ShippingGrpcService : ShippingService.ShippingServiceBase
     {
         try
         {
-            void shippingId = await _mediator.Send(new GetFirstUserShippingQueryReq(request.UserId));
-            void shipping = await _mediator.Send(new GetUserShippingByIdQueryReq(shippingId));
+            var shippingId = await _mediator.Send(new GetFirstUserShippingQueryReq(request.UserId));
+            var shipping = await _mediator.Send(new GetUserShippingByIdQueryReq(shippingId));
 
             return new UserShippingResponse
             {
@@ -47,7 +47,7 @@ public class ShippingGrpcService : ShippingService.ShippingServiceBase
     {
         try
         {
-            void shipping = await _mediator.Send(new OrderShippingChangeQueryReq(
+            var shipping = await _mediator.Send(new OrderShippingChangeQueryReq(
                 request.Action,
                 request.UserShippingId,
                 request.OrderId,
@@ -75,7 +75,7 @@ public class ShippingGrpcService : ShippingService.ShippingServiceBase
     {
         try
         {
-            void shipping = await _mediator.Send(new OrderShippingGetByOrderIdQueryReq(request.OrderId));
+            var shipping = await _mediator.Send(new OrderShippingGetByOrderIdQueryReq(request.OrderId));
 
             return new OrderShippingResponse
             {

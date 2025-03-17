@@ -6,8 +6,8 @@ using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.ProductProperty.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Query;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.UserProduct.Handlers.Query;
 
@@ -54,16 +54,16 @@ public class
         CancellationToken cancellationToken)
     {
         List<CompareDto> result = new();
-        Domain.Models.User? user = await _userRep.GetUserByUserName(request.userName);
-        List<Domain.Models.UserProduct> userProduct = DapperHelper.ExecuteCommand(_ConnectionString,
-            conn => conn.Query<Domain.Models.UserProduct>(_productPropertyQueries.GeAllCompareUserProductsByUserId,
+        Shared.Models.User? user = await _userRep.GetUserByUserName(request.userName);
+        List<Shared.Models.UserProduct> userProduct = DapperHelper.ExecuteCommand(_ConnectionString,
+            conn => conn.Query<Shared.Models.UserProduct>(_productPropertyQueries.GeAllCompareUserProductsByUserId,
                     new { @userId = user.Id })
                 .ToList());
         List<List<object>> allLists = new();
 
         if (userProduct.Count > 0)
         {
-            foreach (Domain.Models.UserProduct product in userProduct)
+            foreach (Shared.Models.UserProduct product in userProduct)
             {
                 List<ProductPropertyDto> list = DapperHelper.ExecuteCommand(_ConnectionString,
                     conn => conn.Query<ProductPropertyDto>(_productPropertyQueries.GeAllByProductId,
@@ -87,7 +87,7 @@ public class
             }
 
 
-            foreach (Domain.Models.UserProduct product in userProduct)
+            foreach (Shared.Models.UserProduct product in userProduct)
             {
                 CompareDto compare = new();
                 List<ProductPropertyDto> common = new();
@@ -121,16 +121,16 @@ public class
                 compare.productId = product.ProductId;
 
 
-                Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+                Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                     _ConnectionString,
                     conn => conn
-                        .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                        .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                             new { @productId = product.ProductId })
                         .FirstOrDefault());
                 compare.image = image.ImageName;
 
                 compare.commonProperties = common;
-                Domain.Models.Product? p = await _productRep.GetAsync(product.ProductId);
+                Shared.Models.Product? p = await _productRep.GetAsync(product.ProductId);
                 compare.shortLink = p.ShortLink;
                 compare.productProperties = all;
                 compare.productStockId = compare.productStockId =

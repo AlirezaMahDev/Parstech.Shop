@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Requests;
 
@@ -23,7 +23,7 @@ public class CreditRequestsModel : PageModel
 
     // Paging parameter
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     // Credit requests
     [BindProperty]
@@ -31,7 +31,7 @@ public class CreditRequestsModel : PageModel
 
     // Response for operations
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     #endregion
 

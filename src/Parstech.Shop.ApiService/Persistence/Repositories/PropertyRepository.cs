@@ -3,8 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -63,7 +63,7 @@ public class PropertyRepository : GenericRepository<Property>, IPropertyReposito
 
     public async Task<Property?> GetByName(string propertyName)
     {
-        Property? result = new();
+        Property result = new();
         if (await _context.Properties.AnyAsync(u => u.Caption == propertyName))
         {
             return await _context.Properties.FirstOrDefaultAsync(u => u.Caption == propertyName);

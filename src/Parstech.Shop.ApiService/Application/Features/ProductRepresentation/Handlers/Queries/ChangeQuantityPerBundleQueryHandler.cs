@@ -23,7 +23,7 @@ public class ChangeQuantityPerBundleQueryHandler : IRequestHandler<ChangeQuantit
 
     public async Task<bool> Handle(ChangeQuantityPerBundleQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductStockPrice? productStock =
+        Shared.Models.ProductStockPrice? productStock =
             await _productStockPriceRep.GetAsync(request.productStockPriceId);
         productStock.QuantityPerBundle = request.QuantityPerBundle;
         await _productStockPriceRep.UpdateAsync(productStock);

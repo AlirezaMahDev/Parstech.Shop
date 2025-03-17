@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Brand.Handlers.Commands;
 
@@ -24,7 +24,7 @@ public class BrandCreateCommandHandler : IRequestHandler<BrandCreateCommandReq, 
 
     public async Task<BrandDto> Handle(BrandCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Brand? item = _mapper.Map<Domain.Models.Brand>(request.BrandDto);
+        Shared.Models.Brand? item = _mapper.Map<Shared.Models.Brand>(request.BrandDto);
 
         if (request.BrandDto.BrandFile != null)
         {
@@ -48,7 +48,7 @@ public class BrandCreateCommandHandler : IRequestHandler<BrandCreateCommandReq, 
             }
         }
 
-        Domain.Models.Brand Result = await _brandRep.AddAsync(item);
+        Shared.Models.Brand Result = await _brandRep.AddAsync(item);
 
 
         return _mapper.Map<BrandDto>(Result);

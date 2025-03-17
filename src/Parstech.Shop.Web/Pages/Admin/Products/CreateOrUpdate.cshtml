@@ -735,10 +735,10 @@
                                 <select asp-for="productStock.CateguryOfUserType" id="product_CateguryOfUserType"
                                         type="text" class="form-control" data-val="true">
                                     <option value="null">انتخاب نشده</option>
-                                    <option value="@CateguryOfUserType.ShowDiscoutProductForUserCategury">مشاهده تخفیف
+                                    <option value="@productStock.CateguryOfUserType.ShowDiscoutProductForUserCategury">مشاهده تخفیف
                                         برای دسته بندی کاربران
                                     </option>
-                                    <option value="@CateguryOfUserType.ShowProductJustForUserCategury">مشاهده محصول برای
+                                    <option value="@productStock.CateguryOfUserType.ShowProductJustForUserCategury">مشاهده محصول برای
                                         دسته بندی کاربران
                                     </option>
                                 </select>

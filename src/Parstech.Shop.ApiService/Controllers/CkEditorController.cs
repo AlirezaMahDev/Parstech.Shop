@@ -2,7 +2,7 @@
 
 using Parstech.Shop.ApiService.Application.Generator;
 
-namespace Parstech.Shop.Web.Controllers;
+namespace Parstech.Shop.ApiService.Controllers;
 
 public class UploadSuccess
 {
@@ -22,7 +22,7 @@ public class CkEditorController : Controller
             return null;
         }
 
-        string? fileName = "";
+        string fileName = "";
 
         try
         {
@@ -33,8 +33,8 @@ public class CkEditorController : Controller
             }
 
             // 2. بررسی فرمت فایل
-            string[]? allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-            string? fileExtension = Path.GetExtension(upload.FileName).ToLower();
+            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            string fileExtension = Path.GetExtension(upload.FileName).ToLower();
             if (!allowedExtensions.Contains(fileExtension))
             {
                 return Json(new { uploaded = false });
@@ -51,7 +51,7 @@ public class CkEditorController : Controller
             fileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(upload.FileName);
             string imagePath =
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Shared/Images/Products", fileName);
-            using (FileStream? stream = new(imagePath, FileMode.Create))
+            using (FileStream stream = new(imagePath, FileMode.Create))
             {
                 upload.CopyTo(stream);
             }
@@ -113,8 +113,8 @@ public class CkEditorController : Controller
             }
 
             // 2. بررسی فرمت فایل
-            string[]? allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-            string? fileExtension = Path.GetExtension(upload.FileName).ToLower();
+            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            string fileExtension = Path.GetExtension(upload.FileName).ToLower();
             if (!allowedExtensions.Contains(fileExtension))
             {
                 return Json(new { uploaded = false });
@@ -128,9 +128,9 @@ public class CkEditorController : Controller
             }
 
             // اگر همه چیز درست بود، فایل را ذخیره کنید
-            string? fileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(upload.FileName);
+            string fileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(upload.FileName);
             string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Shared/Images", fileName);
-            using (FileStream? stream = new(imagePath, FileMode.Create))
+            using (FileStream stream = new(imagePath, FileMode.Create))
             {
                 upload.CopyTo(stream);
             }

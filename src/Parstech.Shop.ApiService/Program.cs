@@ -1,127 +1,161 @@
-using Parstech.Shop.ApiService.Services;
-using Parstech.Shop.ApiService.MapperProfiles;
+using Parstech.Shop.ApiService;
 using Parstech.Shop.ApiService.Application;
-using Parstech.Shop.ApiService.Persistence;
-using Parstech.Shop.ApiService.Infrastructure;
-using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.ApiService.Services;
 using Parstech.Shop.ApiService.Services.GrpcServices;
 using Parstech.Shop.ServiceDefaults;
 
-WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigurePersistenceService(builder.Configuration);
-builder.Services.ConfigureInfrustructureService();
-builder.Services.ConfigureApplicationService(builder.Configuration);
-
-// Add gRPC services
-builder.Services.AddGrpc(options =>
+// Configure application services (including gRPC)
+builder.Services.AddGrpc(options => 
 {
     options.EnableDetailedErrors = true;
-    options.MaxReceiveMessageSize = 16 * 1024 * 1024; // 16 MB
-    options.MaxSendMessageSize = 16 * 1024 * 1024; // 16 MB
 });
-
-builder.Services.AddGrpcReflection();
-
+builder.Services.AddGrpcWeb();
 builder.AddServiceDefaults();
-builder.Services.AddProblemDetails();
-builder.Services.AddOpenApi();
-builder.Services.AddSqlServer<DatabaseContext>("database");
 
-// Add AutoMapper profiles
-builder.Services.AddAutoMapper(config =>
-{
-    config.AddProfile<GrpcMapper>();
-    // Apply extensions
-    OrderShippingMapperExtensions.AddOrderShippingMappings(config);
-});
+// Add controllers
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// Add CORS policy
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithOrigins("https://localhost:7040")
-            .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-    });
-});
+// Register application services
+builder.Services.ConfigureApplicationService(builder.Configuration);
 
-WebApplication? app = builder.Build();
+// Register all gRPC services
+RegisterGrpcServices(builder.Services);
 
-app.UseExceptionHandler();
-app.UseHttpsRedirection();
-app.UseMigrationsEndPoint();
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-app.UseCors();
 app.UseRouting();
-app.UseGrpcWeb(); // Enable gRPC-Web middleware
-app.UseAuthorization();
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 
-// Configure gRPC service endpoints
-app.MapGrpcService<ProductService>().EnableGrpcWeb();
-app.MapGrpcService<OrderService>().EnableGrpcWeb();
-app.MapGrpcService<UserService>().EnableGrpcWeb();
-app.MapGrpcService<UserShippingService>().EnableGrpcWeb();
-app.MapGrpcService<OrderShippingService>().EnableGrpcWeb();
-app.MapGrpcService<SectionService>();
-app.MapGrpcService<UserProductService>();
-
-// Map gRPC services
-app.MapGrpcService<CategoryGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<BrandGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserStoreGrpcService>().EnableGrpcWeb();
-app.MapGrpcReflectionService();
-app.MapGrpcService<ProductDetailGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductGalleryGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<TorobGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductGrpcService>().EnableGrpcWeb();
-
-// Map new gRPC services
-app.MapGrpcService<OrderGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<OrderCheckoutService>().EnableGrpcWeb();
-app.MapGrpcService<CouponGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<WalletGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<WalletTransactionGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ShippingGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<PaymentGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserProfileGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserPreferencesGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<SectionGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserProductGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<SiteSettingGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserAuthGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<FormCreditGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<RahkaranGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<BrandAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<CategoryAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<CouponAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<StoreAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<SectionAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductDetailAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<RepresentationAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<PropertyAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ConfigAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<UserAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<SettingsAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<FinancialAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ReportsAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<OrderAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<DashboardAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<SelectionsAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<AuthAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductComponentsAdminGrpcService>().EnableGrpcWeb();
-app.MapGrpcService<ProductInventoryAdminGrpcService>().EnableGrpcWeb();
-
-app.MapDefaultEndpoints();
-app.MapStaticAssets();
+// Map controllers and gRPC services
 app.MapControllers();
+app.MapGrpcServices();
 
 app.Run();
+
+// Helper method to register all gRPC services
+void RegisterGrpcServices(IServiceCollection services)
+{
+    // Admin services
+    services.AddGrpcService<AuthAdminGrpcService>();
+    services.AddGrpcService<BrandAdminGrpcService>();
+    services.AddGrpcService<CategoryAdminGrpcService>();
+    services.AddGrpcService<ConfigAdminGrpcService>();
+    services.AddGrpcService<CouponAdminGrpcService>();
+    services.AddGrpcService<DashboardAdminGrpcService>();
+    services.AddGrpcService<FinancialAdminGrpcService>();
+    services.AddGrpcService<OrderAdminGrpcService>();
+    services.AddGrpcService<ProductAdminGrpcService>();
+    services.AddGrpcService<ProductComponentsAdminGrpcService>();
+    services.AddGrpcService<ProductDetailAdminGrpcService>();
+    services.AddGrpcService<ProductInventoryAdminGrpcService>();
+    services.AddGrpcService<PropertyAdminGrpcService>();
+    services.AddGrpcService<RepresentationAdminGrpcService>();
+    services.AddGrpcService<ReportsAdminGrpcService>();
+    services.AddGrpcService<RoleAdminGrpcService>();
+    services.AddGrpcService<SectionAdminGrpcService>();
+    services.AddGrpcService<SelectionsAdminGrpcService>();
+    services.AddGrpcService<SettingsAdminGrpcService>();
+    services.AddGrpcService<StoreAdminGrpcService>();
+    services.AddGrpcService<UserAdminGrpcService>();
+    
+    // Client services
+    services.AddGrpcService<BrandGrpcService>();
+    services.AddGrpcService<CategoryGrpcService>();
+    services.AddGrpcService<CouponGrpcService>();
+    services.AddGrpcService<FormCreditGrpcService>();
+    services.AddGrpcService<OrderCheckoutService>();
+    services.AddGrpcService<OrderGrpcService>();
+    services.AddGrpcService<PaymentGrpcService>();
+    services.AddGrpcService<ProductDetailGrpcService>();
+    services.AddGrpcService<ProductGalleryGrpcService>();
+    services.AddGrpcService<ProductGrpcService>();
+    services.AddGrpcService<RahkaranGrpcService>();
+    services.AddGrpcService<SectionGrpcService>();
+    services.AddGrpcService<ShippingGrpcService>();
+    services.AddGrpcService<SiteSettingGrpcService>();
+    services.AddGrpcService<TorobGrpcService>();
+    services.AddGrpcService<TorobService>();
+    services.AddGrpcService<UserAuthGrpcService>();
+    services.AddGrpcService<UserPreferencesGrpcService>();
+    services.AddGrpcService<UserProductGrpcService>();
+    services.AddGrpcService<UserProfileGrpcService>();
+    services.AddGrpcService<UserStoreGrpcService>();
+    services.AddGrpcService<WalletGrpcService>();
+    services.AddGrpcService<WalletTransactionGrpcService>();
+}
+
+// Extension method to easily register gRPC services
+namespace Parstech.Shop.ApiService
+{
+    public static class GrpcServiceExtensions
+    {
+        public static IServiceCollection AddGrpcService<T>(this IServiceCollection services) where T : class
+        {
+            services.AddSingleton<T>();
+            return services;
+        }
+    
+        public static IEndpointRouteBuilder MapGrpcServices(this IEndpointRouteBuilder endpoints)
+        {
+            // Admin services
+            endpoints.MapGrpcService<AuthAdminGrpcService>();
+            endpoints.MapGrpcService<BrandAdminGrpcService>();
+            endpoints.MapGrpcService<CategoryAdminGrpcService>();
+            endpoints.MapGrpcService<ConfigAdminGrpcService>();
+            endpoints.MapGrpcService<CouponAdminGrpcService>();
+            endpoints.MapGrpcService<DashboardAdminGrpcService>();
+            endpoints.MapGrpcService<FinancialAdminGrpcService>();
+            endpoints.MapGrpcService<OrderAdminGrpcService>();
+            endpoints.MapGrpcService<ProductAdminGrpcService>();
+            endpoints.MapGrpcService<ProductComponentsAdminGrpcService>();
+            endpoints.MapGrpcService<ProductDetailAdminGrpcService>();
+            endpoints.MapGrpcService<ProductInventoryAdminGrpcService>();
+            endpoints.MapGrpcService<PropertyAdminGrpcService>();
+            endpoints.MapGrpcService<RepresentationAdminGrpcService>();
+            endpoints.MapGrpcService<ReportsAdminGrpcService>();
+            endpoints.MapGrpcService<RoleAdminGrpcService>();
+            endpoints.MapGrpcService<SectionAdminGrpcService>();
+            endpoints.MapGrpcService<SelectionsAdminGrpcService>();
+            endpoints.MapGrpcService<SettingsAdminGrpcService>();
+            endpoints.MapGrpcService<StoreAdminGrpcService>();
+            endpoints.MapGrpcService<UserAdminGrpcService>();
+        
+            // Client services
+            endpoints.MapGrpcService<BrandGrpcService>();
+            endpoints.MapGrpcService<CategoryGrpcService>();
+            endpoints.MapGrpcService<CouponGrpcService>();
+            endpoints.MapGrpcService<FormCreditGrpcService>();
+            endpoints.MapGrpcService<OrderCheckoutService>();
+            endpoints.MapGrpcService<OrderGrpcService>();
+            endpoints.MapGrpcService<PaymentGrpcService>();
+            endpoints.MapGrpcService<ProductDetailGrpcService>();
+            endpoints.MapGrpcService<ProductGalleryGrpcService>();
+            endpoints.MapGrpcService<ProductGrpcService>();
+            endpoints.MapGrpcService<RahkaranGrpcService>();
+            endpoints.MapGrpcService<SectionGrpcService>();
+            endpoints.MapGrpcService<ShippingGrpcService>();
+            endpoints.MapGrpcService<SiteSettingGrpcService>();
+            endpoints.MapGrpcService<TorobGrpcService>();
+            endpoints.MapGrpcService<TorobService>();
+            endpoints.MapGrpcService<UserAuthGrpcService>();
+            endpoints.MapGrpcService<UserPreferencesGrpcService>();
+            endpoints.MapGrpcService<UserProductGrpcService>();
+            endpoints.MapGrpcService<UserProfileGrpcService>();
+            endpoints.MapGrpcService<UserStoreGrpcService>();
+            endpoints.MapGrpcService<WalletGrpcService>();
+            endpoints.MapGrpcService<WalletTransactionGrpcService>();
+        
+            return endpoints;
+        }
+    }
+}

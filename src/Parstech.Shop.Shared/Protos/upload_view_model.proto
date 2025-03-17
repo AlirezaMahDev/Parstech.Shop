@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.ProductGallery;
-
-message UploadViewModel {
-    repeated bytes files = 1; // Representing IFormFile as bytes
-}

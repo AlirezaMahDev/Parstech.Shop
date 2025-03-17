@@ -6,7 +6,6 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Command;
@@ -14,7 +13,8 @@ using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderShipping.Request.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -31,13 +31,13 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<Order> GetOrder(OrderRequest request, ServerCallContext context)
     {
-        void order = await _mediator.Send(new GetOrderDetailByIdQueryReq(request.OrderId));
+        var order = await _mediator.Send(new GetOrderDetailByIdQueryReq(request.OrderId));
         return MapToOrderProto(order);
     }
 
     public override async Task<OrderDetailShow> GetOrderDetails(OrderRequest request, ServerCallContext context)
     {
-        void orderDetail = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+        var orderDetail = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
         return MapToOrderDetailShowProto(orderDetail);
     }
 
@@ -62,13 +62,13 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<OrderFilter> GetOrderFilters(OrderFiltersRequest request, ServerCallContext context)
     {
-        void filters = await _mediator.Send(new OrdersFilterDataQueryReq(request.StoreName));
+        var filters = await _mediator.Send(new OrdersFilterDataQueryReq(request.StoreName));
         return MapToOrderFilterProto(filters);
     }
 
     public override async Task<PagingDto> GetOrdersPaging(ParameterDto request, ServerCallContext context)
     {
-        var parameter = new Shop.Application.DTOs.Paging.ParameterDto
+        var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
@@ -83,13 +83,13 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
             store = request.Store
         };
 
-        void pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
+        var pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
         return MapToPagingDtoProto(pagingResult);
     }
 
     public override async Task<OrderStatusesResponse> GetOrderStatuses(OrderRequest request, ServerCallContext context)
     {
-        void statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
+        var statuses = await _mediator.Send(new GetOrderStatusByOrderIdQueryReq(request.OrderId));
         var response = new OrderStatusesResponse();
 
         foreach (var status in statuses)
@@ -104,7 +104,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
     {
         try
         {
-            var orderStatusDto = new Shop.Application.DTOs.OrderStatus.OrderStatusDto
+            var orderStatusDto = new Parstech.Shop.Shared.DTOsStatus.OrderStatusDto
             {
                 Id = request.OrderStatus.Id,
                 OrderId = request.OrderStatus.OrderId,
@@ -117,11 +117,11 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
             if (request.FileData != null && request.FileData.Length > 0)
             {
                 // Create a temporary file to pass to MediatR
-                string? tempFilePath = Path.GetTempFileName();
+                string tempFilePath = Path.GetTempFileName();
                 await File.WriteAllBytesAsync(tempFilePath, request.FileData.ToByteArray());
 
                 // Create FormFile from the temporary file
-                using FileStream? stream = new(tempFilePath, FileMode.Open);
+                using FileStream stream = new(tempFilePath, FileMode.Open);
                 FormFile file = new(stream, 0, stream.Length, null, Path.GetFileName(tempFilePath))
                 {
                     Headers = new HeaderDictionary(), ContentType = "application/octet-stream"
@@ -131,7 +131,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
                 orderStatusDto.File = file;
             }
 
-            void response = await _mediator.Send(new OrderStatusCreatCommandReq(orderStatusDto));
+            var response = await _mediator.Send(new OrderStatusCreatCommandReq(orderStatusDto));
             return MapToOrderResponseProto(response);
         }
         catch (Exception ex)
@@ -146,7 +146,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
     public override async Task<OrderResponse> ChangeOrderShipping(OrderShippingChangeRequest request,
         ServerCallContext context)
     {
-        void orderId = await _mediator.Send(new OrderShippingChangeQueryReq(
+        var orderId = await _mediator.Send(new OrderShippingChangeQueryReq(
             request.Type,
             request.UserShippingId,
             request.OrderId,
@@ -158,8 +158,8 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
     public override async Task<OrderWordFileResponse> GenerateOrderWordFile(OrderRequest request,
         ServerCallContext context)
     {
-        void orderDetailDto = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
-        void wordFilePath = await _mediator.Send(new OrderWordFileQueryReq(orderDetailDto));
+        var orderDetailDto = await _mediator.Send(new OrderDetailShowQueryReq(request.OrderId));
+        var wordFilePath = await _mediator.Send(new OrderWordFileQueryReq(orderDetailDto));
 
         return new OrderWordFileResponse { FilePath = wordFilePath };
     }
@@ -167,7 +167,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
     public override async Task<OrderResponse> CompleteOrderByAdmin(CompleteOrderRequest request,
         ServerCallContext context)
     {
-        void response = await _mediator.Send(new CompleteOrderByAdminQueryReq(
+        var response = await _mediator.Send(new CompleteOrderByAdminQueryReq(
             request.OrderId,
             request.TypeName,
             request.Month?.Value));
@@ -177,7 +177,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<OrderPaysResponse> GetOrderPays(OrderRequest request, ServerCallContext context)
     {
-        void orderPays = await _mediator.Send(new OrderPaysOfOrderQueryReq(request.OrderId));
+        var orderPays = await _mediator.Send(new OrderPaysOfOrderQueryReq(request.OrderId));
         var response = new OrderPaysResponse();
 
         foreach (var pay in orderPays)
@@ -190,7 +190,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<OrderResponse> AddOrderPay(OrderPayRequest request, ServerCallContext context)
     {
-        var orderPayDto = new Shop.Application.DTOs.OrderPay.OrderPayDto
+        var orderPayDto = new Parstech.Shop.Shared.DTOsPay.OrderPayDto
         {
             Id = request.OrderPay.Id,
             OrderId = request.OrderPay.OrderId,
@@ -202,13 +202,13 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
             CreateDate = request.OrderPay.CreateDate.ToDateTime()
         };
 
-        void response = await _mediator.Send(new OrderPayCreateCommandReq(orderPayDto));
+        var response = await _mediator.Send(new OrderPayCreateCommandReq(orderPayDto));
         return MapToOrderResponseProto(response);
     }
 
     public override async Task<OrderResponse> DeleteOrderPay(OrderPayDeleteRequest request, ServerCallContext context)
     {
-        void response = await _mediator.Send(new OrderPayDeleteCommandReq(request.Id));
+        var response = await _mediator.Send(new OrderPayDeleteCommandReq(request.Id));
         return MapToOrderResponseProto(response);
     }
 
@@ -313,7 +313,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     private PagingDto MapToPagingDtoProto(PagingDto dto)
     {
-        PagingDto? pagingDto = new()
+        PagingDto pagingDto = new()
         {
             TotalCount = dto.TotalCount,
             PageCount = dto.PageCount,
@@ -334,7 +334,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     private OrderPayDto MapToOrderPayDtoProto(OrderPayDto dto)
     {
-        OrderPayDto? orderPayDto = new()
+        OrderPayDto orderPayDto = new()
         {
             Id = dto.Id,
             OrderId = dto.OrderId,
@@ -355,7 +355,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     private OrderStatusDto MapToOrderStatusDtoProto(OrderStatusDto dto)
     {
-        OrderStatusDto? orderStatusDto = new()
+        OrderStatusDto orderStatusDto = new()
         {
             Id = dto.Id,
             OrderId = dto.OrderId,
@@ -374,7 +374,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     private OrderResponse MapToOrderResponseProto(ResponseDto dto)
     {
-        OrderResponse? response = new()
+        OrderResponse response = new()
         {
             Status = dto.IsSuccessed, Message = dto.Message ?? string.Empty, IsSucceeded = dto.IsSuccessed
         };

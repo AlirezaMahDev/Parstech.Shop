@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Commands;
 
@@ -52,10 +52,10 @@ public class ProductReadCommandHandler : IRequestHandler<ProductReadCommandReq, 
         {
             result = _mapper.Map<ProductDto>(product);
             result.ProductStockPriceId = product.Id;
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _connectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage,
+                    .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage,
                         new { @productId = result.ProductId })
                     .FirstOrDefault());
 
@@ -68,7 +68,7 @@ public class ProductReadCommandHandler : IRequestHandler<ProductReadCommandReq, 
         int firstStockId = await _productStockRep.GetFirstProductStockPriceIdFromProductId(result.Id);
         if (firstStockId != 0)
         {
-            Domain.Models.ProductStockPrice? ps = await _productStockRep.GetAsync(firstStockId);
+            Shared.Models.ProductStockPrice? ps = await _productStockRep.GetAsync(firstStockId);
             result.Quantity = ps.Quantity;
             result.DiscountPrice = ps.DiscountPrice;
             result.SalePrice = ps.SalePrice;

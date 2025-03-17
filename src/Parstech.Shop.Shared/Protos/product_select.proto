@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.Product;
-
-message ProductSelect {
-    int32 id = 1;
-    string product_name = 2;
-    string code = 3;
-}

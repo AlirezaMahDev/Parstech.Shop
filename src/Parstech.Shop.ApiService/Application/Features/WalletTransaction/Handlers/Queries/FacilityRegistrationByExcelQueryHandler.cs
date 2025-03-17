@@ -3,9 +3,9 @@
 using OfficeOpenXml;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -145,7 +145,7 @@ public class FacilityRegistrationByExcelQueryHandler : IRequestHandler<FacilityR
                 }
 
                 WalletTransactionDto Transaction = new();
-                Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(userId);
+                Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(userId);
                 Transaction.Price = int.Parse(price);
                 Transaction.CreateDate = DateTime.Now;
                 Transaction.WalletId = wallet.WalletId;
@@ -156,7 +156,7 @@ public class FacilityRegistrationByExcelQueryHandler : IRequestHandler<FacilityR
                 Transaction.Description = "ثبت تسهیلات جدید";
                 Transaction.Type = request.type;
                 Transaction.TypeId = 1;
-                void result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
+                var result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
                 if (!result.isSuccessed)
                 {
                     ErrorList error = new()

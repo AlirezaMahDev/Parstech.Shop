@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -22,9 +22,9 @@ public class CalculateAghsatQueryHandler : IRequestHandler<CalculateAghsatQueryR
     {
         ResponseDto result = new();
         long TashilatPrice = 0;
-        Domain.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
+        Shared.Models.WalletTransaction? transaction = await _walletTransactionRep.GetAsync(request.transactionId);
 
-        Domain.Models.Wallet? wallet = await _walletRep.GetAsync(transaction.WalletId);
+        Shared.Models.Wallet? wallet = await _walletRep.GetAsync(transaction.WalletId);
 
         switch (transaction.Type)
         {

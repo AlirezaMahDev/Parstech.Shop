@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Property.Handlers.Commands;
 
@@ -21,8 +21,8 @@ public class PropertyCreateCommandHandler : IRequestHandler<PropertyCreateComman
 
     public async Task<PropertyDto> Handle(PropertyCreateCommandReq request, CancellationToken cancellationToken)
     {
-        var Property = _mapper.Map<Shop.Domain.Models.Property>(request.PropertyDto);
-        Domain.Models.Property? PropertyDto = await _propertyRep.AddAsync(Property);
+        var Property = _mapper.Map<Shared.Models.Property>(request.PropertyDto);
+        Shared.Models.Property PropertyDto = await _propertyRep.AddAsync(Property);
         return _mapper.Map<PropertyDto>(Property);
     }
 }

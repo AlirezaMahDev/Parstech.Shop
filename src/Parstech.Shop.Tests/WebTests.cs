@@ -12,7 +12,7 @@ public class WebTests
     public async Task GetWebResourceRootReturnsOkStatusCode()
     {
         // Arrange
-        IDistributedApplicationTestingBuilder? appHost =
+        IDistributedApplicationTestingBuilder appHost =
             await DistributedApplicationTestingBuilder.CreateAsync<Projects.Parstech_Shop_AppHost>();
         appHost.Services.AddLogging(logging =>
         {
@@ -27,13 +27,13 @@ public class WebTests
             clientBuilder.AddStandardResilienceHandler();
         });
 
-        await using DistributedApplication? app = await appHost.BuildAsync().WaitAsync(DefaultTimeout);
+        await using DistributedApplication app = await appHost.BuildAsync().WaitAsync(DefaultTimeout);
         await app.StartAsync().WaitAsync(DefaultTimeout);
 
         // Act
-        HttpClient? httpClient = app.CreateHttpClient("webfrontend");
+        HttpClient httpClient = app.CreateHttpClient("webfrontend");
         await app.ResourceNotifications.WaitForResourceHealthyAsync("webfrontend").WaitAsync(DefaultTimeout);
-        HttpResponseMessage? response = await httpClient.GetAsync("/");
+        HttpResponseMessage response = await httpClient.GetAsync("/");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

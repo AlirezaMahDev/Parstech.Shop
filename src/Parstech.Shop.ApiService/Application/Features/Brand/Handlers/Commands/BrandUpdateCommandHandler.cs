@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Brand.Handlers.Commands;
 
@@ -24,7 +24,7 @@ public class BrandUpdateCommandHandler : IRequestHandler<BrandUpdateCommandReq, 
 
     public async Task<BrandDto> Handle(BrandUpdateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Brand? item = _mapper.Map<Domain.Models.Brand>(request.BrandDto);
+        Shared.Models.Brand? item = _mapper.Map<Shared.Models.Brand>(request.BrandDto);
         if (request.BrandDto.BrandFile != null)
         {
             string tempFile = Path.Combine(Directory.GetCurrentDirectory(),
@@ -66,7 +66,7 @@ public class BrandUpdateCommandHandler : IRequestHandler<BrandUpdateCommandReq, 
             }
         }
 
-        Domain.Models.Brand Result = await _brandRep.UpdateAsync(item);
+        Shared.Models.Brand Result = await _brandRep.UpdateAsync(item);
         return _mapper.Map<BrandDto>(Result);
     }
 }

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Representations;
 
@@ -33,9 +33,9 @@ public class QuickEditModel : PageModel
     public ProductRepresentationPagingDto list { get; set; }
 
     [BindProperty]
-    public ProductRepresenationParameterDto parameters { get; set; } = new ProductRepresenationParameterDto();
+    public ProductRepresenationParameterDto parameters { get; set; } = new();
 
-    public ResponseDto response { get; set; } = new ResponseDto();
+    public ResponseDto response { get; set; } = new();
 
     #endregion
 
@@ -68,7 +68,7 @@ public class QuickEditModel : PageModel
         parameters.RepId = rep.Id;
 
         var pagingResult = await _representationClient.GetProductRepresentationsAsync(parameters.ProductId);
-        list = new ProductRepresentationPagingDto
+        list = new()
         {
             List = pagingResult,
             CurrentPage = parameters.CurrentPage,

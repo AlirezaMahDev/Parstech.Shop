@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Excel.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Excel.Handlers.Queries;
 
@@ -63,10 +63,10 @@ public class UpdateUserWalletsByExcelQueryHandler : IRequestHandler<UpdateUserWa
         foreach (res item in list.Skip(1))
         {
             string userName = $"0{item.mobile}";
-            Domain.Models.User? user = await _userRep.GetUserByUserName(userName);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(userName);
             if (user != null)
             {
-                Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(user.Id);
+                Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(user.Id);
                 double y = Convert.ToDouble(item.credit);
                 int itemCredit = (int)Math.Ceiling(y);
                 //int itemCredit = Convert.ToInt32(item.credit);
@@ -88,7 +88,7 @@ public class UpdateUserWalletsByExcelQueryHandler : IRequestHandler<UpdateUserWa
                     Transaction.TypeId = typeTransaction;
                     Transaction.Type = "OrgCredit";
                     Transaction.Description = "استعلام مانده وام سرمایه انسانی";
-                    void result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
+                    var result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
 
                     #endregion
                 }
@@ -108,7 +108,7 @@ public class UpdateUserWalletsByExcelQueryHandler : IRequestHandler<UpdateUserWa
                     Transaction.TypeId = typeTransaction;
                     Transaction.Type = "OrgCredit";
                     Transaction.Description = "استعلام مانده وام سرمایه انسانی";
-                    void result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
+                    var result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
 
                     #endregion
                 }

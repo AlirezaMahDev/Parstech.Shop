@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class ProductLogDto
 {
@@ -18,22 +18,4 @@ public class ProductLogDto
     public string OldValue { get; set; } = null!;
 
     public string NewValue { get; set; } = null!;
-}
-
-public class LogDto
-{
-    public List<ProductLogDto> SaleLogDtos { get; set; }
-    public List<ProductLogDto> BaseLogDtos { get; set; }
-    public List<ProductLogDto> PriceLogDtos { get; set; }
-    public List<ProductLogDto> DiscountLogDtos { get; set; }
-    public List<ProductRepresentationDto> ProductRepresentationDtos { get; set; }
-}
-
-public class ParameterLogDto
-{
-    public int CurrentPage { get; set; }
-    public int TakePage { get; set; }
-    public int PageCount { get; set; }
-    public string Filter { get; set; }
-    public int ProductId { get; set; }
 }

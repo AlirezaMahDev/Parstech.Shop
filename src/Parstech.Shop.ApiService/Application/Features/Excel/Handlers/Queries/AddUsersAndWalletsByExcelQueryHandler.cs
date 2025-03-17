@@ -3,11 +3,11 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Excel.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Validators.WalletTransaction;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Excel.Handlers.Queries;
 
@@ -82,15 +82,15 @@ public class AddUsersAndWalletsByExcelQueryHandler : IRequestHandler<AddUsersAnd
             userRegisterDto.LastName = item.family;
             userRegisterDto.State = "تهران";
             userRegisterDto.City = "تهران";
-            void res = await _mediator.Send(new UserRegisterQueryReq(userRegisterDto));
+            var res = await _mediator.Send(new UserRegisterQueryReq(userRegisterDto));
 
-            Domain.Models.User? user = await _userRep.GetUserByUserName(userRegisterDto.UserName);
+            Shared.Models.User? user = await _userRep.GetUserByUserName(userRegisterDto.UserName);
 
             #endregion
 
             if (res.IsSuccessed && user != null)
             {
-                Domain.Models.Wallet wallet = await _walletRep.GetWalletByUserId(user.Id);
+                Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(user.Id);
 
                 #region Validator
 
@@ -109,7 +109,7 @@ public class AddUsersAndWalletsByExcelQueryHandler : IRequestHandler<AddUsersAnd
                     Transaction.Price = inputPrice / 10;
                     Transaction.Start = false;
                     Transaction.Description = "ثبت تسهیلات جدید";
-                    void result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
+                    var result = await _mediator.Send(new CreateWalletTransactionCommandReq(Transaction, true));
                 }
 
                 #endregion

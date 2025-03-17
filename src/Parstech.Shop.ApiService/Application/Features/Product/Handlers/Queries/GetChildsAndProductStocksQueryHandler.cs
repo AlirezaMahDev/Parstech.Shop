@@ -5,8 +5,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -46,7 +46,7 @@ public class
             conn => conn.Query<ProductStockPriceDto>(productStockQuery).ToList());
         foreach (ProductStockPriceDto item in ps)
         {
-            Domain.Models.UserStore? store = await _userStoreRep.GetAsync(item.StoreId);
+            Shared.Models.UserStore? store = await _userStoreRep.GetAsync(item.StoreId);
 
             if (request.storeId == 0 || request.storeId == store.Id)
             {
@@ -56,8 +56,8 @@ public class
                 continue;
             }
 
-            Domain.Models.Representation? rep = await _representationRep.GetAsync(item.RepId);
-            Domain.Models.Product? product = await _productRep.GetAsync(item.ProductId);
+            Shared.Models.Representation? rep = await _representationRep.GetAsync(item.RepId);
+            Shared.Models.Product? product = await _productRep.GetAsync(item.ProductId);
             item.StoreName = store.StoreName;
             item.RepName = rep.Name;
             item.ProductName = product.Name;
@@ -77,7 +77,7 @@ public class
             {
                 foreach (ProductStockPriceDto productStock in productStocks)
                 {
-                    Domain.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
+                    Shared.Models.UserStore? store = await _userStoreRep.GetAsync(productStock.StoreId);
 
                     if (request.storeId == 0 || request.storeId == store.Id)
                     {
@@ -87,8 +87,8 @@ public class
                         continue;
                     }
 
-                    Domain.Models.Representation? rep = await _representationRep.GetAsync(productStock.RepId);
-                    Domain.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
+                    Shared.Models.Representation? rep = await _representationRep.GetAsync(productStock.RepId);
+                    Shared.Models.Product? product = await _productRep.GetAsync(productStock.ProductId);
                     productStock.StoreName = store.StoreName;
                     productStock.RepName = rep.Name;
                     productStock.ProductName = product.Name;

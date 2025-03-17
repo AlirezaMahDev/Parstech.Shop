@@ -5,10 +5,10 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -41,8 +41,8 @@ public class ProductDuplicateForStoreQueryHandler : IRequestHandler<ProductDupli
 
     public async Task<bool> Handle(ProductDuplicateForStoreQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
-        Domain.Models.UserStore? store = await _userStoreRep.GetAsync(request.storeId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.UserStore? store = await _userStoreRep.GetAsync(request.storeId);
 
         bool existTekrari = await _productStockRep.ExistStockForProductIdAndStore(request.productId, request.storeId);
         if (existTekrari)
@@ -68,10 +68,10 @@ public class ProductDuplicateForStoreQueryHandler : IRequestHandler<ProductDupli
 
         if (product.TypeId == 2 || product.TypeId == 4)
         {
-            List<Domain.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
+            List<Shared.Models.Product> childs = await _productRep.GetProductsByParrentId(product.Id);
             if (childs.Count > 0)
             {
-                foreach (Domain.Models.Product child in childs)
+                foreach (Shared.Models.Product child in childs)
                 {
                     ProductStockPriceDto productStockChild = new()
                     {
@@ -153,7 +153,7 @@ public class ProductDuplicateQueryHandler : IRequestHandler<ProductDuplicateQuer
     {
         //var product = await _productRep.GetAsync(request.productId);
 
-        ProductDto? product = DapperHelper.ExecuteCommand<ProductDto>(_connectionString,
+        ProductDto product = DapperHelper.ExecuteCommand<ProductDto>(_connectionString,
             conn => conn.Query<ProductDto>(_productQueries.GetOneProductFull, new { @Id = request.productId })
                 .FirstOrDefault());
 
@@ -173,36 +173,36 @@ public class ProductDuplicateQueryHandler : IRequestHandler<ProductDuplicateQuer
         product.Code = null;
         int productStockId = await _productStockRep.GetFirstProductStockPriceIdFromProductId(request.productId);
         //var productStock = await _productStockRep.GetAsync(productStockId);
-        ProductStockPriceDto? productStock = DapperHelper.ExecuteCommand<ProductStockPriceDto>(_connectionString,
+        ProductStockPriceDto productStock = DapperHelper.ExecuteCommand<ProductStockPriceDto>(_connectionString,
             conn => conn
                 .Query<ProductStockPriceDto>(_productQueries.GetProductStockPriceById, new { id = productStockId })
                 .FirstOrDefault());
         product.StoreId = productStock.StoreId;
 
 
-        void newProduct = await _mediator.Send(new ProductCreateCommandReq(product));
+        var newProduct = await _mediator.Send(new ProductCreateCommandReq(product));
 
 
-        List<Domain.Models.ProductProperty>? properties =
+        List<Shared.Models.ProductProperty> properties =
             await _productPropertyRep.GetPropertiesByProduct(request.productId);
-        foreach (Domain.Models.ProductProperty? property in properties)
+        foreach (Shared.Models.ProductProperty? property in properties)
         {
             property.Id = 0;
             property.ProductId = newProduct.Id;
             await _productPropertyRep.AddAsync(property);
         }
 
-        List<Domain.Models.ProductCategury>? categuries =
+        List<Shared.Models.ProductCategury> categuries =
             await _productCateguryRep.GetCateguriesByProduct(request.productId);
-        foreach (Domain.Models.ProductCategury? categury in categuries)
+        foreach (Shared.Models.ProductCategury? categury in categuries)
         {
             categury.Id = 0;
             categury.ProductId = newProduct.Id;
             await _productCateguryRep.AddAsync(categury);
         }
 
-        List<Domain.Models.ProductGallery>? galleries = await _galleryRep.GetGalleriesByProduct(request.productId);
-        foreach (Domain.Models.ProductGallery? gallery in galleries)
+        List<Shared.Models.ProductGallery> galleries = await _galleryRep.GetGalleriesByProduct(request.productId);
+        foreach (Shared.Models.ProductGallery? gallery in galleries)
         {
             gallery.Id = 0;
             gallery.ProductId = newProduct.Id;

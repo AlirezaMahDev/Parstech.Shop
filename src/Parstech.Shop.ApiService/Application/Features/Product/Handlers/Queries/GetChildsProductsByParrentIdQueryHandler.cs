@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -29,8 +29,8 @@ public class
     {
         List<ProductDto> Result = new();
 
-        List<Domain.Models.Product> list = await _productRep.GetProductsByParrentId(request.parrentId);
-        foreach (Domain.Models.Product item in list)
+        List<Shared.Models.Product> list = await _productRep.GetProductsByParrentId(request.parrentId);
+        foreach (Shared.Models.Product item in list)
         {
             ProductDto? dto = _mapper.Map<ProductDto>(item);
             int ps = await _productStockRep.GetFirstProductStockPriceIdFromProductId(item.Id);

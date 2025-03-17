@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductProperty.Handlers.Queries;
 
@@ -30,15 +30,15 @@ public class
     public async Task<List<BaseProductPropertyDto>> Handle(BasePropertiesOfProductQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.ProductProperty>? properties =
+        List<Shared.Models.ProductProperty> properties =
             await _productPropertyRep.GetPropertiesByProduct(request.productId);
-        List<BaseProductPropertyDto>? BaseProperties = new();
-        foreach (Domain.Models.ProductProperty property in properties)
+        List<BaseProductPropertyDto> BaseProperties = new();
+        foreach (Shared.Models.ProductProperty property in properties)
         {
             ProductPropertyDto? propDto = _mapper.Map<ProductPropertyDto>(property);
-            Domain.Models.Property? Currentproperty = await _propertyRep.GetAsync(property.PropertyId);
+            Shared.Models.Property? Currentproperty = await _propertyRep.GetAsync(property.PropertyId);
             propDto.PropertyName = Currentproperty.Caption;
-            Domain.Models.PropertyCategury? categury =
+            Shared.Models.PropertyCategury? categury =
                 await _propertCactrguryRep.GetAsync(Currentproperty.PropertyCateguryId);
 
             if (BaseProperties.Any(u => u.PropertyCategury == categury.Name))

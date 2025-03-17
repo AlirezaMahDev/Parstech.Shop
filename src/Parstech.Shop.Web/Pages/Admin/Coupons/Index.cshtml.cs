@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Coupons;
 
@@ -24,7 +24,7 @@ public class IndexModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
     public PagingDto List { get; set; }
@@ -33,7 +33,7 @@ public class IndexModel : PageModel
     public List<CouponDto> Coupons { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public List<CouponTypeDto> couponTypes { get; set; }
@@ -221,7 +221,7 @@ public class IndexModel : PageModel
 
     private CouponDto MapToCouponDto(Shop.Shared.Protos.CouponAdmin.CouponDto dto)
     {
-        return new CouponDto
+        return new()
         {
             Id = dto.Id,
             Code = dto.Code,
@@ -243,7 +243,7 @@ public class IndexModel : PageModel
 
     private Parstech.Shop.Shared.Protos.CouponAdmin.CouponDto MapToGrpcCouponDto(CouponDto coupon)
     {
-        return new Shop.Shared.Protos.CouponAdmin.CouponDto
+        return new Parstech.Shop.Shared.Protos.CouponAdmin.CouponDto
         {
             Id = coupon.Id,
             Code = coupon.Code ?? string.Empty,
@@ -265,7 +265,7 @@ public class IndexModel : PageModel
 
     private CouponTypeDto MapToCouponTypeDto(Shop.Shared.Protos.CouponAdmin.CouponTypeDto dto)
     {
-        return new CouponTypeDto { Id = dto.Id, Type = dto.Type };
+        return new() { Id = dto.Id, Type = dto.Type };
     }
 
     #endregion

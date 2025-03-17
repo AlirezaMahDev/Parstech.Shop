@@ -4,11 +4,11 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Calculator;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Queries;
 
@@ -50,16 +50,16 @@ public class RefreshOrderDetailQueryHandler : IRequestHandler<RefreshOrderDetail
         OrderResponse result = new();
         result.Status = true;
         OrderDetailDto Request = request.OrderDetailDto;
-        Domain.Models.OrderDetail? Detail = await _orderDetailRep.GetAsync(Request.Id);
+        Shared.Models.OrderDetail? Detail = await _orderDetailRep.GetAsync(Request.Id);
 
-        Domain.Models.ProductStockPrice? stockPrice = await _productStockRep.GetAsync(Detail.ProductStockPriceId);
-        Domain.Models.Product? product = await _productRep.GetAsync(stockPrice.ProductId);
+        Shared.Models.ProductStockPrice? stockPrice = await _productStockRep.GetAsync(Detail.ProductStockPriceId);
+        Shared.Models.Product? product = await _productRep.GetAsync(stockPrice.ProductId);
         long Price = 0;
 
         #region Check UserCategury
 
-        Domain.Models.Order? order = await _orderRep.GetAsync(Request.OrderId);
-        Domain.Models.User? user = await _userRep.GetAsync(order.UserId);
+        Shared.Models.Order? order = await _orderRep.GetAsync(Request.OrderId);
+        Shared.Models.User? user = await _userRep.GetAsync(order.UserId);
         bool existUserCategury = await _userRep.ExistUserCategury(user.UserName);
         if (stockPrice.CateguryOfUserId != null)
         {
@@ -155,10 +155,10 @@ public class RefreshOrderDetailQueryHandler : IRequestHandler<RefreshOrderDetail
                 {
                     OrderDetailDto? dto = _mapper.Map<OrderDetailDto>(Detail);
                     OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(Detail.OrderId);
-                    Domain.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
+                    Shared.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
                     if (coupon.CouponTypeId == 3 || coupon.CouponTypeId == 4)
                     {
-                        void DisountResult =
+                        var DisountResult =
                             await _mediator.Send(new CheckAndUseCouponQueryReq("Detail", null, dto, coupon.Code));
                         Detail.Discount = DisountResult.Discount;
                         if (DisountResult.Status == false)
@@ -208,10 +208,10 @@ public class RefreshOrderDetailQueryHandler : IRequestHandler<RefreshOrderDetail
                 {
                     OrderDetailDto? dto = _mapper.Map<OrderDetailDto>(Detail);
                     OrderCoupon? orderCoupon = await _orderCouponRep.GetByOrderId(Detail.OrderId);
-                    Domain.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
+                    Shared.Models.Coupon? coupon = await _couponRep.GetAsync(orderCoupon.CouponId);
                     if (coupon.CouponTypeId == 1 || coupon.CouponTypeId == 3)
                     {
-                        void DisountResult =
+                        var DisountResult =
                             await _mediator.Send(new CheckAndUseCouponQueryReq("Detail", null, dto, coupon.Code));
                         Detail.Discount = DisountResult.Discount;
                         if (DisountResult.Status == false)

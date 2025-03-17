@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Generator;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -38,9 +38,9 @@ public class OrderCreateByUserIdQueryHandler : IRequestHandler<OrderCreateByUser
         item.ConfirmPayment = false;
         item.IsDelete = false;
         item.TaxId = 1;
-        Domain.Models.Order? order = _mapper.Map<Domain.Models.Order>(item);
+        Shared.Models.Order? order = _mapper.Map<Shared.Models.Order>(item);
         order.CreateDate = DateTime.Now;
-        Domain.Models.Order orderResult = await _orderRep.AddAsync(order);
+        Shared.Models.Order orderResult = await _orderRep.AddAsync(order);
 
         return _mapper.Map<OrderDto>(orderResult);
     }

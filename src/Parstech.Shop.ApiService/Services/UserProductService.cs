@@ -4,7 +4,7 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.UserProduct.Requests.Command;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -25,7 +25,7 @@ public class UserProductService : UserProductServiceBase
         try
         {
             var command = new CreateUserProductCommandReq(request.UserName, request.ProductId, request.Type);
-            void result = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
             if (result)
             {
@@ -79,7 +79,7 @@ public class UserProductService : UserProductServiceBase
         try
         {
             var query = new GetUserProductsQueryReq(request.UserName, request.Type);
-            void products = await _mediator.Send(query);
+            var products = await _mediator.Send(query);
 
             var response = new GetUserProductsResponse();
             response.Products.AddRange(products.Select(p => new UserProduct

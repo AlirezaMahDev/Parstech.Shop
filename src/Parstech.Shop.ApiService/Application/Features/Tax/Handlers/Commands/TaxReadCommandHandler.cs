@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Tax.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Tax.Handlers.Commands;
 
@@ -23,7 +23,7 @@ public class TaxReadCommandHandler : IRequestHandler<TaxReadCommandReq, TaxDto>
 
     public async Task<TaxDto> Handle(TaxReadCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Tax? tax = await _taxRep.GetAsync(request.id);
+        Shared.Models.Tax? tax = await _taxRep.GetAsync(request.id);
         return _mapper.Map<TaxDto>(tax);
     }
 }
@@ -43,7 +43,7 @@ public class TaxReadsCommandHandler : IRequestHandler<TaxReadsCommandReq, List<T
 
     public async Task<List<TaxDto>> Handle(TaxReadsCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Tax>? tax = await _taxRep.GetAll();
+        IReadOnlyList<Shared.Models.Tax> tax = await _taxRep.GetAll();
         return _mapper.Map<List<TaxDto>>(tax);
     }
 }

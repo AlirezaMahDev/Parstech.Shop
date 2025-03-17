@@ -16,8 +16,8 @@ public class ChangeDatetimeProductsQueryHandler : IRequestHandler<ChangeDatetime
 
     public async Task<Unit> Handle(ChangeDatetimeProductsQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Product>? list = await _productRep.GetAll();
-        foreach (Domain.Models.Product? item in list.OrderByDescending(u => u.CreateDate))
+        IReadOnlyList<Shared.Models.Product> list = await _productRep.GetAll();
+        foreach (Shared.Models.Product? item in list.OrderByDescending(u => u.CreateDate))
         {
             item.CreateDate = DateTime.Now;
             await _productRep.UpdateAsync(item);

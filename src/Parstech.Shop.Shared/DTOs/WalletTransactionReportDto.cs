@@ -1,13 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
-
-public class WalletTransactionPagingDto
-{
-    public int Take { get; set; }
-    public int CurrentPage { get; set; }
-    public int PageCount { get; set; }
-    public Array List { get; set; }
-    public List<WalletTransactionReportDto> walletTransactions { get; set; }
-}
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class WalletTransactionReportDto
 {
@@ -36,16 +27,4 @@ public class WalletTransactionReportDto
     public int? ParentFecilitiesId { get; set; }
     public string FirstDate { get; set; }
     public string LastDate { get; set; }
-}
-
-public class TransactionParameterDto
-{
-    public int CurrentPage { get; set; }
-    public int TakePage { get; set; }
-    public int PageCount { get; set; }
-    public string UserFilter { get; set; }
-    public string FromDate { get; set; }
-    public string ToDate { get; set; }
-    public string WalletType { get; set; }
-    public int TransactionType { get; set; }
 }

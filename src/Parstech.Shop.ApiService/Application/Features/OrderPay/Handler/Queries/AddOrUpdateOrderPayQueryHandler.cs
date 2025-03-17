@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderPay.Handler.Queries;
 
@@ -20,7 +20,7 @@ public class AddOrUpdateOrderPayQueryHandler : IRequestHandler<AddOrUpdateOrderP
         ResponseDto response = new();
         if (await _orderPayRep.HasOrderPay(request.orderId))
         {
-            Domain.Models.OrderPay item = await _orderPayRep.GetByOrderId(request.orderId);
+            Shared.Models.OrderPay item = await _orderPayRep.GetByOrderId(request.orderId);
             if (request.PayTypeId != 0)
             {
                 item.PayTypeId = request.PayTypeId.Value;
@@ -41,7 +41,7 @@ public class AddOrUpdateOrderPayQueryHandler : IRequestHandler<AddOrUpdateOrderP
                 try
                 {
                     Random random = new();
-                    Domain.Models.OrderPay newItem = new()
+                    Shared.Models.OrderPay newItem = new()
                     {
                         OrderId = request.orderId,
                         PayTypeId = request.PayTypeId.Value,

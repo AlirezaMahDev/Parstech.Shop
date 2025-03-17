@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Wallet.Handlers.Queries;
 
@@ -22,7 +22,7 @@ public class GetWalletByUserIdQueryHandler : IRequestHandler<GetWalletByUserIdQu
 
     public async Task<WalletDto> Handle(GetWalletByUserIdQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Wallet? wallet = await _walletRep.GetWalletByUserId(request.userId);
+        Shared.Models.Wallet wallet = await _walletRep.GetWalletByUserId(request.userId);
         return _mapper.Map<WalletDto>(wallet);
     }
 }

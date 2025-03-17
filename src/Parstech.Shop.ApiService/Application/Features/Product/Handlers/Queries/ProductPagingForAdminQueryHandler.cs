@@ -7,9 +7,9 @@ using Dapper;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
 using Parstech.Shop.ApiService.Application.Convertor;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -196,10 +196,10 @@ public class ProductPagingForAdminQueryHandler : IRequestHandler<ProductPagingFo
             PDto.BrandName = product.BrandTitle;
             PDto.LatinBrandName = product.LatinBrandTitle;
             PDto.ProductId = product.Id;
-            Domain.Models.ProductGallery image = DapperHelper.ExecuteCommand<Domain.Models.ProductGallery>(
+            Shared.Models.ProductGallery image = DapperHelper.ExecuteCommand<Shared.Models.ProductGallery>(
                 _connectionString,
                 conn => conn
-                    .Query<Domain.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = product.Id })
+                    .Query<Shared.Models.ProductGallery>(_productQueries.GetMainImage, new { @productId = product.Id })
                     .FirstOrDefault());
             if (image != null)
             {
@@ -251,7 +251,7 @@ public class ProductPagingForAdminQueryHandler : IRequestHandler<ProductPagingFo
             int CountSale = await _orderDetailep.CountOfSaleByProductId(PDto.Id);
             PDto.CountSale = CountSale;
 
-            Domain.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
+            Shared.Models.ProductType? Type = await _productTypeRep.GetAsync(PDto.TypeId);
             PDto.TypeName = Type.TypeName;
             PDto.CreateDateShamsi = product.CreateDate.ToShamsi();
             productDto.Add(PDto);

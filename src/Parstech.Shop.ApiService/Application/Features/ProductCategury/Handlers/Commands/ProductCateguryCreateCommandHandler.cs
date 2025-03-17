@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductCategury.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductCategury.Handlers.Commands;
 
@@ -26,24 +26,24 @@ public class ProductCateguryCreateCommandHandler : IRequestHandler<ProductCategu
     public async Task<ProductCateguryDto> Handle(ProductCateguryCreateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductCategury? pcategury =
-            _mapper.Map<Domain.Models.ProductCategury>(request.ProductCateguryDto);
+        Shared.Models.ProductCategury? pcategury =
+            _mapper.Map<Shared.Models.ProductCategury>(request.ProductCateguryDto);
         if (await _productCateguryRep.ExistProductCategury(request.ProductCateguryDto))
         {
-            Domain.Models.ProductCategury result = await _productCateguryRep.AddAsync(pcategury);
-            Domain.Models.Categury? cat = await _categuryRep.GetAsync(pcategury.CateguryId);
+            Shared.Models.ProductCategury result = await _productCateguryRep.AddAsync(pcategury);
+            Shared.Models.Categury? cat = await _categuryRep.GetAsync(pcategury.CateguryId);
             int? parentId = cat.ParentId;
 
             while (parentId != null)
             {
-                Domain.Models.Categury? parent = await _categuryRep.GetAsync(parentId.Value);
+                Shared.Models.Categury? parent = await _categuryRep.GetAsync(parentId.Value);
                 ProductCateguryDto psdto = new()
                 {
                     ProductId = pcategury.ProductId, CateguryId = parent.ParentId.Value
                 };
                 if (await _productCateguryRep.ExistProductCategury(psdto))
                 {
-                    Domain.Models.ProductCategury? ps = _mapper.Map<Domain.Models.ProductCategury>(psdto);
+                    Shared.Models.ProductCategury? ps = _mapper.Map<Shared.Models.ProductCategury>(psdto);
                     await _productCateguryRep.AddAsync(ps);
                 }
 

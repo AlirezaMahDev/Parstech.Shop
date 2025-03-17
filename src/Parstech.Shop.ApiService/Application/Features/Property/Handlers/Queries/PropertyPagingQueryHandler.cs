@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Property.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Property.Handlers.Queries;
 
@@ -28,16 +28,16 @@ public class PropertyPagingQueryHandler : IRequestHandler<PropertyPagingQueryReq
 
     public async Task<PagingDto> Handle(PropertyPagingQueryReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Property>? properties = await _propertyRep.GetAll();
+        IReadOnlyList<Shared.Models.Property> properties = await _propertyRep.GetAll();
         IList<PropertyDto> propertyDto = new List<PropertyDto>();
-        foreach (Domain.Models.Property item in properties)
+        foreach (Shared.Models.Property item in properties)
         {
             PropertyDto? PDto = _mapper.Map<PropertyDto>(item);
 
-            Domain.Models.Categury? categury = await _categuryRep.GetAsync(item.CateguryId);
+            Shared.Models.Categury? categury = await _categuryRep.GetAsync(item.CateguryId);
             PDto.CateguryTitle = categury.GroupTitle;
 
-            Domain.Models.PropertyCategury? propertycategury =
+            Shared.Models.PropertyCategury? propertycategury =
                 await _propertyCateguryRep.GetAsync(item.PropertyCateguryId);
             PDto.PropertyCateguryTitle = propertycategury.Name;
             propertyDto.Add(PDto);
@@ -54,7 +54,7 @@ public class PropertyPagingQueryHandler : IRequestHandler<PropertyPagingQueryReq
 
         if (request.Parameter.categuryId != 0 && request.Parameter.propertyCateguryId != 0)
         {
-            List<Domain.Models.Property> propertyies =
+            List<Shared.Models.Property> propertyies =
                 await _propertyRep.GetPropertyBySearch(request.Parameter.categuryId,
                     request.Parameter.propertyCateguryId,
                     null);

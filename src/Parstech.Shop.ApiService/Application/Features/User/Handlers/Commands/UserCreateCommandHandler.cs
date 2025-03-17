@@ -3,9 +3,9 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Wallet.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Commands;
 
@@ -24,9 +24,9 @@ public class UserCreateCommandHandler : IRequestHandler<UserCreateCommandReq, Us
 
     public async Task<UserDto> Handle(UserCreateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.User? user = _mapper.Map<Domain.Models.User>(request.userDto);
+        Shared.Models.User? user = _mapper.Map<Shared.Models.User>(request.userDto);
         user.LastLoginDate = DateTime.Now;
-        Domain.Models.User userResult = await _userRep.AddAsync(user);
+        Shared.Models.User userResult = await _userRep.AddAsync(user);
 
         WalletDto wallet = new()
         {

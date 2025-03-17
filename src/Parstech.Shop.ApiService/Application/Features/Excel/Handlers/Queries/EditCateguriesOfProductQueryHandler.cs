@@ -62,10 +62,10 @@ public class EditCateguriesOfProductQueryHandler : IRequestHandler<EditCategurie
 
         foreach (pcRes item in list.Skip(1))
         {
-            Domain.Models.Product product = await _productRep.GetProductsByName(item.name);
-            Domain.Models.Categury? cat1 = await _categuryRep.GetCateguryByName(item.cat1);
-            Domain.Models.Categury? cat2 = await _categuryRep.GetCateguryByName(item.cat2);
-            Domain.Models.Categury? cat3 = await _categuryRep.GetCateguryByName(item.cat3);
+            Shared.Models.Product product = await _productRep.GetProductsByName(item.name);
+            Shared.Models.Categury? cat1 = await _categuryRep.GetCateguryByName(item.cat1);
+            Shared.Models.Categury? cat2 = await _categuryRep.GetCateguryByName(item.cat2);
+            Shared.Models.Categury? cat3 = await _categuryRep.GetCateguryByName(item.cat3);
             if (product != null)
             {
                 if (cat1 != null)
@@ -73,7 +73,7 @@ public class EditCateguriesOfProductQueryHandler : IRequestHandler<EditCategurie
                     bool ProductHavecategury = await _productCateguryRep.ProductHaveCategury(product.Id, cat1.GroupId);
                     if (!ProductHavecategury)
                     {
-                        Domain.Models.ProductCategury newProductCategury = new()
+                        Shared.Models.ProductCategury newProductCategury = new()
                         {
                             ProductId = product.Id, CateguryId = cat1.GroupId
                         };
@@ -86,7 +86,7 @@ public class EditCateguriesOfProductQueryHandler : IRequestHandler<EditCategurie
                     bool ProductHavecategury = await _productCateguryRep.ProductHaveCategury(product.Id, cat2.GroupId);
                     if (!ProductHavecategury)
                     {
-                        Domain.Models.ProductCategury newProductCategury = new()
+                        Shared.Models.ProductCategury newProductCategury = new()
                         {
                             ProductId = product.Id, CateguryId = cat2.GroupId
                         };
@@ -99,7 +99,7 @@ public class EditCateguriesOfProductQueryHandler : IRequestHandler<EditCategurie
                     bool ProductHavecategury = await _productCateguryRep.ProductHaveCategury(product.Id, cat3.GroupId);
                     if (!ProductHavecategury)
                     {
-                        Domain.Models.ProductCategury newProductCategury = new()
+                        Shared.Models.ProductCategury newProductCategury = new()
                         {
                             ProductId = product.Id, CateguryId = cat3.GroupId
                         };

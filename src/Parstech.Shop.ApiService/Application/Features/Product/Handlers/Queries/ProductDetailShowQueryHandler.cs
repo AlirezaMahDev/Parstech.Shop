@@ -7,11 +7,11 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
 using Parstech.Shop.ApiService.Application.Dapper.Product.Queries;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductRelated.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
@@ -65,7 +65,7 @@ public class ProductDetailShowQueryHandler : IRequestHandler<ProductDetailShowQu
     public async Task<ProductDetailShowDto> Handle(ProductDetailShowQueryReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.ProductStockPrice? productStockPrice =
+        Shared.Models.ProductStockPrice? productStockPrice =
             await _productStockRep.GetAsync(request.productStockPriceId);
 
         #region Check Discount Price And Date
@@ -80,7 +80,7 @@ public class ProductDetailShowQueryHandler : IRequestHandler<ProductDetailShowQu
         #endregion
 
 
-        Domain.Models.Product? product = await _productRep.GetAsync(productStockPrice.ProductId);
+        Shared.Models.Product? product = await _productRep.GetAsync(productStockPrice.ProductId);
         int productId = product.Id;
 
         if (product.TypeId == 3)
@@ -93,8 +93,8 @@ public class ProductDetailShowQueryHandler : IRequestHandler<ProductDetailShowQu
         Result.ShortLink = product.ShortLink;
         Result.DiscountDate = productStockPrice.DiscountDate;
         Result.CateguryOfUserId = productStockPrice.CateguryOfUserId;
-        Domain.Models.Brand? brand = await _brandRep.GetAsync(product.BrandId);
-        Domain.Models.UserStore? Store = await _userStoreRep.GetAsync(productStockPrice.StoreId);
+        Shared.Models.Brand? brand = await _brandRep.GetAsync(product.BrandId);
+        Shared.Models.UserStore? Store = await _userStoreRep.GetAsync(productStockPrice.StoreId);
 
 
         Result.Store = Store.StoreName;
@@ -103,7 +103,7 @@ public class ProductDetailShowQueryHandler : IRequestHandler<ProductDetailShowQu
         switch (product.TypeId)
         {
             case 2:
-                List<DapperProductDto>? variations = DapperHelper.ExecuteCommand(_connectionString,
+                List<DapperProductDto> variations = DapperHelper.ExecuteCommand(_connectionString,
                     conn => conn
                         .Query<DapperProductDto>(_productQueries.GetFirstVariation, new { @parentId = product.Id })
                         .ToList());
@@ -249,15 +249,15 @@ public class ProductDetailShowQueryHandler : IRequestHandler<ProductDetailShowQu
 
         if (product.TypeId == 3)
         {
-            void propList = await _mediator.Send(new PropertiesOfProductQueryReq(product.ParentId.Value));
-            void BaseProperties = await _mediator.Send(new BasePropertiesOfProductQueryReq(product.ParentId.Value));
+            var propList = await _mediator.Send(new PropertiesOfProductQueryReq(product.ParentId.Value));
+            var BaseProperties = await _mediator.Send(new BasePropertiesOfProductQueryReq(product.ParentId.Value));
             Result.Properties = BaseProperties;
             Result.SomeProperties = propList.Take(7).ToList();
         }
         else
         {
-            void propList = await _mediator.Send(new PropertiesOfProductQueryReq(product.Id));
-            void BaseProperties = await _mediator.Send(new BasePropertiesOfProductQueryReq(product.Id));
+            var propList = await _mediator.Send(new PropertiesOfProductQueryReq(product.Id));
+            var BaseProperties = await _mediator.Send(new BasePropertiesOfProductQueryReq(product.Id));
             Result.Properties = BaseProperties;
             Result.SomeProperties = propList.Take(7).ToList();
         }

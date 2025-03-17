@@ -3,9 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -23,7 +23,7 @@ public class TicketDetailRepository : GenericRepository<TicketDetail>, ITicketDe
 
     public async Task<IQueryable<TicketDetailsDto>> GetTicketDetailOfTicketWithTypeTitle(int ticketId)
     {
-        List<TicketDetail>? ticketDetails =
+        List<TicketDetail> ticketDetails =
             await _context.TicketDetails.Where(z => z.TicketId == ticketId).ToListAsync();
         IList<TicketDetailsDto> TicketDetailsDto = new List<TicketDetailsDto>();
         foreach (TicketDetail ticketDetail in ticketDetails)

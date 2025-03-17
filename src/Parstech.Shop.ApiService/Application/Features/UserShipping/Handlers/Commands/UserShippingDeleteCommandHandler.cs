@@ -20,7 +20,7 @@ public class UserShippingDeleteCommandHandler : IRequestHandler<UserShippingDele
 
     public async Task<Unit> Handle(UserShippingDeleteCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.UserShipping? userShipping = await _userShippingRep.GetAsync(request.id);
+        Shared.Models.UserShipping? userShipping = await _userShippingRep.GetAsync(request.id);
         await _userShippingRep.DeleteAsync(userShipping);
         return Unit.Value;
     }

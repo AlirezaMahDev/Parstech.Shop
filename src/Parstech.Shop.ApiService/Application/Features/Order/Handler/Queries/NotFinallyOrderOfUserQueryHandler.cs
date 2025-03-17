@@ -4,9 +4,9 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.UserShipping.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Order.Handler.Queries;
 
@@ -45,17 +45,17 @@ public class NotFinallyOrderOfUserQueryHandler : IRequestHandler<NotFinallyOrder
     {
         OrderDetailShowDto orderDetailShowDto = new();
         orderDetailShowDto.OrderDetailDto = new();
-        Domain.Models.Order order = await _orderRepository.GetNotFinallyOrderOfUser(request.userId);
-        List<Domain.Models.OrderDetail> orderDetails =
+        Shared.Models.Order order = await _orderRepository.GetNotFinallyOrderOfUser(request.userId);
+        List<Shared.Models.OrderDetail> orderDetails =
             await _orderDetailRepository.GetOrderDetailsByOrderId(order.OrderId);
-        Domain.Models.UserBilling? userBilling = await _userBillingRepository.GetUserBillingByUserId(order.UserId);
-        Domain.Models.OrderShipping orderShipping =
+        Shared.Models.UserBilling? userBilling = await _userBillingRepository.GetUserBillingByUserId(order.UserId);
+        Shared.Models.OrderShipping orderShipping =
             await _orderShippingRepository.GetOrderShippingByOrderId(order.OrderId);
         orderDetailShowDto.OrderShippingId = orderShipping.Id;
         //var userShipping = await _userShippingRepository.GetAsync(orderShipping.UserShippingId);
         orderDetailShowDto.Order = _mapper.Map<OrderDto>(order);
         orderDetailShowDto.Order.CreateDateShamsi = order.CreateDate.ToShamsi();
-        foreach (Domain.Models.OrderDetail item in orderDetails)
+        foreach (Shared.Models.OrderDetail item in orderDetails)
         {
             OrderDetailDto? dto = _mapper.Map<OrderDetailDto>(item);
             //var product = await _productRep.GetAsync(item.ProductId);

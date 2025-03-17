@@ -1,4 +1,4 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿namespace Parstech.Shop.Shared.DTOs;
 
 public class CouponPcuDto
 {
@@ -8,19 +8,6 @@ public class CouponPcuDto
 
     public bool YesOrNo { get; set; }
 
-    public int FkId { get; set; }
-
-    public int CouponId { get; set; }
-}
-
-public class CouponListPcuDto
-{
-    public string Type { get; set; }
-    public List<CouponCheckPcuDto> list { get; set; }
-}
-
-public class CouponCheckPcuDto
-{
     public int FkId { get; set; }
 
     public int CouponId { get; set; }

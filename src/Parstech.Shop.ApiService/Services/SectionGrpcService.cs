@@ -4,7 +4,7 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -70,7 +70,7 @@ public class SectionGrpcService : SectionService.SectionServiceBase
     {
         try
         {
-            void details = await _mediator.Send(new SectionDetailsQueryReq(request.SectionId));
+            var details = await _mediator.Send(new SectionDetailsQueryReq(request.SectionId));
 
             var response = new SectionDetailsResponse();
             foreach (var detail in details)
@@ -101,7 +101,7 @@ public class SectionGrpcService : SectionService.SectionServiceBase
     {
         try
         {
-            void section = await _mediator.Send(new SectionAndDetailsReadByIdQueryReq(request.SectionId));
+            var section = await _mediator.Send(new SectionAndDetailsReadByIdQueryReq(request.SectionId));
 
             var response = new SectionWithDetailsResponse
             {
@@ -210,7 +210,7 @@ public class SectionGrpcService : SectionService.SectionServiceBase
                 section.CateguryId != 0 &&
                 string.IsNullOrEmpty(section.latinCateguryName))
             {
-                void category = await _mediator.Send(new CateguryReadByIdQueryReq(section.CateguryId));
+                var category = await _mediator.Send(new CateguryReadByIdQueryReq(section.CateguryId));
                 response.LatinCategoryName = category.LatinGroupTitle ?? string.Empty;
             }
 
@@ -227,7 +227,7 @@ public class SectionGrpcService : SectionService.SectionServiceBase
     {
         try
         {
-            void section = await _mediator.Send(new SectionAndDetailsReadStoreQueryReq(request.Store));
+            var section = await _mediator.Send(new SectionAndDetailsReadStoreQueryReq(request.Store));
 
             var response = new SectionWithDetailsResponse
             {

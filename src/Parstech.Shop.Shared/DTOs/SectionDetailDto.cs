@@ -1,4 +1,6 @@
-﻿namespace Parstech.Shop.ApiService.Application.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Parstech.Shop.Shared.DTOs;
 
 public class SectionDetailDto
 {

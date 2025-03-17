@@ -3,8 +3,8 @@
 using OfficeOpenXml;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -110,7 +110,7 @@ public class FacilityPaymentByExcelQueryHandler : IRequestHandler<FacilityPaymen
 
 
                 int userId = await _userBillingRep.ExistBillingForPersonalId(Personal);
-                Domain.Models.WalletTransaction Transaction =
+                Shared.Models.WalletTransaction Transaction =
                     await _walletTransactionRep.GetTransactionByTrackingCode(TransactionCode);
 
                 ResponseDto result = await _mediator.Send(new GhestPaymentQueryReq(Transaction.Id));

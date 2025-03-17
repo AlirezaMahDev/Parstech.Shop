@@ -4,9 +4,9 @@ using MediatR;
 
 using AutoMapper;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -24,12 +24,12 @@ public class BrandAdminGrpcService : BrandAdminService.BrandAdminServiceBase
     public override async Task<BrandPageingDto> GetBrandsForAdmin(BrandParameterRequest request,
         ServerCallContext context)
     {
-        ParameterDto? parameter = new()
+        ParameterDto parameter = new()
         {
             CurrentPage = request.CurrentPage, TakePage = request.TakePage, Filter = request.Filter
         };
 
-        void result = await _mediator.Send(new BrandsPagingQueryReq(parameter));
+        var result = await _mediator.Send(new BrandsPagingQueryReq(parameter));
         var response = new BrandPageingDto
         {
             CurrentPage = result.CurrentPage, PageCount = result.PageCount, RowCount = result.RowCount
@@ -45,7 +45,7 @@ public class BrandAdminGrpcService : BrandAdminService.BrandAdminServiceBase
 
     public override async Task<BrandDto> GetBrand(BrandRequest request, ServerCallContext context)
     {
-        void brand = await _mediator.Send(new BrandReadCommandReq(request.BrandId));
+        var brand = await _mediator.Send(new BrandReadCommandReq(request.BrandId));
         return MapToBrandDto(brand);
     }
 
@@ -89,7 +89,7 @@ public class BrandAdminGrpcService : BrandAdminService.BrandAdminServiceBase
 
     private Parstech.Shop.Application.DTOs.Brand.BrandDto MapFromBrandDto(BrandDto brand)
     {
-        return new Shop.Application.DTOs.Brand.BrandDto
+        return new Parstech.Shop.Application.DTOs.Brand.BrandDto
         {
             BrandId = brand.BrandId,
             BrandTitle = brand.BrandTitle,

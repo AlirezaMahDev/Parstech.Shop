@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderPay.Request.Command;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderPay.Handler.Command;
 
@@ -20,8 +20,8 @@ public class OrderPayDeleteCommandHandler : IRequestHandler<OrderPayDeleteComman
     public async Task<ResponseDto> Handle(OrderPayDeleteCommandReq request, CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        Domain.Models.OrderPay? item = await _orderPayRep.GetAsync(request.id);
-        Domain.Models.Order? order = await _orderRep.GetAsync(item.OrderId);
+        Shared.Models.OrderPay? item = await _orderPayRep.GetAsync(request.id);
+        Shared.Models.Order? order = await _orderRep.GetAsync(item.OrderId);
         if (!order.IsFinaly)
         {
             await _orderPayRep.DeleteAsync(item);

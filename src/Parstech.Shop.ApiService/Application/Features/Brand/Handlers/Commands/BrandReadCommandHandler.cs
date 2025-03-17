@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Brand.Handlers.Commands;
 
@@ -23,7 +23,7 @@ public class BrandReadCommandHandler : IRequestHandler<BrandReadCommandReq, Bran
 
     public async Task<BrandDto> Handle(BrandReadCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Brand? brand = await _brandRep.GetAsync(request.id);
+        Shared.Models.Brand? brand = await _brandRep.GetAsync(request.id);
         return _mapper.Map<BrandDto>(brand);
     }
 }
@@ -43,7 +43,7 @@ public class BrandReadsCommandHandler : IRequestHandler<BrandReadsCommandReq, Li
 
     public async Task<List<BrandDto>> Handle(BrandReadsCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.Brand>? brands = await _brandRep.GetAll();
+        IReadOnlyList<Shared.Models.Brand> brands = await _brandRep.GetAll();
         return _mapper.Map<List<BrandDto>>(brands);
     }
 }

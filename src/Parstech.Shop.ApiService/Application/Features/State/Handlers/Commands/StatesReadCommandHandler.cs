@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.State.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.State.Handlers.Commands;
 
@@ -21,7 +21,7 @@ public class StatesReadCommandHandler : IRequestHandler<StatesReadsCommandReq, L
 
     public async Task<List<SteteDto>> Handle(StatesReadsCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.State>? result = await _stateRep.GetAll();
+        IReadOnlyList<Shared.Models.State> result = await _stateRep.GetAll();
         return _mapper.Map<List<SteteDto>>(result);
     }
 }

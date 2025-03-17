@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
@@ -28,7 +28,7 @@ public class OrdersModel : PageModel
     #region Properties
 
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new ParameterDto();
+    public ParameterDto Parameter { get; set; } = new();
 
     [BindProperty]
     public PagingDto List { get; set; }
@@ -43,7 +43,7 @@ public class OrdersModel : PageModel
     public int OrderId { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
     public Shop.Application.DTOs.OrderDetail.OrderDetailShowDto OrderDetailShowDto { get; set; }
@@ -68,7 +68,7 @@ public class OrdersModel : PageModel
             Parameter.TakePage,
             Parameter.SearchKey);
 
-        List = new PagingDto
+        List = new()
         {
             CurrentPage = ordersResponse.CurrentPage,
             PageCount = ordersResponse.PageCount,
@@ -108,7 +108,7 @@ public class OrdersModel : PageModel
             Parameter.TakePage,
             Parameter.SearchKey);
 
-        List = new PagingDto
+        List = new()
         {
             CurrentPage = ordersResponse.CurrentPage,
             PageCount = ordersResponse.PageCount,
@@ -143,7 +143,7 @@ public class OrdersModel : PageModel
             Parameter.TakePage,
             Parameter.SearchKey);
 
-        List = new PagingDto
+        List = new()
         {
             CurrentPage = ordersResponse.CurrentPage,
             PageCount = ordersResponse.PageCount,
@@ -176,7 +176,7 @@ public class OrdersModel : PageModel
     {
         var orderDetails = await _userProfileClient.GetOrderDetailsAsync(OrderId);
 
-        OrderDetailShowDto = new Shop.Application.DTOs.OrderDetail.OrderDetailShowDto
+        OrderDetailShowDto = new Parstech.Shop.Shared.DTOsDetail.OrderDetailShowDto
         {
             OrderId = orderDetails.OrderId,
             UserName = orderDetails.UserName,
@@ -187,7 +187,7 @@ public class OrdersModel : PageModel
             ShippingAddress = orderDetails.ShippingAddress,
             ShippingPostalCode = orderDetails.ShippingPostalCode,
             ShippingMobile = orderDetails.ShippingMobile,
-            OrderDetails = orderDetails.Details.Select(d => new Shop.Application.DTOs.OrderDetail.OrderDetailItem
+            OrderDetails = orderDetails.Details.Select(d => new Parstech.Shop.Shared.DTOsDetail.OrderDetailItem
                 {
                     Id = d.Id,
                     OrderId = d.OrderId,

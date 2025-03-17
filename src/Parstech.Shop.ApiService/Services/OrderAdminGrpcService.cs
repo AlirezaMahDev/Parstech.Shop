@@ -1,4 +1,5 @@
-using System.Reflection.Metadata;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 using Google.Protobuf;
 
@@ -6,8 +7,10 @@ using Grpc.Core;
 
 using MediatR;
 
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
+
+using Document = System.Reflection.Metadata.Document;
 
 namespace Parstech.Shop.ApiService.Services;
 
@@ -33,7 +36,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void filters = await _mediator.Send(new GetOrderFilterDataQueryReq(request.Value));
+            var filters = await _mediator.Send(new GetOrderFilterDataQueryReq(request.Value));
 
             var response = new OrderFiltersResponse();
             foreach (var filter in filters)
@@ -54,7 +57,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            var parameter = new Shop.Application.DTOs.Paging.OrderParameterDto
+            var parameter = new Parstech.Shop.Application.DTOs.Paging.OrderParameterDto
             {
                 PageId = request.PageId,
                 Take = request.Take,
@@ -66,7 +69,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 StoreName = request.StoreName
             };
 
-            void pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
+            var pagingResult = await _mediator.Send(new OrderPagingQueryReq(parameter));
 
             var response = new OrderPagingDto
             {
@@ -121,9 +124,9 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void orderDetail = await _mediator.Send(new OrderDetailQueryReq(request.OrderId));
+            var orderDetail = await _mediator.Send(new OrderDetailQueryReq(request.OrderId));
 
-            OrderDetailDto? response = new()
+            OrderDetailDto response = new()
             {
                 Order = MapOrderToGrpc(orderDetail.Order),
                 Address = orderDetail.Address,
@@ -222,7 +225,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void statuses = await _mediator.Send(new GetOrderStatusesQueryReq(request.OrderId));
+            var statuses = await _mediator.Send(new GetOrderStatusesQueryReq(request.OrderId));
 
             var response = new OrderStatusesResponse();
             foreach (var status in statuses)
@@ -258,7 +261,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            OrderStatusDto? orderStatus = new()
+            OrderStatusDto orderStatus = new()
             {
                 OrderId = request.OrderId, Status = request.Status, Description = request.Description
             };
@@ -276,7 +279,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                     request.FileName) { Headers = new HeaderDictionary(), ContentType = request.ContentType };
             }
 
-            void result = await _mediator.Send(new CreateOrderStatusCommandReq(orderStatus, file));
+            var result = await _mediator.Send(new CreateOrderStatusCommandReq(orderStatus, file));
 
             return new()
             {
@@ -298,7 +301,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            OrderShippingDto? shipping = new()
+            OrderShippingDto shipping = new()
             {
                 OrderId = request.OrderId,
                 ShippingType = request.ShippingType,
@@ -307,7 +310,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 TrackingCode = request.TrackingCode
             };
 
-            void result = await _mediator.Send(new CreateOrderShippingCommandReq(shipping));
+            var result = await _mediator.Send(new CreateOrderShippingCommandReq(shipping));
 
             return new()
             {
@@ -329,7 +332,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void result =
+            var result =
                 await _mediator.Send(new CompleteOrderCommandReq(request.OrderId, request.TypeName, request.Month));
 
             return new()
@@ -358,11 +361,11 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void orderDetail = await _mediator.Send(new OrderDetailQueryReq(request.OrderId));
+            var orderDetail = await _mediator.Send(new OrderDetailQueryReq(request.OrderId));
 
             // Generate a Word document from order details
-            string? fileName = $"Order_{request.OrderId}.docx";
-            string? filePath = Path.Combine(_environment.WebRootPath, "temp", fileName);
+            string fileName = $"Order_{request.OrderId}.docx";
+            string filePath = Path.Combine(_environment.WebRootPath, "temp", fileName);
 
             // Create the temp directory if it doesn't exist
             Directory.CreateDirectory(Path.Combine(_environment.WebRootPath, "temp"));
@@ -448,7 +451,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void pays = await _mediator.Send(new GetOrderPaysQueryReq(request.OrderId));
+            var pays = await _mediator.Send(new GetOrderPaysQueryReq(request.OrderId));
 
             var response = new OrderPaysResponse();
             foreach (var pay in pays)
@@ -479,7 +482,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            OrderPayDto? orderPay = new()
+            OrderPayDto orderPay = new()
             {
                 OrderId = request.OrderId,
                 Amount = request.Amount,
@@ -490,7 +493,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 Description = request.Description
             };
 
-            void result = await _mediator.Send(new CreateOrderPayCommandReq(orderPay));
+            var result = await _mediator.Send(new CreateOrderPayCommandReq(orderPay));
 
             return new()
             {
@@ -511,7 +514,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new DeleteOrderPayCommandReq(request.PayId));
+            var result = await _mediator.Send(new DeleteOrderPayCommandReq(request.PayId));
 
             return new()
             {
@@ -536,9 +539,9 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void rahkaranOrder = await _mediator.Send(new GetRahkaranOrderQueryReq(request.OrderId));
+            var rahkaranOrder = await _mediator.Send(new GetRahkaranOrderQueryReq(request.OrderId));
 
-            RahkaranOrderDto? response = new()
+            RahkaranOrderDto response = new()
             {
                 Id = rahkaranOrder.Id,
                 OrderId = rahkaranOrder.OrderId,
@@ -585,7 +588,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void rahkaranUser = await _mediator.Send(new GetRahkaranUserQueryReq(request.UserId));
+            var rahkaranUser = await _mediator.Send(new GetRahkaranUserQueryReq(request.UserId));
 
             return new()
             {
@@ -615,7 +618,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void rahkaranProduct = await _mediator.Send(new GetRahkaranProductQueryReq(request.ProductId));
+            var rahkaranProduct = await _mediator.Send(new GetRahkaranProductQueryReq(request.ProductId));
 
             return new()
             {
@@ -642,7 +645,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new SendOrderToApiCommandReq(request.OrderId));
+            var result = await _mediator.Send(new SendOrderToApiCommandReq(request.OrderId));
 
             return new()
             {
@@ -666,7 +669,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            void result = await _mediator.Send(new FollowOrderFromApiCommandReq(request.OrderId));
+            var result = await _mediator.Send(new FollowOrderFromApiCommandReq(request.OrderId));
 
             return new()
             {
@@ -690,7 +693,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            RahkaranOrderDto? rahkaranOrder = new()
+            RahkaranOrderDto rahkaranOrder = new()
             {
                 OrderId = request.OrderId,
                 InvoiceNumber = request.InvoiceNumber,
@@ -722,7 +725,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 });
             }
 
-            void result = await _mediator.Send(new CreateRahkaranOrderCommandReq(rahkaranOrder));
+            var result = await _mediator.Send(new CreateRahkaranOrderCommandReq(rahkaranOrder));
 
             return new()
             {
@@ -743,7 +746,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            RahkaranUserDto? rahkaranUser = new()
+            RahkaranUserDto rahkaranUser = new()
             {
                 UserId = request.UserId,
                 Code = request.Code,
@@ -758,7 +761,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 IsVerified = request.IsVerified
             };
 
-            void result = await _mediator.Send(new CreateRahkaranUserCommandReq(rahkaranUser));
+            var result = await _mediator.Send(new CreateRahkaranUserCommandReq(rahkaranUser));
 
             return new()
             {
@@ -779,7 +782,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            RahkaranProductDto? rahkaranProduct = new()
+            RahkaranProductDto rahkaranProduct = new()
             {
                 ProductId = request.ProductId,
                 Code = request.Code,
@@ -792,7 +795,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
                 IsVerified = request.IsVerified
             };
 
-            void result = await _mediator.Send(new CreateRahkaranProductCommandReq(rahkaranProduct));
+            var result = await _mediator.Send(new CreateRahkaranProductCommandReq(rahkaranProduct));
 
             return new()
             {

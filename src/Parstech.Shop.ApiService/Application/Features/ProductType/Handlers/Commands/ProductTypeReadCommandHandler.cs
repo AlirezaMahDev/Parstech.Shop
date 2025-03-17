@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductType.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductType.Handlers.Commands;
 
@@ -23,7 +23,7 @@ public class ProductTypeReadCommandHandler : IRequestHandler<ProductTypeReadComm
 
     public async Task<ProductTypeDto> Handle(ProductTypeReadCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductType? type = await _productTypeRep.GetAsync(request.id);
+        Shared.Models.ProductType? type = await _productTypeRep.GetAsync(request.id);
         return _mapper.Map<ProductTypeDto>(type);
     }
 }
@@ -44,7 +44,7 @@ public class ProductTypeReadsCommandHandler : IRequestHandler<ProductTypeReadsCo
     public async Task<List<ProductTypeDto>> Handle(ProductTypeReadsCommandReq request,
         CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.ProductType>? types = await _productTypeRep.GetAll();
+        IReadOnlyList<Shared.Models.ProductType> types = await _productTypeRep.GetAll();
         return _mapper.Map<List<ProductTypeDto>>(types);
     }
 }

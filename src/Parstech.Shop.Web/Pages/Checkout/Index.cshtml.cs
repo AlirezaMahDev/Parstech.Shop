@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Checkout;
 
@@ -35,7 +35,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
     public List<PayTypeDto> payTypes { get; set; }
 
@@ -84,7 +84,7 @@ public class IndexModel : PageModel
     [ValidateAntiForgeryToken]
     public async Task<JsonResult> OnPostGetWallet(int userId, int type)
     {
-        ResponseDto Response = new ResponseDto();
+        ResponseDto Response = new();
         string typeName = null;
 
         if (User.Identity.IsAuthenticated)
@@ -130,7 +130,7 @@ public class IndexModel : PageModel
             }
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     #endregion

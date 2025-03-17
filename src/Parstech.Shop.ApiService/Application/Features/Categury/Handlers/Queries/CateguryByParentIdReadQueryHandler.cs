@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Queries;
 
@@ -22,7 +22,7 @@ public class CateguryByParentIdReadQueryHandler : IRequestHandler<CateguryByPare
     public async Task<List<CateguryDto>> Handle(CateguryByParentIdReadQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.Categury>? list = await _categuryRep.GetCateguryByParentId(request.ParentId, null);
+        List<Shared.Models.Categury> list = await _categuryRep.GetCateguryByParentId(request.ParentId, null);
         return _mapper.Map<List<CateguryDto>>(list);
     }
 }

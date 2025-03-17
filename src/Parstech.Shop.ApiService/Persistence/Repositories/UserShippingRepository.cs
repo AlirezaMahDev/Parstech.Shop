@@ -3,9 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.ApiService.Domain.Models;
 using Parstech.Shop.ApiService.Persistence.Context;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Persistence.Repositories;
 
@@ -31,7 +31,7 @@ public class UserShippingRepository : GenericRepository<UserShipping>, IUserShip
 
     public async Task<List<UserShippingDto>> GetShippingOfUser(int userId)
     {
-        List<UserShipping>? shippings = await _context.UserShippings.Where(u => u.UserId == userId).ToListAsync();
+        List<UserShipping> shippings = await _context.UserShippings.Where(u => u.UserId == userId).ToListAsync();
         return _mapper.Map<List<UserShippingDto>>(shippings);
     }
 }

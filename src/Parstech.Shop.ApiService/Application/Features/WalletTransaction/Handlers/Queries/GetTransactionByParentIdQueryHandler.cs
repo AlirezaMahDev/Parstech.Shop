@@ -4,8 +4,8 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Convertor;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.WalletTransaction.Handlers.Queries;
 
@@ -24,7 +24,7 @@ public class
     public async Task<List<WalletTransactionDto>> Handle(GetTransactionByParentIdQueryReq request,
         CancellationToken cancellationToken)
     {
-        List<Domain.Models.WalletTransaction>? list = await _walletTransactionRep.GetTransactionsByParentId(request.id);
+        List<Shared.Models.WalletTransaction> list = await _walletTransactionRep.GetTransactionsByParentId(request.id);
         List<WalletTransactionDto>? dto = _mapper.Map<List<WalletTransactionDto>>(list);
         foreach (WalletTransactionDto? item in dto)
         {

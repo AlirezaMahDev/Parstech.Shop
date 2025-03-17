@@ -27,8 +27,8 @@ public class DeleteCouponCommandHandler : IRequestHandler<DeleteCouponCommandReq
         bool isCouponExistInOrder = await _orderCouponRepo.CouponExistInOrderCoupon(request.couponId);
         if (!isCouponExistInOrder)
         {
-            Domain.Models.Coupon? coupon = await _couponRepo.GetAsync(request.couponId);
-            await _couponRepo.DeleteAsync(_mapper.Map<Domain.Models.Coupon>(coupon));
+            Shared.Models.Coupon? coupon = await _couponRepo.GetAsync(request.couponId);
+            await _couponRepo.DeleteAsync(_mapper.Map<Shared.Models.Coupon>(coupon));
             return true;
         }
 

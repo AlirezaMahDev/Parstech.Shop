@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.CouponType.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.CouponType.Handlers.Commands;
 
@@ -23,7 +23,7 @@ public class CouponTypeReadCommandHandler : IRequestHandler<CouponTypeReadComman
 
     public async Task<List<CouponTypeDto>> Handle(CouponTypeReadCommandReq request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Domain.Models.CouponType>? couponTypeList = await _couponTypeRepo.GetAll();
+        IReadOnlyList<Shared.Models.CouponType> couponTypeList = await _couponTypeRepo.GetAll();
         return _mapper.Map<List<CouponTypeDto>>(couponTypeList);
     }
 }

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Queries;
 
@@ -24,7 +24,7 @@ public class CategurySelectListQueryHandler : IRequestHandler<CategurySelectList
     public async Task<List<CategurySelectDto>> Handle(CategurySelectListQueryReq request,
         CancellationToken cancellationToken)
     {
-        string? query = "select c.GroupId,c.GroupTitle,c.isParnet from Categury as c";
+        string query = "select c.GroupId,c.GroupTitle,c.isParnet from Categury as c";
         return DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<CategurySelectDto>(query).ToList());
     }
 }

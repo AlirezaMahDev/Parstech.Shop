@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.ProductProperty.Handlers.Queries;
 
@@ -21,7 +21,7 @@ public class PropertyOfProductQueryHandler : IRequestHandler<PropertyOfProductQu
 
     public async Task<ProductPropertyDto> Handle(PropertyOfProductQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.ProductProperty? pproperty = await _productPropertyRep.GetpropertyByProduct(request.productId);
+        Shared.Models.ProductProperty? pproperty = await _productPropertyRep.GetpropertyByProduct(request.productId);
         return _mapper.Map<ProductPropertyDto>(pproperty);
     }
 }

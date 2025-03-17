@@ -7,7 +7,7 @@ using Dapper;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Brand.Handlers.Queries;
 
@@ -30,9 +30,9 @@ public class BrandsPagingQueryHandler : IRequestHandler<BrandsPagingQueryReq, Pa
     {
         int skip = (request.Parameter.CurrentPage - 1) * request.Parameter.TakePage;
 
-        string? query =
+        string query =
             $"SELECT * FROM dbo.Brand ORDER BY dbo.Brand.BrandId Desc OFFSET {skip} ROWS FETCH NEXT {request.Parameter.TakePage} ROWS ONLY";
-        List<BrandDto>? brands =
+        List<BrandDto> brands =
             DapperHelper.ExecuteCommand(_connectionString, conn => conn.Query<BrandDto>(query).ToList());
 
 

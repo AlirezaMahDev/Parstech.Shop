@@ -50,11 +50,11 @@ public class FixRezerveProductQueryHandler : IRequestHandler<FixRezerveProductQu
 
         foreach (res item in list)
         {
-            Domain.Models.Product product = await _productRepository.GetProductByCode(item.id);
+            Shared.Models.Product product = await _productRepository.GetProductByCode(item.id);
             if (product.Id != 0)
             {
                 int pstocke = await _productStockPriceRepository.GetFirstProductStockPriceIdFromProductId(product.Id);
-                Domain.Models.ProductStockPrice? ps = await _productStockPriceRepository.GetAsync(pstocke);
+                Shared.Models.ProductStockPrice? ps = await _productStockPriceRepository.GetAsync(pstocke);
                 ps.RepId = 1;
                 ps.StoreId = 1;
                 await _productStockPriceRepository.UpdateAsync(ps);

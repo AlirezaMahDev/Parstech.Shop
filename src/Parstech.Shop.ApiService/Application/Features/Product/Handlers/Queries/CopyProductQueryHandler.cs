@@ -3,7 +3,6 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.ProductCategury.Requests.Commands;
@@ -11,6 +10,7 @@ using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Comm
 using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.ProductRelated.Requests.Commnads;
 using Parstech.Shop.ApiService.Application.Features.ProductRepresentation.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Product.Handlers.Queries;
 
@@ -47,39 +47,39 @@ public class CopyProductQueryHandler : IRequestHandler<CopyProductQueryReq>
     public async Task Handle(CopyProductQueryReq request, CancellationToken cancellationToken)
     {
         //error
-        Domain.Models.Product? product = await _productRep.GetAsync(request.productId);
+        Shared.Models.Product? product = await _productRep.GetAsync(request.productId);
         ProductDto? newProduct = _mapper.Map<ProductDto>(product);
         newProduct.Id = 0;
         await _mediator.Send(new ProductCreateCommandReq(newProduct));
 
-        List<Domain.Models.ProductCategury>? productCategories =
+        List<Shared.Models.ProductCategury> productCategories =
             await _productCateguryRep.GetCateguriesByProduct(request.productId);
-        foreach (Domain.Models.ProductCategury? item in productCategories)
+        foreach (Shared.Models.ProductCategury? item in productCategories)
         {
             ProductCateguryDto? newProductCategory = _mapper.Map<ProductCateguryDto>(item);
             newProductCategory.Id = 0;
             await _mediator.Send(new ProductCateguryCreateCommandReq(newProductCategory));
         }
 
-        Domain.Models.ProductRepresentation? productRepresentation =
+        Shared.Models.ProductRepresentation productRepresentation =
             await _productRepresesntationRep.GetProductRepresentationOfProduct(request.productId);
         ProductRepresentationDto? newProductRepresentation =
             _mapper.Map<ProductRepresentationDto>(productRepresentation);
         newProductRepresentation.Id = 0;
         await _mediator.Send(new ProductRepresesntationCreateCommandReq(newProductRepresentation));
 
-        List<Domain.Models.ProductProperty>? productProperties =
+        List<Shared.Models.ProductProperty> productProperties =
             await _productPropertyRep.GetPropertiesByProduct(request.productId);
-        foreach (Domain.Models.ProductProperty? item in productProperties)
+        foreach (Shared.Models.ProductProperty? item in productProperties)
         {
             ProductPropertyDto? newProductProperty = _mapper.Map<ProductPropertyDto>(item);
             newProductProperty.Id = 0;
             await _mediator.Send(new ProductPropertyCreateCommandReq(newProductProperty));
         }
 
-        List<Domain.Models.ProductGallery>? productGalleries =
+        List<Shared.Models.ProductGallery> productGalleries =
             await _productGallleryRep.GetGalleriesByProduct(request.productId);
-        foreach (Domain.Models.ProductGallery? item in productGalleries)
+        foreach (Shared.Models.ProductGallery? item in productGalleries)
         {
             ProductGalleryDto? newProductGallery = _mapper.Map<ProductGalleryDto>(item);
             newProductGallery.Id = 0;
@@ -88,9 +88,9 @@ public class CopyProductQueryHandler : IRequestHandler<CopyProductQueryReq>
 
         if (request.related)
         {
-            List<Domain.Models.ProductRelated>? productRelated =
+            List<Shared.Models.ProductRelated> productRelated =
                 await _productRelatedRep.GetRelatedProductsByProductId(request.productId);
-            foreach (Domain.Models.ProductRelated? item in productRelated)
+            foreach (Shared.Models.ProductRelated? item in productRelated)
             {
                 ProductRelatedDto? newProductRelated = _mapper.Map<ProductRelatedDto>(item);
                 newProductRelated.Id = 0;

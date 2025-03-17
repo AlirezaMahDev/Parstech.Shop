@@ -23,7 +23,7 @@ public class ProductDetailService : ProductDetailServiceBase
     {
         try
         {
-            void product =
+            var product =
                 await _mediator.Send(
                     new ProductDetailShowQueryReq(request.ShortLink, request.StoreId, request.UserName));
 

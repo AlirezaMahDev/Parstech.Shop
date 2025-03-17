@@ -4,11 +4,13 @@ using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.Protos.Brand;
+
+using Brand = Parstech.Shop.Shared.Models.Brand;
 
 namespace Parstech.Shop.ApiService.Services;
 
-public class BrandService : BrandServiceBase
+public class BrandService : Shared.Protos.Brand.BrandService.BrandServiceBase
 {
     private readonly IMediator _mediator;
     private readonly IBrandRepository _brandRepository;
@@ -24,7 +26,7 @@ public class BrandService : BrandServiceBase
         try
         {
             var command = new BrandReadsCommandReq();
-            void brands = await _mediator.Send(command);
+            var brands = await _mediator.Send(command);
 
             var response = new BrandResponse();
             response.Brands.AddRange(brands.Select(b => new Brand
@@ -59,7 +61,7 @@ public class BrandService : BrandServiceBase
                 throw new RpcException(new(StatusCode.NotFound, "Brand not found"));
             }
 
-            return new Brand
+            return new()
             {
                 Id = brand.Id,
                 Name = brand.Name,

@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderDetail.Handler.Commands;
 
@@ -23,9 +23,9 @@ public class OrderDetailUpdateCommandHandler : IRequestHandler<OrderDetailUpdate
 
     public async Task<OrderDetailDto> Handle(OrderDetailUpdateCommandReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.OrderDetail? item = _mapper.Map<Domain.Models.OrderDetail>(request.OrderDetailDto);
+        Shared.Models.OrderDetail? item = _mapper.Map<Shared.Models.OrderDetail>(request.OrderDetailDto);
 
-        Domain.Models.OrderDetail? Result = await _orderDetailRep.UpdateAsync(item);
+        Shared.Models.OrderDetail Result = await _orderDetailRep.UpdateAsync(item);
         return _mapper.Map<OrderDetailDto>(Result);
     }
 }

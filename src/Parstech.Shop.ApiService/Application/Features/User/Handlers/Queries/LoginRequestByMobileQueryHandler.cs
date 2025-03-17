@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.User.Handlers.Queries;
 
@@ -18,7 +18,7 @@ public class LoginRequestByMobileQueryHandler : IRequestHandler<LoginRequestByMo
     public async Task<ResponseDto> Handle(LoginRequestByMobileQueryReq request, CancellationToken cancellationToken)
     {
         ResponseDto Response = new();
-        Domain.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
+        Shared.Models.User? item = await _userRep.GetUserByUserName(request.Mobile);
         if (item == null)
         {
             Response.IsSuccessed = false;

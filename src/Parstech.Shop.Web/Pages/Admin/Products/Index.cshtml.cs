@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.ApiService.Application.DTOs;
-using Parstech.Shop.Web.Services.GrpcClients;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Admin.Products;
 
@@ -27,7 +27,7 @@ public class IndexModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ProductParameterDto Parameter { get; set; } = new ProductParameterDto();
+    public ProductParameterDto Parameter { get; set; } = new();
 
 
     //id
@@ -47,7 +47,7 @@ public class IndexModel : PageModel
 
     //result
     [BindProperty]
-    public ResponseDto Response { get; set; } = new ResponseDto();
+    public ResponseDto Response { get; set; } = new();
 
 
     //gallery
@@ -387,7 +387,7 @@ public class IndexModel : PageModel
 
     private Parstech.Shop.Shared.Protos.ProductAdmin.ProductDto MapToProductGrpcDto(ProductDto product)
     {
-        var dto = new Shop.Shared.Protos.ProductAdmin.ProductDto
+        var dto = new Parstech.Shop.Shared.Protos.ProductAdmin.ProductDto
         {
             Id = product.Id,
             Name = product.Name ?? string.Empty,
@@ -530,7 +530,7 @@ public class IndexModel : PageModel
     {
         if (categury.Id != 0)
         {
-            var request = new Shop.Shared.Protos.ProductAdmin.ProductCategoryDto
+            var request = new Parstech.Shop.Shared.Protos.ProductAdmin.ProductCategoryDto
             {
                 Id = categury.Id,
                 ProductId = categury.ProductId,
@@ -547,7 +547,7 @@ public class IndexModel : PageModel
         }
         else
         {
-            var request = new Shop.Shared.Protos.ProductAdmin.ProductCategoryDto
+            var request = new Parstech.Shop.Shared.Protos.ProductAdmin.ProductCategoryDto
             {
                 ProductId = categury.ProductId,
                 CategoryId = categury.CateguryId,
@@ -610,7 +610,7 @@ public class IndexModel : PageModel
     {
         if (property.Id != 0)
         {
-            var request = new Shop.Shared.Protos.ProductAdmin.ProductPropertyDto
+            var request = new Parstech.Shop.Shared.Protos.ProductAdmin.ProductPropertyDto
             {
                 Id = property.Id,
                 ProductId = property.ProductId,
@@ -630,7 +630,7 @@ public class IndexModel : PageModel
         }
         else
         {
-            var request = new Shop.Shared.Protos.ProductAdmin.ProductPropertyDto
+            var request = new Parstech.Shop.Shared.Protos.ProductAdmin.ProductPropertyDto
             {
                 ProductId = property.ProductId,
                 PropertyId = property.PropertyId,
@@ -688,7 +688,7 @@ public class IndexModel : PageModel
         var response = await _productAdminClient.SearchProductsAsync(Filter, 30);
         Response.Object = response.Products.Select(p => MapFromProductDto(p)).ToList();
         Response.IsSuccessed = true;
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     #endregion
@@ -719,7 +719,7 @@ public class IndexModel : PageModel
             Response.IsSuccessed = true;
         }
 
-        return new JsonResult(Response);
+        return new(Response);
     }
 
     #endregion

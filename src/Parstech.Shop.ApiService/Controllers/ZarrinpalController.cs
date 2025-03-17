@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Parstech.Shop.Web.Services.GrpcClients;
-
-namespace Parstech.Shop.Web.Controllers;
+namespace Parstech.Shop.ApiService.Controllers;
 
 public class ZarrinpalController : Controller
 {

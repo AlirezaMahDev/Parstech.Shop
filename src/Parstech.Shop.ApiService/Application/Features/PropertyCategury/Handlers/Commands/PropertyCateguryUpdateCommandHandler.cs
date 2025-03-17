@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.PropertyCategury.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.PropertyCategury.Handlers.Commands;
 
@@ -23,8 +23,8 @@ public class
     public async Task<PropertyCateguryDto> Handle(PropertyCateguryUpdateCommandReq request,
         CancellationToken cancellationToken)
     {
-        Domain.Models.PropertyCategury? item = _mapper.Map<Domain.Models.PropertyCategury>(request.PropertyCateguryDto);
-        Domain.Models.PropertyCategury? itemResult = await _propertyCatRep.UpdateAsync(item);
+        Shared.Models.PropertyCategury? item = _mapper.Map<Shared.Models.PropertyCategury>(request.PropertyCateguryDto);
+        Shared.Models.PropertyCategury itemResult = await _propertyCatRep.UpdateAsync(item);
         return _mapper.Map<PropertyCateguryDto>(itemResult);
     }
 }

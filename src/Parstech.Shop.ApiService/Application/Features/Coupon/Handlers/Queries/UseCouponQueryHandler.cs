@@ -3,12 +3,12 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Enum;
 using Parstech.Shop.ApiService.Application.Features.Coupon.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Order.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.OrderDetail.Requests.Queries;
-using Parstech.Shop.ApiService.Domain.Models;
+using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Application.Features.Coupon.Handlers.Queries;
 
@@ -42,9 +42,9 @@ public class UseCouponQueryHandler : IRequestHandler<UseCouponQueryReq, OrderRes
     public async Task<OrderResponse> Handle(UseCouponQueryReq request, CancellationToken cancellationToken)
     {
         OrderResponse Response = new();
-        Domain.Models.Order? Order = await _orderRep.GetAsync(request.orderId);
-        List<Domain.Models.OrderDetail> orderDetails = await _orderDetailRep.GetOrderDetailsByOrderId(Order.OrderId);
-        Domain.Models.Coupon? Coupon = await _coupoonRep.GetByCouponCode(request.coupon);
+        Shared.Models.Order? Order = await _orderRep.GetAsync(request.orderId);
+        List<Shared.Models.OrderDetail> orderDetails = await _orderDetailRep.GetOrderDetailsByOrderId(Order.OrderId);
+        Shared.Models.Coupon? Coupon = await _coupoonRep.GetByCouponCode(request.coupon);
         if (Coupon == null)
         {
             Response.Status = false;
@@ -100,7 +100,7 @@ public class UseCouponQueryHandler : IRequestHandler<UseCouponQueryReq, OrderRes
         }
         else
         {
-            foreach (Domain.Models.OrderDetail item in orderDetails)
+            foreach (Shared.Models.OrderDetail item in orderDetails)
             {
                 OrderDetailDto? detailDto = _mapper.Map<OrderDetailDto>(item);
                 Response = await _mediator.Send(new RefreshOrderDetailQueryReq(detailDto));

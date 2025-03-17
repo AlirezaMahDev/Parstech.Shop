@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Commands;
 using Parstech.Shop.ApiService.Application.Features.OrderStatus.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.OrderStatus.Handler.Queries;
 
@@ -26,8 +26,8 @@ public class CreateOrderStatusByStatusIdQueryHandler : IRequestHandler<CreateOrd
 
     public async Task<Unit> Handle(CreateOrderStatusByStatusIdQueryReq request, CancellationToken cancellationToken)
     {
-        Domain.Models.Status? status = await _statusRep.GetStatusByLatinName(request.Latinstatus);
-        Domain.Models.User? user = await _userRep.GetAsync(request.userId);
+        Shared.Models.Status? status = await _statusRep.GetStatusByLatinName(request.Latinstatus);
+        Shared.Models.User? user = await _userRep.GetAsync(request.userId);
         OrderStatusDto item = new();
         item.StatusId = status.Id;
         item.OrderId = request.orderId;

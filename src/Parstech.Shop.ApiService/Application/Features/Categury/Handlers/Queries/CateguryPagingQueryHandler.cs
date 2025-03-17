@@ -7,8 +7,8 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.ApiService.Application.Dapper.Categury.Queries;
 using Parstech.Shop.ApiService.Application.Dapper.Helper;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.Categury.Handlers.Queries;
 
@@ -33,9 +33,9 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
     public async Task<PagingDto> Handle(CateguryPagingQueryReq request, CancellationToken cancellationToken)
     {
         //var categories = await _categuryRep.GetAll();
-        List<CateguryDto>? blankcateguries = DapperHelper.ExecuteCommand(_connectionString,
+        List<CateguryDto> blankcateguries = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<CateguryDto>(_categuryQueries.GetBlankCateguries).ToList());
-        List<CateguryDto>? categuries = DapperHelper.ExecuteCommand(_connectionString,
+        List<CateguryDto> categuries = DapperHelper.ExecuteCommand(_connectionString,
             conn => conn.Query<CateguryDto>(_categuryQueries.GetParrentCateguries).ToList());
         categuries.AddRange(blankcateguries);
         List<CateguryDto> categuryDto = new();
@@ -57,7 +57,7 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
             childs.AddRange(childsNotIsParrent);
             foreach (CateguryDto child in childs)
             {
-                Domain.Models.Categury? parrent = await _categuryRep.GetAsync(child.ParentId.Value);
+                Shared.Models.Categury? parrent = await _categuryRep.GetAsync(child.ParentId.Value);
                 child.ParentTitle = parrent.GroupTitle;
                 //sath2
                 child.Sath = 2;
@@ -75,7 +75,7 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
 
                 foreach (CateguryDto subchild in Subchilds)
                 {
-                    Domain.Models.Categury? Subparrent = await _categuryRep.GetAsync(child.GroupId);
+                    Shared.Models.Categury? Subparrent = await _categuryRep.GetAsync(child.GroupId);
                     subchild.ParentTitle = Subparrent.GroupTitle;
                     //sath3
                     subchild.Sath = 3;
@@ -94,7 +94,7 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
 
                     foreach (CateguryDto subchild2 in Subchilds2)
                     {
-                        Domain.Models.Categury? Subparrent2 = await _categuryRep.GetAsync(subchild.GroupId);
+                        Shared.Models.Categury? Subparrent2 = await _categuryRep.GetAsync(subchild.GroupId);
                         subchild2.ParentTitle = Subparrent2.GroupTitle;
                         //sath4
                         subchild2.Sath = 4;
@@ -113,7 +113,7 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
 
                         foreach (CateguryDto subchild3 in Subchilds3)
                         {
-                            Domain.Models.Categury? Subparrent3 = await _categuryRep.GetAsync(subchild2.GroupId);
+                            Shared.Models.Categury? Subparrent3 = await _categuryRep.GetAsync(subchild2.GroupId);
                             subchild3.ParentTitle = Subparrent3.GroupTitle;
                             //sath5
                             subchild3.Sath = 5;
@@ -131,7 +131,7 @@ public class CateguryPagingQueryHandler : IRequestHandler<CateguryPagingQueryReq
 
                             foreach (CateguryDto subchild4 in Subchilds4)
                             {
-                                Domain.Models.Categury? Subparrent4 = await _categuryRep.GetAsync(subchild3.GroupId);
+                                Shared.Models.Categury? Subparrent4 = await _categuryRep.GetAsync(subchild3.GroupId);
                                 subchild4.ParentTitle = Subparrent4.GroupTitle;
                                 //sath6
                                 subchild4.Sath = 6;

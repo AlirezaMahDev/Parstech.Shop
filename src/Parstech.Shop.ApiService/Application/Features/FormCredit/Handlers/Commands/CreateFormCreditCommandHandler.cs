@@ -3,8 +3,8 @@
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
-using Parstech.Shop.ApiService.Application.DTOs;
 using Parstech.Shop.ApiService.Application.Features.FormCredit.Requests.Commands;
+using Parstech.Shop.Shared.DTOs;
 
 namespace Parstech.Shop.ApiService.Application.Features.FormCredit.Handlers.Commands;
 
@@ -22,7 +22,7 @@ public class CreateFormCreditCommandHandler : IRequestHandler<CreateFormCreditCo
     public async Task<ResponseDto> Handle(CreateFormCreditCommandReq request, CancellationToken cancellationToken)
     {
         ResponseDto response = new();
-        Domain.Models.FormCredit? item = _mapper.Map<Domain.Models.FormCredit>(request.FormCreditDto);
+        Shared.Models.FormCredit? item = _mapper.Map<Shared.Models.FormCredit>(request.FormCreditDto);
         item.CreateDate = DateTime.Now;
         item.Status = "در انتظار";
         await _formCreditRep.AddAsync(item);

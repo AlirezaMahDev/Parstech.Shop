@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package Shop.Application.DTOs.Reports;
-
-message RepresentationsProducts {
-    string representation_name = 1;
-    int32 representation_products = 2;
-}
