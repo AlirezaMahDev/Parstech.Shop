@@ -5,7 +5,7 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Order";
 package order;
 
 import "google/protobuf/timestamp.proto";
-import "Protos/Common.proto";
+import "Common.proto";
 
 // ORDER SERVICE DEFINITIONS
 

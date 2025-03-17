@@ -5,7 +5,7 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Catalog";
 package catalog;
 
 import "google/protobuf/timestamp.proto";
-import "Protos/Common.proto";
+import "Common.proto";
 
 // CATALOG SERVICE DEFINITIONS
 

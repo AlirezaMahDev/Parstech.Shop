@@ -42,8 +42,8 @@ service WalletAdminService {
   // Admin operations
   rpc GetWallets (GetWalletsRequest) returns (GetWalletsResponse);
   rpc GetWalletDetails (GetWalletDetailsRequest) returns (GetWalletDetailsResponse);
-  rpc UpdateWalletStatus (UpdateWalletStatusRequest) returns (common.ResponseDto);
-  rpc ManageWalletCredit (ManageWalletCreditRequest) returns (common.ResponseDto);
+  rpc UpdateWalletStatus (UpdateWalletStatusRequest) returns (ResponseDto);
+  rpc ManageWalletCredit (ManageWalletCreditRequest) returns (ResponseDto);
   rpc GetWalletTransactions (GetWalletTransactionsRequest) returns (GetWalletTransactionsResponse);
   rpc GetWalletStatistics (WalletStatisticsRequest) returns (WalletStatisticsResponse);
   rpc ExportWalletTransactions (ExportWalletTransactionsRequest) returns (ExportWalletTransactionsResponse);
@@ -190,7 +190,7 @@ message WalletResponse {
   double used_credit = 4;
   double remaining_credit = 5;
   string last_updated = 6;
-  common.ResponseDto status = 7;
+  ResponseDto status = 7;
 }
 
 message UserWalletResponse {
@@ -207,12 +207,12 @@ message WalletBalanceResponse {
   string currency_code = 5;
   string formatted_total_balance = 6;
   string formatted_available_balance = 7;
-  common.ResponseDto status = 8;
+  ResponseDto status = 8;
 }
 
 message WalletTypesResponse {
   repeated WalletTypeDto wallet_types = 1;
-  common.ResponseDto status = 2;
+  ResponseDto status = 2;
 }
 
 message WalletTransactionResponse {
@@ -225,7 +225,7 @@ message TransactionHistoryResponse {
   repeated WalletTransactionItem transactions = 1;
   int32 total_count = 2;
   int32 total_pages = 3;
-  common.ResponseDto status = 4;
+  ResponseDto status = 4;
 }
 
 message TransactionResponse {
@@ -239,27 +239,27 @@ message TransactionResponse {
   int32 months = 8;
   double monthly_payment = 9;
   bool is_active = 10;
-  common.ResponseDto status = 11;
+  ResponseDto status = 11;
 }
 
 message WalletTransactionUpdateResponse {
   bool status = 1;
   string message = 2;
-  common.ResponseDto response_status = 3;
+  ResponseDto response_status = 3;
 }
 
 message AddCreditResponse {
   bool success = 1;
   double new_balance = 2;
   WalletTransactionItem transaction = 3;
-  common.ResponseDto status = 4;
+  ResponseDto status = 4;
 }
 
 message DeductCreditResponse {
   bool success = 1;
   double new_balance = 2;
   WalletTransactionItem transaction = 3;
-  common.ResponseDto status = 4;
+  ResponseDto status = 4;
 }
 
 message TransferCreditResponse {
@@ -267,7 +267,7 @@ message TransferCreditResponse {
   double source_new_balance = 2;
   double target_new_balance = 3;
   WalletTransactionItem transaction = 4;
-  common.ResponseDto status = 5;
+  ResponseDto status = 5;
 }
 
 message CalculateResponse {
@@ -275,7 +275,7 @@ message CalculateResponse {
   string message = 2;
   double monthly_amount = 3;
   double total_amount = 4;
-  common.ResponseDto status = 5;
+  ResponseDto status = 5;
 }
 
 // Admin responses
@@ -283,25 +283,25 @@ message GetWalletsResponse {
   repeated WalletSummaryDto wallets = 1;
   int32 total_count = 2;
   int32 total_pages = 3;
-  common.ResponseDto status = 4;
+  ResponseDto status = 4;
 }
 
 message GetWalletDetailsResponse {
   WalletDetailDto wallet = 1;
-  common.ResponseDto status = 2;
+  ResponseDto status = 2;
 }
 
 message GetWalletTransactionsResponse {
   repeated WalletTransactionItem transactions = 1;
   int32 total_count = 2;
   int32 total_pages = 3;
-  common.ResponseDto status = 4;
+  ResponseDto status = 4;
 }
 
 message WalletStatisticsResponse {
   repeated WalletStatisticItemDto statistics = 1;
   WalletSummaryStatisticsDto summary = 2;
-  common.ResponseDto status = 3;
+  ResponseDto status = 3;
 }
 
 message ExportWalletTransactionsResponse {
@@ -310,7 +310,7 @@ message ExportWalletTransactionsResponse {
   int32 total_transactions = 3;
   string format = 4;
   string expires_at = 5;
-  common.ResponseDto status = 6;
+  ResponseDto status = 6;
 }
 
 // Data DTOs

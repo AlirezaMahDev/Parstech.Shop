@@ -4,7 +4,7 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Config";
 
 package config;
 
-import "Protos/Common.proto";
+import "Common.proto";
 
 // CONFIG SERVICE DEFINITIONS
 

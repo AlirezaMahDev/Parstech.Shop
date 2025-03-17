@@ -5,7 +5,7 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Settings";
 package settings;
 
 import "google/protobuf/timestamp.proto";
-import "Protos/Common.proto";
+import "Common.proto";
 
 // SETTINGS SERVICE DEFINITIONS
 

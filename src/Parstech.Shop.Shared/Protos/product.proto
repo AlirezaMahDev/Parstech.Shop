@@ -5,7 +5,7 @@ package product;
 option csharp_namespace = "Parstech.Shop.Shared.Protos.Product";
 
 import "google/protobuf/timestamp.proto";
-import "Protos/Common.proto";
+import "Common.proto";
 
 // PRODUCT SERVICE DEFINITIONS
 

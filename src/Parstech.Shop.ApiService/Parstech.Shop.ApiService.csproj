@@ -32,7 +32,6 @@
         <PackageReference Include="SmsIrRestful" Version="1.1.3"/>
         <PackageReference Include="Zarinpal" Version="3.0.1"/>
         <PackageReference Include="ZarinpalSandbox" Version="2.0.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.3"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3"/>
@@ -40,8 +39,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Dapper" Version="2.1.66"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -86,7 +83,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server"/>
+        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server" Access="Internal"/>
     </ItemGroup>
 
 </Project>

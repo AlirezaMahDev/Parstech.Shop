@@ -4,7 +4,7 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos.Financial";
 
 package financial;
 
-import "Protos/Common.proto";
+import "Common.proto";
 
 // FINANCIAL SERVICE DEFINITIONS
 
