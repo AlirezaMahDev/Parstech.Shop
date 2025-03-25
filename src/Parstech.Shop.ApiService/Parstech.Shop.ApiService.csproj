@@ -83,7 +83,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server" Access="Internal"/>
+        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server"/>
     </ItemGroup>
 
 </Project>

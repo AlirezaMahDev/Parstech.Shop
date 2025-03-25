@@ -35,7 +35,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ProductPageingDto> GetProductsForAdmin(ProductParameterRequest request,
         ServerCallContext context)
     {
-        var parameter = new Parstech.Shop.Application.DTOs.Product.ProductParameterDto
+        var parameter = new Shop.Application.DTOs.Product.ProductParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
@@ -83,7 +83,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
     public override async Task<ResponseDto> UpdateProductQuickEdit(ProductQuickEditDto request,
         ServerCallContext context)
     {
-        var quickEditDto = new Parstech.Shop.Application.DTOs.Product.ProductQuickEditDto
+        var quickEditDto = new Shop.Application.DTOs.Product.ProductQuickEditDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -164,7 +164,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateGallery(ProductGalleryDto request, ServerCallContext context)
     {
-        var galleryDto = new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        var galleryDto = new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             ProductId = request.ProductId, Title = request.Title, Image = request.Image, Order = request.Order
         };
@@ -176,7 +176,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateGallery(ProductGalleryDto request, ServerCallContext context)
     {
-        var galleryDto = new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        var galleryDto = new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -229,7 +229,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateProperty(ProductPropertyDto request, ServerCallContext context)
     {
-        var propertyDto = new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        var propertyDto = new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             ProductId = request.ProductId,
             PropertyId = request.PropertyId,
@@ -245,7 +245,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateProperty(ProductPropertyDto request, ServerCallContext context)
     {
-        var propertyDto = new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        var propertyDto = new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -295,7 +295,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> CreateCategory(ProductCateguryDto request, ServerCallContext context)
     {
-        var categoryDto = new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        var categoryDto = new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             ProductId = request.ProductId, CateguryId = request.CateguryId, CateguryName = request.CateguryName
         };
@@ -307,7 +307,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     public override async Task<ResponseDto> UpdateCategory(ProductCateguryDto request, ServerCallContext context)
     {
-        var categoryDto = new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        var categoryDto = new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             Id = request.Id,
             ProductId = request.ProductId,
@@ -520,7 +520,7 @@ public class ProductAdminGrpcService : ProductAdminService.ProductAdminServiceBa
 
     private ProductDto MapFromProductDto(ProductDto product)
     {
-        var productDto = new Parstech.Shop.Application.DTOs.Product.ProductDto
+        var productDto = new Shop.Application.DTOs.Product.ProductDto
         {
             Id = product.Id,
             Name = product.Name,

@@ -679,7 +679,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         return result;
     }
 
-    private Parstech.Shop.Application.DTOs.Product.ProductDto MapFromProductDto(ProductDto source)
+    private Shop.Application.DTOs.Product.ProductDto MapFromProductDto(ProductDto source)
     {
         DateTime createTime = DateTime.Now;
         DateTime lastChangeTime = DateTime.Now;
@@ -694,7 +694,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
             DateTime.TryParse(source.LastChangeTime, out lastChangeTime);
         }
 
-        return new Parstech.Shop.Application.DTOs.Product.ProductDto
+        return new Shop.Application.DTOs.Product.ProductDto
         {
             Id = source.Id,
             Title = source.Title,
@@ -735,9 +735,9 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto MapFromProductGalleryDto(ProductGalleryDto source)
+    private Shop.Application.DTOs.ProductGallery.ProductGalleryDto MapFromProductGalleryDto(ProductGalleryDto source)
     {
-        return new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+        return new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -762,10 +762,10 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto MapFromProductPropertyDto(
+    private Shop.Application.DTOs.ProductProperty.ProductPropertyDto MapFromProductPropertyDto(
         ProductPropertyDto source)
     {
-        return new Parstech.Shop.Application.DTOs.ProductProperty.ProductPropertyDto
+        return new Shop.Application.DTOs.ProductProperty.ProductPropertyDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -788,10 +788,10 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto MapFromProductCategoryDto(
+    private Shop.Application.DTOs.ProductCategury.ProductCateguryDto MapFromProductCategoryDto(
         ProductCategoryDto source)
     {
-        return new Parstech.Shop.Application.DTOs.ProductCategury.ProductCateguryDto
+        return new Shop.Application.DTOs.ProductCategury.ProductCateguryDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -824,7 +824,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromProductStockPriceDto(
+    private Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromProductStockPriceDto(
         ProductStockPriceDto source)
     {
         DateTime? specialFromDate = null;
@@ -848,7 +848,7 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
             }
         }
 
-        return new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+        return new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -880,10 +880,10 @@ public class ProductDetailAdminGrpcService : ProductDetailAdminService.ProductDe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
+    private Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
         ProductRepresentationDto source)
     {
-        return new Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
+        return new Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
         {
             Id = source.Id,
             ProductId = source.ProductId,

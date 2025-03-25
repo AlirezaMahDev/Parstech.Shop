@@ -87,9 +87,9 @@ public class BrandAdminGrpcService : BrandAdminService.BrandAdminServiceBase
         };
     }
 
-    private Parstech.Shop.Application.DTOs.Brand.BrandDto MapFromBrandDto(BrandDto brand)
+    private Shop.Application.DTOs.Brand.BrandDto MapFromBrandDto(BrandDto brand)
     {
-        return new Parstech.Shop.Application.DTOs.Brand.BrandDto
+        return new Shop.Application.DTOs.Brand.BrandDto
         {
             BrandId = brand.BrandId,
             BrandTitle = brand.BrandTitle,

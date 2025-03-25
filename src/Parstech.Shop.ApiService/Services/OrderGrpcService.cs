@@ -18,7 +18,7 @@ using Parstech.Shop.Shared.Models;
 
 namespace Parstech.Shop.ApiService.Services;
 
-public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServiceBase
+public class OrderGrpcService : Shared.Protos.Order.OrderService.OrderServiceBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -68,7 +68,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<PagingDto> GetOrdersPaging(ParameterDto request, ServerCallContext context)
     {
-        var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+        var parameter = new Shop.Application.DTOs.Paging.ParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
@@ -104,7 +104,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
     {
         try
         {
-            var orderStatusDto = new Parstech.Shop.Shared.DTOsStatus.OrderStatusDto
+            var orderStatusDto = new Shared.DTOsStatus.OrderStatusDto
             {
                 Id = request.OrderStatus.Id,
                 OrderId = request.OrderStatus.OrderId,
@@ -190,7 +190,7 @@ public class OrderGrpcService : Shop.Shared.Protos.Order.OrderService.OrderServi
 
     public override async Task<OrderResponse> AddOrderPay(OrderPayRequest request, ServerCallContext context)
     {
-        var orderPayDto = new Parstech.Shop.Shared.DTOsPay.OrderPayDto
+        var orderPayDto = new Shared.DTOsPay.OrderPayDto
         {
             Id = request.OrderPay.Id,
             OrderId = request.OrderPay.OrderId,

@@ -156,7 +156,7 @@ public class CouponAdminGrpcService : CouponAdminService.CouponAdminServiceBase
 
     private CouponDto MapFromCouponDto(CouponDto coupon)
     {
-        return new Parstech.Shop.Application.DTOs.Coupon.CouponDto
+        return new Shop.Application.DTOs.Coupon.CouponDto
         {
             Id = coupon.Id,
             Code = coupon.Code,

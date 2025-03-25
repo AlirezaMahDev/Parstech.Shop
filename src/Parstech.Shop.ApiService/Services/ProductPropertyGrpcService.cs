@@ -1,11 +1,8 @@
 using Grpc.Core;
 
-using Microsoft.Extensions.Configuration;
-
 using Parstech.Shop.ApiService.Application.Dapper.ProductProperty.Queries;
-using Parstech.Shop.Shared.Protos.PropertyAdmin;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class ProductPropertyGrpcService : PropertyAdminService.PropertyAdminServiceBase
 {

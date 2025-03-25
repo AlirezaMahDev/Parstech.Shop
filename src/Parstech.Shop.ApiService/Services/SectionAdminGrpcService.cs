@@ -278,9 +278,9 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         };
     }
 
-    private Parstech.Shop.Application.DTOs.Section.SectionDto MapFromSectionDto(SectionDto source)
+    private Shop.Application.DTOs.Section.SectionDto MapFromSectionDto(SectionDto source)
     {
-        return new Parstech.Shop.Application.DTOs.Section.SectionDto
+        return new Shop.Application.DTOs.Section.SectionDto
         {
             Id = source.Id,
             Title = source.Title,
@@ -309,9 +309,9 @@ public class SectionAdminGrpcService : SectionAdminService.SectionAdminServiceBa
         };
     }
 
-    private Parstech.Shop.Application.DTOs.SectionDetail.SectionDetailDto MapFromSectionDetailDto(SectionDetailDto source)
+    private Shop.Application.DTOs.SectionDetail.SectionDetailDto MapFromSectionDetailDto(SectionDetailDto source)
     {
-        return new Parstech.Shop.Application.DTOs.SectionDetail.SectionDetailDto
+        return new Shop.Application.DTOs.SectionDetail.SectionDetailDto
         {
             Id = source.Id,
             Title = source.Title,

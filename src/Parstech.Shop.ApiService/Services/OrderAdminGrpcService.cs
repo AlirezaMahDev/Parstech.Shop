@@ -57,7 +57,7 @@ public class OrderAdminGrpcService : OrderAdminService.OrderAdminServiceBase
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.OrderParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.OrderParameterDto
             {
                 PageId = request.PageId,
                 Take = request.Take,

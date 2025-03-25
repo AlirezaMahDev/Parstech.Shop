@@ -21,7 +21,7 @@ public class UserProductGrpcService : UserProductService.UserProductServiceBase
     {
         try
         {
-            var userProductDto = new Parstech.Shop.Application.DTOs.UserProduct.UserProductDto
+            var userProductDto = new Shop.Application.DTOs.UserProduct.UserProductDto
             {
                 UserName = request.UserName, ProductId = request.ProductId, Type = request.Type
             };

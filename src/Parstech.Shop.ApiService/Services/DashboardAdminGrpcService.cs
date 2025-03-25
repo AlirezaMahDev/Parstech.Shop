@@ -5,7 +5,7 @@ using MediatR;
 using Parstech.Shop.ApiService.Application.Contracts.Persistance;
 using Parstech.Shop.Shared.DTOs;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class DashboardAdminGrpcService : DashboardAdminService.DashboardAdminServiceBase
 {

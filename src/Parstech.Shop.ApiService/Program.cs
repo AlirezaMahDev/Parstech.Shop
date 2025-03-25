@@ -1,7 +1,6 @@
 using Parstech.Shop.ApiService;
 using Parstech.Shop.ApiService.Application;
 using Parstech.Shop.ApiService.Services;
-using Parstech.Shop.ApiService.Services.GrpcServices;
 using Parstech.Shop.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);

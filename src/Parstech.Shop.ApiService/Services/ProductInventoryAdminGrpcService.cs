@@ -10,7 +10,7 @@ using Parstech.Shop.ApiService.Application.Features.ProductStockPrice.Requests.Q
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
 using Parstech.Shop.Shared.DTOs;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class ProductInventoryAdminGrpcService : ProductInventoryAdminService.ProductInventoryAdminServiceBase
 {
@@ -128,7 +128,7 @@ public class ProductInventoryAdminGrpcService : ProductInventoryAdminService.Pro
         {
             // Get current stock price
             var currentStockPrice = await _mediator.Send(new ProductStockPriceReadCommandReq(request.Id));
-            var currentDto = new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+            var currentDto = new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
             {
                 Id = currentStockPrice.Id,
                 ProductId = currentStockPrice.ProductId,
@@ -162,7 +162,7 @@ public class ProductInventoryAdminGrpcService : ProductInventoryAdminService.Pro
                 var user = await _mediator.Send(new UserReadByUserNameQueryReq(request.UserName));
                 if (user != null)
                 {
-                    var pr = new Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
+                    var pr = new Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
                     {
                         ProductStockPriceId = edit.Id, UserId = user.Id
                     };
@@ -268,14 +268,14 @@ public class ProductInventoryAdminGrpcService : ProductInventoryAdminService.Pro
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromDto(ProductStockPriceDto model)
+    private Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromDto(ProductStockPriceDto model)
     {
         if (model == null)
         {
             return null;
         }
 
-        return new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+        return new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
         {
             Id = model.Id,
             ProductId = model.ProductId,

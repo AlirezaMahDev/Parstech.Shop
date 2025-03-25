@@ -118,9 +118,9 @@ public class CategoryAdminGrpcService : CategoryAdminService.CategoryAdminServic
         };
     }
 
-    private Parstech.Shop.Application.DTOs.Categury.CateguryDto MapFromCategoryDto(CategoryDto category)
+    private Shop.Application.DTOs.Categury.CateguryDto MapFromCategoryDto(CategoryDto category)
     {
-        return new Parstech.Shop.Application.DTOs.Categury.CateguryDto
+        return new Shop.Application.DTOs.Categury.CateguryDto
         {
             GroupId = category.GroupId,
             GroupTitle = category.GroupTitle,

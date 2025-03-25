@@ -80,7 +80,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var shippingDto = new Parstech.Shop.Application.DTOs.UserShipping.UserShippingDto
+            var shippingDto = new Shop.Application.DTOs.UserShipping.UserShippingDto
             {
                 UserId = request.UserId,
                 Address = request.Address,
@@ -116,7 +116,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var shippingDto = new Parstech.Shop.Application.DTOs.UserShipping.UserShippingDto
+            var shippingDto = new Shop.Application.DTOs.UserShipping.UserShippingDto
             {
                 Id = request.Id,
                 UserId = request.UserId,
@@ -168,7 +168,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
             {
                 CurrentPage = request.Page, TakePage = request.PageSize, SearchKey = request.SearchTerm
             };
@@ -252,7 +252,7 @@ public class UserProfileGrpcService : UserProfileService.UserProfileServiceBase
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
+            var parameter = new Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
             {
                 WalletId = request.WalletId,
                 CurrentPage = request.Page,

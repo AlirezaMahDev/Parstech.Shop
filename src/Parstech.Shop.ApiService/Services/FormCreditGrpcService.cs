@@ -53,7 +53,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
             if (response.Object != null && response.IsSuccessed)
             {
                 var formCredit = response.Object as FormCredit;
-                grpcResponse.FormCredit = new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
+                grpcResponse.FormCredit = new Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = formCredit.Id,
                     Name = formCredit.Name,
@@ -95,7 +95,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
         {
             var formCreditDto = await _mediator.Send(new ReadFormCreditCommandReq(request.Id));
 
-            return new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
+            return new Shared.Protos.FormCredit.FormCreditDto
             {
                 Id = formCreditDto.Id,
                 Name = formCreditDto.Name,
@@ -131,7 +131,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
 
             foreach (FormCredit credit in formCredits)
             {
-                response.FormCredits.Add(new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
+                response.FormCredits.Add(new Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = credit.Id,
                     Name = credit.Name,
@@ -180,7 +180,7 @@ public class FormCreditGrpcService : FormCreditService.FormCreditServiceBase
             // Add items to the response
             foreach (FormCredit? credit in pagedResults)
             {
-                response.FormCredits.Add(new Parstech.Shop.Shared.Protos.FormCredit.FormCreditDto
+                response.FormCredits.Add(new Shared.Protos.FormCredit.FormCreditDto
                 {
                     Id = credit.Id,
                     Name = credit.Name,

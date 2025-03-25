@@ -418,9 +418,9 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
         return result;
     }
 
-    private Parstech.Shop.Application.DTOs.Representation.RepresentationDto MapFromRepresentationDto(RepresentationDto source)
+    private Shop.Application.DTOs.Representation.RepresentationDto MapFromRepresentationDto(RepresentationDto source)
     {
-        var result = new Parstech.Shop.Application.DTOs.Representation.RepresentationDto
+        var result = new Shop.Application.DTOs.Representation.RepresentationDto
         {
             Id = source.Id,
             Name = source.Name,
@@ -444,10 +444,10 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
         return new() { Id = source.Id, Name = source.Name ?? string.Empty };
     }
 
-    private Parstech.Shop.Application.DTOs.RepresentationType.RepresentationTypeDto MapFromRepresentationTypeDto(
+    private Shop.Application.DTOs.RepresentationType.RepresentationTypeDto MapFromRepresentationTypeDto(
         RepresentationTypeDto source)
     {
-        return new Parstech.Shop.Application.DTOs.RepresentationType.RepresentationTypeDto
+        return new Shop.Application.DTOs.RepresentationType.RepresentationTypeDto
         {
             Id = source.Id, Name = source.Name
         };
@@ -469,10 +469,10 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
         };
     }
 
-    private Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
+    private Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto MapFromProductRepresentationDto(
         ProductRepresentationDto source)
     {
-        return new Parstech.Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
+        return new Shop.Application.DTOs.ProductRepresentation.ProductRepresentationDto
         {
             Id = source.Id,
             ProductId = source.ProductId,
@@ -520,10 +520,10 @@ public class RepresentationAdminGrpcService : RepresentationAdminService.Represe
         return result;
     }
 
-    private Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromProductStockPriceDto(
+    private Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto MapFromProductStockPriceDto(
         ProductStockPriceDto source)
     {
-        var result = new Parstech.Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
+        var result = new Shop.Application.DTOs.ProductStockPrice.ProductStockPriceDto
         {
             Id = source.Id,
             ProductId = source.ProductId,

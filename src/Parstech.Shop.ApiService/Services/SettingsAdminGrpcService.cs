@@ -278,7 +278,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey
             };
@@ -406,7 +406,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey
             };
@@ -519,7 +519,7 @@ public class SettingsAdminGrpcService : SettingsAdminService.SettingsAdminServic
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Representation.RepresentationParameterDto
+            var parameter = new Shop.Application.DTOs.Representation.RepresentationParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey, TypeId = request.TypeId
             };

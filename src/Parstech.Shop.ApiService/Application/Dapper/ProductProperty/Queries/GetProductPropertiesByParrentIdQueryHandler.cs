@@ -1,9 +1,8 @@
 using System.Data;
-using System.Data.SqlClient;
 
 using Dapper;
 
-using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
 
 using Parstech.Shop.Shared.DTOs;
 
@@ -20,7 +19,7 @@ public class GetProductPropertiesByParrentIdQueryHandler
         _connectionString = _configuration.GetConnectionString("DB");
     }
 
-    public async Task<List<PropertyListDto>> ExecuteAsync(long productId)
+    public async Task<List<PropertyDto>> ExecuteAsync(long productId)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
         var query = @"
@@ -44,7 +43,7 @@ public class GetProductPropertiesByParrentIdQueryHandler
         var parameters = new DynamicParameters();
         parameters.Add("@ProductId", productId, DbType.Int64);
 
-        var result = await connection.QueryAsync<PropertyListDto>(query, parameters);
+        var result = await connection.QueryAsync<PropertyDto>(query, parameters);
         return result.ToList();
     }
 } 

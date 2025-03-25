@@ -20,14 +20,14 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
             {
                 CurrentPage = request.Page,
                 TakePage = request.PageSize,
                 SearchKey = request.SearchTerm ?? string.Empty
             };
 
-            var filter = new Parstech.Shop.Application.DTOs.Product.ProductFilterDto
+            var filter = new Shop.Application.DTOs.Product.ProductFilterDto
             {
                 CateguryId = request.CategoryId ?? 0,
                 BrandId = request.BrandId ?? 0,
@@ -151,7 +151,7 @@ public class ProductGrpcService : ProductService.ProductServiceBase
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Product.ProductSearchParameterDto
+            var parameter = new Shop.Application.DTOs.Product.ProductSearchParameterDto
             {
                 Page = request.Page,
                 PageSize = request.PageSize,

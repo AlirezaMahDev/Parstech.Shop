@@ -3,7 +3,6 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.Brand.Requests.Commands;
-using Parstech.Shop.Shared.Protos.Brand;
 
 using Brand = Parstech.Shop.Shared.Models.Brand;
 

@@ -58,7 +58,7 @@ public class UserPreferencesGrpcService : UserPreferencesService.UserPreferences
     {
         try
         {
-            var billingDto = new Parstech.Shop.Application.DTOs.UserBilling.UserBillingDto
+            var billingDto = new Shop.Application.DTOs.UserBilling.UserBillingDto
             {
                 Id = request.Id,
                 UserId = request.UserId,

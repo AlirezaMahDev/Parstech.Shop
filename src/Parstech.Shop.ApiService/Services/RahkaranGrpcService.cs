@@ -34,7 +34,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result.order != null)
             {
-                response.Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                response.Order = new Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.order.OrderId,
                     OrderCode = result.order.OrderCode,
@@ -46,7 +46,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result.customer != null)
             {
-                response.Customer = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                response.Customer = new Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.customer.Id,
                     UserName = result.customer.UserName,
@@ -63,7 +63,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 foreach (var product in result.products)
                 {
-                    response.Products.Add(new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                    response.Products.Add(new Shared.Protos.Rahkaran.RahkaranProductDto
                     {
                         StockId = product.StockId ?? 0,
                         DetailId = product.DetailId ?? 0,
@@ -98,7 +98,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result != null)
             {
-                response.Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                response.Order = new Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -136,7 +136,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "Order created successfully",
-                Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                Order = new Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -174,7 +174,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "Order updated successfully",
-                Order = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranOrderDto
+                Order = new Shared.Protos.Rahkaran.RahkaranOrderDto
                 {
                     OrderId = result.OrderId,
                     OrderCode = result.OrderCode,
@@ -204,7 +204,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result != null)
             {
-                response.User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                response.User = new Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -248,7 +248,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "User created successfully",
-                User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                User = new Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -292,7 +292,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "User updated successfully",
-                User = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranUserDto
+                User = new Shared.Protos.Rahkaran.RahkaranUserDto
                 {
                     Id = result.Id,
                     UserName = result.UserName,
@@ -325,7 +325,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
 
             if (result != null)
             {
-                response.Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                response.Product = new Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,
@@ -373,7 +373,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "Product created successfully",
-                Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                Product = new Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,
@@ -421,7 +421,7 @@ public class RahkaranGrpcService : RahkaranService.RahkaranServiceBase
             {
                 IsSuccess = true,
                 Message = "Product updated successfully",
-                Product = new Parstech.Shop.Shared.Protos.Rahkaran.RahkaranProductDto
+                Product = new Shared.Protos.Rahkaran.RahkaranProductDto
                 {
                     StockId = result.StockId ?? 0,
                     DetailId = result.DetailId ?? 0,

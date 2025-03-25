@@ -7,7 +7,7 @@ using Parstech.Shop.ApiService.Application.Features.Product.Requests.Queries;
 using Parstech.Shop.ApiService.Application.Features.Section.Requests.Queries;
 using Parstech.Shop.Shared.DTOs;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class SelectionsAdminGrpcService : SelectionsAdminService.SelectionsAdminServiceBase
 {

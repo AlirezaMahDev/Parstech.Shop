@@ -33,7 +33,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.Paging.ParameterDto
+            var parameter = new Shop.Application.DTOs.Paging.ParameterDto
             {
                 PageId = request.PageId, Take = request.Take, SearchKey = request.SearchKey, Filter = request.Filter
             };
@@ -119,7 +119,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var parameter = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
+            var parameter = new Shop.Application.DTOs.WalletTransaction.WalletTransactionParameterDto
             {
                 PageId = request.PageId,
                 Take = request.Take,
@@ -163,7 +163,7 @@ public class FinancialAdminGrpcService : FinancialAdminService.FinancialAdminSer
     {
         try
         {
-            var transaction = new Parstech.Shop.Application.DTOs.WalletTransaction.WalletTransactionDto
+            var transaction = new Shop.Application.DTOs.WalletTransaction.WalletTransactionDto
             {
                 Id = request.Id,
                 WalletId = request.WalletId,

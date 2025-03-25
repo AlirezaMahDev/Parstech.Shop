@@ -1,0 +1,2 @@
+"use strict";Symbol.A="a";
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2NyaXB0LmNqcyIsInNvdXJjZXMiOlsiLi4vLi4vc291cmNlL3NjcmlwdHMvaW5kZXgudHMiXSwic291cmNlc0NvbnRlbnQiOlsiKFN5bWJvbCBhcyBhbnkpLkEgPSBcImFcIiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiYUFBQyxPQUFlLEVBQUkifQ==

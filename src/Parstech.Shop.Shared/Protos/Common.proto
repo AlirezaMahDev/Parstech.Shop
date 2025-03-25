@@ -4,6 +4,8 @@ option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
 package parstech;
 
+import "google/protobuf/timestamp.proto";
+
 // COMMON MESSAGE DEFINITIONS
 message ResponseStatus {
   bool success = 1;
@@ -163,3 +165,3542 @@ message AuditInfoDto {
   string last_modified_by = 3;
   string last_modified_date = 4;
 } 
+
+message BrandDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string slug = 4;
+  string logo_url = 5;
+  string website = 6;
+  bool is_featured = 7;
+  int32 product_count = 8;
+}
+
+message PropertyDto {
+  int64 id = 1;
+  string name = 2;
+  string display_name = 3;
+  string description = 4;
+  string type = 5; // "text", "number", "boolean", "select", "multiselect", "color", "date"
+  string unit = 6;
+  int32 display_order = 7;
+  bool is_searchable = 8;
+  bool is_comparable = 9;
+  bool is_filterable = 10;
+  bool is_variant = 11;
+  bool is_required = 12;
+  repeated string values = 13;
+  repeated int64 category_ids = 14;
+}
+message ProductRequest {
+  int64 id = 1;
+  string sku = 2;
+}
+
+message ProductIdRequest {
+  int64 product_id = 1;
+}
+
+message CategoryIdRequest {
+  int64 category_id = 1;
+}
+
+message ProductQuickEditRequest {
+  int64 id = 1;
+  double price = 2;
+  double sale_price = 3;
+  bool on_sale = 4;
+  bool in_stock = 5;
+  int32 stock_quantity = 6;
+  bool track_inventory = 7;
+  bool published = 8;
+}
+
+message ImportProductsRequest {
+  bytes file_data = 1;
+  string file_name = 2;
+  bool update_existing = 3;
+}
+
+message ExportProductsRequest {
+  string format = 1; // "csv", "excel", "json"
+  int64 category_id = 2;
+  string search_term = 3;
+  bool include_unpublished = 4;
+}
+
+message ProductComponentRequest {
+  int64 id = 1;
+  int64 product_id = 2;
+  int64 component_product_id = 3;
+  string component_name = 4;
+  int32 quantity = 5;
+  bool required = 6;
+  double price_adjustment = 7;
+  double price_adjustment_type = 8; // 0: Fixed, 1: Percentage
+  int32 display_order = 9;
+}
+
+message ProductComponentIdRequest {
+  int64 id = 1;
+  int64 product_id = 2;
+}
+
+message UpdateInventoryRequest {
+  int64 product_id = 1;
+  bool track_inventory = 2;
+  bool allow_backorders = 3;
+  int32 stock_quantity = 4;
+  int32 low_stock_threshold = 5;
+  repeated VariantInventoryDto variants = 6;
+}
+
+message InventoryAdjustmentRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  int32 quantity = 3;
+  string reason = 4;
+  string notes = 5;
+}
+
+message ProductDetailUpdateRequest {
+  int64 product_id = 1;
+  string name = 2;
+  string description = 3;
+  string short_description = 4;
+  string sku = 5;
+  double price = 6;
+  double sale_price = 7;
+  bool on_sale = 8;
+  int64 category_id = 9;
+  int64 brand_id = 10;
+}
+
+message ProductSeoUpdateRequest {
+  int64 product_id = 1;
+  string meta_title = 2;
+  string meta_description = 3;
+  string meta_keywords = 4;
+  string slug = 5;
+  bool no_index = 6;
+}
+
+message ProductGalleryUpdateRequest {
+  int64 product_id = 1;
+  repeated GalleryImageDto images = 2;
+  int64 main_image_id = 3;
+}
+
+message ProductAttributesUpdateRequest {
+  int64 product_id = 1;
+  repeated ProductPropertyDto properties = 2;
+}
+
+message RelatedProductsUpdateRequest {
+  int64 product_id = 1;
+  repeated int64 related_product_ids = 2;
+  repeated int64 cross_sell_product_ids = 3;
+  repeated int64 upsell_product_ids = 4;
+}
+
+message CategoryParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  int64 parent_id = 4;
+}
+
+message CategoryRequest {
+  int64 id = 1;
+  string slug = 2;
+}
+
+message BrandParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  bool featured_only = 4;
+}
+
+message BrandRequest {
+  int64 id = 1;
+  string slug = 2;
+}
+
+message PropertyRequest {
+  int64 id = 1;
+  string name = 2;
+  string display_name = 3;
+  string description = 4;
+  string type = 5;
+  int32 display_order = 6;
+  bool filterable = 7;
+}
+
+message PropertyParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  string type = 4;
+}
+
+message GetPropertiesByProductIdRequest {
+  int64 product_id = 1;
+}
+
+message PropertyCategoryRequest {
+  int64 property_id = 1;
+  int64 category_id = 2;
+  bool is_required = 3;
+  bool is_filterable = 4;
+  bool is_variant = 5;
+}
+
+message StoreParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  bool active_only = 4;
+}
+
+message StoreRequest {
+  int64 id = 1;
+  string code = 2;
+}
+
+message UserParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  string role = 4;
+  bool active_only = 5;
+}
+
+message UserRequest {
+  int64 id = 1;
+  string email = 2;
+}
+
+message ResetPasswordRequest {
+  int64 user_id = 1;
+  string new_password = 2;
+  bool require_change = 3;
+  string token = 4;
+  string email = 5;
+}
+
+message UserRolesRequest {
+  int64 user_id = 1;
+  repeated string role_names = 2;
+  bool overwrite_existing = 3;
+}
+
+message RoleParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  bool system_roles_only = 4;
+}
+
+message RoleRequest {
+  string id = 1;
+  string name = 2;
+}
+
+// Responses
+message CountResponse {
+  int32 count = 1;
+}
+
+message ProductExcelResponse {
+  bytes file_data = 1;
+  string file_name = 2;
+}
+
+message ImportProductsResponse {
+  bool success = 1;
+  int32 total_products = 2;
+  int32 created_count = 3;
+  int32 updated_count = 4;
+  int32 failed_count = 5;
+  repeated string error_messages = 6;
+}
+
+message ExportProductsResponse {
+  bool success = 1;
+  bytes file_data = 2;
+  string file_name = 3;
+  int32 total_products = 4;
+  string format = 5;
+}
+
+message ProductComponentsResponse {
+  repeated ProductComponentDto components = 1;
+}
+
+message ProductInventoryResponse {
+  bool track_inventory = 1;
+  bool allow_backorders = 2;
+  int32 stock_quantity = 3;
+  int32 reserved_quantity = 4;
+  int32 available_quantity = 5;
+  int32 low_stock_threshold = 6;
+  bool is_in_stock = 7;
+  string stock_status = 8;
+  repeated VariantInventoryDto variants = 9;
+}
+
+message InventoryHistoryResponse {
+  repeated InventoryHistoryItemDto history = 1;
+}
+
+message ProductDetailAdminResponse {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string short_description = 4;
+  string sku = 5;
+  double price = 6;
+  double sale_price = 7;
+  bool on_sale = 8;
+  int64 category_id = 9;
+  string category_name = 10;
+  int64 brand_id = 11;
+  string brand_name = 12;
+  bool published = 13;
+  bool featured = 14;
+  bool is_new = 15;
+  string tax_class = 16;
+  double weight = 17;
+  double length = 18;
+  double width = 19;
+  double height = 20;
+  string dimensions_unit = 21;
+  double shipping_cost = 22;
+  bool free_shipping = 23;
+  string meta_title = 24;
+  string meta_description = 25;
+  string meta_keywords = 26;
+  string slug = 27;
+  repeated GalleryImageDto gallery = 28;
+  repeated ProductPropertyDto properties = 29;
+  repeated ProductVariantDto variants = 30;
+  repeated RelatedProductDto related_products = 31;
+  repeated RelatedProductDto cross_sell_products = 32;
+  repeated RelatedProductDto upsell_products = 33;
+  google.protobuf.Timestamp created_date = 34;
+  google.protobuf.Timestamp updated_date = 35;
+}
+
+message CategoryPageingDto {
+  repeated CategoryDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message CategoryListResponse {
+  repeated CategoryDto categories = 1;
+}
+
+message BrandPageingDto {
+  repeated BrandDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message PropertyPagingDto {
+  repeated PropertyDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message GetPropertiesByProductIdResponse {
+  repeated PropertyDto properties = 1;
+}
+
+message CategoryListDto {
+  repeated CategoryDto categories = 1;
+}
+
+message StorePageingDto {
+  repeated StoreDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message UserPageingDto {
+  repeated UserDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message RolePageingDto {
+  repeated RoleDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+}
+
+message PermissionsResponse {
+  repeated PermissionDto permissions = 1;
+}
+
+message ProductPageingDto {
+  repeated ProductDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+  bool has_next = 5;
+  bool has_previous = 6;
+}
+
+message ProductDto {
+  // Core fields
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string short_description = 4;
+  string sku = 5;
+  string slug = 6;
+
+  // Pricing
+  double base_price = 7;
+  double sale_price = 8;
+  bool on_sale = 9;
+
+  // Categories and Brand
+  int64 category_id = 10;
+  string category_name = 11;
+  int64 brand_id = 12;
+  string brand_name = 13;
+
+  // Images
+  string thumbnail_url = 14;
+  string image_url = 15;
+  string main_image = 16;
+
+  // Inventory
+  bool in_stock = 17;
+  int32 stock_quantity = 18;
+  bool track_inventory = 19;
+
+  // Product Status
+  bool published = 20;
+  bool is_featured = 21;
+  bool is_new = 22;
+  bool is_bestseller = 23;
+
+  // Ratings and Stats
+  int32 average_rating = 24;
+  int32 review_count = 25;
+  double rating = 26;
+  int32 view_count = 27;
+  int32 order_count = 28;
+
+  // Additional Info
+  string tax_class = 29;
+  double weight = 30;
+  google.protobuf.Timestamp created_date = 31;
+  google.protobuf.Timestamp updated_date = 32;
+  repeated PropertyDto properties = 33;
+}
+message ProductComponentDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  int64 component_product_id = 3;
+  string component_name = 4;
+  string component_sku = 5;
+  string component_image = 6;
+  int32 quantity = 7;
+  bool required = 8;
+  double price_adjustment = 9;
+  double price_adjustment_type = 10; // 0: Fixed, 1: Percentage
+  int32 display_order = 11;
+}
+
+message VariantInventoryDto {
+  int64 variant_id = 1;
+  string variant_name = 2;
+  string sku = 3;
+  int32 stock_quantity = 4;
+  int32 reserved_quantity = 5;
+  bool in_stock = 6;
+}
+
+message InventoryHistoryItemDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  int64 variant_id = 3;
+  string product_name = 4;
+  string variant_name = 5;
+  string sku = 6;
+  int32 adjustment = 7;
+  int32 quantity_before = 8;
+  int32 quantity_after = 9;
+  string reason = 10;
+  string notes = 11;
+  string created_by = 12;
+  google.protobuf.Timestamp created_date = 13;
+}
+
+
+
+
+message StoreDto {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  string description = 4;
+  string address_line1 = 5;
+  string address_line2 = 6;
+  string city = 7;
+  string state = 8;
+  string postal_code = 9;
+  string country = 10;
+  string phone = 11;
+  string email = 12;
+  string hours = 13;
+  bool is_active = 14;
+}
+
+message UserDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string avatar_url = 6;
+  bool active = 7;
+  bool email_verified = 8;
+  repeated string roles = 9;
+  google.protobuf.Timestamp created_date = 10;
+  google.protobuf.Timestamp last_login_date = 11;
+}
+
+
+message RoleDto {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_system = 4;
+  repeated string permissions = 5;
+  int32 user_count = 6;
+}
+
+message PermissionDto {
+  string id = 1;
+  string name = 2;
+  string group = 3;
+  string description = 4;
+}
+
+message ProductPropertyDto {
+  int64 property_id = 1;
+  string property_name = 2;
+  string value = 3;
+  int64 property_value_id = 4;
+}
+
+message ProductVariantDto {
+  int64 id = 1;
+  string name = 2;
+  string sku = 3;
+  double price = 4;
+  double sale_price = 5;
+  bool on_sale = 6;
+  int32 stock_quantity = 7;
+  bool in_stock = 8;
+  string image_url = 9;
+}
+
+message GalleryImageDto {
+  int64 id = 1;
+  string url = 2;
+  string thumbnail_url = 3;
+  string alt_text = 4;
+  int32 sort_order = 5;
+  bool is_main = 6;
+}
+
+message RelatedProductDto {
+  int64 id = 1;
+  string name = 2;
+  string sku = 3;
+  double price = 4;
+  string image_url = 5;
+  string relationship_type = 6; // "related", "cross-sell", "upsell"
+  int32 sort_order = 7;
+}
+// Category requests
+message GetCategoriesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  int64 parent_id = 5;
+  bool include_inactive = 6;
+  bool include_hidden = 7;
+}
+
+message GetCategoryRequest {
+  int64 category_id = 1;
+  string slug = 2;
+  bool include_subcategories = 3;
+  bool include_products = 4;
+  bool include_brands = 5;
+  bool include_properties = 6;
+}
+
+message GetCategoryTreeRequest {
+  int64 root_category_id = 1;
+  int32 max_depth = 2;
+  bool include_product_counts = 3;
+  bool include_inactive = 4;
+  bool include_hidden = 5;
+}
+
+message GetCategoryPathRequest {
+  int64 category_id = 1;
+  string slug = 2;
+}
+
+message GetCategoryProductsRequest {
+  int64 category_id = 1;
+  string slug = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string sort_by = 5;
+  bool sort_ascending = 6;
+  bool include_subcategories = 7;
+  repeated int64 brand_ids = 8;
+  repeated int64 property_value_ids = 9;
+}
+
+message GetCategoryFiltersRequest {
+  int64 category_id = 1;
+  bool include_subcategories = 2;
+}
+
+message GetFeaturedCategoriesRequest {
+  int32 limit = 1;
+  int64 parent_id = 2;
+  bool include_images = 3;
+}
+
+// Brand requests
+message GetBrandsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  bool featured_only = 6;
+  bool include_product_counts = 7;
+}
+
+message GetBrandRequest {
+  int64 brand_id = 1;
+  string slug = 2;
+  bool include_categories = 3;
+  bool include_products = 4;
+}
+
+message GetBrandsByCategoryRequest {
+  int64 category_id = 1;
+  bool include_product_counts = 2;
+}
+
+message GetBrandProductsRequest {
+  int64 brand_id = 1;
+  string slug = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string sort_by = 5;
+  bool sort_ascending = 6;
+  int64 category_id = 7;
+  repeated int64 property_value_ids = 8;
+}
+
+message GetFeaturedBrandsRequest {
+  int32 limit = 1;
+  bool include_logos = 2;
+  bool include_descriptions = 3;
+}
+
+// Property requests
+message GetPropertiesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  bool filterable_only = 6;
+  bool variant_only = 7;
+}
+
+message GetPropertyRequest {
+  int64 property_id = 1;
+  bool include_values = 2;
+}
+
+message GetPropertiesByCategoryRequest {
+  int64 category_id = 1;
+  bool filterable_only = 2;
+  bool variant_only = 3;
+  bool include_values = 4;
+}
+
+message GetPropertyValuesRequest {
+  int64 property_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string search = 4;
+  bool include_products_count = 5;
+}
+
+// Search requests
+message SearchCatalogRequest {
+  string query = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string sort_by = 4;
+  bool sort_ascending = 5;
+  int64 category_id = 6;
+  repeated int64 brand_ids = 7;
+  repeated int64 property_value_ids = 8;
+  double min_price = 9;
+  double max_price = 10;
+  bool faceted = 11;
+}
+
+message GetSearchSuggestionsRequest {
+  string query = 1;
+  int32 limit = 2;
+  bool include_categories = 3;
+  bool include_brands = 4;
+}
+
+message GetPopularSearchesRequest {
+  int32 limit = 1;
+  string from_date = 2;
+  string to_date = 3;
+  int64 category_id = 4;
+}
+
+// Response messages
+message CategoriesResponse {
+  repeated CategoryDto categories = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message CategoryResponse {
+  CategoryDto category = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryTreeResponse {
+  repeated CategoryTreeNodeDto categories = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryPathResponse {
+  repeated CategoryBreadcrumbDto path = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryProductsResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message CategoryFiltersResponse {
+  repeated PropertyFilterDto property_filters = 1;
+  repeated BrandFilterItemDto brand_filters = 2;
+  PriceRangeDto price_range = 3;
+  ResponseStatus status = 4;
+}
+
+message FeaturedCategoriesResponse {
+  repeated CategoryDto categories = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandsResponse {
+  repeated BrandDto brands = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message BrandResponse {
+  BrandDto brand = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandsByCategoryResponse {
+  repeated BrandDto brands = 1;
+  ResponseStatus status = 2;
+}
+
+message BrandProductsResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message FeaturedBrandsResponse {
+  repeated BrandDto brands = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertiesResponse {
+  repeated PropertyDto properties = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseStatus status = 4;
+}
+
+message PropertyResponse {
+  PropertyDto property = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertiesByCategoryResponse {
+  repeated PropertyDto properties = 1;
+  ResponseStatus status = 2;
+}
+
+message PropertyValuesResponse {
+  repeated PropertyValueDto values = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  PropertyDto property = 4;
+  ResponseStatus status = 5;
+}
+
+message SearchCatalogResponse {
+  repeated ProductSummaryDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  repeated SearchFacetResultDto facets = 4;
+  ResponseStatus status = 5;
+}
+
+message SearchSuggestionsResponse {
+  repeated SearchSuggestionDto suggestions = 1;
+  ResponseStatus status = 2;
+}
+
+message PopularSearchesResponse {
+  repeated PopularSearchDto searches = 1;
+  ResponseStatus status = 2;
+}
+
+message CategoryDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string slug = 4;
+  string image_url = 5;
+  int64 parent_id = 6;
+  string parent_name = 7;
+  int32 level = 8;
+  int32 display_order = 9;
+  bool is_active = 10;
+  bool is_featured = 11;
+  int32 product_count = 12;
+  string meta_title = 13;
+  string meta_description = 14;
+  repeated CategoryDto subcategories = 15;
+  SeoDto seo = 16;
+}
+
+message CategoryTreeNodeDto {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  string image_url = 4;
+  int32 product_count = 5;
+  int32 level = 6;
+  int32 display_order = 7;
+  bool is_active = 8;
+  bool is_featured = 9;
+  repeated CategoryTreeNodeDto children = 10;
+}
+
+message CategoryBreadcrumbDto {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 level = 4;
+  bool is_current = 5;
+}
+
+message PropertyValueDto {
+  int64 id = 1;
+  int64 property_id = 2;
+  string value = 3;
+  string display_value = 4;
+  string color_code = 5;
+  string image_url = 6;
+  int32 display_order = 7;
+  int32 product_count = 8;
+  bool is_selected = 9;
+}
+
+message ProductSummaryDto {  
+    int64 id = 1;  
+    string name = 2;  
+    string short_description = 3;  
+    string sku = 4;  
+    string slug = 5;  
+    double base_price = 6;  
+    double sale_price = 7;  
+    bool on_sale = 8;  
+    int32 average_rating = 9;  
+    int32 review_count = 10;  
+    bool in_stock = 11;  
+    int32 stock_quantity = 12;  
+    string thumbnail_url = 13;  
+    string image_url = 14;  
+    int64 category_id = 15;  
+    string category_name = 16;  
+    int64 brand_id = 17;  
+    string brand_name = 18;  
+    bool is_new = 19;  
+    bool is_featured = 20;  
+    google.protobuf.Timestamp created_date = 21;  
+    google.protobuf.Timestamp viewed_date = 22;  
+    double price = 23;  
+    int32 rating = 24;  
+}
+
+message PropertyFilterDto {
+  int64 id = 1;
+  string name = 2;
+  string display_name = 3;
+  string type = 4;
+  int32 display_order = 5;
+  repeated PropertyFilterValueDto values = 6;
+}
+
+message PropertyFilterValueDto {
+  int64 id = 1;
+  string value = 2;
+  string display_value = 3;
+  string color_code = 4;
+  string image_url = 5;
+  int32 product_count = 6;
+  int32 display_order = 7;
+}
+
+message BrandFilterItemDto {
+  int64 id = 1;
+  string name = 2;
+  string logo_url = 3;
+  int32 product_count = 4;
+  int32 display_order = 5;
+}
+
+message PriceRangeDto {
+  double min_price = 1;
+  double max_price = 2;
+  string currency_code = 3;
+  string formatted_min_price = 4;
+  string formatted_max_price = 5;
+}
+
+message SearchFacet {
+  string field = 1;
+  string display_name = 2;
+}
+
+message SearchFacetResultDto {
+  string field = 1;
+  string display_name = 2;
+  repeated SearchFacetValueDto values = 3;
+}
+
+message SearchFacetValueDto {
+  string value = 1;
+  string display_value = 2;
+  int32 count = 3;
+  string image_url = 4;
+  string color_code = 5;
+}
+
+message SearchSuggestionDto {
+  string text = 1;
+  string type = 2;
+  int64 id = 3;
+  string url = 4;
+  string image_url = 5;
+  int32 product_count = 6;
+}
+
+message PopularSearchDto {
+  string query = 1;
+  int32 count = 2;
+  double conversion_rate = 3;
+}
+
+// MESSAGE DEFINITIONS
+message NationalCodeRequest {
+  int32 seller_id = 1;
+  string national_code = 2;
+}
+
+message CreditInfoResponse {
+  int32 total_credit = 1;
+  int32 total_real_credit = 2;
+  int32 check_credit = 3;
+  int32 bon_credit = 4;
+  int32 cash_credit = 5;
+  int32 total_assigned_credit = 6;
+  int32 total_spent_credit = 7;
+  int32 check_unpassed_value = 8;
+  int32 real_check_credit = 9;
+  repeated string available_bons = 10;
+  bool success = 11;
+  string message = 12;
+}
+
+message ExcelFileRequest {
+  string file_name = 1;
+}
+
+message ApiDataRequest {
+  string api_name = 1;
+  map<string, string> parameters = 2;
+}
+
+message ApiDataResponse {
+  string data = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message WordpressPageRequest {
+  int32 page_number = 1;
+}
+
+message WordpressProductsResponse {
+  repeated WordpressProductData products = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message WordpressProductIdRequest {
+  string product_id = 1;
+}
+
+message WordpressProductResponse {
+  WordpressProductData product = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message WordpressCategoriesResponse {
+  repeated WordpressCategoryData categories = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message WordpressProductData {
+  string id = 1;
+  string name = 2;
+  string slug = 3;
+  string permalink = 4;
+  string sku = 5;
+  string price = 6;
+  string regular_price = 7;
+  string sale_price = 8;
+  string status = 9;
+  bool featured = 10;
+  string description = 11;
+  string short_description = 12;
+  repeated string images = 13;
+  repeated WordpressCategoryData categories = 14;
+  repeated WordpressAttributeData attributes = 15;
+}
+
+message WordpressCategoryData {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+}
+
+message WordpressAttributeData {
+  string id = 1;
+  string name = 2;
+  repeated string options = 3;
+} 
+// Parameter message types
+message ParameterDto {
+  int32 page_id = 1;
+  int32 take = 2;
+  string search_key = 3;
+  string filter = 4;
+}
+
+message WalletTransactionParameterDto {
+  int32 page_id = 1;
+  int32 take = 2;
+  string search_key = 3;
+  string filter = 4;
+  int32 wallet_id = 5;
+  string date_from = 6;
+  string date_to = 7;
+  int32 type_id = 8;
+}
+
+// Wallet messages
+message UserFiltersResponse {
+  repeated UserFilterDto filters = 1;
+}
+
+message UserFilterDto {
+  int32 id = 1;
+  string name = 2;
+  string user_name = 3;
+  string name_value = 4;
+}
+
+message BlockWalletRequest {
+  bool is_blocked = 1;
+  int32 wallet_id = 2;
+}
+
+// Paging response
+message PagingDto {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  bytes items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+  bytes filter = 8;
+}
+
+// Transaction messages
+message WalletTransactionDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  bool is_success = 6;
+  int32 type_id = 7;
+  string type_name = 8;
+  string transaction_date = 9;
+  string tracking_code = 10;
+  int32 order_id = 11;
+  string transaction_number = 12;
+  string bank_name = 13;
+  bool is_verified = 14;
+}
+
+message TransactionIdRequest {
+  int32 transaction_id = 1;
+}
+
+// Facilities messages
+message FacilitiesDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  int32 number_of_installments = 6;
+  string first_payment_date = 7;
+  double monthly_payment = 8;
+  bool with_interest = 9;
+  double interest_rate = 10;
+}
+
+// Excel upload messages
+message ExcelUploadRequest {
+  string type = 1;
+  bytes file_data = 2;
+  string file_name = 3;
+  string content_type = 4;
+}
+
+// User selection 
+message UsersForSelectListResponse {
+  repeated UserForSelectListDto users = 1;
+}
+
+message UserForSelectListDto {
+  int32 id = 1;
+  string name = 2;
+  string mobile = 3;
+  string fullname = 4;
+}
+
+message UserIdRequest {
+  int32 user_id = 1;
+}
+
+// Transaction parameters for reports
+message TransactionParameterDto {
+  int32 current_page = 1;
+  int32 take_page = 2;
+  string user_filter = 3;
+  string wallet_type = 4;
+  int32 transaction_type = 5;
+  string from_date = 6;
+  string to_date = 7;
+}
+
+// Transaction report data
+message WalletTransactionPagingDto {
+  bool is_successed = 1;
+  string message = 2;
+  repeated WalletTransactionReportDto items = 3;
+  int32 total_row = 4;
+  int32 page_id = 5;
+  int32 take = 6;
+  TransactionParameterDto parameter = 7;
+  double total_price = 8;
+  double walletbalance = 9;
+}
+
+message WalletTransactionReportDto {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  string wallet_owner = 3;
+  double amount = 4;
+  string description = 5;
+  bool is_success = 6;
+  int32 type_id = 7;
+  string type_name = 8;
+  string transaction_date = 9;
+  string tracking_code = 10;
+  int32 order_id = 11;
+  string transaction_number = 12;
+  string bank_name = 13;
+  string jalali_date = 14;
+  double price = 15;
+  double bank_price = 16;
+  double wallet_credit = 17;
+  double pay = 18;
+  bool is_verified = 19;
+  string wallet_name = 20;
+  bool is_payed = 21;
+  int32 user_id = 22;
+  string created_date = 23;
+}
+
+// Excel generation requests
+message TransactionReportExcelRequest {
+  string user_filter = 1;
+  string wallet_type = 2;
+  int32 transaction_type = 3;
+  string from_date = 4;
+  string to_date = 5;
+}
+
+// Excel response
+message ExcelResponse {
+  bytes excel_data = 1;
+  string file_name = 2;
+  bool is_success = 3;
+  string message = 4;
+} 
+// Request messages
+message OrderRequest {
+  string order_id = 1;
+  int64 user_id = 2;
+}
+
+message UserOrdersRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string status = 4;
+}
+
+message OrderHistoryRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string from_date = 4;
+  string to_date = 5;
+  repeated string statuses = 6;
+}
+
+message TrackOrderRequest {
+  string order_id = 1;
+  string tracking_number = 2;
+}
+
+message CancelOrderRequest {
+  string order_id = 1;
+  int64 user_id = 2;
+  string reason = 3;
+  string additional_information = 4;
+}
+
+message ReturnOrderRequest {
+  string order_id = 1;
+  int64 user_id = 2;
+  string reason = 3;
+  string additional_information = 4;
+  repeated ReturnItemDto items = 5;
+  bool request_refund = 6;
+}
+
+message InitiateCheckoutRequest {
+  int64 user_id = 1;
+  string cart_id = 2;
+  repeated CartItemDto items = 3;
+  AddressDto shipping_address = 4;
+  AddressDto billing_address = 5;
+  string currency_code = 6;
+}
+
+message CheckoutAddressRequest {
+  string checkout_id = 1;
+  AddressDto shipping_address = 2;
+  AddressDto billing_address = 3;
+  bool same_as_shipping = 4;
+}
+
+message CheckoutShippingRequest {
+  string checkout_id = 1;
+  string shipping_method_id = 2;
+}
+
+message CheckoutPaymentRequest {
+  string checkout_id = 1;
+  string payment_method_id = 2;
+  PaymentDetailsDto payment_details = 3;
+}
+
+message CouponRequest {
+  string checkout_id = 1;
+  string coupon_code = 2;
+}
+
+message RemoveCouponRequest {
+  string checkout_id = 1;
+  string coupon_id = 2;
+}
+
+message CalculateTotalRequest {
+  string checkout_id = 1;
+}
+
+message CompleteCheckoutRequest {
+  string checkout_id = 1;
+  string payment_method_id = 2;
+  PaymentDetailsDto payment_details = 3;
+}
+
+// Admin requests
+message OrdersAdminRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string from_date = 5;
+  string to_date = 6;
+  repeated string statuses = 7;
+  string customer_name = 8;
+  string order_id = 9;
+  double min_total = 10;
+  double max_total = 11;
+}
+
+message OrderAdminRequest {
+  string order_id = 1;
+}
+
+message UpdateOrderStatusRequest {
+  string order_id = 1;
+  string new_status = 2;
+  string note = 3;
+  bool notify_customer = 4;
+}
+
+message AddOrderNoteRequest {
+  string order_id = 1;
+  string note = 2;
+  bool is_private = 3;
+  bool notify_customer = 4;
+}
+
+message OrderStatisticsRequest {
+  string from_date = 1;
+  string to_date = 2;
+  string group_by = 3;
+  bool include_refunds = 4;
+}
+
+message ExportOrdersRequest {
+  string from_date = 1;
+  string to_date = 2;
+  repeated string statuses = 3;
+  string format = 4; // "csv", "excel", etc.
+  repeated string fields = 5;
+}
+
+message RefundOrderRequest {
+  string order_id = 1;
+  string refund_reason = 2;
+  double amount = 3;
+  bool restock_items = 4;
+  bool notify_customer = 5;
+  repeated string item_ids = 6;
+  string note = 7;
+}
+
+message ResendOrderConfirmationRequest {
+  string order_id = 1;
+  string email = 2;
+}
+
+// Shipping requests
+message ShippingMethodsRequest {
+  string checkout_id = 1;
+  AddressDto shipping_address = 2;
+  repeated CartItemDto items = 3;
+}
+
+message CalculateShippingRequest {
+  string shipping_method_id = 1;
+  AddressDto shipping_address = 2;
+  repeated CartItemDto items = 3;
+  double order_subtotal = 4;
+}
+
+message CreateShipmentRequest {
+  string order_id = 1;
+  string provider_id = 2;
+  string shipping_method_id = 3;
+  AddressDto shipping_address = 4;
+  AddressDto return_address = 5;
+  repeated ShipmentItemDto items = 6;
+  PackageDto package = 7;
+  bool generate_label = 8;
+  string service_code = 9;
+}
+
+message UpdateShipmentRequest {
+  string shipment_id = 1;
+  string tracking_number = 2;
+  string tracking_url = 3;
+  string status = 4;
+  bool shipped = 5;
+  string shipped_date = 6;
+}
+
+message ShipmentRequest {
+  string shipment_id = 1;
+}
+
+message ShippingLabelRequest {
+  string shipment_id = 1;
+  string format = 2; // "pdf", "png", etc.
+}
+
+message TrackShipmentRequest {
+  string shipment_id = 1;
+  string tracking_number = 2;
+  string carrier_code = 3;
+  bool include_delivery_details = 4;
+}
+
+// Payment requests
+message PaymentMethodsRequest {
+  string checkout_id = 1;
+  string country_code = 2;
+  string currency_code = 3;
+}
+
+message InitiatePaymentRequest {
+  string checkout_id = 1;
+  string payment_method_id = 2;
+  double amount = 3;
+  string currency_code = 4;
+  string return_url = 5;
+  string cancel_url = 6;
+  string customer_id = 7;
+}
+
+message ProcessPaymentRequest {
+  string payment_id = 1;
+  string token = 2;
+}
+
+message VerifyPaymentRequest {
+  string payment_id = 1;
+  string transaction_id = 2;
+  string order_id = 3;
+}
+
+message RefundPaymentRequest {
+  string payment_id = 1;
+  double amount = 2;
+  string reason = 3;
+}
+
+message TransactionDetailsRequest {
+  string transaction_id = 1;
+}
+
+// Response messages
+message OrderResponse {
+  OrderDto order = 1;
+  ResponseDto status = 2;
+}
+
+message UserOrdersResponse {
+  repeated OrderSummaryDto orders = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message OrderHistoryResponse {
+  repeated OrderHistoryItemDto orders = 1;
+  int32 total_count = 2;
+  ResponseDto status = 3;
+}
+
+message OrderDetailsResponse {
+  OrderDetailDto order = 1;
+  ResponseDto status = 2;
+}
+
+message TrackOrderResponse {
+  OrderTrackingDto tracking = 1;
+  ResponseDto status = 2;
+}
+
+message CancelOrderResponse {
+  bool success = 1;
+  string cancellation_id = 2;
+  string message = 3;
+  OrderDto updated_order = 4;
+  ResponseDto status = 5;
+}
+
+message ReturnOrderResponse {
+  bool success = 1;
+  string return_id = 2;
+  string message = 3;
+  string return_instructions = 4;
+  string return_label_url = 5;
+  ResponseDto status = 6;
+}
+
+message CheckoutResponse {
+  CheckoutDto checkout = 1;
+  ResponseDto status = 2;
+}
+
+message CouponResponse {
+  bool valid = 1;
+  string coupon_id = 2;
+  string coupon_code = 3;
+  string description = 4;
+  double discount_amount = 5;
+  CheckoutDto updated_checkout = 6;
+  ResponseDto status = 7;
+}
+
+message OrderTotalResponse {
+  double subtotal = 1;
+  double shipping = 2;
+  double tax = 3;
+  double discount = 4;
+  double total = 5;
+  string formatted_subtotal = 6;
+  string formatted_shipping = 7;
+  string formatted_tax = 8;
+  string formatted_discount = 9;
+  string formatted_total = 10;
+  ResponseDto status = 11;
+}
+
+message OrderConfirmationResponse {
+  bool success = 1;
+  string order_id = 2;
+  OrderConfirmationDto order = 3;
+  PaymentInstructionsDto payment_instructions = 4;
+  string receipt_url = 5;
+  string thank_you_message = 6;
+  ResponseDto status = 7;
+}
+
+message OrdersAdminResponse {
+  repeated OrderAdminSummaryDto orders = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message OrderAdminResponse {
+  OrderAdminDetailDto order = 1;
+  ResponseDto status = 2;
+}
+
+message OrderStatisticsResponse {
+  repeated OrderStatisticDto statistics = 1;
+  OrderSummaryStatisticsDto summary = 2;
+  ResponseDto status = 3;
+}
+
+message ExportOrdersResponse {
+  bool success = 1;
+  string download_url = 2;
+  int32 total_orders = 3;
+  string format = 4;
+  string expires_at = 5;
+  ResponseDto status = 6;
+}
+
+message RefundOrderResponse {
+  bool success = 1;
+  string refund_id = 2;
+  double refunded_amount = 3;
+  string refund_status = 4;
+  string transaction_id = 5;
+  RefundDto refund = 6;
+  ResponseDto status = 7;
+}
+
+message ShippingMethodsResponse {
+  repeated ShippingMethodDto methods = 1;
+  ResponseDto status = 2;
+}
+
+message CalculateShippingResponse {
+  double shipping_cost = 1;
+  string formatted_shipping_cost = 2;
+  string currency_code = 3;
+  double tax_amount = 4;
+  double total_with_tax = 5;
+  ResponseDto status = 6;
+}
+
+message ShipmentResponse {
+  bool success = 1;
+  string shipment_id = 2;
+  string tracking_number = 3;
+  string tracking_url = 4;
+  string label_url = 5;
+  ResponseDto status = 6;
+}
+
+message ShipmentDetailsResponse {
+  ShipmentDto shipment = 1;
+  ResponseDto status = 2;
+}
+
+message ShippingLabelResponse {
+  bool success = 1;
+  string label_url = 2;
+  bytes label_data = 3;
+  string format = 4;
+  string tracking_number = 5;
+  ResponseDto status = 6;
+}
+
+message TrackShipmentResponse {
+  string carrier = 1;
+  string service = 2;
+  string tracking_number = 3;
+  string tracking_url = 4;
+  string current_status = 5;
+  string estimated_delivery = 6;
+  string shipped_date = 7;
+  AddressDto delivery_address = 8;
+  repeated ShipmentTrackingEventDto tracking_events = 9;
+  ResponseDto status = 10;
+}
+
+message PaymentMethodsResponse {
+  repeated PaymentMethodDto methods = 1;
+  ResponseDto status = 2;
+}
+
+message InitiatePaymentResponse {
+  bool success = 1;
+  string payment_id = 2;
+  string redirect_url = 3;
+  string client_secret = 4;
+  string payment_method_type = 5;
+  string status = 6;
+  ResponseDto response_status = 7;
+}
+
+message ProcessPaymentResponse {
+  bool success = 1;
+  string transaction_id = 2;
+  string status = 3;
+  string message = 4;
+  string receipt_url = 5;
+  bool requires_action = 6;
+  string action_url = 7;
+  ResponseDto response_status = 8;
+}
+
+message VerifyPaymentResponse {
+  bool success = 1;
+  string status = 2;
+  string transaction_id = 3;
+  string message = 4;
+  TransactionDto transaction = 5;
+  ResponseDto response_status = 6;
+}
+
+message RefundPaymentResponse {
+  bool success = 1;
+  string refund_id = 2;
+  string status = 3;
+  double amount = 4;
+  string currency = 5;
+  string transaction_id = 6;
+  ResponseDto response_status = 7;
+}
+
+message TransactionDetailsResponse {
+  TransactionDto transaction = 1;
+  ResponseDto status = 2;
+}
+
+// Data DTOs
+message OrderDto {
+  string id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  double total = 5;
+  int32 item_count = 6;
+  string payment_method = 7;
+  string shipping_method = 8;
+  string tracking_number = 9;
+  bool is_paid = 10;
+  bool can_cancel = 11;
+}
+
+message OrderSummaryDto {
+  string id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  string status_label = 5;
+  double total = 6;
+  string formatted_total = 7;
+  int32 item_count = 8;
+  string payment_status = 9;
+  string shipping_status = 10;
+}
+
+message OrderHistoryItemDto {
+  string id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  string status_label = 5;
+  double total = 6;
+  string formatted_total = 7;
+  repeated OrderHistoryEventDto events = 8;
+  string last_updated = 9;
+}
+
+message OrderDetailDto {
+  string id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  string status_label = 5;
+  double subtotal = 6;
+  double shipping_cost = 7;
+  double tax = 8;
+  double discount = 9;
+  double total = 10;
+  string formatted_subtotal = 11;
+  string formatted_shipping_cost = 12;
+  string formatted_tax = 13;
+  string formatted_discount = 14;
+  string formatted_total = 15;
+  CustomerDto customer = 16;
+  AddressDto shipping_address = 17;
+  AddressDto billing_address = 18;
+  string payment_method = 19;
+  string shipping_method = 20;
+  string tracking_number = 21;
+  string tracking_url = 22;
+  repeated OrderItemDto items = 23;
+  repeated OrderNoteDto notes = 24;
+}
+
+// Missing DTOs that were causing build errors
+message CartItemDto {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  string name = 3;
+  string sku = 4;
+  double price = 5;
+  int32 quantity = 6;
+  double total = 7;
+  string image_url = 8;
+  repeated CartItemOptionDto options = 9;
+}
+
+message CartItemOptionDto {
+  int64 option_id = 1;
+  string option_name = 2;
+  int64 value_id = 3;
+  string value_name = 4;
+  double price_adjustment = 5;
+}
+
+message ReturnItemDto {
+  int64 order_item_id = 1;
+  int32 quantity = 2;
+  string reason = 3;
+}
+
+// Other missing DTOs that were causing build errors
+message PaymentDetailsDto {
+  // Generic payment details - extended for specific payment methods
+  string method_specific_data = 1;
+}
+
+message ShipmentItemDto {
+  string sku = 1;
+  string name = 2;
+  int32 quantity = 3;
+  double value = 4;
+  double weight = 5;
+  string weight_unit = 6;
+  PackageDimensionsDto dimensions = 7;
+}
+
+message PackageDto {
+  double weight = 1;
+  string weight_unit = 2;
+  string packaging_type = 3;
+  PackageDimensionsDto dimensions = 4;
+  string description = 5;
+}
+
+message PackageDimensionsDto {
+  double length = 1;
+  double width = 2;
+  double height = 3;
+  string dimension_unit = 4;
+}
+
+message OrderTrackingDto {
+  string order_number = 1;
+  string date = 2;
+  string current_status = 3;
+  string estimated_delivery = 4;
+  string shipping_carrier = 5;
+  string tracking_number = 6;
+  string tracking_url = 7;
+  repeated TrackingEventDto events = 8;
+}
+
+message TrackingEventDto {
+  string date = 1;
+  string status = 2;
+  string location = 3;
+  string description = 4;
+}
+
+message CheckoutDto {
+  string checkout_id = 1;
+  repeated CartItemDto items = 2;
+  AddressDto billing_address = 3;
+  AddressDto shipping_address = 4;
+  string shipping_method_id = 5;
+  string shipping_method_name = 6;
+  double shipping_cost = 7;
+  string payment_method_id = 8;
+  string payment_method_name = 9;
+  double subtotal = 10;
+  double tax = 11;
+  double total = 12;
+  string coupon_code = 13;
+  double discount = 14;
+  string notes = 15;
+  CustomerDto customer = 16;
+}
+
+message OrderConfirmationDto {
+  string order_number = 1;
+  string date = 2;
+  double total = 3;
+  string payment_method = 4;
+  string payment_status = 5;
+  string shipping_method = 6;
+  AddressDto shipping_address = 7;
+  repeated OrderItemDto items = 8;
+}
+
+message PaymentInstructionsDto {
+  string payment_method = 1;
+  string account_number = 2;
+  string bank_name = 3;
+  string reference = 4;
+  string instructions = 5;
+  double amount = 6;
+  string currency = 7;
+  string due_date = 8;
+}
+
+message OrderAdminSummaryDto {
+  int64 order_id = 1;
+  string order_number = 2;
+  string date = 3;
+  string customer_name = 4;
+  string email = 5;
+  string status = 6;
+  string payment_status = 7;
+  string payment_method = 8;
+  string shipping_status = 9;
+  double total = 10;
+  int32 item_count = 11;
+}
+
+message OrderAdminDetailDto {
+  int64 order_id = 1;
+  string order_number = 2;
+  string date = 3;
+  string status = 4;
+  double subtotal = 5;
+  double shipping = 6;
+  double tax = 7;
+  double discount = 8;
+  double total = 9;
+  CustomerDto customer = 10;
+  AddressDto billing_address = 11;
+  AddressDto shipping_address = 12;
+  string payment_method = 13;
+  string payment_status = 14;
+  string transaction_id = 15;
+  string shipping_method = 16;
+  string shipping_status = 17;
+  string tracking_number = 18;
+  string tracking_url = 19;
+  repeated OrderItemDto items = 20;
+  repeated OrderNoteDto notes = 21;
+  repeated OrderHistoryEventDto history = 22;
+  string coupon_code = 23;
+  string ip_address = 24;
+  string user_agent = 25;
+  string currency = 26;
+  string store_id = 27;
+}
+
+message OrderStatisticDto {
+  string period = 1;
+  int32 order_count = 2;
+  double total_sales = 3;
+  double average_order_value = 4;
+}
+
+message OrderSummaryStatisticsDto {
+  int32 total_orders = 1;
+  double total_sales = 2;
+  double average_order_value = 3;
+  int32 returning_customers = 4;
+  int32 new_customers = 5;
+  double conversion_rate = 6;
+  double refunded_amount = 7;
+  int32 refunded_orders = 8;
+  double tax_collected = 9;
+}
+
+message RefundDto {
+  string refund_id = 1;
+  string transaction_id = 2;
+  string date = 3;
+  double amount = 4;
+  string status = 5;
+  string reason = 6;
+}
+
+message ShippingMethodDto {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  double cost = 4;
+  string estimated_delivery = 5;
+  int32 min_days = 6;
+  int32 max_days = 7;
+  string icon = 8;
+  bool is_default = 9;
+}
+
+message ShipmentDto {
+  string shipment_id = 1;
+  int64 order_id = 2;
+  string order_number = 3;
+  string carrier = 4;
+  string service = 5;
+  string tracking_number = 6;
+  string status = 7;
+  AddressDto origin = 8;
+  AddressDto destination = 9;
+  PackageDto package = 10;
+  repeated ShipmentItemDto items = 11;
+  string created_date = 12;
+  string updated_date = 13;
+  string tracking_url = 14;
+}
+
+message ShipmentTrackingEventDto {
+  string date = 1;
+  string status = 2;
+  string location = 3;
+  string description = 4;
+}
+
+message PaymentMethodDto {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string icon = 4;
+  double surcharge = 5;
+  double surcharge_percentage = 6;
+  bool is_default = 7;
+  bool requires_redirect = 8;
+  repeated string supported_currencies = 9;
+}
+
+message TransactionDto {
+  string transaction_id = 1;
+  int64 order_id = 2;
+  string order_number = 3;
+  string date = 4;
+  string payment_method = 5;
+  double amount = 6;
+  string currency = 7;
+  string status = 8;
+  string gateway = 9;
+  string gateway_transaction_id = 10;
+  repeated RefundDto refunds = 11;
+}
+
+message CustomerDto {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string phone = 5;
+  bool is_guest = 6;
+}
+
+message OrderItemDto {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  string name = 3;
+  string sku = 4;
+  double unit_price = 5;
+  int32 quantity = 6;
+  double subtotal = 7;
+  double tax = 8;
+  double discount = 9;
+  double total = 10;
+  string image_url = 11;
+  repeated OrderItemOptionDto options = 12;
+}
+
+message OrderItemOptionDto {
+  string name = 1;
+  string value = 2;
+  double price_adjustment = 3;
+}
+
+message OrderNoteDto {
+  int64 id = 1;
+  string note = 2;
+  string created_by = 3;
+  string created_date = 4;
+  bool is_private = 5;
+}
+
+message OrderHistoryEventDto {
+  string date = 1;
+  string old_status = 2;
+  string new_status = 3;
+  string comment = 4;
+  string user = 5;
+} 
+// Product listing requests
+message ProductsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string filter = 5;
+  bool include_out_of_stock = 6;
+}
+
+message CategoryProductsRequest {
+  int64 category_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string sort_by = 4;
+  bool sort_ascending = 5;
+  bool include_subcategories = 6;
+  bool include_out_of_stock = 7;
+  repeated int64 filter_property_ids = 8;
+  repeated double price_range = 9;
+}
+
+message BrandProductsRequest {
+  int64 brand_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string sort_by = 4;
+  bool sort_ascending = 5;
+  bool include_out_of_stock = 6;
+  repeated int64 filter_property_ids = 7;
+  repeated double price_range = 8;
+}
+
+message ProductIdsRequest {
+  repeated int64 product_ids = 1;
+}
+
+message FeaturedProductsRequest {
+  int32 count = 1;
+  int64 category_id = 2;
+}
+
+message NewArrivalsRequest {
+  int32 count = 1;
+  int64 category_id = 2;
+}
+
+message BestSellersRequest {
+  int32 count = 1;
+  int64 category_id = 2;
+  int32 days = 3;
+}
+
+message DiscountedProductsRequest {
+  int32 count = 1;
+  int64 category_id = 2;
+}
+
+// Product detail requests
+message ProductDetailRequest {
+  int64 product_id = 1;
+  string short_link = 2;
+}
+
+message ProductReviewsRequest {
+  int64 product_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ProductReviewRequest {
+  int64 product_id = 1;
+  int64 user_id = 2;
+  string user_name = 3;
+  string title = 4;
+  string content = 5;
+  int32 rating = 6;
+  bool is_verified_purchase = 7;
+}
+
+// Inventory requests
+message ProductAvailabilityRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  int32 quantity = 3;
+}
+
+message ProductStockRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+}
+
+message ReserveStockRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  int32 quantity = 3;
+  string reservation_id = 4;
+  int32 reservation_minutes = 5;
+}
+
+message ReleaseStockRequest {
+  string reservation_id = 1;
+  bool partial_release = 2;
+  int32 release_quantity = 3;
+}
+
+// Price requests
+message ProductPriceRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+}
+
+message ProductDiscountRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+}
+
+message ProductPriceOptionsRequest {
+  int64 product_id = 1;
+  int64 variant_id = 2;
+  repeated ProductOptionItem selected_options = 3;
+  int32 quantity = 4;
+}
+
+// Product responses
+message ProductsResponse {
+  repeated ProductDto products = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  int32 current_page = 4;
+  ResponseStatus status = 5;
+}
+
+message ProductDetailResponse {
+  ProductDetailDto product = 1;
+  ResponseStatus status = 2;
+}
+
+message ProductGalleryResponse {
+  repeated GalleryImageDto images = 1;
+  ResponseStatus status = 2;
+}
+
+message ProductPropertiesResponse {
+  repeated PropertyDto properties = 1;
+  ResponseStatus status = 2;
+}
+
+message ProductSpecificationsResponse {
+  repeated SpecificationDto specifications = 1;
+  ResponseStatus status = 2;
+}
+
+message RelatedProductsResponse {
+  repeated ProductDto products = 1;
+  ResponseStatus status = 2;
+}
+
+message ProductReviewsResponse {
+  repeated ReviewDto reviews = 1;
+  int32 total_count = 2;
+  double average_rating = 3;
+  ResponseStatus status = 4;
+}
+
+message ProductReviewResponse {
+  bool success = 1;
+  string message = 2;
+  ReviewDto review = 3;
+  ResponseStatus status = 4;
+}
+
+message ProductAvailabilityResponse {
+  bool is_available = 1;
+  int32 available_quantity = 2;
+  string status_message = 3;
+  ResponseStatus status = 4;
+}
+
+message ProductStockResponse {
+  int32 in_stock = 1;
+  int32 reserved = 2;
+  bool is_in_stock = 3;
+  bool track_inventory = 4;
+  string availability_message = 5;
+  ResponseStatus status = 6;
+}
+
+message ReserveStockResponse {
+  bool success = 1;
+  string reservation_id = 2;
+  int32 reserved_quantity = 3;
+  string expiry_time = 4;
+  ResponseStatus status = 5;
+}
+
+message ReleaseStockResponse {
+  bool success = 1;
+  int32 released_quantity = 2;
+  ResponseStatus status = 3;
+}
+
+message ProductPriceResponse {
+  double base_price = 1;
+  double sale_price = 2;
+  bool on_sale = 3;
+  double savings_amount = 4;
+  double savings_percent = 5;
+  string formatted_base_price = 6;
+  string formatted_sale_price = 7;
+  ResponseStatus status = 8;
+}
+
+message ProductDiscountResponse {
+  bool has_discount = 1;
+  double discount_percentage = 2;
+  double discount_amount = 3;
+  string discount_start_date = 4;
+  string discount_end_date = 5;
+  string discount_type = 6;
+  ResponseStatus status = 7;
+}
+
+message ProductPriceOptionsResponse {
+  double base_price = 1;
+  double final_price = 2;
+  double options_price_adjustment = 3;
+  double quantity_price = 4;
+  string formatted_base_price = 5;
+  string formatted_final_price = 6;
+  repeated string price_breakdown = 7;
+  ResponseStatus status = 8;
+}
+
+message ProductDetailDto {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string short_description = 4;
+  string sku = 5;
+  string slug = 6;
+  double base_price = 7;
+  double sale_price = 8;
+  bool on_sale = 9;
+  double savings_amount = 10;
+  double savings_percent = 11;
+  string formatted_base_price = 12;
+  string formatted_sale_price = 13;
+  int32 average_rating = 14;
+  int32 review_count = 15;
+  bool in_stock = 16;
+  int32 stock_quantity = 17;
+  string image_url = 18;
+  repeated GalleryImageDto gallery = 19;
+  int64 category_id = 20;
+  string category_name = 21;
+  int64 brand_id = 22;
+  string brand_name = 23;
+  bool is_new = 24;
+  bool is_featured = 25;
+  bool is_bestseller = 26;
+  repeated PropertyDto properties = 27;
+  repeated SpecificationDto specifications = 28;
+  repeated VariantDto variants = 29;
+  repeated ProductDto related_products = 30;
+  repeated ProductDto upsell_products = 31;
+  repeated ProductDto cross_sell_products = 32;
+  repeated ReviewDto reviews = 33;
+  google.protobuf.Timestamp created_date = 34;
+  google.protobuf.Timestamp updated_date = 35;
+  string seo_title = 36;
+  string seo_description = 37;
+  string seo_keywords = 38;
+}
+
+message VariantDto {
+  int64 id = 1;
+  string name = 2;
+  string sku = 3;
+  double price = 4;
+  double sale_price = 5;
+  bool on_sale = 6;
+  bool in_stock = 7;
+  int32 stock_quantity = 8;
+  string image_url = 9;
+  repeated PropertyValueDto properties = 10;
+  string formatted_price = 11;
+  string formatted_sale_price = 12;
+}
+
+message SpecificationDto {
+  int64 id = 1;
+  string name = 2;
+  string value = 3;
+  string group = 4;
+  int32 display_order = 5;
+}
+
+message ReviewCommentDto {
+  int64 id = 1;
+  int64 review_id = 2;
+  string user_name = 3;
+  string content = 4;
+  bool is_admin = 5;
+  google.protobuf.Timestamp created_date = 6;
+}
+
+message ProductOptionItem {
+  int64 option_id = 1;
+  int64 option_value_id = 2;
+  double price_adjustment = 3;
+} 
+// MESSAGE DEFINITIONS
+
+// Site settings messages
+message SiteSettingsRequest {
+  int32 id = 1;
+}
+
+message SiteSettingsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SiteSettingsDto site = 4;
+}
+
+message SiteSettingsDto {
+  int32 id = 1;
+  string site_name = 2;
+  string site_title = 3;
+  string site_description = 4;
+  string site_copyright = 5;
+  string site_address = 6;
+  string site_phone = 7;
+  string site_email = 8;
+  string site_logo = 9;
+  string site_favicon = 10;
+  string site_slogan = 11;
+  string site_terms = 12;
+  string site_about = 13;
+  string site_privacy = 14;
+  bool enable_registration = 15;
+  bool enable_blog = 16;
+  bool enable_contact = 17;
+  bool enable_shop = 18;
+  string currency_symbol = 19;
+  string currency_name = 20;
+}
+
+message UpdateSiteSettingsRequest {
+  int32 id = 1;
+  SiteSettingsDto site = 2;
+}
+
+// SEO settings messages
+message SeoSettingsRequest {
+  int32 id = 1;
+}
+
+message SeoSettingsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SeoSettingsDto seo = 4;
+}
+
+message SeoSettingsDto {
+  int32 id = 1;
+  string meta_title = 2;
+  string meta_description = 3;
+  string meta_keywords = 4;
+  string canonical_url = 5;
+  string robots_txt = 6;
+  string google_analytics = 7;
+  string google_tag_manager = 8;
+  string google_site_verification = 9;
+  string bing_site_verification = 10;
+  bool enable_sitemap = 11;
+  bool enable_schema_markup = 12;
+  string custom_head_scripts = 13;
+  string custom_footer_scripts = 14;
+}
+
+message UpdateSeoSettingsRequest {
+  int32 id = 1;
+  SeoSettingsDto seo = 2;
+}
+
+// Social links messages
+message SocialLinksRequest {
+  int32 id = 1;
+}
+
+message SocialLinksResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  SocialLinksDto social = 4;
+}
+
+message SocialLinksDto {
+  int32 id = 1;
+  string facebook = 2;
+  string twitter = 3;
+  string instagram = 4;
+  string linkedin = 5;
+  string youtube = 6;
+  string pinterest = 7;
+  string telegram = 8;
+  string whatsapp = 9;
+  bool enable_social_login = 10;
+  bool enable_facebook_login = 11;
+  bool enable_google_login = 12;
+}
+
+message UpdateSocialLinksRequest {
+  int32 id = 1;
+  SocialLinksDto social = 2;
+}
+
+// Sections messages
+message SectionsRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+}
+
+message SectionsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated SectionDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message SectionDto {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  string image_url = 4;
+  int32 display_order = 5;
+  bool is_active = 6;
+  string section_type = 7;
+  string link_url = 8;
+  string link_text = 9;
+  bool is_featured = 10;
+  string created_date = 11;
+}
+
+message CreateSectionRequest {
+  SectionDto section = 1;
+}
+
+message UpdateSectionRequest {
+  SectionDto section = 1;
+}
+
+message DeleteSectionRequest {
+  int32 id = 1;
+}
+
+// Representation types messages
+message RepresentationTypesRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+}
+
+message RepresentationTypesResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated RepresentationTypeDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message RepresentationTypeDto {
+  int32 id = 1;
+  string title = 2;
+  bool is_active = 3;
+  int32 display_order = 4;
+  string created_date = 5;
+}
+
+message CreateRepresentationTypeRequest {
+  RepresentationTypeDto type = 1;
+}
+
+message UpdateRepresentationTypeRequest {
+  RepresentationTypeDto type = 1;
+}
+
+message DeleteRepresentationTypeRequest {
+  int32 id = 1;
+}
+
+// Representations messages
+message RepresentationsRequest {
+  string search_key = 1;
+  int32 page_id = 2;
+  int32 take = 3;
+  int32 type_id = 4;
+}
+
+message RepresentationsResponse {
+  bool status = 1;
+  string message = 2;
+  int32 code = 3;
+  repeated RepresentationDto items = 4;
+  int32 total_row = 5;
+  int32 page_id = 6;
+  int32 take = 7;
+}
+
+message RepresentationDto {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  string description = 6;
+  bool is_active = 7;
+  int32 discount_percentage = 8;
+  int32 type_id = 9;
+  string type_title = 10;
+  string created_date = 11;
+}
+
+message CreateRepresentationRequest {
+  RepresentationDto representation = 1;
+}
+
+message UpdateRepresentationRequest {
+  RepresentationDto representation = 1;
+}
+
+message DeleteRepresentationRequest {
+  int32 id = 1;
+} 
+// Authentication requests
+message LoginRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool subscribe_to_newsletter = 8;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string token = 1;
+}
+
+message ForgotPasswordRequest {
+  string email = 1;
+}
+
+message ChangePasswordRequest {
+  int64 user_id = 1;
+  string current_password = 2;
+  string new_password = 3;
+}
+
+message VerifyEmailRequest {
+  string token = 1;
+  string email = 2;
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message GetCurrentUserRequest {
+  string token = 1;
+}
+
+message CheckEmailRequest {
+  string email = 1;
+}
+
+message CheckUsernameRequest {
+  string username = 1;
+}
+
+// Profile requests
+message GetUserProfileRequest {
+  int64 user_id = 1;
+}
+
+message UpdateUserProfileRequest {
+  int64 user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string phone = 5;
+  string date_of_birth = 6;
+  string gender = 7;
+  bool subscribe_to_newsletter = 8;
+  string language = 9;
+  string currency = 10;
+}
+
+message UpdateUserAvatarRequest {
+  int64 user_id = 1;
+  bytes avatar_data = 2;
+  string file_name = 3;
+  string content_type = 4;
+}
+
+message GetUserAddressesRequest {
+  int64 user_id = 1;
+}
+
+message AddUserAddressRequest {
+  int64 user_id = 1;
+  AddressDto address = 2;
+}
+
+message UpdateUserAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+  AddressDto address = 3;
+}
+
+message DeleteUserAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+}
+
+message SetDefaultAddressRequest {
+  int64 user_id = 1;
+  int64 address_id = 2;
+  string address_type = 3; // "shipping" or "billing"
+}
+
+message GetUserWishlistRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message AddToWishlistRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+message RemoveFromWishlistRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+message GetRecentlyViewedRequest {
+  int64 user_id = 1;
+  int32 limit = 2;
+}
+
+message AddRecentlyViewedRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+}
+
+// Admin requests
+message GetUsersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;
+  bool sort_ascending = 4;
+  string search = 5;
+  string role = 6;
+  bool active_only = 7;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+  bool include_orders = 2;
+  bool include_activity = 3;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool active = 8;
+  bool email_verified = 9;
+  repeated string roles = 10;
+}
+
+message UpdateUserRequest {
+  int64 user_id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  bool active = 8;
+  bool email_verified = 9;
+  repeated string roles = 10;
+}
+
+message DeleteUserRequest {
+  int64 user_id = 1;
+}
+
+message BanUserRequest {
+  int64 user_id = 1;
+  string reason = 2;
+  string expires_at = 3;
+}
+
+message UnbanUserRequest {
+  int64 user_id = 1;
+}
+
+message VerifyUserRequest {
+  int64 user_id = 1;
+}
+
+message AssignRolesToUserRequest {
+  int64 user_id = 1;
+  repeated string roles = 2;
+}
+
+message GetUserActivityLogRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string from_date = 4;
+  string to_date = 5;
+  string activity_type = 6;
+}
+
+message ExportUsersRequest {
+  string format = 1; // "csv", "excel", etc.
+  string from_date = 2;
+  string to_date = 3;
+  string role = 4;
+  bool active_only = 5;
+}
+
+// Product interaction requests
+message RateProductRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  int32 rating = 3;
+}
+
+message ReviewProductRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  string title = 3;
+  string content = 4;
+  int32 rating = 5;
+  bool verified_purchase = 6;
+}
+
+message GetUserReviewsRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetProductReviewsRequest {
+  int64 product_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message AskProductQuestionRequest {
+  int64 user_id = 1;
+  int64 product_id = 2;
+  string question = 3;
+}
+
+message AnswerProductQuestionRequest {
+  int64 user_id = 1;
+  int64 question_id = 2;
+  string answer = 3;
+  bool is_official = 4;
+}
+
+message GetProductQuestionsRequest {
+  int64 product_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetUserQuestionsRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  bool include_answers = 4;
+}
+
+// Response messages
+message AuthResponse {
+  bool success = 1;
+  string token = 2;
+  string refresh_token = 3;
+  string token_type = 4;
+  int32 expires_in = 5;
+  UserDto user = 6;
+  ResponseDto status = 7;
+}
+
+message ValidateTokenResponse {
+  bool is_valid = 1;
+  UserDto user = 2;
+  repeated string roles = 3;
+  int32 expires_in = 4;
+  ResponseDto status = 5;
+}
+
+message UserResponse {
+  UserDto user = 1;
+  ResponseDto status = 2;
+}
+
+message CheckEmailResponse {
+  bool exists = 1;
+  ResponseDto status = 2;
+}
+
+message CheckUsernameResponse {
+  bool exists = 1;
+  string suggestion = 2;
+  ResponseDto status = 3;
+}
+
+message UserProfileResponse {
+  UserProfileDto profile = 1;
+  ResponseDto status = 2;
+}
+
+message UpdateUserAvatarResponse {
+  string avatar_url = 1;
+  ResponseDto status = 2;
+}
+
+message UserAddressesResponse {
+  repeated AddressDto addresses = 1;
+  ResponseDto status = 2;
+}
+
+message UserAddressResponse {
+  AddressDto address = 1;
+  ResponseDto status = 2;
+}
+
+message UserWishlistResponse {
+  repeated WishlistItemDto items = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message RecentlyViewedResponse {
+  repeated ProductSummaryDto products = 1;
+  ResponseDto status = 2;
+}
+
+message GetUsersResponse {
+  repeated UserDto users = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetUserResponse {
+  UserDetailDto user = 1;
+  ResponseDto status = 2;
+}
+
+message UserActivityLogResponse {
+  repeated UserActivityDto activities = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message ExportUsersResponse {
+  bool success = 1;
+  string download_url = 2;
+  int32 total_users = 3;
+  string format = 4;
+  string expires_at = 5;
+  ResponseDto status = 6;
+}
+
+message RateProductResponse {
+  bool success = 1;
+  int32 new_rating = 2;
+  int32 total_ratings = 3;
+  ResponseDto status = 4;
+}
+
+message ReviewProductResponse {
+  bool success = 1;
+  ReviewDto review = 2;
+  ResponseDto status = 3;
+}
+
+message GetUserReviewsResponse {
+  repeated ReviewDto reviews = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetProductReviewsResponse {
+  repeated ReviewDto reviews = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message AskProductQuestionResponse {
+  bool success = 1;
+  QuestionDto question = 2;
+  ResponseDto status = 3;
+}
+
+message AnswerProductQuestionResponse {
+  bool success = 1;
+  AnswerDto answer = 2;
+  ResponseDto status = 3;
+}
+
+message GetProductQuestionsResponse {
+  repeated QuestionDto questions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetUserQuestionsResponse {
+  repeated QuestionDto questions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message UserDetailDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  string gender = 8;
+  string avatar_url = 9;
+  bool active = 10;
+  bool email_verified = 11;
+  bool two_factor_enabled = 12;
+  string currency = 13;
+  string language = 14;
+  bool subscribe_to_newsletter = 15;
+  repeated string roles = 16;
+  string last_login_date = 17;
+  string last_login_ip = 18;
+  google.protobuf.Timestamp created_date = 19;
+  google.protobuf.Timestamp updated_date = 20;
+  int32 order_count = 21;
+  double total_spent = 22;
+  string customer_status = 23;
+  string notes = 24;
+  repeated AddressDto addresses = 25;
+  repeated OrderSummaryDto recent_orders = 26;
+  repeated UserActivityDto recent_activity = 27;
+}
+
+message UserProfileDto {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string phone = 6;
+  string date_of_birth = 7;
+  string gender = 8;
+  string avatar_url = 9;
+  bool email_verified = 10;
+  bool two_factor_enabled = 11;
+  string currency = 12;
+  string language = 13;
+  bool subscribe_to_newsletter = 14;
+  int32 wishlist_count = 15;
+  int32 order_count = 16;
+  int32 review_count = 17;
+  google.protobuf.Timestamp created_date = 18;
+}
+
+message WishlistItemDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  string product_image = 4;
+  double price = 5;
+  string formatted_price = 6;
+  bool in_stock = 7;
+  google.protobuf.Timestamp added_date = 8;
+}
+
+
+message UserActivityDto {
+  int64 id = 1;
+  string activity_type = 2;
+  string description = 3;
+  string ip_address = 4;
+  string user_agent = 5;
+  google.protobuf.Timestamp date = 6;
+  string object_type = 7;
+  string object_id = 8;
+  string details = 9;
+}
+
+message ReviewDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int64 user_id = 4;
+  string user_name = 5;
+  string title = 6;
+  string content = 7;
+  int32 rating = 8;
+  bool is_verified_purchase = 9;
+  bool is_approved = 10;
+  google.protobuf.Timestamp created_date = 11;
+  repeated AnswerDto replies = 12;
+  repeated ReviewCommentDto comments = 13;
+}
+
+message QuestionDto {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int64 user_id = 4;
+  string user_name = 5;
+  string question = 6;
+  bool is_answered = 7;
+  int32 answer_count = 8;
+  google.protobuf.Timestamp created_date = 9;
+  repeated AnswerDto answers = 10;
+}
+
+message AnswerDto {
+  int64 id = 1;
+  int64 question_id = 2;
+  int64 user_id = 3;
+  string user_name = 4;
+  string answer = 5;
+  bool is_official = 6;
+  int32 helpful_votes = 7;
+  google.protobuf.Timestamp created_date = 8;
+}
+
+// Additional messages
+message ProtectDataRequest {
+  string data = 1;
+  string purpose = 2;
+  int32 expiry_minutes = 3;
+}
+
+message ProtectDataResponse {
+  string protected_data = 1;
+  string expires_at = 2;
+} 
+// Wallet requests
+message WalletRequest {
+  int32 user_id = 1;
+}
+
+message UserWalletRequest {
+  string user_name = 1;
+}
+
+message WalletBalanceRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+}
+
+// Transaction requests
+message WalletTransactionRequest {
+  int32 transaction_id = 1;
+}
+
+message WalletTransactionTokenRequest {
+  string token = 1;
+}
+
+message TransactionHistoryRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  string from_date = 5;
+  string to_date = 6;
+  int32 transaction_type_id = 7;
+}
+
+message TransactionRequest {
+  int32 wallet_id = 1;
+  string type_name = 2;
+}
+
+message WalletTransactionUpdateRequest {
+  int32 transaction_id = 1;
+  bool is_success = 2;
+  optional string tracking_code = 3;
+}
+
+// Credit requests
+message AddCreditRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double amount = 3;
+  string description = 4;
+  int32 transaction_type_id = 5;
+}
+
+message DeductCreditRequest {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double amount = 3;
+  string description = 4;
+  int32 transaction_type_id = 5;
+}
+
+message TransferCreditRequest {
+  int32 source_wallet_id = 1;
+  int32 target_wallet_id = 2;
+  double amount = 3;
+  string description = 4;
+}
+
+message CalculateRequest {
+  int64 price = 1;
+  int32 transaction_id = 2;
+  int32 month = 3;
+}
+
+// Admin requests
+message GetWalletsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  bool active_only = 4;
+  bool blocked_only = 5;
+}
+
+message GetWalletDetailsRequest {
+  int32 wallet_id = 1;
+  bool include_transactions = 2;
+}
+
+message UpdateWalletStatusRequest {
+  int32 wallet_id = 1;
+  bool is_active = 2;
+  bool is_blocked = 3;
+  string reason = 4;
+}
+
+message ManageWalletCreditRequest {
+  int32 wallet_id = 1;
+  double amount = 2;
+  string operation = 3; // "add", "deduct", "reset"
+  string description = 4;
+  bool notify_user = 5;
+}
+
+message GetWalletTransactionsRequest {
+  int32 wallet_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string from_date = 4;
+  string to_date = 5;
+  int32 transaction_type_id = 6;
+  bool successful_only = 7;
+}
+
+message WalletStatisticsRequest {
+  string from_date = 1;
+  string to_date = 2;
+  string group_by = 3; // "day", "week", "month"
+  int32 transaction_type_id = 4;
+}
+
+message ExportWalletTransactionsRequest {
+  int32 wallet_id = 1;
+  string from_date = 2;
+  string to_date = 3;
+  string format = 4; // "csv", "excel"
+  repeated int32 transaction_type_ids = 5;
+}
+
+// Response messages
+message WalletResponse {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  double credit = 3;
+  double used_credit = 4;
+  double remaining_credit = 5;
+  string last_updated = 6;
+  ResponseDto status = 7;
+}
+
+message UserWalletResponse {
+  bool status = 1;
+  string message = 2;
+  optional UserWalletItem wallet = 3;
+}
+
+message WalletBalanceResponse {
+  double total_balance = 1;
+  double available_balance = 2;
+  double reserved_balance = 3;
+  double pending_balance = 4;
+  string currency_code = 5;
+  string formatted_total_balance = 6;
+  string formatted_available_balance = 7;
+  ResponseDto status = 8;
+}
+
+message WalletTypesResponse {
+  repeated WalletTypeDto wallet_types = 1;
+  ResponseDto status = 2;
+}
+
+message WalletTransactionResponse {
+  bool status = 1;
+  string message = 2;
+  optional WalletTransactionItem transaction = 3;
+}
+
+message TransactionHistoryResponse {
+  repeated WalletTransactionItem transactions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message TransactionResponse {
+  int32 transaction_id = 1;
+  int32 wallet_id = 2;
+  string type_name = 3; 
+  double amount = 4;
+  string description = 5;
+  string tracking_code = 6;
+  string transaction_date = 7;
+  int32 months = 8;
+  double monthly_payment = 9;
+  bool is_active = 10;
+  ResponseDto status = 11;
+}
+
+message WalletTransactionUpdateResponse {
+  bool status = 1;
+  string message = 2;
+  ResponseDto response_status = 3;
+}
+
+message AddCreditResponse {
+  bool success = 1;
+  double new_balance = 2;
+  WalletTransactionItem transaction = 3;
+  ResponseDto status = 4;
+}
+
+message DeductCreditResponse {
+  bool success = 1;
+  double new_balance = 2;
+  WalletTransactionItem transaction = 3;
+  ResponseDto status = 4;
+}
+
+message TransferCreditResponse {
+  bool success = 1;
+  double source_new_balance = 2;
+  double target_new_balance = 3;
+  WalletTransactionItem transaction = 4;
+  ResponseDto status = 5;
+}
+
+message CalculateResponse {
+  bool is_successed = 1;
+  string message = 2;
+  double monthly_amount = 3;
+  double total_amount = 4;
+  ResponseDto status = 5;
+}
+
+// Admin responses
+message GetWalletsResponse {
+  repeated WalletSummaryDto wallets = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message GetWalletDetailsResponse {
+  WalletDetailDto wallet = 1;
+  ResponseDto status = 2;
+}
+
+message GetWalletTransactionsResponse {
+  repeated WalletTransactionItem transactions = 1;
+  int32 total_count = 2;
+  int32 total_pages = 3;
+  ResponseDto status = 4;
+}
+
+message WalletStatisticsResponse {
+  repeated WalletStatisticItemDto statistics = 1;
+  WalletSummaryStatisticsDto summary = 2;
+  ResponseDto status = 3;
+}
+
+message ExportWalletTransactionsResponse {
+  bool success = 1;
+  string download_url = 2;
+  int32 total_transactions = 3;
+  string format = 4;
+  string expires_at = 5;
+  ResponseDto status = 6;
+}
+
+// Data DTOs
+message UserWalletItem {
+  int32 id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  double credit = 4;
+  double used_credit = 5;
+  double remaining_credit = 6;
+  string last_updated = 7;
+}
+
+message WalletTransactionItem {
+  int32 id = 1;
+  int32 wallet_id = 2;
+  int32 transaction_type_id = 3;
+  string transaction_type_name = 4;
+  double amount = 5;
+  string description = 6;
+  string tracking_code = 7;
+  string transaction_date = 8;
+  bool is_success = 9;
+  string token = 10;
+  int32 order_id = 11;
+}
+
+message WalletTypeDto {
+  int32 type_id = 1;
+  string type_title = 2;
+  string color = 3;
+  string description = 4;
+  bool is_active = 5;
+}
+
+message WalletSummaryDto {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  string user_email = 4;
+  double total_credit = 5;
+  double used_credit = 6;
+  double available_credit = 7;
+  bool is_active = 8;
+  bool is_blocked = 9;
+  string created_date = 10;
+  string last_transaction_date = 11;
+}
+
+message WalletDetailDto {
+  int32 wallet_id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  string user_email = 4;
+  string user_phone = 5;
+  double total_credit = 6;
+  double used_credit = 7;
+  double available_credit = 8;
+  double reserved_credit = 9;
+  bool is_active = 10;
+  bool is_blocked = 11;
+  string blocked_reason = 12;
+  string created_date = 13;
+  string last_updated = 14;
+  repeated WalletTransactionItem recent_transactions = 15;
+  WalletStatisticsDto statistics = 16;
+}
+
+message WalletStatisticsDto {
+  int32 total_transactions = 1;
+  int32 successful_transactions = 2;
+  int32 failed_transactions = 3;
+  double total_credit_added = 4;
+  double total_credit_used = 5;
+  double average_transaction_amount = 6;
+}
+
+message WalletStatisticItemDto {
+  string date = 1;
+  int32 transaction_count = 2;
+  double total_amount = 3;
+  double credit_added = 4;
+  double credit_used = 5;
+}
+
+message WalletSummaryStatisticsDto {
+  int32 total_wallets = 1;
+  int32 active_wallets = 2;
+  int32 blocked_wallets = 3;
+  double total_system_credit = 4;
+  double total_used_credit = 5;
+  double total_available_credit = 6;
+  double average_wallet_balance = 7;
+}
+
+message WalletTransactionPaging {
+  int32 take = 1;
+  int32 current_page = 2;
+  int32 page_count = 3;
+  repeated WalletTransactionItem wallet_transactions = 4;
+} 
+
+// Requests
+message ProductParameterRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+  int64 category_id = 4;
+  string sort_field = 5;
+  bool ascending = 6;
+  bool include_unpublished = 7;
+}

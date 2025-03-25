@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
 
 namespace Parstech.Shop.Web.Pages.Auth;
 

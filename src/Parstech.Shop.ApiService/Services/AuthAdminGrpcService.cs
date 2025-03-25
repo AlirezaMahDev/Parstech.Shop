@@ -3,11 +3,10 @@ using Grpc.Core;
 using MediatR;
 
 using Parstech.Shop.ApiService.Application.Features.User.Requests.Queries;
-using Parstech.Shop.Shared.Protos.AuthAdmin;
 
 using ResponseDto = Parstech.Shop.Shared.DTOs.ResponseDto;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class AuthAdminGrpcService : AuthAdminService.AuthAdminServiceBase
 {
@@ -98,7 +97,7 @@ public class AuthAdminGrpcService : AuthAdminService.AuthAdminServiceBase
     {
         try
         {
-            var userRegisterDto = new Parstech.Shop.Application.DTOs.User.UserRegisterDto
+            var userRegisterDto = new Shop.Application.DTOs.User.UserRegisterDto
             {
                 UserName = request.UserName,
                 FirstName = request.FirstName,

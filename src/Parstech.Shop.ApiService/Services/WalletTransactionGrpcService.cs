@@ -7,7 +7,7 @@ using Parstech.Shop.ApiService.Application.Features.WalletTransaction.Requests.Q
 
 namespace Parstech.Shop.ApiService.Services;
 
-public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionService.WalletTransactionServiceBase
+public class WalletTransactionGrpcService : Shared.Protos.Wallet.WalletTransactionService.WalletTransactionServiceBase
 {
     private readonly IMediator _mediator;
     private readonly IWalletTransactionRepository _walletTransactionRepository;
@@ -26,8 +26,8 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
         _userRepository = userRepository;
     }
 
-    public override async Task<global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse> GetWalletTransaction(
-        global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionRequest request,
+    public override async Task<Shared.Protos.Wallet.WalletTransactionResponse> GetWalletTransaction(
+        Shared.Protos.Wallet.WalletTransactionRequest request,
         ServerCallContext context)
     {
         try
@@ -35,14 +35,14 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
             var transaction = await _walletTransactionRepository.GetByIdAsync(request.TransactionId);
             if (transaction == null)
             {
-                return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse { Status = false, Message = "Transaction not found" };
+                return new Shared.Protos.Wallet.WalletTransactionResponse { Status = false, Message = "Transaction not found" };
             }
 
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse
+            return new Shared.Protos.Wallet.WalletTransactionResponse
             {
                 Status = true,
                 Message = "Transaction found",
-                Transaction = new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionItem
+                Transaction = new Shared.Protos.Wallet.WalletTransactionItem
                 {
                     Id = transaction.Id,
                     WalletId = transaction.WalletId,
@@ -60,15 +60,15 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
         }
         catch (Exception ex)
         {
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse
+            return new Shared.Protos.Wallet.WalletTransactionResponse
             {
                 Status = false, Message = $"Error retrieving transaction: {ex.Message}"
             };
         }
     }
 
-    public override async Task<global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse> GetWalletTransactionByToken(
-        global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionTokenRequest request,
+    public override async Task<Shared.Protos.Wallet.WalletTransactionResponse> GetWalletTransactionByToken(
+        Shared.Protos.Wallet.WalletTransactionTokenRequest request,
         ServerCallContext context)
     {
         try
@@ -76,14 +76,14 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
             var transaction = await _walletTransactionRepository.GetByTokenAsync(request.Token);
             if (transaction == null)
             {
-                return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse { Status = false, Message = "Transaction not found" };
+                return new Shared.Protos.Wallet.WalletTransactionResponse { Status = false, Message = "Transaction not found" };
             }
 
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse
+            return new Shared.Protos.Wallet.WalletTransactionResponse
             {
                 Status = true,
                 Message = "Transaction found",
-                Transaction = new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionItem
+                Transaction = new Shared.Protos.Wallet.WalletTransactionItem
                 {
                     Id = transaction.Id,
                     WalletId = transaction.WalletId,
@@ -101,15 +101,15 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
         }
         catch (Exception ex)
         {
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionResponse
+            return new Shared.Protos.Wallet.WalletTransactionResponse
             {
                 Status = false, Message = $"Error retrieving transaction: {ex.Message}"
             };
         }
     }
 
-    public override async Task<global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionUpdateResponse> UpdateWalletTransaction(
-        global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionUpdateRequest request,
+    public override async Task<Shared.Protos.Wallet.WalletTransactionUpdateResponse> UpdateWalletTransaction(
+        Shared.Protos.Wallet.WalletTransactionUpdateRequest request,
         ServerCallContext context)
     {
         try
@@ -117,7 +117,7 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
             var transaction = await _walletTransactionRepository.GetByIdAsync(request.TransactionId);
             if (transaction == null)
             {
-                return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionUpdateResponse { Status = false, Message = "Transaction not found" };
+                return new Shared.Protos.Wallet.WalletTransactionUpdateResponse { Status = false, Message = "Transaction not found" };
             }
 
             transaction.Active = request.IsSuccess;
@@ -128,19 +128,19 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
 
             await _walletTransactionRepository.UpdateAsync(transaction);
 
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionUpdateResponse { Status = true, Message = "Transaction updated successfully" };
+            return new Shared.Protos.Wallet.WalletTransactionUpdateResponse { Status = true, Message = "Transaction updated successfully" };
         }
         catch (Exception ex)
         {
-            return new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionUpdateResponse
+            return new Shared.Protos.Wallet.WalletTransactionUpdateResponse
             {
                 Status = false, Message = $"Error updating transaction: {ex.Message}"
             };
         }
     }
 
-    public override async Task<global::Parstech.Shop.Shared.Protos.Wallet.TransactionHistoryResponse> GetTransactionHistory(
-        global::Parstech.Shop.Shared.Protos.Wallet.TransactionHistoryRequest request,
+    public override async Task<Shared.Protos.Wallet.TransactionHistoryResponse> GetTransactionHistory(
+        Shared.Protos.Wallet.TransactionHistoryRequest request,
         ServerCallContext context)
     {
         try
@@ -156,16 +156,16 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
 
             var result = await _mediator.Send(query);
 
-            var response = new global::Parstech.Shop.Shared.Protos.Wallet.TransactionHistoryResponse
+            var response = new Shared.Protos.Wallet.TransactionHistoryResponse
             {
                 TotalCount = result.TotalCount,
                 TotalPages = result.TotalPages,
-                Status = new global::Parstech.Shop.Shared.Protos.Common.ResponseDto { IsSuccess = true, Message = "Transaction history retrieved successfully" }
+                Status = new Shared.Protos.Common.ResponseDto { IsSuccess = true, Message = "Transaction history retrieved successfully" }
             };
 
             foreach (var transaction in result.Transactions)
             {
-                response.Transactions.Add(new global::Parstech.Shop.Shared.Protos.Wallet.WalletTransactionItem
+                response.Transactions.Add(new Shared.Protos.Wallet.WalletTransactionItem
                 {
                     Id = transaction.Id,
                     WalletId = transaction.WalletId,
@@ -185,15 +185,15 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
         }
         catch (Exception ex)
         {
-            return new global::Parstech.Shop.Shared.Protos.Wallet.TransactionHistoryResponse
+            return new Shared.Protos.Wallet.TransactionHistoryResponse
             {
-                Status = new global::Parstech.Shop.Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = $"Error retrieving transaction history: {ex.Message}" }
+                Status = new Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = $"Error retrieving transaction history: {ex.Message}" }
             };
         }
     }
 
-    public override async Task<global::Parstech.Shop.Shared.Protos.Wallet.TransactionResponse> GetActiveTransaction(
-        global::Parstech.Shop.Shared.Protos.Wallet.TransactionRequest request,
+    public override async Task<Shared.Protos.Wallet.TransactionResponse> GetActiveTransaction(
+        Shared.Protos.Wallet.TransactionRequest request,
         ServerCallContext context)
     {
         try
@@ -202,13 +202,13 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
 
             if (transaction == null)
             {
-                return new global::Parstech.Shop.Shared.Protos.Wallet.TransactionResponse
+                return new Shared.Protos.Wallet.TransactionResponse
                 {
-                    Status = new global::Parstech.Shop.Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = "No active transaction found" }
+                    Status = new Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = "No active transaction found" }
                 };
             }
 
-            return new global::Parstech.Shop.Shared.Protos.Wallet.TransactionResponse
+            return new Shared.Protos.Wallet.TransactionResponse
             {
                 TransactionId = transaction.Id,
                 WalletId = transaction.WalletId,
@@ -220,14 +220,14 @@ public class WalletTransactionGrpcService : global::Parstech.Shop.Shared.Protos.
                 Months = transaction.Month ?? 0,
                 MonthlyPayment = transaction.Price,
                 IsActive = transaction.Active ?? false,
-                Status = new global::Parstech.Shop.Shared.Protos.Common.ResponseDto { IsSuccess = true, Message = "Active transaction retrieved successfully" }
+                Status = new Shared.Protos.Common.ResponseDto { IsSuccess = true, Message = "Active transaction retrieved successfully" }
             };
         }
         catch (Exception ex)
         {
-            return new global::Parstech.Shop.Shared.Protos.Wallet.TransactionResponse
+            return new Shared.Protos.Wallet.TransactionResponse
             {
-                Status = new global::Parstech.Shop.Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = $"Error retrieving active transaction: {ex.Message}" }
+                Status = new Shared.Protos.Common.ResponseDto { IsSuccess = false, Message = $"Error retrieving active transaction: {ex.Message}" }
             };
         }
     }

@@ -13,7 +13,7 @@ using Parstech.Shop.ApiService.Application.Features.ProductGallery.Requests.Quer
 using Parstech.Shop.ApiService.Application.Features.ProductProperty.Requests.Queries;
 using Parstech.Shop.Shared.DTOs;
 
-namespace Parstech.Shop.ApiService.Services.GrpcServices;
+namespace Parstech.Shop.ApiService.Services;
 
 public class ProductComponentsAdminGrpcService : ProductComponentsAdminService.ProductComponentsAdminServiceBase
 {
@@ -63,7 +63,7 @@ public class ProductComponentsAdminGrpcService : ProductComponentsAdminService.P
     {
         try
         {
-            var galleryDto = new Parstech.Shop.Application.DTOs.ProductGallery.ProductGalleryDto
+            var galleryDto = new Shop.Application.DTOs.ProductGallery.ProductGalleryDto
             {
                 Id = request.Gallery.Id,
                 ProductId = request.Gallery.ProductId,

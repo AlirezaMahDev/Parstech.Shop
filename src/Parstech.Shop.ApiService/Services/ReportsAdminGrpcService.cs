@@ -245,10 +245,10 @@ public class ReportsAdminGrpcService : ReportsAdminService.ReportsAdminServiceBa
 
     #region Mapping Helpers
 
-    private Parstech.Shop.Application.DTOs.WalletTransaction.TransactionParameterDto MapToApplicationTransactionParameter(
+    private Shop.Application.DTOs.WalletTransaction.TransactionParameterDto MapToApplicationTransactionParameter(
         TransactionParameterDto request)
     {
-        return new Parstech.Shop.Application.DTOs.WalletTransaction.TransactionParameterDto
+        return new Shop.Application.DTOs.WalletTransaction.TransactionParameterDto
         {
             CurrentPage = request.CurrentPage,
             TakePage = request.TakePage,
