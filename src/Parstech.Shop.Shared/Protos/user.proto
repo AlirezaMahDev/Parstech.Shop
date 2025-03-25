@@ -1,13 +1,11 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.User";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package user;
+package parstech;
 
 import "google/protobuf/timestamp.proto";
 import "Common.proto";
-
-// USER SERVICE DEFINITIONS
 
 // User Authentication Service for authentication and authorization
 service UserAuthService {
@@ -74,14 +72,6 @@ service UserProductService {
   rpc AnswerProductQuestion (AnswerProductQuestionRequest) returns (AnswerProductQuestionResponse);
   rpc GetProductQuestions (GetProductQuestionsRequest) returns (GetProductQuestionsResponse);
   rpc GetUserQuestions (GetUserQuestionsRequest) returns (GetUserQuestionsResponse);
-}
-
-// MESSAGE DEFINITIONS
-
-message ResponseDto {
-  bool success = 1;
-  string message = 2;
-  int32 code = 3;
 }
 
 // Authentication requests
@@ -571,24 +561,6 @@ message UserProfileDto {
   int32 order_count = 16;
   int32 review_count = 17;
   google.protobuf.Timestamp created_date = 18;
-}
-
-message AddressDto {
-  int64 id = 1;
-  string first_name = 2;
-  string last_name = 3;
-  string company = 4;
-  string address_line1 = 5;
-  string address_line2 = 6;
-  string city = 7;
-  string state = 8;
-  string postal_code = 9;
-  string country = 10;
-  string country_code = 11;
-  string phone = 12;
-  string email = 13;
-  bool is_default_billing = 14;
-  bool is_default_shipping = 15;
 }
 
 message WishlistItemDto {

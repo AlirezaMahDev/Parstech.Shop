@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Settings";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package settings;
+package parstech;
 
-import "google/protobuf/timestamp.proto";
 import "Common.proto";
 
 // SETTINGS SERVICE DEFINITIONS
@@ -13,32 +12,32 @@ import "Common.proto";
 service SettingsAdminService {
   // Site settings operations
   rpc GetSiteSettings (SiteSettingsRequest) returns (SiteSettingsResponse);
-  rpc UpdateSiteSettings (UpdateSiteSettingsRequest) returns (common.ResponseDto);
+  rpc UpdateSiteSettings (UpdateSiteSettingsRequest) returns (ResponseDto);
   
   // SEO operations
   rpc GetSeoSettings (SeoSettingsRequest) returns (SeoSettingsResponse);
-  rpc UpdateSeoSettings (UpdateSeoSettingsRequest) returns (common.ResponseDto);
+  rpc UpdateSeoSettings (UpdateSeoSettingsRequest) returns (ResponseDto);
   
   // Social links operations
   rpc GetSocialLinks (SocialLinksRequest) returns (SocialLinksResponse);
-  rpc UpdateSocialLinks (UpdateSocialLinksRequest) returns (common.ResponseDto);
+  rpc UpdateSocialLinks (UpdateSocialLinksRequest) returns (ResponseDto);
   
   // Sections operations
   rpc GetSections (SectionsRequest) returns (SectionsResponse);
-  rpc UpdateSection (UpdateSectionRequest) returns (common.ResponseDto);
-  rpc CreateSection (CreateSectionRequest) returns (common.ResponseDto);
-  rpc DeleteSection (DeleteSectionRequest) returns (common.ResponseDto);
+  rpc UpdateSection (UpdateSectionRequest) returns (ResponseDto);
+  rpc CreateSection (CreateSectionRequest) returns (ResponseDto);
+  rpc DeleteSection (DeleteSectionRequest) returns (ResponseDto);
   
   // Discount panel operations
   rpc GetRepresentationTypes (RepresentationTypesRequest) returns (RepresentationTypesResponse);
-  rpc CreateRepresentationType (CreateRepresentationTypeRequest) returns (common.ResponseDto);
-  rpc UpdateRepresentationType (UpdateRepresentationTypeRequest) returns (common.ResponseDto);
-  rpc DeleteRepresentationType (DeleteRepresentationTypeRequest) returns (common.ResponseDto);
+  rpc CreateRepresentationType (CreateRepresentationTypeRequest) returns (ResponseDto);
+  rpc UpdateRepresentationType (UpdateRepresentationTypeRequest) returns (ResponseDto);
+  rpc DeleteRepresentationType (DeleteRepresentationTypeRequest) returns (ResponseDto);
   
   rpc GetRepresentations (RepresentationsRequest) returns (RepresentationsResponse);
-  rpc CreateRepresentation (CreateRepresentationRequest) returns (common.ResponseDto);
-  rpc UpdateRepresentation (UpdateRepresentationRequest) returns (common.ResponseDto);
-  rpc DeleteRepresentation (DeleteRepresentationRequest) returns (common.ResponseDto);
+  rpc CreateRepresentation (CreateRepresentationRequest) returns (ResponseDto);
+  rpc UpdateRepresentation (UpdateRepresentationRequest) returns (ResponseDto);
+  rpc DeleteRepresentation (DeleteRepresentationRequest) returns (ResponseDto);
 }
 
 // MESSAGE DEFINITIONS

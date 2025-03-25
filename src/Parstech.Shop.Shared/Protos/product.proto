@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package product;
+package parstech;
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Product";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
 import "google/protobuf/timestamp.proto";
 import "Common.proto";
@@ -52,18 +52,6 @@ service ProductPriceService {
   rpc CalculateProductPriceWithOptions (ProductPriceOptionsRequest) returns (ProductPriceOptionsResponse);
 }
 
-// MESSAGE DEFINITIONS
-
-// Common request/response messages
-message EmptyRequest {}
-
-message EmptyResponse {}
-
-message ResponseStatus {
-  bool success = 1;
-  string message = 2;
-  int32 code = 3;
-}
 
 // Product listing requests
 message ProductsRequest {
@@ -121,18 +109,6 @@ message BestSellersRequest {
 message DiscountedProductsRequest {
   int32 count = 1;
   int64 category_id = 2;
-}
-
-message SearchRequest {
-  string query = 1;
-  int32 page = 2;
-  int32 page_size = 3;
-  string sort_by = 4;
-  bool sort_ascending = 5;
-  int64 category_id = 6;
-  int64 brand_id = 7;
-  repeated int64 filter_property_ids = 8;
-  repeated double price_range = 9;
 }
 
 // Product detail requests

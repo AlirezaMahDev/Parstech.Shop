@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Financial";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package financial;
+package parstech;
 
 import "Common.proto";
 
@@ -13,20 +13,20 @@ service FinancialAdminService {
   // Wallet operations
   rpc GetWalletsPaging (ParameterDto) returns (PagingDto);
   rpc GetUserFilters (EmptyRequest) returns (UserFiltersResponse);
-  rpc BlockOrUnblockWallet (BlockWalletRequest) returns (common.ResponseDto);
+  rpc BlockOrUnblockWallet (BlockWalletRequest) returns (ResponseDto);
   
   // Wallet transactions operations
   rpc GetWalletTransactionsPaging (WalletTransactionParameterDto) returns (PagingDto);
-  rpc CreateWalletTransaction (WalletTransactionDto) returns (common.ResponseDto);
+  rpc CreateWalletTransaction (WalletTransactionDto) returns (ResponseDto);
   rpc GetWalletTransactionDetail (TransactionIdRequest) returns (WalletTransactionDto);
   
   // Installment operations
-  rpc PayInstallment (TransactionIdRequest) returns (common.ResponseDto);
+  rpc PayInstallment (TransactionIdRequest) returns (ResponseDto);
   
   // Facility operations
-  rpc CreateFacilities (FacilitiesDto) returns (common.ResponseDto);
-  rpc RegisterFacilitiesByExcel (ExcelUploadRequest) returns (common.ResponseDto);
-  rpc ProcessFacilityPaymentsByExcel (ExcelUploadRequest) returns (common.ResponseDto);
+  rpc CreateFacilities (FacilitiesDto) returns (ResponseDto);
+  rpc RegisterFacilitiesByExcel (ExcelUploadRequest) returns (ResponseDto);
+  rpc ProcessFacilityPaymentsByExcel (ExcelUploadRequest) returns (ResponseDto);
 }
 
 // Reports Admin Service for financial reports
@@ -39,11 +39,6 @@ service ReportsAdminService {
   rpc GenerateTransactionsExcel (TransactionReportExcelRequest) returns (ExcelResponse);
   rpc GenerateActiveCreditExcel (TransactionReportExcelRequest) returns (ExcelResponse);
 }
-
-// MESSAGE DEFINITIONS
-
-// Common message types
-message EmptyRequest {}
 
 // Parameter message types
 message ParameterDto {

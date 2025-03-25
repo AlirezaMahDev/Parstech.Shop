@@ -1,10 +1,15 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Common";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package common;
+package parstech;
 
 // COMMON MESSAGE DEFINITIONS
+message ResponseStatus {
+  bool success = 1;
+  string message = 2;
+  int32 code = 3;
+}
 
 // Standard response
 message ResponseDto {

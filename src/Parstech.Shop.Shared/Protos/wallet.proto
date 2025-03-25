@@ -1,13 +1,11 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Wallet";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package wallet;
+package parstech;
 
 import "google/protobuf/timestamp.proto";
-import "Protos/Common.proto";
-
-// WALLET SERVICE DEFINITIONS
+import "Common.proto";
 
 // Wallet Service for user wallet operations
 service WalletService {
@@ -48,11 +46,6 @@ service WalletAdminService {
   rpc GetWalletStatistics (WalletStatisticsRequest) returns (WalletStatisticsResponse);
   rpc ExportWalletTransactions (ExportWalletTransactionsRequest) returns (ExportWalletTransactionsResponse);
 }
-
-// MESSAGE DEFINITIONS
-
-// Common messages
-message EmptyRequest {}
 
 // Wallet requests
 message WalletRequest {

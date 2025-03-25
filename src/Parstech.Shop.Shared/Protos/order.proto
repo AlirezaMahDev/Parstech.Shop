@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Order";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package order;
+package parstech;
 
-import "google/protobuf/timestamp.proto";
 import "Common.proto";
 
 // ORDER SERVICE DEFINITIONS
@@ -70,16 +69,6 @@ service PaymentService {
   rpc GetTransactionDetails (TransactionDetailsRequest) returns (TransactionDetailsResponse);
 }
 
-// MESSAGE DEFINITIONS
-
-message EmptyRequest {}
-
-message ResponseDto {
-  bool success = 1;
-  string message = 2;
-  int32 code = 3;
-}
-
 // Request messages
 message OrderRequest {
   string order_id = 1;
@@ -127,15 +116,15 @@ message InitiateCheckoutRequest {
   int64 user_id = 1;
   string cart_id = 2;
   repeated CartItemDto items = 3;
-  common.AddressDto shipping_address = 4;
-  common.AddressDto billing_address = 5;
+  AddressDto shipping_address = 4;
+  AddressDto billing_address = 5;
   string currency_code = 6;
 }
 
 message CheckoutAddressRequest {
   string checkout_id = 1;
-  common.AddressDto shipping_address = 2;
-  common.AddressDto billing_address = 3;
+  AddressDto shipping_address = 2;
+  AddressDto billing_address = 3;
   bool same_as_shipping = 4;
 }
 
@@ -236,13 +225,13 @@ message ResendOrderConfirmationRequest {
 // Shipping requests
 message ShippingMethodsRequest {
   string checkout_id = 1;
-  common.AddressDto shipping_address = 2;
+  AddressDto shipping_address = 2;
   repeated CartItemDto items = 3;
 }
 
 message CalculateShippingRequest {
   string shipping_method_id = 1;
-  common.AddressDto shipping_address = 2;
+  AddressDto shipping_address = 2;
   repeated CartItemDto items = 3;
   double order_subtotal = 4;
 }
@@ -251,8 +240,8 @@ message CreateShipmentRequest {
   string order_id = 1;
   string provider_id = 2;
   string shipping_method_id = 3;
-  common.AddressDto shipping_address = 4;
-  common.AddressDto return_address = 5;
+  AddressDto shipping_address = 4;
+  AddressDto return_address = 5;
   repeated ShipmentItemDto items = 6;
   PackageDto package = 7;
   bool generate_label = 8;
@@ -489,7 +478,7 @@ message TrackShipmentResponse {
   string current_status = 5;
   string estimated_delivery = 6;
   string shipped_date = 7;
-  common.AddressDto delivery_address = 8;
+  AddressDto delivery_address = 8;
   repeated ShipmentTrackingEventDto tracking_events = 9;
   ResponseDto status = 10;
 }
@@ -601,8 +590,8 @@ message OrderDetailDto {
   string formatted_discount = 14;
   string formatted_total = 15;
   CustomerDto customer = 16;
-  common.AddressDto shipping_address = 17;
-  common.AddressDto billing_address = 18;
+  AddressDto shipping_address = 17;
+  AddressDto billing_address = 18;
   string payment_method = 19;
   string shipping_method = 20;
   string tracking_number = 21;
@@ -690,8 +679,8 @@ message TrackingEventDto {
 message CheckoutDto {
   string checkout_id = 1;
   repeated CartItemDto items = 2;
-  common.AddressDto billing_address = 3;
-  common.AddressDto shipping_address = 4;
+  AddressDto billing_address = 3;
+  AddressDto shipping_address = 4;
   string shipping_method_id = 5;
   string shipping_method_name = 6;
   double shipping_cost = 7;
@@ -713,7 +702,7 @@ message OrderConfirmationDto {
   string payment_method = 4;
   string payment_status = 5;
   string shipping_method = 6;
-  common.AddressDto shipping_address = 7;
+  AddressDto shipping_address = 7;
   repeated OrderItemDto items = 8;
 }
 
@@ -753,8 +742,8 @@ message OrderAdminDetailDto {
   double discount = 8;
   double total = 9;
   CustomerDto customer = 10;
-  common.AddressDto billing_address = 11;
-  common.AddressDto shipping_address = 12;
+  AddressDto billing_address = 11;
+  AddressDto shipping_address = 12;
   string payment_method = 13;
   string payment_status = 14;
   string transaction_id = 15;
@@ -820,8 +809,8 @@ message ShipmentDto {
   string service = 5;
   string tracking_number = 6;
   string status = 7;
-  common.AddressDto origin = 8;
-  common.AddressDto destination = 9;
+  AddressDto origin = 8;
+  AddressDto destination = 9;
   PackageDto package = 10;
   repeated ShipmentItemDto items = 11;
   string created_date = 12;

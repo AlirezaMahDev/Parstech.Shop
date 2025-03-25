@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Admin";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package admin;
+package parstech;
 
 import "google/protobuf/timestamp.proto";
 import "Common.proto";
@@ -124,10 +124,6 @@ service RoleAdminService {
   rpc DeleteRole (RoleRequest) returns (ResponseDto);
   rpc GetPermissions (EmptyRequest) returns (PermissionsResponse);
 }
-
-// MESSAGES
-
-message EmptyRequest {}
 
 // Requests
 message ProductParameterRequest {
@@ -706,9 +702,3 @@ message RelatedProductDto {
   string relationship_type = 6; // "related", "cross-sell", "upsell"
   int32 sort_order = 7;
 }
-
-message ResponseDto {
-  bool success = 1;
-  string message = 2;
-  int32 code = 3;
-} 

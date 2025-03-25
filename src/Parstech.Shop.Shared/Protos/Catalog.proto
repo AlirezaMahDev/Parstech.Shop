@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Catalog";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package catalog;
+package parstech;
 
 import "google/protobuf/timestamp.proto";
 import "Common.proto";
@@ -46,17 +46,6 @@ service CatalogSearchService {
   rpc Search (SearchCatalogRequest) returns (SearchCatalogResponse);
   rpc GetSearchSuggestions (GetSearchSuggestionsRequest) returns (SearchSuggestionsResponse);
   rpc GetPopularSearches (GetPopularSearchesRequest) returns (PopularSearchesResponse);
-}
-
-// MESSAGE DEFINITIONS
-
-// Common request/response messages
-message EmptyRequest {}
-
-message ResponseStatus {
-  bool success = 1;
-  string message = 2;
-  int32 code = 3;
 }
 
 // Category requests
@@ -502,12 +491,3 @@ message PopularSearchDto {
   int32 count = 2;
   double conversion_rate = 3;
 }
-
-message SeoDto {
-  string meta_title = 1;
-  string meta_description = 2;
-  string meta_keywords = 3;
-  string canonical_url = 4;
-  bool no_index = 5;
-  bool no_follow = 6;
-} 

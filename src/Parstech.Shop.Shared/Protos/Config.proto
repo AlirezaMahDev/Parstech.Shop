@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Parstech.Shop.Shared.Protos.Config";
+option csharp_namespace = "Parstech.Shop.Shared.Protos";
 
-package config;
+package parstech;
 
 import "Common.proto";
 
@@ -12,7 +12,7 @@ import "Common.proto";
 service ConfigAdminService {
   // API operations
   rpc GetCreditOfNationalCode (NationalCodeRequest) returns (CreditInfoResponse);
-  rpc AddProductsByExcel (ExcelFileRequest) returns (common.ResponseDto);
+  rpc AddProductsByExcel (ExcelFileRequest) returns (ResponseDto);
   rpc GetApiData (ApiDataRequest) returns (ApiDataResponse);
   
   // WordPress operations
@@ -21,24 +21,20 @@ service ConfigAdminService {
   rpc GetCateguriesFromWordpress (WordpressPageRequest) returns (WordpressCategoriesResponse);
   
   // Maintenance operations
-  rpc FixProductStocks (EmptyRequest) returns (common.ResponseDto);
-  rpc FixDublicate (EmptyRequest) returns (common.ResponseDto);
-  rpc DatetimeChange (EmptyRequest) returns (common.ResponseDto);
-  rpc SetBestStockId (EmptyRequest) returns (common.ResponseDto);
+  rpc FixProductStocks (EmptyRequest) returns (ResponseDto);
+  rpc FixDublicate (EmptyRequest) returns (ResponseDto);
+  rpc DatetimeChange (EmptyRequest) returns (ResponseDto);
+  rpc SetBestStockId (EmptyRequest) returns (ResponseDto);
   
   // Excel import operations
-  rpc ExcelFixProducts (ExcelFileRequest) returns (common.ResponseDto);
-  rpc EditCateguriesOfProducts (ExcelFileRequest) returns (common.ResponseDto);
-  rpc AddUsersAndWalletCredit (ExcelFileRequest) returns (common.ResponseDto);
-  rpc UpdateUserWalletsCredit (ExcelFileRequest) returns (common.ResponseDto);
-  rpc FillProductCode (ExcelFileRequest) returns (common.ResponseDto);
+  rpc ExcelFixProducts (ExcelFileRequest) returns (ResponseDto);
+  rpc EditCateguriesOfProducts (ExcelFileRequest) returns (ResponseDto);
+  rpc AddUsersAndWalletCredit (ExcelFileRequest) returns (ResponseDto);
+  rpc UpdateUserWalletsCredit (ExcelFileRequest) returns (ResponseDto);
+  rpc FillProductCode (ExcelFileRequest) returns (ResponseDto);
 }
 
 // MESSAGE DEFINITIONS
-
-message EmptyRequest {
-}
-
 message NationalCodeRequest {
   int32 seller_id = 1;
   string national_code = 2;
