@@ -1,27 +1,27 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using MediatR;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parstech.Shop.Context.Application.DTOs.Section;
+
+using Parstech.Shop.Context.Application.Features.Section.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Components;
 
 public class GetDiscountSectionSelect : PageModel
 {
-    #region Constructor
+    #region Constractor
+    private readonly IMediator _mediator;
 
-    private readonly ISelectionsAdminGrpcClient _selectionsClient;
-
-    public GetDiscountSectionSelect(ISelectionsAdminGrpcClient selectionsClient)
+    public GetDiscountSectionSelect(IMediator mediator)
     {
-        _selectionsClient = selectionsClient;
+        _mediator = mediator;
     }
-
     #endregion
 
     public List<SectionDto> list { get; set; }
-
     public async Task OnGet()
     {
-        list = await _selectionsClient.GetDiscountSectionsSelectAsync();
+
+        list = await _mediator.Send(new DiscountSectionsSelectQueryReq());
     }
 }

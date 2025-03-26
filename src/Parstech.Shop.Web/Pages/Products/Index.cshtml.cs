@@ -1,47 +1,54 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Brand;
+using Parstech.Shop.Context.Application.DTOs.Categury;
+using Parstech.Shop.Context.Application.DTOs.Product;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.DTOs.UserStore;
+using Parstech.Shop.Context.Application.Features.Brand.Requests.Commands;
+using Parstech.Shop.Context.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.UserStore.Requests.Commands;
 
 namespace Parstech.Shop.Web.Pages.Products;
 
 public class IndexModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly ProductGrpcClient _productClient;
-    private readonly CategoryGrpcClient _categoryClient;
-    private readonly BrandGrpcClient _brandClient;
-    private readonly UserStoreGrpcClient _storeClient;
+    private readonly IMediator _mediator;
 
-    public IndexModel(
-        ProductGrpcClient productClient,
-        CategoryGrpcClient categoryClient,
-        BrandGrpcClient brandClient,
-        UserStoreGrpcClient storeClient)
+    public IndexModel(IMediator mediator)
     {
-        _productClient = productClient;
-        _categoryClient = categoryClient;
-        _brandClient = brandClient;
-        _storeClient = storeClient;
+        _mediator = mediator;
     }
 
     #endregion
 
     #region Properties
 
+    //paging parameter
     [BindProperty]
     public ProductSearchParameterDto Parameter { get; set; } = new();
 
+
+    //products
     [BindProperty]
     public ProductPageingDto List { get; set; }
 
+
+    //result
     [BindProperty]
     public ResponseDto Response { get; set; } = new();
 
+    //categury
     [BindProperty]
     public string Categury { get; set; }
+
+
 
     [BindProperty]
     public string FilterCat { get; set; }
@@ -52,192 +59,65 @@ public class IndexModel : PageModel
     [BindProperty]
     public string Filter { get; set; }
 
+
     public List<CateguryDto> categuries { get; set; }
     public List<BrandDto> Brands { get; set; }
     public List<UserStoreDto> Stores { get; set; }
-
     #endregion
 
     #region Get
 
     public async Task<IActionResult> OnGet(string cat)
     {
-        try
+        Categury = cat;
+        Brands = await _mediator.Send(new BrandReadsCommandReq());
+        Stores = await _mediator.Send(new UserStoreReadsCommandReq());
+
+
+        categuries = new();
+        var parent = await _mediator.Send(new CateguryParentsReadQueryReq());
+        foreach (var parrent in parent)
         {
-            Categury = cat;
-
-            // Get brands
-            var brandsResponse = await _brandClient.GetBrandsAsync();
-            Brands = brandsResponse.Brands.Select(b => new BrandDto
-                {
-                    Id = b.Id,
-                    Name = b.Name,
-                    LatinName = b.LatinName,
-                    Description = b.Description,
-                    Image = b.Image,
-                    IsActive = b.IsActive,
-                    Order = b.Order,
-                    Logo = b.Logo,
-                    Website = b.Website,
-                    Country = b.Country
-                })
-                .ToList();
-
-            // Get stores
-            var storesResponse = await _storeClient.GetStoresAsync();
-            Stores = storesResponse.Stores.Select(s => new UserStoreDto
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    LatinName = s.LatinName,
-                    Description = s.Description,
-                    Image = s.Image,
-                    IsActive = s.IsActive,
-                    Address = s.Address,
-                    Phone = s.Phone,
-                    Email = s.Email,
-                    Website = s.Website,
-                    Instagram = s.Instagram,
-                    Telegram = s.Telegram,
-                    Whatsapp = s.Whatsapp,
-                    UserName = s.UserName,
-                    CreatedAt = DateTime.Parse(s.CreatedAt),
-                    UpdatedAt = DateTime.Parse(s.UpdatedAt)
-                })
-                .ToList();
-
-            // Get categories
-            categuries = new();
-            var parentCategories = await _categoryClient.GetParentCategoriesAsync();
-
-            foreach (var parent in parentCategories.Categories)
+            categuries.Add(parrent);
+            var subParrent = await _mediator.Send(new CateguryByParentIdReadQueryReq(parrent.GroupId));
+            foreach (var subP in subParrent)
             {
-                categuries.Add(new()
+                categuries.Add(subP);
+                var subs = await _mediator.Send(new CateguryByParentIdReadQueryReq(subP.GroupId));
+                foreach (var sub in subs)
                 {
-                    Id = parent.Id,
-                    Name = parent.Name,
-                    LatinName = parent.LatinName,
-                    Description = parent.Description,
-                    Image = parent.Image,
-                    ParentId = parent.ParentId,
-                    GroupId = parent.GroupId,
-                    IsActive = parent.IsActive,
-                    Order = parent.Order
-                });
+                    categuries.Add(sub);
 
-                var subParentCategories = await _categoryClient.GetSubCategoriesAsync(parent.GroupId);
-                foreach (var subParent in subParentCategories.Categories)
-                {
-                    categuries.Add(new()
-                    {
-                        Id = subParent.Id,
-                        Name = subParent.Name,
-                        LatinName = subParent.LatinName,
-                        Description = subParent.Description,
-                        Image = subParent.Image,
-                        ParentId = subParent.ParentId,
-                        GroupId = subParent.GroupId,
-                        IsActive = subParent.IsActive,
-                        Order = subParent.Order
-                    });
-
-                    var subCategories = await _categoryClient.GetSubCategoriesAsync(subParent.GroupId);
-                    foreach (var sub in subCategories.Categories)
-                    {
-                        categuries.Add(new()
-                        {
-                            Id = sub.Id,
-                            Name = sub.Name,
-                            LatinName = sub.LatinName,
-                            Description = sub.Description,
-                            Image = sub.Image,
-                            ParentId = sub.ParentId,
-                            GroupId = sub.GroupId,
-                            IsActive = sub.IsActive,
-                            Order = sub.Order
-                        });
-                    }
                 }
             }
-
-            return Page();
         }
-        catch (Exception ex)
-        {
-            Response.IsSuccessed = false;
-            Response.Message = $"Error loading data: {ex.Message}";
-            return Page();
-        }
+        return Page();
     }
 
     public async Task<IActionResult> OnPostData(int skip, string store)
     {
-        try
+        //Parameter.Skip = 0;
+        Parameter.Take = 30;
+        //Parameter.Type = "Active";
+        #region Get User If Authenticated
+        var userName = "";
+        if (User.Identity.IsAuthenticated)
         {
-            Parameter.Take = 30;
-            string userName = User.Identity.IsAuthenticated ? User.Identity.Name : null;
-
-            // Get products using gRPC
-            var productRequest = new ProductPagingRequest
-            {
-                Skip = skip,
-                Take = Parameter.Take,
-                Category = Parameter.Categury,
-                UserName = userName,
-                Store = store
-            };
-
-            var productResponse = await _productClient.GetPagedProductsAsync(productRequest);
-
-            // Map the response
-            List = new()
-            {
-                Products = productResponse.Products.Select(p => new ProductDto
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        LatinName = p.LatinName,
-                        Description = p.Description,
-                        Price = p.Price,
-                        SalePrice = p.SalePrice,
-                        DiscountPrice = p.DiscountPrice,
-                        Image = p.Image,
-                        IsActive = p.IsActive,
-                        CreatedAt = DateTime.Parse(p.CreatedAt),
-                        UpdatedAt = DateTime.Parse(p.UpdatedAt)
-                    })
-                    .ToList(),
-                TotalCount = productResponse.TotalCount,
-                PageCount = productResponse.PageCount
-            };
-
-            // Get category by latin name
-            var category = await _categoryClient.GetCategoryByLatinNameAsync(Parameter.Categury);
-
-            Response.Object = List;
-            Response.Object2 = new CateguryDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                LatinName = category.LatinName,
-                Description = category.Description,
-                Image = category.Image,
-                ParentId = category.ParentId,
-                GroupId = category.GroupId,
-                IsActive = category.IsActive,
-                Order = category.Order
-            };
-            Response.CurrentParameter = Parameter;
-            Response.IsSuccessed = true;
-
-            return new JsonResult(Response);
+            userName = User.Identity.Name;
         }
-        catch (Exception ex)
+        else
         {
-            Response.IsSuccessed = false;
-            Response.Message = $"Error loading products: {ex.Message}";
-            return new JsonResult(Response);
+            userName = null;
         }
+        #endregion'
+        List = await _mediator.Send(new IntegratedProductsPagingQueryReq(Parameter,userName));
+        //List = await _mediator.Send(new ProductPagingCateguryQueryReq(Parameter));
+        Response.Object = List;
+        var cat = await _mediator.Send(new GetCateguryByLatinameQueryReq(Parameter.Categury));
+        Response.Object2 = cat;
+        Response.CurrentParameter = Parameter;
+        Response.IsSuccessed = true;
+        return new JsonResult(Response);
     }
 
     #endregion

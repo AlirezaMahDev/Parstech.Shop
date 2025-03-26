@@ -1,0 +1,499 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Admin.Pages.Admin.Representations.IndexModel
+@{
+}
+@{
+    Layout = "Shared/Admin_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست انبار
+                    </h3>
+                </div>
+               @* <div class="button-box2">
+                    <button class="btn btn-sm  btn-primary hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddModal">
+                        <i class="icon-plus"></i>
+                        افزودن انبار جدید
+                    </button>
+
+                </div>*@
+
+            </div>
+            <div class="portlet box border shadow">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h3 class="title">
+                            جستجوی انبار
+                        </h3>
+                    </div><!-- /.portlet-title -->
+                    <div class="buttons-box toggle toggle-mobile">
+                    </div><!-- /.buttons-box -->
+                </div><!-- /.portlet-heading -->
+                <div class="portlet-body">
+                    <form method="post" asp-page-handler="Data">
+
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label class="Red">ابتدا انبار مورد نظر خود را انتخاب نمایید</label>
+                                    <select asp-for="RepId" id="RepId" onchange="DataSubmit()" class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                        <option value="">انتخاب انبار</option>
+                                        @foreach (var item in Model.Representations)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group ">
+                                    <label>فیلتر کالا </label>
+                                    <select asp-for="Parameter.Filter" id="ProductsSelect" onchange="DataSubmit()" class="form-control round select2">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>دسته بندی ها</label>
+                                    <select asp-for="Parameter.Categury" id="CategurySelect" onchange="DataSubmit()" class="form-control round select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>فیلتر تخفیف</label>
+                                    <select asp-for="Parameter.Type" id="TypeSelect" onchange="DataSubmit()" class="form-control round select2">
+                                        <option value="">انتخاب نشده</option>
+                                        <option value="Discount">دارای تخفیف</option>
+                                        <option value="NotDiscount">بدون تخفیف</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>فیلتر موجودی</label>
+                                    <select asp-for="Parameter.Exist" id="ExistSelect" onchange="DataSubmit()" class="form-control select2">
+                                        <option value="">انتخاب نشده</option>
+                                        <option value="Exist">دارای موجودی</option>
+                                        <option value="NotExist">عدم موجودی</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            @* <div class="col-lg-1">
+                                <button type="submit" class="btn btn-blue text-white font-weight-bold mt-4 pt-2">فیلتر</button>
+                            </div> *@
+
+                        </div>
+                    </form>
+                    @* <form asp-page-handler="Data" method="post">
+                        <div class="form-group">
+
+                            <select asp-for="RepId" id="RepId" onchange="DataSubmit()" class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                <option value="">انتخاب انبار</option>
+                                @foreach (var item in Model.Representations)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </form> *@
+
+                </div><!-- /.portlet-body -->
+                <div class="portlet-body" style="">
+                    <div class="d-flex mb-2" id="pagingHeader">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered " id="data-table">
+                            
+                            <thead>
+                                <tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <div class="d-flex mb-2" id="paging">
+                    </div>
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.portlet -->
+
+    </div>
+
+</div>
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    <input type="hidden" asp-for="Parameter.RepId" class="RepId" />
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
+    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type" />
+    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist" />
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+</form>
+
+<form method="post" id="GetPriceForm" asp-page-handler="PriceItem"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGetPrice"
+      data-ajax-complete="OnCompleteGetPrice"
+      data-ajax-failure="OnErrorGetPrice">
+    <input type="hidden" asp-for="productId" class="ProductId" />
+</form>
+<form method="post" id="GetLogsForm" asp-page-handler="GetLogs"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGetLogs"
+      data-ajax-complete="OnCompleteGetLogs"
+      data-ajax-failure="OnErrorGetLogs">
+    <input type="hidden" asp-for="productId" class="ProductId" />
+</form>
+<!--modal-->
+<!--Start Prodcut Edit -->
+<div id="PriceModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تغییر قیمت محصول</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="EditPriceItem" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingEditPrice"
+                          data-ajax-complete="OnCompleteEditPrice"
+                          data-ajax-failure="OnErrorEditPrice">
+
+                        <input type="hidden" asp-for="productStock.Id" class="ProductId" />
+                        <input type="hidden" asp-for="productStock.ProductId" id="product_ProductId" />
+                        <input type="hidden" asp-for="productStock.RepId" id="product_RepId" />
+                        <input type="hidden" asp-for="productStock.StoreId" id="product_StoreId" />
+                        <input type="hidden" asp-for="productStock.StockStatus" id="product_StockStatus" />
+
+
+                        <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                            <label> قیمت خام</label>
+                            <div class="form-group round">
+                                <input asp-for="productStock.TextBasePrice" id="product_BasePrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                            <label>قیمت خرید</label>
+                            <div class="form-group round">
+                                <input asp-for="productStock.TextPrice" id="product_Price" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                            <label>قیمت فروش</label>
+                            <div class="form-group round">
+                                <input asp-for="productStock.TextSalePrice" id="product_SalePrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                            <label>قیمت شگفت انگیز</label>
+                            <div class="form-group round">
+                                <input asp-for="productStock.TextDiscountPrice" id="product_DiscountPrice" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                            <label>تاریخ قیمت شگفت انگیز</label>
+                            <div class="form-group round">
+                                @*<input asp-for="product.DiscountPrice" id="ProductDto_Code" type="text" class="form-control">*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ProductRepresentationModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تغییر موجودی انبار</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="AddProductRepresentation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingAddPr"
+                          data-ajax-complete="OnCompleteAddPr"
+                          data-ajax-failure="OnErrorAddPr">
+                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId" class="ProductId" />
+                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId" />
+
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label>کد اختصاصی درخواست انبار</label>
+                            <small class="Red">در صورتی که این مقدار خالی ثبت شود کد اختصاصی به صورت خودکار درج خواهد شد</small>
+                            <div class="form-group round">
+                                <input asp-for="ProductRepresentationDto.UniqeCode" id="ProductRepresentationDto_UniqeCode" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label>نوع درخواست انبار</label>
+                            <div class="form-group round">
+                                <select asp-for="ProductRepresentationDto.TypeId" id="ProductRepresentationDto_TypeId" type="text" class="form-control">
+                                    <option>انتخاب کنید</option>
+                                    @foreach (var item in Model.repTypes)
+                                    {
+                                        <option value="@item.Id">@item.Type</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label>تعداد مورد نظر</label>
+
+                            <div class="form-group round">
+                                <input asp-for="ProductRepresentationDto.Quantity" id="ProductRepresentationDto.Quantity" type="number" class="form-control">
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group relative">
+                            <input type="file" class="form-control" data-val="true" data-val-required="The LogoFile field is required." asp-for="ProductRepresentationDto.File" id="ProductRepresentationDto_File">
+                            <label>پیوست فایل(رسید انبار)</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود پیوست
+                                        <div class="paper-ripple">
+                                            <div class="paper-ripple__background"></div>
+                                            <div class="paper-ripple__waves"></div>
+                                        </div>
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="QuickProductRepresentationModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تغییر موجودی انبار</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="QuickAddProductRepresentation" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingQuickAddPr"
+                          data-ajax-complete="OnCompleteQuickAddPr"
+                          data-ajax-failure="OnErrorQuickAddPr">
+                        <input type="hidden" asp-for="ProductRepresentationDto.ProductStockPriceId" class="ProductId" />
+                        <input type="hidden" asp-for="ProductRepresentationDto.RepresntationId" class="RepId" />
+
+
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label>تعداد مورد نظر</label>
+
+                            <div class="form-group round">
+                                <input asp-for="ProductRepresentationDto.Quantity" id="ProductRepresentationDto.Quantity" type="number" class="form-control">
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Prodcut Edit -->
+<!--Log-->
+<div id="LogsModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">گزارش تغییرات</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div id="chartPrice">
+                    </div>
+                </div><!-- /col-lg-12 -->
+
+                <div class="col-lg-12">
+                    <h4 class="modal-title font-weight-bold">ریز تغییرات قیمت</h4>
+                    <div class="portlet-body" style="">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped" id="data-table2">
+
+                                <thead>
+                                    <tr>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div><!-- /.portlet-body -->
+                </div><!-- /col-lg-12 -->
+
+               
+                <div class="col-lg-4"style="margin-right: 35%">
+                    <div id="chartPr">
+                    </div>
+                </div>
+               
+                <div class="col-lg-12">
+                    <h4 class="modal-title font-weight-bold">ریز تغییرات موجودی</h4>
+                    <div class="portlet-body" style="">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped" id="data-table3">
+
+                                <thead>
+                                    <tr>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div><!-- /.portlet-body -->
+                </div><!-- /col-lg-12 -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Log-->
+
+<form method="post" id="DeleteProductStockPrice" asp-page-handler="Delete"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteDelete">
+    <input type="hidden" name="rep" id="repId" />
+    <input type="hidden" name="id" id="productStockPriceId" />
+    
+</form>
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+
+    <script src="~/shared/lib/admin/Representations/Index.js"></script>
+
+
+    <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+
+    <script src="~/Admin/plugins/chart.js/dist/Chart.bundle.min.js"></script>
+
+    @*<script src="~/Admin/js/pages/pie-chart.js"></script>*@
+    @*<script src="~/Admin/js/pages/line-chart.js"></script>*@
+    <script src="~/shared/lib/admin/Representations/Logs.js"></script>
+    <script>
+
+    </script>
+}

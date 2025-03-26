@@ -1,29 +1,28 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Paging;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.DTOs.Wallet;
+using Parstech.Shop.Context.Application.DTOs.WalletTransaction;
+using Parstech.Shop.Context.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.Wallet.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.WalletTransaction.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
 [Authorize]
 public class TransactionsListModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly UserGrpcClient _userClient;
-    private readonly WalletGrpcClient _walletClient;
-    private readonly UserProfileGrpcClient _userProfileClient;
-
-    public TransactionsListModel(
-        UserGrpcClient userClient,
-        WalletGrpcClient walletClient,
-        UserProfileGrpcClient userProfileClient)
+    private readonly IMediator _mediator;
+    public TransactionsListModel(IMediator mediator)
     {
-        _userClient = userClient;
-        _walletClient = walletClient;
-        _userProfileClient = userProfileClient;
+        _mediator = mediator;
     }
 
     #endregion
@@ -37,7 +36,7 @@ public class TransactionsListModel : PageModel
     public WalletDto Wallet { get; set; }
 
     [BindProperty]
-    public WalletTransactionParameterDto Parameter { get; set; } = new();
+    public WalletTransactionParameterDto Parameter { get; set; } = new WalletTransactionParameterDto();
 
     [BindProperty]
     public PagingDto List { get; set; }
@@ -50,90 +49,41 @@ public class TransactionsListModel : PageModel
 
     [BindProperty]
     public WalletTransactionDto transactionDto { get; set; }
-
     #endregion
-
     #region Get
-
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
         return Page();
     }
 
     public async Task<IActionResult> OnPostData()
     {
+
         Parameter.TakePage = 30;
-        var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
-        var wallet = await _walletClient.GetWalletByUserIdAsync(currentUser.Id);
-
-        Wallet = new()
-        {
-            WalletId = wallet.WalletId,
-            UserId = wallet.UserId,
-            Credit = wallet.Credit,
-            UsedCredit = wallet.UsedCredit,
-            RemainingCredit = wallet.RemainingCredit,
-            LastUpdated = DateTime.TryParse(wallet.LastUpdated, out DateTime date) ? date : null
-        };
-
+        var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+        Wallet = await _mediator.Send(new GetWalletByUserIdQueryReq(CurrentUser.Id));
         Parameter.WalletId = Wallet.WalletId;
         Parameter.Type = Type;
-
-        var transactions = await _userProfileClient.GetUserTransactionsAsync(
-            Wallet.WalletId,
-            Parameter.CurrentPage,
-            Parameter.TakePage,
-            Parameter.Type);
-
-        List = new()
-        {
-            CurrentPage = transactions.CurrentPage,
-            PageCount = transactions.PageCount,
-            RowCount = transactions.TotalCount,
-            List = transactions.Transactions.Select(t => new WalletTransactionDto
-                {
-                    TransactionId = t.TransactionId,
-                    TransactionDate = DateTime.TryParse(t.TransactionDate, out DateTime tDate) ? tDate : null,
-                    Amount = t.Amount,
-                    TypeName = t.TypeName,
-                    Description = t.Description,
-                    IsCredit = t.IsCredit
-                })
-                .ToList()
-        };
-
+        List = await _mediator.Send(new WalletTransactionsPagingQueryReq(Parameter));
         Response.Object = List;
         Response.IsSuccessed = true;
 
         return new JsonResult(Response);
     }
-
     #endregion
+    #region Search Paging
 
     #region TransactionDetail
 
     public async Task<IActionResult> OnPostTransactionDetail()
     {
-        var transaction = await _userProfileClient.GetTransactionDetailsAsync(transactionId);
-
-        transactionDto = new()
-        {
-            TransactionId = transaction.TransactionId,
-            WalletId = transaction.WalletId,
-            TypeName = transaction.TypeName,
-            Amount = transaction.Amount,
-            Description = transaction.Description,
-            TrackingCode = transaction.TrackingCode,
-            TransactionDate = DateTime.TryParse(transaction.TransactionDate, out DateTime date) ? date : null,
-            Months = transaction.Months,
-            MonthlyPayment = transaction.MonthlyPayment,
-            IsActive = transaction.IsActive,
-            IsCredit = transaction.IsCredit
-        };
-
+        transactionDto = await _mediator.Send(new WalletTransactionDetailShowQueryReq(transactionId));
         Response.Object = transactionDto;
         return new JsonResult(Response);
     }
+
+    #endregion
+
 
     #endregion
 }

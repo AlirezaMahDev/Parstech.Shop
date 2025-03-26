@@ -1,27 +1,27 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Categury;
+using Parstech.Shop.Context.Application.Features.Categury.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Components;
 
 public class GetCategurySelectModel : PageModel
 {
-    #region Constructor
+    #region Constractor
+    private readonly IMediator _mediator;
 
-    private readonly ISelectionsAdminGrpcClient _selectionsClient;
-
-    public GetCategurySelectModel(ISelectionsAdminGrpcClient selectionsClient)
+    public GetCategurySelectModel(IMediator mediator)
     {
-        _selectionsClient = selectionsClient;
+        _mediator = mediator;
     }
-
     #endregion
 
     public List<CategurySelectDto> list { get; set; }
-
     public async Task OnGet()
     {
-        list = await _selectionsClient.GetCategoriesSelectAsync();
+
+        list = await _mediator.Send(new CategurySelectListQueryReq());
     }
 }

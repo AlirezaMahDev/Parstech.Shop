@@ -1,34 +1,35 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Order;
+using Parstech.Shop.Context.Application.DTOs.Paging;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.Features.Order.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.OrderDetail.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.User.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
 [Authorize]
 public class OrdersModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly UserGrpcClient _userClient;
-    private readonly UserProfileGrpcClient _userProfileClient;
-
-    public OrdersModel(
-        UserGrpcClient userClient,
-        UserProfileGrpcClient userProfileClient)
+    private readonly IMediator _mediator;
+    public OrdersModel(IMediator mediator)
     {
-        _userClient = userClient;
-        _userProfileClient = userProfileClient;
+        _mediator = mediator;
     }
 
     #endregion
-
     #region Properties
 
+
     [BindProperty]
-    public ParameterDto Parameter { get; set; } = new();
+    public ParameterDto Parameter { get; set; } = new ParameterDto();
 
     [BindProperty]
     public PagingDto List { get; set; }
@@ -46,161 +47,60 @@ public class OrdersModel : PageModel
     public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
-    public Shop.Application.DTOs.OrderDetail.OrderDetailShowDto OrderDetailShowDto { get; set; }
+    public OrderDetailShowDto OrderDetailShowDto { get; set; }
+
+
+
+
 
     #endregion
-
     #region Get
-
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
         return Page();
     }
-
     public async Task<IActionResult> OnPostData()
     {
         Parameter.CurrentPage = 1;
         Parameter.TakePage = 30;
-
-        var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
-        var ordersResponse = await _userProfileClient.GetUserOrdersHistoryAsync(currentUser.Id,
-            Parameter.CurrentPage,
-            Parameter.TakePage,
-            Parameter.SearchKey);
-
-        List = new()
-        {
-            CurrentPage = ordersResponse.CurrentPage,
-            PageCount = ordersResponse.PageCount,
-            RowCount = ordersResponse.TotalCount,
-            List = ordersResponse.Orders.Select(o => new OrderDto
-                {
-                    OrderId = o.OrderId,
-                    TrackingCode = o.TrackingCode,
-                    CreateDate = DateTime.TryParse(o.CreateDate, out DateTime date) ? date : null,
-                    IsPaid = o.IsPaid,
-                    Total = o.Total,
-                    Discount = o.Discount,
-                    FinalPrice = o.FinalPrice,
-                    Status = o.Status
-                })
-                .ToList()
-        };
-
+        var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+        List = await _mediator.Send(new FinallyOrdersOfUserByPagingQueryReq(CurrentUser.Id, Parameter));
         Response.Object = List;
         Response.IsSuccessed = true;
 
         return new JsonResult(Response);
     }
-
     #endregion
-
     #region Search Paging
 
     public async Task<IActionResult> OnPostSearch()
     {
         Parameter.CurrentPage = 1;
         Parameter.TakePage = 30;
-
-        var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
-        var ordersResponse = await _userProfileClient.GetUserOrdersHistoryAsync(currentUser.Id,
-            Parameter.CurrentPage,
-            Parameter.TakePage,
-            Parameter.SearchKey);
-
-        List = new()
-        {
-            CurrentPage = ordersResponse.CurrentPage,
-            PageCount = ordersResponse.PageCount,
-            RowCount = ordersResponse.TotalCount,
-            List = ordersResponse.Orders.Select(o => new OrderDto
-                {
-                    OrderId = o.OrderId,
-                    TrackingCode = o.TrackingCode,
-                    CreateDate = DateTime.TryParse(o.CreateDate, out DateTime date) ? date : null,
-                    IsPaid = o.IsPaid,
-                    Total = o.Total,
-                    Discount = o.Discount,
-                    FinalPrice = o.FinalPrice,
-                    Status = o.Status
-                })
-                .ToList()
-        };
-
+        var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+        List = await _mediator.Send(new FinallyOrdersOfUserByPagingQueryReq(CurrentUser.Id, Parameter));
         Response.Object = List;
         Response.IsSuccessed = true;
-
         return new JsonResult(Response);
     }
 
     public async Task<IActionResult> OnPostPaging()
     {
         Parameter.TakePage = 30;
-
-        var currentUser = await _userClient.GetUserByUsernameAsync(User.Identity.Name);
-        var ordersResponse = await _userProfileClient.GetUserOrdersHistoryAsync(currentUser.Id,
-            Parameter.CurrentPage,
-            Parameter.TakePage,
-            Parameter.SearchKey);
-
-        List = new()
-        {
-            CurrentPage = ordersResponse.CurrentPage,
-            PageCount = ordersResponse.PageCount,
-            RowCount = ordersResponse.TotalCount,
-            List = ordersResponse.Orders.Select(o => new OrderDto
-                {
-                    OrderId = o.OrderId,
-                    TrackingCode = o.TrackingCode,
-                    CreateDate = DateTime.TryParse(o.CreateDate, out DateTime date) ? date : null,
-                    IsPaid = o.IsPaid,
-                    Total = o.Total,
-                    Discount = o.Discount,
-                    FinalPrice = o.FinalPrice,
-                    Status = o.Status
-                })
-                .ToList()
-        };
-
+        var CurrentUser = await _mediator.Send(new UserReadByUserNameQueryReq(User.Identity.Name));
+        List = await _mediator.Send(new FinallyOrdersOfUserByPagingQueryReq(CurrentUser.Id, Parameter));
         Response.Object = List;
         Response.IsSuccessed = true;
-
         return new JsonResult(Response);
     }
 
-    #endregion
 
+    #endregion
     #region Show Order Detail
 
     public async Task<IActionResult> OnPostShowOrderDetail()
     {
-        var orderDetails = await _userProfileClient.GetOrderDetailsAsync(OrderId);
-
-        OrderDetailShowDto = new Parstech.Shop.Shared.DTOsDetail.OrderDetailShowDto
-        {
-            OrderId = orderDetails.OrderId,
-            UserName = orderDetails.UserName,
-            Total = orderDetails.Total,
-            Discount = orderDetails.Discount,
-            FinalPrice = orderDetails.FinalPrice,
-            ShippingId = orderDetails.ShippingId,
-            ShippingAddress = orderDetails.ShippingAddress,
-            ShippingPostalCode = orderDetails.ShippingPostalCode,
-            ShippingMobile = orderDetails.ShippingMobile,
-            OrderDetails = orderDetails.Details.Select(d => new Parstech.Shop.Shared.DTOsDetail.OrderDetailItem
-                {
-                    Id = d.Id,
-                    OrderId = d.OrderId,
-                    ProductId = d.ProductId,
-                    ProductName = d.ProductName,
-                    ProductImage = d.ProductImage,
-                    Count = d.Count,
-                    Price = d.Price,
-                    Discount = d.Discount,
-                    Total = d.Total
-                })
-                .ToList()
-        };
+        OrderDetailShowDto = await _mediator.Send(new OrderDetailShowQueryReq(OrderId));
 
         Response.Object = OrderDetailShowDto;
         return new JsonResult(Response);

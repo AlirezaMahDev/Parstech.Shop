@@ -1,22 +1,27 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Brand;
+using Parstech.Shop.Context.Application.DTOs.Categury;
+using Parstech.Shop.Context.Application.DTOs.Product;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.DTOs.UserStore;
+using Parstech.Shop.Context.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.UserStore.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Products;
 
 public class StoresModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly ProductGrpcClient _productClient;
-    private readonly UserStoreGrpcClient _userStoreClient;
+    private readonly IMediator _mediator;
 
-    public StoresModel(ProductGrpcClient productClient, UserStoreGrpcClient userStoreClient)
+    public StoresModel(IMediator mediator)
     {
-        _productClient = productClient;
-        _userStoreClient = userStoreClient;
+        _mediator = mediator;
     }
 
     #endregion
@@ -25,19 +30,23 @@ public class StoresModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ProductSearchParameterRequest Parameter { get; set; } = new ProductSearchParameterRequest();
+    public ProductSearchParameterDto Parameter { get; set; } = new();
+
 
     //products
     [BindProperty]
-    public ProductPageing List { get; set; }
+    public ProductPageingDto List { get; set; }
+
 
     //result
     [BindProperty]
     public ResponseDto Response { get; set; } = new();
 
-    //category
+    //categury
     [BindProperty]
     public string Store { get; set; }
+
+
 
     [BindProperty]
     public string FilterCat { get; set; }
@@ -47,6 +56,7 @@ public class StoresModel : PageModel
 
     [BindProperty]
     public string Filter { get; set; }
+
 
     public List<CateguryDto> categuries { get; set; }
     public List<BrandDto> Brands { get; set; }
@@ -59,17 +69,19 @@ public class StoresModel : PageModel
     public async Task<IActionResult> OnGet(string store)
     {
         Store = store;
+
         return Page();
     }
 
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> OnPostData(int skip, string store)
     {
+        //Parameter.CurrentPage = 1;
         Parameter.Skip = skip;
         Parameter.Store = store;
-        List = await _productClient.ProductPagingSearchOrStoreAsync(Parameter);
+        List = await _mediator.Send(new ProductPagingSarachOrStoreQueryReq(Parameter));
         Response.Object = List;
-        var userStore = await _userStoreClient.GetStoreByLatinNameAsync(Parameter.Store);
+        var userStore = await _mediator.Send(new UserSaleReadByLatinNameQueryReq(Parameter.Store));
         Response.Object2 = userStore;
         Response.IsSuccessed = true;
         return new JsonResult(Response);

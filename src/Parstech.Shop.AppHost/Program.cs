@@ -1,22 +1,32 @@
-IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<SqlServerServerResource> mssql = builder.AddSqlServer("mssql")
-    .WithDataVolume();
-IResourceBuilder<SqlServerDatabaseResource> database = mssql.AddDatabase("database");
+var mssql = builder.AddSqlServer("mssql").WithDataVolume();
+var database = mssql.AddDatabase("database", "parstech");
 
-IResourceBuilder<RedisResource> cache = builder.AddRedis("cache");
+var cache = builder.AddRedis("cache");
 
-IResourceBuilder<ProjectResource> apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
+var apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
     .WithReference(database)
     .WaitFor(database)
     .WithReference(cache)
     .WaitFor(cache);
 
-builder.AddProject<Projects.Parstech_Shop_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
+var web = builder.AddProject<Projects.Parstech_Shop_Web>("web")
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)
     .WaitFor(apiService);
+
+var webadmin = builder.AddProject<Projects.Parstech_Shop_Web_Admin>("webadmin")
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(database)
+    .WaitFor(database);
+
+builder.AddProject<Projects.Parstech_Shop_Proxy>("proxy")
+    .WithExternalHttpEndpoints()
+    .WithReference(cache)
+    .WithReference(web)
+    .WithReference(webadmin);
 
 builder.Build().Run();

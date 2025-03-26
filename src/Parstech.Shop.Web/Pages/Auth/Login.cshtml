@@ -1,12 +1,11 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Parstech.Shop.Web.Pages.Auth.LoginModel
+@model LoginModel
 
 @{
     Layout = "Shared/Auth_Layout";
     ViewData["Title"] = "Log in";
 }
-
 <div class="container-fluid">
     <div class="row">
 
@@ -44,37 +43,33 @@
                         <span class="input-group-addon">
                             <i class="icon-key"></i>
                         </span>
-                        <input asp-for="Input.Password" class="form-control ltr text-left" type="password"
-                               minlength="5">
+                        <input asp-for="Input.Password" class="form-control ltr text-left" type="password" minlength="5">
 
                     </div><!-- /.input-group -->
                 </div><!-- /.form-group -->
                 <p>
-                    <button type="submit" class="btn btn-round btn-warning ladda-button btn-block"
-                            data-style="slide-up">
+                    <button type="submit" class="btn btn-round btn-warning ladda-button btn-block" data-style="slide-up">
                         <i class="icon-login font-lg"></i>
                         ورود
                     </button>
-
+                   
                 </p>
             </form>
 
-
-
-            @*  <a href="forget.html" class="btn btn-default btn-round btn-block m-b-10">
+          
+           
+          @*  <a href="forget.html" class="btn btn-default btn-round btn-block m-b-10">
                 <i class="icon-refresh font-lg"></i>
                 بازیابی رمز  عبور
             </a>*@
-
+           
         </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
 </div><!-- /.container-fluid -->
-
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
 }
-
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/admin/auth/login.js"></script>

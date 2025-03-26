@@ -14,47 +14,38 @@
                     <!-- List -->
                     <ul id="sidebarNav" class="list-unstyled mb-0 sidebar-navbar">
                         <li>
-                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;"
-                               role="button" data-toggle="collapse" aria-expanded="false"
-                               aria-controls="sidebarNav1Collapse" data-target="#sidebarNav1Collapse">
+                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="sidebarNav1Collapse" data-target="#sidebarNav1Collapse">
                                 برند محصولات
                             </a>
 
                             <div id="sidebarNav1Collapse" class="collapse" data-parent="#sidebarNav">
                                 <ul id="sidebarNav1" class="list-unstyled dropdown-list">
                                     <!-- Menu List -->
-                                    @foreach (var item in Model.categuries)
+                                    @foreach(var item in Model.categuries)
                                     {
-                                        @if (item.ParentId == null)
+                                        @if(item.ParentId==null)
                                         {
-                                            <li><a onclick="ChangeCategury(@item.GroupId)"
-                                                   class="font-size-15 font-weight-bold Orange"
-                                                   href="#">@item.GroupTitle <br/><small
-                                                        id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
+                                            <li><a onclick="ChangeCategury(@item.GroupId)" class="font-size-15 font-weight-bold Orange" href="#">@item.GroupTitle <br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
                                         }
                                         else if (item.ParentId != null && item.IsParnet)
                                         {
-                                            <li><a onclick="ChangeCategury(@item.GroupId)"
-                                                   class="font-size-16 font-weight-bold"
-                                                   href="#">@item.GroupTitle<br/><small
-                                                        id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
+                                            <li><a onclick="ChangeCategury(@item.GroupId)" class="font-size-16 font-weight-bold" href="#" >@item.GroupTitle<br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
                                         }
                                         else
                                         {
-                                            <li><a onclick="ChangeCategury(@item.GroupId)" class="dropdown-item h5"
-                                                   href="#">@item.GroupTitle<br/><small
-                                                        id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
+                                            <li><a onclick="ChangeCategury(@item.GroupId)" class="dropdown-item h5" href="#" >@item.GroupTitle<br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small></a></li>
                                         }
+                                        
                                     }
-
-
+                                    
+                    
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <a class="dropdown-current active" href="#" id="Categury1">انتخاب نشده</a>
 
-
+                           
                         </li>
                     </ul>
                     <!-- End List -->
@@ -63,28 +54,25 @@
                     <!-- List -->
                     <ul id="sidebarNav" class="list-unstyled mb-0 sidebar-navbar">
                         <li>
-                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;"
-                               role="button" data-toggle="collapse" aria-expanded="false"
-                               aria-controls="sidebarNav1Collapse2" data-target="#sidebarNav1Collapse2">
+                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="sidebarNav1Collapse2" data-target="#sidebarNav1Collapse2">
                                 برند ها
                             </a>
 
                             <div id="sidebarNav1Collapse2" class="collapse" data-parent="#sidebarNav">
                                 <ul id="sidebarNav1" class="list-unstyled dropdown-list">
 
-                                    @foreach (var item in Model.Brands)
+                                    @foreach(var item in Model.Brands)
                                     {
-                                        <li><a onclick="ChangeBrand(@item.BrandId)" class="dropdown-item" href="#"
-                                               id="b-@item.BrandId">@item.BrandTitle</a></li>
+                                        <li><a onclick="ChangeBrand(@item.BrandId)" class="dropdown-item" href="#" id="b-@item.BrandId">@item.BrandTitle</a></li>
                                     }
-
+                                    
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <a class="dropdown-current active" href="#" id="Brand">انتخاب نشده</a>
 
-
+                           
                         </li>
                     </ul>
                     <!-- End List -->
@@ -93,40 +81,37 @@
                     <!-- List -->
                     <ul id="sidebarNav" class="list-unstyled mb-0 sidebar-navbar">
                         <li>
-                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;"
-                               role="button" data-toggle="collapse" aria-expanded="false"
-                               aria-controls="sidebarNav1Collapse3" data-target="#sidebarNav1Collapse3">
-                                فروشندگان
+                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="sidebarNav1Collapse3" data-target="#sidebarNav1Collapse3">
+                              فروشندگان
                             </a>
 
                             <div id="sidebarNav1Collapse3" class="collapse" data-parent="#sidebarNav">
                                 <ul id="sidebarNav1" class="list-unstyled dropdown-list">
-                                    @foreach (var item in Model.Stores)
+                                    @foreach(var item in Model.Stores)
                                     {
-                                        <li><a onclick="ChangeStore(@item.Id)" class="dropdown-item" href="#"
-                                               id="s-@item.Id">@item.StoreName</a></li>
-                                    }
+                                        <li><a onclick="ChangeStore(@item.Id)" class="dropdown-item" href="#" id="s-@item.Id">@item.StoreName</a></li>
 
+                                    }
+                                   
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <a class="dropdown-current active" href="#" id="Store">انتخاب نشده</a>
 
-
+                          
                         </li>
                     </ul>
                     <!-- End List -->
                 </div>
             </div>
             <div class="col-xl-9 col-wd-9gdot5">
-                <!-- Shop-control-bar Title -->
+                <!-- Parstech.Shop-control-bar Title -->
                 <div class="d-block d-md-flex flex-center-between ">
                     <nav aria-label="">
                         <div class="breadcrumb  ">
                             <a href="/">فروشگاه پارس تک</a><i class=" ec ec-arrow-right-categproes p-1"></i>
-                            <a class=" " aria-current="page">دسته بندی محصولات</a><i
-                                class=" ec ec-arrow-right-categproes p-1"></i>
+                            <a class=" " aria-current="page">دسته بندی محصولات</a><i class=" ec ec-arrow-right-categproes p-1"></i>
                             <a class="breadcrumb-item " aria-current="page" id="Categury12"></a>
                         </div>
                     </nav>
@@ -136,12 +121,11 @@
 
                 </div>
                 <!-- End shop-control-bar Title -->
-                <!-- Shop-control-bar -->
+                <!-- Parstech.Shop-control-bar -->
                 <div class="bg-gray-1 flex-center-between borders-radius-9 py-1">
                     <div class="d-xl-none">
                         <!-- Account Sidebar Toggle Button -->
-                        <a id="sidebarNavToggler1" class="btn btn-sm py-1 font-weight-normal" href="javascript:;"
-                           role="button"
+                        <a id="sidebarNavToggler1" class="btn btn-sm py-1 font-weight-normal" href="javascript:;" role="button"
                            aria-controls="sidebarContent1"
                            aria-haspopup="true"
                            aria-expanded="false"
@@ -159,9 +143,7 @@
                     <div class="px-3 d-none d-xl-block">
                         <ul class="nav nav-tab-shop" id="pills-tab" role="tablist">
                             <li class="nav-item m-1">
-                                <a class="nav-link active" id="pills-one-example1-tab" data-toggle="pill"
-                                   href="#pills-one-example1" role="tab" aria-controls="pills-one-example1"
-                                   aria-selected="false">
+                                <a class="nav-link active" id="pills-one-example1-tab" data-toggle="pill" href="#pills-one-example1" role="tab" aria-controls="pills-one-example1" aria-selected="false">
                                     <div class="d-md-flex justify-content-md-center align-items-md-center">
                                         <i class="fa fa-th"></i>
                                     </div>
@@ -169,9 +151,7 @@
                             </li>
 
                             <li class="nav-item m-1">
-                                <a class="nav-link" id="pills-four-example1-tab" data-toggle="pill"
-                                   href="#pills-four-example1" role="tab" aria-controls="pills-four-example1"
-                                   aria-selected="true">
+                                <a class="nav-link" id="pills-four-example1-tab" data-toggle="pill" href="#pills-four-example1" role="tab" aria-controls="pills-four-example1" aria-selected="true">
                                     <div class="d-md-flex justify-content-md-center align-items-md-center">
                                         <i class="fa fa-th-list"></i>
                                     </div>
@@ -180,44 +160,39 @@
                         </ul>
                     </div>
                     <div class="d-flex" id="TypeSection">
-                    </div>
+                        </div>
 
                 </div>
-                <!-- End Shop-control-bar -->
-                <!-- Shop Body -->
+                <!-- End Parstech.Shop-control-bar -->
+                <!-- Parstech.Shop Body -->
                 <!-- Tab Content -->
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel"
-                         aria-labelledby="pills-one-example1-tab" data-target-group="groups">
-                        <ul class="row list-unstyled products-group no-gutters" id="ProdcutsSection">
-                        </ul>
+                    <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel" aria-labelledby="pills-one-example1-tab" data-target-group="groups">
+                        <ul class="row list-unstyled products-group no-gutters"id="ProdcutsSection">
+                            </ul>
                     </div>
 
-                    <div class="tab-pane fade pt-2" id="pills-four-example1" role="tabpanel"
-                         aria-labelledby="pills-four-example1-tab" data-target-group="groups">
-                        <ul class="d-block list-unstyled products-group prodcut-list-view-small"
-                            id="productListSection">
-
+                    <div class="tab-pane fade pt-2" id="pills-four-example1" role="tabpanel" aria-labelledby="pills-four-example1-tab" data-target-group="groups">
+                        <ul class="d-block list-unstyled products-group prodcut-list-view-small" id="productListSection">
+                            
                         </ul>
                     </div>
                 </div>
                 <!-- End Tab Content -->
-                <!-- End Shop Body -->
-                <!-- Shop Pagination -->
-
-                <nav class="d-md-flex justify-content-between align-items-center border-top pt-3"
-                     aria-label="Page navigation example">
-
-                    <ul class="pagination mb-0 pagination-shop justify-content-center justify-content-md-start"
-                        id="paging">
-
+                <!-- End Parstech.Shop Body -->
+                <!-- Parstech.Shop Pagination -->
+               
+                <nav class="d-md-flex justify-content-between align-items-center border-top pt-3" aria-label="Page navigation example">
+                    
+                    <ul class="pagination mb-0 pagination-shop justify-content-center justify-content-md-start" id="paging">
+                       
                     </ul>
-
+                    
                 </nav>
-                <!-- End Shop Pagination -->
+                <!-- End Parstech.Shop Pagination -->
             </div>
         </div>
-
+      
     </div>
 </main>
 
@@ -227,21 +202,20 @@
       data-ajax-begin="OnLoadingData"
       data-ajax-complete="OnCompleteData"
       data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="Brand" id="brand"/>
-    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type"/>
-    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury"/>
-    <input type="hidden" asp-for="Parameter.Store" id="Parameter_Store"/>
-    <input type="hidden" asp-for="Parameter.Brand" id="Parameter_Brand"/>
-    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
-    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
+    <input type="hidden" asp-for="Brand" id="brand" />
+    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type" />
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
+    <input type="hidden" asp-for="Parameter.Store" id="Parameter_Store" />
+    <input type="hidden" asp-for="Parameter.Brand" id="Parameter_Brand" />
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
 </form>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 }
-
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

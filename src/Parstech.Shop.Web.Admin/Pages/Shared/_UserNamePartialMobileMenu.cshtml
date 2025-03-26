@@ -1,0 +1,15 @@
+﻿@using Parstech.Shop.Context.Application.DTOs.User
+@{
+    var Param = new UserNameDto();
+    if (User.Identity.IsAuthenticated)
+    {
+        Param.userName = User.Identity.Name;
+    }
+    else
+    {
+        Param.userName = null;
+    }
+
+    Param.Position = "MobileMenu";
+}
+@await Component.InvokeAsync("UserName",Param)  

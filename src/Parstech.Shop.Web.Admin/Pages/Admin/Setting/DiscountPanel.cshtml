@@ -1,0 +1,274 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Admin.Pages.Admin.Setting.DiscountPanelModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست کالای تخفیف دار
+                    </h3>
+                </div>
+                @* <div class="button-box2">
+                    <button class="btn btn-sm  btn-primary hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddModal">
+                        <i class="icon-plus"></i>
+                        افزودن انبار جدید
+                    </button>
+
+                </div>*@
+
+            </div>
+            <div class="portlet box border shadow">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h3 class="title">
+                            جستجوی انبار
+                        </h3>
+                    </div><!-- /.portlet-title -->
+                    <div class="buttons-box toggle toggle-mobile">
+                    </div><!-- /.buttons-box -->
+                </div><!-- /.portlet-heading -->
+                <div class="portlet-body">
+                    <form method="post" asp-page-handler="Data">
+
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>فیلتر انبار</label>
+                                    <select asp-for="RepId" id="RepId" onchange="DataSubmit()" class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                        <option value="">انتخاب انبار</option>
+                                        @foreach (var item in Model.Representations)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group ">
+                                    <label>فیلتر کالا </label>
+                                    <select asp-for="Parameter.Filter" id="ProductsSelect" onchange="DataSubmit()" class="form-control round select2">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>دسته بندی ها</label>
+                                    <select asp-for="Parameter.Categury" id="CategurySelect" onchange="DataSubmit()" class="form-control round select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>فیلتر پنل تخفیف</label>
+                                    <select asp-for="Parameter.SectionId" id="SectionSelect" onchange="DataSubmit()" class="form-control round select2">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="form-group ">
+                                    <label>فیلتر موجودی</label>
+                                    <select asp-for="Parameter.Exist" id="ExistSelect" onchange="DataSubmit()" class="form-control select2">
+                                        <option value="">انتخاب نشده</option>
+                                        <option value="Exist">دارای موجودی</option>
+                                        <option value="NotExist">عدم موجودی</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            @* <div class="col-lg-1">
+                                <button type="submit" class="btn btn-blue text-white font-weight-bold mt-4 pt-2">فیلتر</button>
+                            </div> *@
+
+                        </div>
+                    </form>
+                    @* <form asp-page-handler="Data" method="post">
+                        <div class="form-group">
+
+                            <select asp-for="RepId" id="RepId" onchange="DataSubmit()" class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                <option value="">انتخاب انبار</option>
+                                @foreach (var item in Model.Representations)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </form> *@
+
+                </div><!-- /.portlet-body -->
+                <div class="portlet-body" style="">
+                    <div class="d-flex mb-2" id="pagingHeader">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered " id="data-table">
+
+                            <thead>
+                                <tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <div class="d-flex mb-2" id="paging">
+                    </div>
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.portlet -->
+
+    </div>
+
+</div>
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    <input type="hidden" asp-for="Parameter.RepId" class="RepId" />
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
+    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist" />
+    <input type="hidden" asp-for="Parameter.SectionId" id="Parameter_SectionId" />
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+</form>
+<form method="post" id="GetSetionsOfProductStockPrice" asp-page-handler="GetSetionsOfProductStockPrice"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGet"
+      data-ajax-complete="OnCompleteGet"
+      data-ajax-failure="OnErrorGet">
+    <input type="hidden" name="productStockPriceId" class="productStockPriceId" />
+
+</form>
+<form method="post" id="DeleteSetionsOfProductStockPrice" asp-page-handler="DeleteSetionsOfProductStockPrice"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteChangeSection">
+    <input type="hidden" name="ProductStockPriceSectionId" id="SectionId" />
+    <input type="hidden" name="ProductStockPriceId" class="productStockPriceId" />
+
+</form>
+<form method="post" id="ChangeShowInDiscountPanelForm" asp-page-handler="ChangeShowInDiscountPanel"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteChange">
+    <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId" />
+    <input type="hidden" name="isShow" id="isShow" />
+
+</form>
+
+
+<div id="Modal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ویرایش پنل تخفیف</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-md-8 col-lg-6 m-auto" id="showInPanel">
+                    
+                </div>
+                <div class="col-lg-12" id="addSection">
+                    <form method="post" id="AddProductStockPriceSectionForm" asp-page-handler="AddProductStockPriceSection"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-complete="OnCompleteChangeSection">
+                        <input type="hidden" name="ProductStockPriceSectionId" class="productStockPriceId" />
+                        
+                       
+                        <div class="col-md-8 col-lg-6 m-auto ">
+                            <div class="form-group ">
+                                <label> پنل تخفیف</label>
+                                <select name="sectionId" id="SectionSelect2" class="form-control round ">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </form>
+                </div>
+                <div class="col-lg-12" >
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped no-footer" id="data-table2" role="grid" aria-describedby="data-table2_info">
+
+                            <thead>
+                                
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1" aria-label="نام ویژگی: activate to sort column descending" style="width: 345px;" aria-sort="ascending">نام ویژگی</th>
+                                    <th class="w-50" tabindex="0" aria-controls="data-table2" rowspan="1" colspan="1" aria-label="عملیات: activate to sort column ascending" style="width: 345px;">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sections">
+
+
+                               
+
+                        </table>
+
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+
+    @* <script src="~/shared/lib/admin/Representations/Index.js"></script> *@
+    <script src="~/shared/lib/admin/setting/discountpanel.js"></script>
+
+    <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+
+    <script src="~/Admin/plugins/chart.js/dist/Chart.bundle.min.js"></script>
+
+    @*<script src="~/Admin/js/pages/pie-chart.js"></script>*@
+    @*<script src="~/Admin/js/pages/line-chart.js"></script>*@
+    @* <script src="~/shared/lib/admin/Representations/Logs.js"></script> *@
+    <script>
+
+    </script>
+}

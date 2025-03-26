@@ -1,21 +1,29 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.Contracts.Persistance;
+using Parstech.Shop.Context.Application.Features.UserProduct.Requests.Query;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
 [Authorize]
 public class UserFavoriteModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly UserPreferencesGrpcClient _userPreferencesClient;
+    private readonly IMediator _mediator;
+    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IUserRepository _userRep;
 
-    public UserFavoriteModel(UserPreferencesGrpcClient userPreferencesClient)
+    public UserFavoriteModel(IMediator mediator,
+        SignInManager<IdentityUser> signInManager)
     {
-        _userPreferencesClient = userPreferencesClient;
+        _mediator = mediator;
+        _signInManager = signInManager;
     }
 
     #endregion
@@ -26,7 +34,7 @@ public class UserFavoriteModel : PageModel
 
     public async Task<IActionResult> OnPostData()
     {
-        var result = await _userPreferencesClient.GetFavoriteProductsAsync(User.Identity.Name);
-        return new JsonResult(result.Products);
+        var result = await _mediator.Send(new GetFavoriteProductOfUsersQueryReq(User.Identity.Name));
+        return new JsonResult(result);
     }
 }

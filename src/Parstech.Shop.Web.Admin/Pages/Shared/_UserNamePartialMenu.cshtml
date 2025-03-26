@@ -1,0 +1,7 @@
+﻿@using Parstech.Shop.Context.Application.DTOs.User
+@{
+    var Param = new UserNameDto();
+    Param.userName = User.Identity.Name;
+    Param.Position = "Menu";
+}
+@await Component.InvokeAsync("UserName",Param)  

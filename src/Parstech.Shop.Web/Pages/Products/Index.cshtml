@@ -24,7 +24,7 @@
                             <div id="sidebarNav1Collapse" class="collapse" data-parent="#sidebarNav">
 
                                 <div id="sidebarNav1" class="card list-unstyled dropdown-list">
-                                    <div class="card-body scrollable">
+                                    <div class="card-body scrollable" >
                                         @foreach (var item in Model.categuries)
                                         {
                                             @if (item.ParentId == null)
@@ -32,26 +32,25 @@
                                                 <a onclick="ChangeCategury(@item.GroupId)"
                                                    class="font-size-15 font-weight-bold Orange" href="#">
                                                     @item.GroupTitle
-                                                    <br/><small id="g-@item.GroupId">@item.LatinGroupTitle</small>
+                                                    <br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small>
                                                 </a>
+
                                             }
                                             else if (item.ParentId != null && item.IsParnet)
                                             {
-                                                <a onclick="ChangeCategury(@item.GroupId)"
-                                                   class="font-size-16 font-weight-bold"
+                                                <a onclick="ChangeCategury(@item.GroupId)" class="font-size-16 font-weight-bold"
                                                    href="#">
-                                                    @item.GroupTitle<br/><small
-                                                        id="g-@item.GroupId">@item.LatinGroupTitle</small>
+                                                    @item.GroupTitle<br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small>
                                                 </a>
                                             }
                                             else
                                             {
                                                 <a onclick="ChangeCategury(@item.GroupId)" class="dropdown-item h5"
                                                    href="#">
-                                                    @item.GroupTitle<br/><small
-                                                        id="g-@item.GroupId">@item.LatinGroupTitle</small>
+                                                    @item.GroupTitle<br /><small id="g-@item.GroupId">@item.LatinGroupTitle</small>
                                                 </a>
                                             }
+
                                         }
                                     </div>
                                 </div>
@@ -77,7 +76,7 @@
                             <div id="sidebarNav1Collapse2" class="collapse" data-parent="#sidebarNav">
                                 <div id="sidebarNav1" class="card list-unstyled dropdown-list">
                                     <div class="card-body scrollable">
-
+                                        
                                         @foreach (var item in Model.Brands)
                                         {
                                             <a onclick="ChangeBrand(@item.BrandId)" class="dropdown-item" href="#"
@@ -85,7 +84,7 @@
                                         }
                                     </div>
                                 </div>
-
+                                
                             </div>
                         </li>
                         <li>
@@ -110,13 +109,12 @@
 
                                         @foreach (var item in Model.Stores)
                                         {
-                                            <a onclick="ChangeStore(@item.Id)" class="dropdown-item"
-                                               href="#">@item.StoreName</a>
-                                            <input id="s-@item.Id" type="hidden" value="@item.LatinStoreName"/>
+                                            <a onclick="ChangeStore(@item.Id)" class="dropdown-item" href="#">@item.StoreName</a>
+                                            <input id="s-@item.Id" type="hidden" value="@item.LatinStoreName" />
                                         }
                                     </div>
                                 </div>
-
+                               
                             </div>
                         </li>
                         <li>
@@ -149,10 +147,7 @@
                                     <span id="maxRangeValue">75,000,000</span>
 
                                 </ul>
-                                <button type="button"
-                                        class="btn btn-xs btn-primary font-weight-bold btn-block text-white"
-                                        onclick="ChangeMinMaxPrice()">اعمال فیلتر قیمت
-                                </button>
+                                <button type="button" class="btn btn-xs btn-primary font-weight-bold btn-block text-white" onclick="ChangeMinMaxPrice()">اعمال فیلتر قیمت</button>
 
                             </div>
 
@@ -161,26 +156,19 @@
 
                     </ul>
                     <!-- End List -->
-                    <button onclick="ChangExist()" id="ExistButton"
-                            class="btn btn-gray btn-sm mt-2 mb-2 pointer btn-block">فقط کالاهای موجود
-                    </button>
-                    <button onclick="ClearFilter()"
-                            class="btn btn-gray text-danger btn-xs font-weight-bold mt-2 mb-2 pointer btn-block">حذف
-                        تمامی فیلتر ها
-                    </button>
+                    <button onclick="ChangExist()" id="ExistButton" class="btn btn-gray btn-sm mt-2 mb-2 pointer btn-block">فقط کالاهای موجود</button>
+                    <button onclick="ClearFilter()" class="btn btn-gray text-danger btn-xs font-weight-bold mt-2 mb-2 pointer btn-block">حذف تمامی فیلتر ها</button>
                 </div>
 
             </div>
             <div class="col-xl-9 col-wd-9gdot5">
-                <!-- Shop-control-bar Title -->
+                <!-- Parstech.Shop-control-bar Title -->
                 <div class="d-block d-md-flex flex-center-between ">
                     <nav aria-label="">
                         <div class="breadcrumb  ">
                             @*<a href="/">فروشگاه پارس تک</a><i class=" ec ec-arrow-right-categproes p-1"></i>*@
-                            <a class=" " aria-current="page">دسته بندی محصولات</a><i
-                                class=" ec ec-arrow-right-categproes p-1"></i>
-                            <a href="/Products/@Model.Categury" class="breadcrumb-item " aria-current="page"
-                               id="Categury12"></a>
+                            <a class=" " aria-current="page">دسته بندی محصولات</a><i class=" ec ec-arrow-right-categproes p-1"></i>
+                            <a href="/Products/@Model.Categury" class="breadcrumb-item " aria-current="page" id="Categury12"></a>
                         </div>
                     </nav>
                     @*<h5 class="mb-2 mb-md-0">محصولات پــارس تـــک</h5>*@
@@ -189,7 +177,7 @@
 
                 </div>
                 <!-- End shop-control-bar Title -->
-                <!-- Shop-control-bar -->
+                <!-- Parstech.Shop-control-bar -->
                 <div class="bg-gray-1 flex-center-between borders-radius-9 py-1">
                     <div class="d-xl-none">
                         <!-- Account Sidebar Toggle Button -->
@@ -230,8 +218,8 @@
                     </div>
 
                 </div>
-                <!-- End Shop-control-bar -->
-                <!-- Shop Body -->
+                <!-- End Parstech.Shop-control-bar -->
+                <!-- Parstech.Shop Body -->
                 <!-- Tab Content -->
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel"
@@ -248,8 +236,8 @@
                     </div>
                 </div>
                 <!-- End Tab Content -->
-                <!-- End Shop Body -->
-                <!-- Shop Pagination -->
+                <!-- End Parstech.Shop Body -->
+                <!-- Parstech.Shop Pagination -->
 
                 <div onscroll="show()" id="PagingScroll">
                     <button class="btn btn-default pointer text-center" onclick="LoadMoreData()">
@@ -257,9 +245,9 @@
                         بیشتر
                     </button>
                 </div>
-                <!-- End Shop Pagination -->
+                <!-- End Parstech.Shop Pagination -->
             </div>
-
+            
         </div>
 
     </div>
@@ -267,24 +255,23 @@
 
 <form method="post" id="GetDataForm" asp-page-handler="Data" data-ajax="true" data-ajax-method="POST"
       data-ajax-begin="OnLoadingData" data-ajax-complete="OnCompleteData" data-ajax-failure="OnErrorData">
-    <input type="hidden" asp-for="Categury" id="categury"/>
-    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type"/>
-    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury"/>
-    <input type="hidden" asp-for="Parameter.Store" id="Parameter_Store"/>
-    <input type="hidden" asp-for="Parameter.Brand" id="Parameter_Brand"/>
-    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
-    <input type="hidden" asp-for="Parameter.Skip" id="Parameter_Skip"/>
-    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist"/>
-    <input type="hidden" asp-for="Parameter.MinPrice" id="Parameter_MinPrice"/>
-    <input type="hidden" asp-for="Parameter.MaxPrice" id="Parameter_MaxPrice"/>
+    <input type="hidden" asp-for="Categury" id="categury" />
+    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type" />
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
+    <input type="hidden" asp-for="Parameter.Store" id="Parameter_Store" />
+    <input type="hidden" asp-for="Parameter.Brand" id="Parameter_Brand" />
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter" />
+    <input type="hidden" asp-for="Parameter.Skip" id="Parameter_Skip" />
+    <input type="hidden" asp-for="Parameter.Exist" id="Parameter_Exist"  />
+    <input type="hidden" asp-for="Parameter.MinPrice" id="Parameter_MinPrice"  />
+    <input type="hidden" asp-for="Parameter.MaxPrice" id="Parameter_MaxPrice" />
 </form>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 }
-
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

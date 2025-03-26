@@ -1,0 +1,2 @@
+Symbol.A = "c";
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2NyaXB0cy5qcyIsInNvdXJjZXMiOlsiLi4vLi4vc291cmNlL3NjcmlwdHMvaW5kZXgudHMiXSwic291cmNlc0NvbnRlbnQiOlsiKFN5bWJvbCBhcyBhbnkpLkEgPSBcImNcIiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQyxPQUFlLElBQUk7In0=

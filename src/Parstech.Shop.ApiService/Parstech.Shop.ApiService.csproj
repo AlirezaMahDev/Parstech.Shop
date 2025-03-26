@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Parstech.Shop.Context\Parstech.Shop.Context.csproj" />
         <ProjectReference Include="..\Parstech.Shop.ServiceDefaults\Parstech.Shop.ServiceDefaults.csproj"/>
         <ProjectReference Include="..\Parstech.Shop.Shared\Parstech.Shop.Shared.csproj"/>
     </ItemGroup>
@@ -42,48 +43,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Application\Dapper\Categury\Commands\"/>
-        <Folder Include="Application\Dapper\OrderDetail\Commands\"/>
-        <Folder Include="Application\Dapper\Order\Queries\"/>
-        <Folder Include="Application\Dapper\ProductProperty\Commands\"/>
-        <Folder Include="Application\Features\Api\Handlers\Commands\"/>
-        <Folder Include="Application\Features\Api\Requests\Commands\"/>
-        <Folder Include="Application\Features\CouponType\Handlers\Queries\"/>
-        <Folder Include="Application\Features\CouponType\Requests\Queries\"/>
-        <Folder Include="Application\Features\Excel\Handlers\Commands\"/>
-        <Folder Include="Application\Features\Excel\Requests\Commands\"/>
-        <Folder Include="Application\Features\IRole\Handlers\Queries\"/>
-        <Folder Include="Application\Features\IRole\Requests\Queries\"/>
-        <Folder Include="Application\Features\NewFolder1\"/>
-        <Folder Include="Application\Features\OrderShipping\Handler\Commands\"/>
-        <Folder Include="Application\Features\OrderShipping\Request\Commands\"/>
-        <Folder Include="Application\Features\PayType\Handlers\Queries\"/>
-        <Folder Include="Application\Features\PayType\Requests\Queries\"/>
-        <Folder Include="Application\Features\ProductType\Handlers\Queries\"/>
-        <Folder Include="Application\Features\ProductType\Requests\Queries\"/>
-        <Folder Include="Application\Features\Reports\Handlers\Commands\"/>
-        <Folder Include="Application\Features\Reports\Requests\Commands\"/>
-        <Folder Include="Application\Features\RepresentationType\Handlers\Queries\"/>
-        <Folder Include="Application\Features\RepresentationType\Requests\Queries\"/>
-        <Folder Include="Application\Features\Representation\Handlers\Queries\"/>
-        <Folder Include="Application\Features\Representation\Requests\Queries\"/>
-        <Folder Include="Application\Features\SectionDetail\Handlers\Queries\"/>
-        <Folder Include="Application\Features\SectionDetail\Requests\Queries\"/>
-        <Folder Include="Application\Features\SocialSetting\Handlers\Queries\"/>
-        <Folder Include="Application\Features\SocialSetting\Requests\Queries\"/>
-        <Folder Include="Application\Features\Status\Handler\Queries\"/>
-        <Folder Include="Application\Features\Status\Requests\Queries\"/>
-        <Folder Include="Application\Features\Tax\Handlers\Queries\"/>
-        <Folder Include="Application\Features\Tax\Requests\Queries\"/>
-        <Folder Include="Application\Features\TicketDetail\Handler\Commands\"/>
-        <Folder Include="Application\Features\TicketDetail\Requests\Commands\"/>
-        <Folder Include="Application\Features\Ticket\Handler\Commands\"/>
-        <Folder Include="Application\Features\Ticket\Requests\Commands\"/>
-        <Folder Include="Persistence\"/>
+        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Server"/>
+      <Folder Include="Extensions\" />
+      <Folder Include="Helpers\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

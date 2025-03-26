@@ -1,0 +1,247 @@
+﻿.hs-menu-initialized.hs-menu-horizontal .hs-mega-menu.hs-position-left {
+    left: auto !important;
+    right: 100% !important;
+    min-height: 430px !important;
+}
+
+.nav-link {
+    float: right;
+}
+
+.rtl {
+    direction: rtl !important;
+}
+
+.leftButtons {
+    position: absolute;
+    top: 13px;
+    left: 15px;
+}
+
+.rounded-left-pill {
+    border-top-left-radius: 6.1875rem !important;
+    border-bottom-left-radius: 6.1875rem !important;
+}
+
+.SearchInput {
+    border-color: #f5f5f5 !important;
+}
+
+
+
+.SlideBack {
+    width: 100%;
+    /*height:100%;*/
+}
+
+@media (min-width: 1480px) {
+    .SlideShow {
+        max-width: 100% !important;
+        background-size: cover;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+.bannerHeight-160 {
+    max-height: 160px
+}
+
+.hs-mega-menu {
+    width: 900px !important;
+    min-height: auto !important;
+    height: auto !important;
+}
+
+.hs-mega-menu {
+    height: max-content !important;
+}
+
+.vmm-bg {
+    position: inherit !important;
+}
+
+.MobileSlide {
+    display: none;
+}
+
+.DesktopnSlide {
+    display: block;
+}
+
+
+.MobileMenu {
+    display: none !important;
+}
+
+@media (max-width: 1200px) {
+    .MobileSlide {
+        display: block;
+    }
+    
+    .DesktopnSlide {
+        display: none;
+    }
+
+    .MobileMenu {
+        display: flex !important;
+    }
+}
+
+.flex-center-between-price {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: center;
+}
+
+.form-control-Custom {
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: calc(1em + 1rem + 1px) !important;
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #818181;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dddddd;
+    border-radius: 0.5rem !important;
+}
+
+.btn-Custom {
+    padding: 0.2rem !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.inputIcon {
+    border-top-right-radius: 27px !important;
+    border-bottom-right-radius: 27px !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+}
+
+.listProductBox {
+    border: 3px solid;
+    border-color: white;
+    border-radius: 23px;
+}
+
+@media (min-width: 1480px) {
+
+    .cart-page .container,
+    .checkout-page .container {
+        max-width: unset !important;
+    }
+}
+
+
+.nav-bottom {
+    z-index: 1000;
+}
+
+.nav-bottom::after {
+    background-image: url('../../shared/images/mobilemenu.png');
+    -webkit-mask-image: url('../../shared/images/mobilemenu.png');
+    mask-image: url('../../shared/images/mobilemenu.png');
+}
+
+.height-560-xl {
+    height: 560px
+}
+.banner-12 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-11 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-10 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-9 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-8 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-7 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+.banner-6 {
+    min-height: 209px;
+    border-radius: 40px;
+}.banner-5 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+ .banner-4 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+ .banner-3 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+ .banner-2 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+ .banner-1 {
+    min-height: 209px;
+    border-radius: 40px;
+}
+@media (max-width: 1200px) {
+  
+    .banner-12 {
+        min-height: 100% !important;
+    }
+    .banner-11 {
+        min-height: 100% !important;
+    }
+    .banner-10 {
+        min-height: 100% !important;
+    }
+    .banner-9 {
+        min-height: 100% !important;
+    }
+    .banner-8 {
+        min-height: 100% !important;
+    }
+    .banner-7 {
+        min-height: 100% !important;
+    }
+    .banner-6 {
+        min-height: 100px !important;
+    }
+    .banner-5 {
+        min-height: 100px !important;
+    }
+    .banner-4 {
+        min-height: 100px !important;
+    }
+    .banner-3 {
+        min-height: 100px !important;
+    }
+    .banner-2 {
+        min-height: 100px !important;
+    }
+    .banner-1 {
+        min-height: 100px !important;
+    }
+
+    
+}
+    

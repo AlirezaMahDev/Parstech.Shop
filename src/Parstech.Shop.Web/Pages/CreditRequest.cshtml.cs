@@ -1,30 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.FormCredit;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.Features.FormCredit.Requests.Commands;
+using Parstech.Shop.Context.Application.Validators.FormCredit;
 
 namespace Parstech.Shop.Web.Pages;
 
 public class CreditRequest : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly FormCreditGrpcClient _formCreditClient;
+    private readonly IMediator _mediator;
 
-    public CreditRequest(FormCreditGrpcClient formCreditClient)
+    public CreditRequest(IMediator mediator)
     {
-        _formCreditClient = formCreditClient;
+        _mediator = mediator;
     }
 
     #endregion
 
     #region Properties
 
+
     [BindProperty]
     public FormCreditDto formCredit { get; set; }
 
     public ResponseDto Response { get; set; } = new();
+
+
+
 
     #endregion
 
@@ -32,8 +40,10 @@ public class CreditRequest : PageModel
 
     public async Task<IActionResult> OnGet()
     {
+
         return Page();
     }
+
 
     #endregion
 
@@ -41,8 +51,8 @@ public class CreditRequest : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        #region Validator
 
+        #region Validator
         var validator = new FormCreditDtoValidator();
         var valid = validator.Validate(formCredit);
         if (!valid.IsValid)
@@ -53,17 +63,10 @@ public class CreditRequest : PageModel
 
             return new JsonResult(Response);
         }
-
         #endregion
-
-        // Convert request price from text format
         formCredit.RequestPrice = long.Parse(formCredit.TextRequestPrice.Replace(",", ""));
-
-        // Use gRPC client instead of MediatR
-        Response = await _formCreditClient.CreateFormCreditAsync(formCredit);
-
+        Response = await _mediator.Send(new CreateFormCreditCommandReq(formCredit));
         return new JsonResult(Response);
     }
-
     #endregion
 }

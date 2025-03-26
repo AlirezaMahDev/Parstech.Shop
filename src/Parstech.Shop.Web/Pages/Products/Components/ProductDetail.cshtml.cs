@@ -1,36 +1,41 @@
+using AutoMapper;
+
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.GrpcClients;
+using Parstech.Shop.Context.Application.Contracts.Persistance;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.Features.Product.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Products.Components;
 
 public class ProductDetailModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly IProductComponentsAdminGrpcClient _productComponentsClient;
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
     private readonly IProductStockPriceRepository _productStockRep;
 
-    public ProductDetailModel(
-        IProductComponentsAdminGrpcClient productComponentsClient,
+    public ProductDetailModel(IMediator mediator,
+        IMapper mapper,
         IProductStockPriceRepository productStockRep)
     {
-        _productComponentsClient = productComponentsClient;
+        _mediator = mediator;
+        _mapper = mapper;
         _productStockRep = productStockRep;
     }
 
     #endregion
-
-    [BindProperty]
-    public ResponseDto Response { get; set; } = new();
+    [BindProperty] public ResponseDto Response { get; set; } = new();
+        
 
     public async Task<IActionResult> OnGet(string ShortLink, int StoreId)
     {
         #region Get User If Authenticated
-
-        string? userName = "";
+        var userName = "";
         if (User.Identity.IsAuthenticated)
         {
             userName = User.Identity.Name;
@@ -39,22 +44,10 @@ public class ProductDetailModel : PageModel
         {
             userName = null;
         }
-
         #endregion
-
-        var productDetail = await _productComponentsClient.GetProductDetailAsync(ShortLink, StoreId, userName);
-
-        if (productDetail.IsSuccess)
-        {
-            Response.Object = productDetail;
-            Response.IsSuccessed = true;
-        }
-        else
-        {
-            Response.IsSuccessed = false;
-            Response.Message = "Failed to retrieve product details";
-        }
-
+        var Item = await _mediator.Send(new ProductDetailShowQueryReq(ShortLink, StoreId, userName));
+        Response.Object = Item;
+        Response.IsSuccessed = true;
         return new JsonResult(Response);
     }
 }

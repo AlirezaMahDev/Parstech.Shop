@@ -17,8 +17,7 @@
             <div class="col-xl-4 col-lg-5 col-md-7 col-12 mx-auto">
                 <div class="logo-area text-center mb-3 ">
 
-                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;"
-                                     alt="logo"></a>
+                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;" alt="logo"></a>
 
                 </div>
 
@@ -34,18 +33,20 @@
                         </div>
 
 
+
+
                         <form method="post" asp-page-handler="Register"
                               data-ajax="true"
                               data-ajax-method="POST"
                               data-ajax-complete="OnComplete">
 
-
+                       
                             <!-- Signup -->
                             <div id="signup" style="opacity: 1;" data-target-group="idForm" class="animated slideInUp">
                                 <!-- Title -->
                                 <header class="text-center mb-7">
                                     <h3 class="h5 mb-0">ثبت نام در فروشگاه</h3>
-
+                                    
                                 </header>
                                 <!-- End Title -->
                                 <!-- Form Group -->
@@ -54,8 +55,7 @@
                                         <h3>شماره موبایل</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.Mobile" id="registermobile"
-                                               class="input-ui pr-2" placeholder="شماره موبایل خود را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.Mobile" id="registermobile" class="input-ui pr-2" placeholder="شماره موبایل خود را وارد نمایید">
                                         <i class="fas fa-mobile"></i>
                                     </div>
 
@@ -65,8 +65,7 @@
                                         <h3>نام</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.Name" id="registername" class="input-ui pr-2"
-                                               placeholder="نام خود را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.Name" id="registername" class="input-ui pr-2" placeholder="نام خود را وارد نمایید">
                                         <i class="fas fa-user"></i>
                                     </div>
 
@@ -76,8 +75,7 @@
                                         <h3>نام خانوادگی</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.Family" id="registerfamily"
-                                               class="input-ui pr-2" placeholder="نام خانوادگی خود را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.Family" id="registerfamily" class="input-ui pr-2" placeholder="نام خانوادگی خود را وارد نمایید">
                                         <i class="fas fa-user"></i>
                                     </div>
 
@@ -87,8 +85,7 @@
                                         <h3>کد ملی</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.MeliCode" id="registerMeliCode"
-                                               class="input-ui pr-2" placeholder="کد ملی خود را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.MeliCode" id="registerMeliCode" class="input-ui pr-2" placeholder="کد ملی خود را وارد نمایید">
                                         <i class="fas fa-user"></i>
                                     </div>
 
@@ -98,8 +95,7 @@
                                         <h3>استان</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.State" id="registerstate"
-                                               class="input-ui pr-2" placeholder="استان محل سکونت را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.State" id="registerstate" class="input-ui pr-2" placeholder="استان محل سکونت را وارد نمایید">
                                         <i class="fas fa-map-location"></i>
                                     </div>
 
@@ -109,8 +105,7 @@
                                         <h3>شهر</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <input type="text" asp-for="Inputs.City" id="registercity" class="input-ui pr-2"
-                                               placeholder="شهر محل سکونت را وارد نمایید">
+                                        <input type="text" asp-for="Inputs.City" id="registercity" class="input-ui pr-2" placeholder="شهر محل سکونت را وارد نمایید">
                                         <i class="fas fa-location-dot"></i>
                                     </div>
 
@@ -120,45 +115,39 @@
                                         <h3>آدرس محل زندگی</h3>
                                     </div>
                                     <div class="form-row with-icon">
-                                        <textarea type="text" asp-for="Inputs.Address" id="registeraddress"
-                                                  class="input-ui pr-2"
-                                                  placeholder="آدرس محل سکونت را وارد نمایید"></textarea>
+                                        <textarea type="text" asp-for="Inputs.Address" id="registeraddress" class="input-ui pr-2" placeholder="آدرس محل سکونت را وارد نمایید"></textarea>
                                         <i class="fas fa-location-dot"></i>
                                     </div>
 
                                 </div>
                                 <div class="form-group" id="CapchaSection">
-
+                                    
 
                                 </div>
-                                <div class="form-group">
-                                    <div class="form-row-title d-flex">
-                                        <h3>کد امنیتی</h3>
-                                        <button type="button" class="btn btn-default mb-2 pointer"
-                                                onclick="GetCapcha()">دریافت مجدد کد امنیتی
-                                        </button>
-                                    </div>
-                                    <div class="form-row with-icon">
+                            <div class="form-group">
+                                <div class="form-row-title d-flex">
+                                    <h3>کد امنیتی</h3>
+                                        <button type="button" class="btn btn-default mb-2 pointer" onclick="GetCapcha()">دریافت مجدد کد امنیتی</button>
+                                </div>
+                                <div class="form-row with-icon">
                                         <input type="hidden" asp-for="Inputs.CaptchaKey" id="CaptchaKey">
-                                        <input type="text" asp-for="Inputs.CaptchaValue" id="CaptchaValue"
-                                               class="input-ui pr-2" placeholder="کد امنیتی را وارد نمایید">
-                                        @* <i class="fas fa-location-dot"></i> *@
-                                    </div>
-
+                                        <input type="text" asp-for="Inputs.CaptchaValue" id="CaptchaValue" class="input-ui pr-2" placeholder="کد امنیتی را وارد نمایید">
+                                    @* <i class="fas fa-location-dot"></i> *@
                                 </div>
+
+                            </div>
                                 <div class="form-row mt-3">
-                                    <button type="submit"
-                                            class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
+                                    <button type="submit" class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
                                         <i class="mdi mdi-login-variant"></i>
                                         ثبت نام
                                     </button>
                                 </div>
                                 <!-- End Input -->
-
+                               
                             </div>
                             <!-- End Signup -->
                         </form>
-
+                        
                     </div>
                     <div class="form-footer mt-3">
                         <div>
@@ -174,17 +163,16 @@
 </main>
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 
-    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet"/>
-    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet"/>
-    <link href="~/site/productdetail/main.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/site/productdetail/main.css" rel="stylesheet" />
 }
-
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>
@@ -193,10 +181,10 @@
 
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
 
-
+     
     @* <script src="~/shared/lib/admin/auth/login.js"></script> *@
 
-    @*  <script src="~/Admin/plugins/ladda/dist/spin.min.js"></script>
+   @*  <script src="~/Admin/plugins/ladda/dist/spin.min.js"></script>
     <script src="~/Admin/plugins/ladda/dist/ladda.min.js"></script>
     <script src="~/Admin/js/pages/ladda.js"></script>
  *@

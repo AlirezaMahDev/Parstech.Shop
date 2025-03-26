@@ -1,46 +1,62 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-
 #nullable disable
+
+using AutoMapper;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.Contracts.Persistance;
+using Parstech.Shop.Context.Application.DTOs.Auth;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.Features.Security.Requests.Queries;
+using Parstech.Shop.Context.Application.Validators.Auth;
 
 namespace Parstech.Shop.Web.Pages.Auth;
 
 public class LoginModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly ILogger<LoginModel> _logger;
-    private readonly UserAuthGrpcClient _userAuthClient;
+    private readonly IUserRepository _userRep;
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public LoginModel(
-        SignInManager<IdentityUser> signInManager,
+    private readonly ILogger<LoginModel> _logger;
+
+    public LoginModel(SignInManager<IdentityUser> signInManager,
         ILogger<LoginModel> logger,
-        UserAuthGrpcClient userAuthClient)
+        IMediator mediator,
+        IUserRepository userRep,
+        IMapper mapper)
     {
         _signInManager = signInManager;
         _logger = logger;
-        _userAuthClient = userAuthClient;
+        _mediator = mediator;
+        _userRep = userRep;
+        _mapper = mapper;
     }
+
 
     [BindProperty]
     public LoginDto Input { get; set; }
 
     public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+
     public string ReturnUrl { get; set; }
+
 
     [TempData]
     public string ErrorMessage { get; set; }
 
-    [BindProperty]
-    public ResponseDto Response { get; set; } = new();
+
+    [BindProperty] public ResponseDto Response { get; set; } = new();
+
 
     public async Task OnGetAsync(string returnUrl = null)
     {
@@ -61,8 +77,8 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        #region Validator
 
+        #region Validator
         var validator = new LoginDtoValidator();
         var valid = validator.Validate(Input);
         if (!valid.IsValid)
@@ -72,18 +88,38 @@ public class LoginModel : PageModel
             Response.Object = Input;
             return new JsonResult(Response);
         }
-
         #endregion
 
-        var loginResponse = await _userAuthClient.LoginAsync(Input.UserName, Input.Password);
 
-        Response.IsSuccessed = loginResponse.IsSuccessful;
-        Response.Message = loginResponse.Message;
 
-        if (loginResponse.IsSuccessful)
+        var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, true, lockoutOnFailure: false);
+        if (result.Succeeded)
         {
-            Response.Object = loginResponse.RedirectUrl;
-            Response.Object2 = loginResponse.ProtectedData;
+            //var user=await _userRep.GetUserByUserName(Input.UserName);
+            //user.LastLoginDate = DateTime.Now;
+            //await _mediator.Send(new UserUpdateCommandReq(_mapper.Map<UserDto>(user)));
+            Response.IsSuccessed = true;
+            Response.Message = "ورود با موفقیت انجام شد . در حال انتقال به پنل";
+            if (User.IsInRole("Customer"))
+            {
+                Response.Object = "/Panel";
+            }
+            else
+            {
+                Response.Object = "/Admin";
+            }
+            Response.Object2 = await _mediator.Send(new DataProtectQueryReq(Input.UserName, "protect"));
+        }
+        else
+        {
+            Response.IsSuccessed = false;
+            Response.Message = "کاربری با مشخصات وارد شده یافت نشد";
+        }
+        if (result.IsLockedOut)
+        {
+            Response.IsSuccessed = false;
+            Response.Message = "حساب شما تا تاریخ فلان مسدود شده است.";
+
         }
 
         return new JsonResult(Response);

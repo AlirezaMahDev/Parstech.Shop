@@ -1,0 +1,152 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Admin.Pages.Admin.Setting.SeoModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        بهینه سازی سایت و SEO
+                    </h3>
+                </div><!-- /.portlet-title -->
+                @*<div class="buttons-box">
+                <a class="btn btn-sm btn-default btn-round btn-fullscreen" rel="tooltip" href="#" aria-label="تمام صفحه" data-bs-original-title="تمام صفحه">
+                <i class="icon-size-fullscreen"></i>
+                <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                </a>
+                <a class="btn btn-sm btn-default btn-round btn-collapse" rel="tooltip" href="#" aria-label="کوچک کردن" data-bs-original-title="کوچک کردن">
+                <i class="icon-arrow-up"></i>
+                <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.00696;"></div><div class="paper-ripple__waves"></div></div>
+                </a>
+                </div>*@<!-- /.buttons-box -->
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" enctype="multipart/form-data"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoading"
+                      data-ajax-complete="OnComplete"
+                      data-ajax-failure="OnError">
+
+                    <div class="form-body">
+                        <div class="form-group round">
+                            <label>عنوان سازمان</label>
+                            <input asp-for="Input.Author" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+
+                        <div class="form-group round">
+                            <label>عنوان سازنده</label>
+                            <input asp-for="Input.Owner" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+
+                        <div class="form-group row">
+                            <label class="col-sm-2">کلمات کلیدی <strong class="text-warning">(با ، جدا شود)</strong></label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="Input.Keywords" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2">توضیحات سایت</label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="Input.Description" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group round">
+                            <label>لینک اصلی سایت <strong class="text-danger">* Canonical Link *</strong></label>
+                            <input asp-for="Input.Canonical" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+
+                        <div class="form-group round">
+                            <label>نوع سایت <strong class="text-danger">(Og)</strong></label>
+                            <input asp-for="Input.OgType" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+
+                        <div class="form-group round">
+                            <label>عنوان<strong class="text-danger">(Og)</strong></label>
+                            <input asp-for="Input.OgTitle" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+                        <div class="form-group row">
+                            <label class="col-sm-2">توضیحات سایت <strong class="text-danger">(Og)</strong></label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="Input.OgDescription" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group round">
+                            <label>تصویر <strong class="text-danger">(Og)</strong> </label>
+                            <input asp-for="Input.OgImage" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+                        <div class="form-group round">
+                            <label>لینک سایت <strong class="text-danger">(Og)</strong></label>
+                            <input asp-for="Input.OgUrl" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+                        <div class="form-group round">
+                            <label>نام سایت <strong class="text-danger">(Og)</strong></label>
+                            <input asp-for="Input.OgSiteName" type="text" class="form-control">
+                        </div><!-- /.form-group -->
+
+                        <div class="form-group">
+                            <label>ربات گوگل </label>
+
+                            <div class="input-group">
+                                <label class="">
+                                    <div class="icheckbox_square-grey" style="position: relative;">
+                                        <input asp-for="Input.RobotsIndex" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                    </div>
+                                    شناسایی صفحات سایت توسط ربات های گوگل
+                                </label>
+                            </div><!-- /.input-group -->
+                            <div class="input-group">
+                                <label class="">
+                                    <div class="icheckbox_square-grey" style="position: relative;">
+                                        <input asp-for="Input.RobotsFollow" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                    </div>
+                                    دنبال کردن صفحات سایت توسط ربات های گوگل
+                                </label>
+                            </div><!-- /.input-group -->
+                        </div>
+
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-round">
+                            بازگشت
+                            <i class="icon-close"></i>
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
+                        </button>
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+
+    </div>
+</div>
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+    <script src="~/shared/lib/admin/setting/site.js"></script>
+}

@@ -1,4 +1,4 @@
-﻿@model Parstech.Shop.Application.DTOs.Section.SectionAndDetailsDto
+﻿@model Parstech.Shop.Context.Application.DTOs.Section.SectionAndDetailsDto
 <div class="mb-6">
     <div class="row">
         @foreach (var item in Model.SectionDetails)
@@ -13,7 +13,7 @@
                                     <div class="ml-md-7 mt-6 mt-md-0 ml-4 text-gray-90">
                                         <h2 class="font-size-28 font-size-20-lg max-width-270 text-lh-1dot2">@item.Caption</h2>
                                         <p class="font-size-18 font-size-14-lg text-gray-90 font-weight-light">@item.SubCaption</p>
-
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -26,16 +26,18 @@
                 case 602:
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="h-100">
-                            <a href="@item.Link" class="banner d-block"><img class="img-fluid"
-                                                                             src="~/Shared/Images/@item.BackgroundImage"
-                                                                             alt="@item.Alt"></a>
+                            <a href="@item.Link" class="banner d-block"><img class="img-fluid" src="~/Shared/Images/@item.BackgroundImage" alt="@item.Alt"></a>
                         </div>
                     </div>
                     break
-                        ;
+                    ;
+               
             }
         }
 
-
+        
+       
+        
+        
     </div>
 </div>

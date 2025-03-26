@@ -13,6 +13,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Parstech.Shop.ApiService\Parstech.Shop.ApiService.csproj"/>
+        <ProjectReference Include="..\Parstech.Shop.Proxy\Parstech.Shop.Proxy.csproj" />
+        <ProjectReference Include="..\Parstech.Shop.Web.Admin\Parstech.Shop.Web.Admin.csproj" />
         <ProjectReference Include="..\Parstech.Shop.Web\Parstech.Shop.Web.csproj"/>
     </ItemGroup>
 

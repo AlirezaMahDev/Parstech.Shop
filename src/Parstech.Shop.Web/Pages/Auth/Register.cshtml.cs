@@ -1,34 +1,38 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
 
-using Parstech.Shop.Shared.DTOs;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.DTOs.User;
+using Parstech.Shop.Context.Application.Features.User.Requests.Queries;
+using Parstech.Shop.Context.Application.Validators.User;
+
+using SixLaborsCaptcha.Core;
 
 namespace Parstech.Shop.Web.Pages.Auth;
 
 public class RegisterModel : PageModel
-
+        
 {
     private readonly ISixLaborsCaptchaModule sixLaborsCaptcha;
     private readonly IDistributedCache distributedCache;
-    private readonly IAuthAdminGrpcClient _authClient;
-
-    public RegisterModel(ISixLaborsCaptchaModule sixLaborsCaptcha,
-        IDistributedCache distributedCache,
-        IAuthAdminGrpcClient authClient)
+    private readonly IMediator _mediator;
+        
+    public RegisterModel(ISixLaborsCaptchaModule sixLaborsCaptcha, IDistributedCache distributedCache, IMediator mediator)
     {
         this.sixLaborsCaptcha = sixLaborsCaptcha;
         this.distributedCache = distributedCache;
-        _authClient = authClient;
+        _mediator = mediator;
+            
     }
-
     public record CaptchaResponse(string Id, string Image);
-
     public ResponseDto Response { get; set; } = new();
 
     [BindProperty]
-    public RegisterDto Inputs { get; set; }
+    public RegisterDto Inputs { get; set; } 
 
     public void OnGet()
     {
@@ -37,7 +41,8 @@ public class RegisterModel : PageModel
     [ValidateAntiForgeryToken]
     public async Task<JsonResult> OnPostRegister()
     {
-        string? captchaValue = await distributedCache.GetStringAsync(Inputs.CaptchaKey);
+
+        var captchaValue = await distributedCache.GetStringAsync(Inputs.CaptchaKey);
         //await distributedCache.RemoveAsync(request.CaptchaKey, cancellationToken);
 
         if (string.IsNullOrWhiteSpace(captchaValue))
@@ -52,10 +57,10 @@ public class RegisterModel : PageModel
             Response.IsSuccessed = false;
             Response.Message = "کد امنیتی نادرست است";
             return new(Response);
+
         }
 
         #region Validator
-
         var validator = new RegisterDtoValidator();
         var valid = validator.Validate(Inputs);
         if (!valid.IsValid)
@@ -66,10 +71,9 @@ public class RegisterModel : PageModel
 
             return new(Response);
         }
-
         #endregion
-
-
+            
+            
         UserRegisterDto input = new();
         input.UserName = Inputs.Mobile;
         input.FirstName = Inputs.Name;
@@ -81,7 +85,7 @@ public class RegisterModel : PageModel
         input.Address = Inputs.Address;
         input.Mobile = Inputs.Mobile;
 
-        var result = await _authClient.RegisterUserAsync(input);
+        var result = await _mediator.Send(new UserRegisterQueryReq(input));
 
         return new(result);
     }
@@ -91,13 +95,13 @@ public class RegisterModel : PageModel
     public async Task<JsonResult> OnPostCaptcha()
     {
         var value =
-            SixLaborsCaptcha.Core.Extensions.GetUniqueKey(4, "0123456789".ToCharArray());
-        string key = Guid.NewGuid().ToString();
+            Extensions.GetUniqueKey(4, "0123456789".ToCharArray());
+        var key = Guid.NewGuid().ToString();
         var captcha = sixLaborsCaptcha.Generate(value);
         await distributedCache.SetStringAsync(key,
             value,
             new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromMinutes(5) });
-        CaptchaResponse res = new(key, Convert.ToBase64String(captcha));
+        var res= new CaptchaResponse(key, Convert.ToBase64String(captcha));
         return new(res);
     }
 }

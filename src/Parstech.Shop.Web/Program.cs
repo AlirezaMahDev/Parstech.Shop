@@ -3,7 +3,6 @@ using Grpc.Net.ClientFactory;
 using Parstech.Shop.Web;
 using Parstech.Shop.Web.Components;
 using Parstech.Shop.ServiceDefaults;
-using Parstech.Shop.Shared.Protos;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +36,7 @@ static void GrpcClientOptions(IServiceProvider provider, GrpcClientFactoryOption
     options.Address = new("https+http://apiservice");
 }
 
-builder.Services.AddGrpcClient<UserAuthService.UserAuthServiceClient>(GrpcClientOptions);
+// builder.Services.AddGrpcClient<UserAuthService.UserAuthServiceClient>(GrpcClientOptions);
 
 WebApplication app = builder.Build();
 

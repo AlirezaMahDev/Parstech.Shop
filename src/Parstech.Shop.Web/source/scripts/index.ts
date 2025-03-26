@@ -1,1 +1,0 @@
-(Symbol as any).A = "a"

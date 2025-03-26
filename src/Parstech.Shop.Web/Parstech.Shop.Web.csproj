@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Parstech.Shop.Context\Parstech.Shop.Context.csproj" />
         <ProjectReference Include="..\Parstech.Shop.ServiceDefaults\Parstech.Shop.ServiceDefaults.csproj" />
         <ProjectReference Include="..\Parstech.Shop.Shared\Parstech.Shop.Shared.csproj" />
     </ItemGroup>
@@ -23,12 +24,133 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Client" />
+    <ItemGroup><!--        <Protobuf Include="..\Parstech.Shop.Shared\Protos\*.proto" GrpcServices="Client" />-->
+    
+      <AdditionalFiles Include="Pages\Sadad\ErrorPaymentView.cshtml" />
+      <AdditionalFiles Include="Pages\Sadad\Index.cshtml" />
+      <AdditionalFiles Include="Pages\Sadad\OrderSuccessPaymentView.cshtml" />
+      <AdditionalFiles Include="Pages\Sadad\PaymentError.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Extensions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Admin\Brands\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Categuries\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Config\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Coupons\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Feutures\Categuries\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Feutures\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Finanical\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Orders\ApiHamkaran.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Orders\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\CreateOrUpdate.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\CreateOrUpdateAjax\Categuries.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\CreateOrUpdateAjax\ChildsAndStock.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\CreateOrUpdateAjax\Feutures.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\CreateOrUpdateAjax\Galleries.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\EditContent.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Reports\Finanical\ActiveCredit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Reports\Finanical\Transactions.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Reports\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Representations\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Representations\QuickEdit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Representations\Testquick.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Requests\CreditRequests.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\DiscountPanel.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\Sections.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\Seo.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\Shipping.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\Site.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Setting\Social.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Sales.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Sections.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Users\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Users\Permission.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Users\Stores.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\AccessDenied.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\Login.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\LoginRegister.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\Logout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\Register.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Checkout\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Checkout\Payment.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Components\GetCategurySelect.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Components\GetDiscountSectionSelect.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Components\GetProductsSelect.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\ErrorPages\IpError.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\ChangePassword.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\Orders.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\Shippings.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\ShopingCart.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\TransactionsList.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\UserCompare.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Panel\UserFavorite.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Brands.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Components\ProductDetail.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Detail.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Filter.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Stores.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Admin\_Css.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Admin\_Js.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Admin\_SideBar.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Admin_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Auth_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Checkout_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\Categuries\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\Header\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\BrandSlider.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\CateguryIcons.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\Discount.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\Icons.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\LargeBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\ListProducts.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\SixBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\SlideShow.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\LandingPageSection\TwoBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\PanelSideBar\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\BrandSlider.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\CateguryIcons.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\Discount.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\Icons.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\LargeBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\ListProducts.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\SixBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\SlideShow.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\StorePageSection\TwoBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Components\UserName\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\SiteAuth_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Footer\_FooterPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_Css.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_Icons.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_LogoCategories.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_MobileHeader.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_SearchBox.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_SubMenu.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Header\_Toolbar.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Landing\_CategurySlider.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\Landing\_FooterWidgets.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\_Brands.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\_Identity.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Site\_PanelSideBar.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_LoginPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialMenu.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialMobileMenu.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialSideBar.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialSite.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialSiteMenu.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_UserNamePartialSitePanel.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
     </ItemGroup>
 
 </Project>

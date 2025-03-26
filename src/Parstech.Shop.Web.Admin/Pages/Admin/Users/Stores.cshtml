@@ -1,0 +1,360 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Admin.Pages.Admin.Users.StoresModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست کاربران
+                    </h3>
+                </div>
+                <div class="buttons-box">
+                    <button class="btn btn-sm btn-success btn-round hover-green" data-bs-toggle="modal" data-bs-target="#StoreAdd">
+                        <i class="icon-plus"></i>
+                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                    </button>
+
+                </div>
+               
+
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+
+                        <th>نام کاربری</th>
+                        <th>نام فروشگاه</th>
+                        <th>نام </th>
+                        <th>نام خانوادگی </th>
+                        <th>عملیات </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.List)
+                    {
+                        <tr>
+                            <td>@item.UserName</td>
+                            <td>@item.StoreName</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td><button onclick="GetData(@item.Id)" class="btn btn-warning">اطلاعات فروشنده</button></td>
+                        </tr>
+                    }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="StoreEdit" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">اطلاعات فروشگاه</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <form method="post" asp-page-handler="UpdateAndCreate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-begin="OnLoadingUpdate"
+                              data-ajax-complete="OnCompleteUpdate"
+                              data-ajax-failure="OnErrorUpdate">
+
+                            <input type="hidden" asp-for="Input.Id" id="Input_Id" />
+                            <input type="hidden" asp-for="Input.RepId" id="Input_RepId" />
+                            <input type="hidden" asp-for="Input.UserId" id="Input_UserId" />
+
+                           
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.FirstName" id="Input_FirstName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام خانوادگی</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.LastName" id="Input_LastName" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>نام فروشگاه</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.StoreName" id="Input_StoreName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>نام لاتین فروشگاه</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.LatinStoreName" id="Input_LatinStoreName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>تلفن</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Phone" id="Input_Phone" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>موبایل</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Mobile" id="Input_Mobile" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کشور</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Country" id="Input_Country" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>استان</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.State" id="Input_State" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>شهر</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.City" id="Input_City" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>آدرس</label>
+                                <div class="form-group round">
+                                    <textarea asp-for="Input.Address" id="Input_Address" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد پستی</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.PostCode" id="Input_PostCode" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>درصد سود فروشنده</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.PersentOfSale" id="Input_PersentOfSale" type="text" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </form>
+                    </div><!-- /col-lg-12 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="StoreAdd" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">افزودن فروشگاه</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <form method="post" asp-page-handler="UpdateAndCreate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-begin="OnLoadingUpdate"
+                              data-ajax-complete="OnCompleteUpdate"
+                              data-ajax-failure="OnErrorUpdate">
+
+
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کاربر فروشنده</label>
+                                <div class="form-group round">
+                                    <select asp-for="Input.UserId" type="text" class="form-control">
+                                        @foreach (var item in Model.Users)
+                                        {
+                                            <option value="@item.Id">@item.UserName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام انبار</label>
+                                <div class="form-group round">
+                                    <input asp-for="RepInput.Name" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>استان انبار</label>
+                                <div class="form-group round">
+                                    <select asp-for="RepInput.StateId" type="text" class="form-control">
+                                        @foreach (var item in Model.stetes)
+                                        {
+                                            <option value="@item.Id">@item.StateTitle</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.FirstName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label> نام خانوادگی</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.LastName" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>نام فروشگاه</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.StoreName" type="text" class="form-control">
+                                </div>
+                            </div> 
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>نام فروشگاه</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.LatinStoreName" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>تلفن</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Phone" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>موبایل</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Mobile" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کشور</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.Country" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>استان</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.State" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>شهر</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.City" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>آدرس</label>
+                                <div class="form-group round">
+                                    <textarea asp-for="Input.Address" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                <label>کد پستی</label>
+                                <div class="form-group round">
+                                    <input asp-for="Input.PostCode" type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </form>
+                    </div><!-- /col-lg-12 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="GetDataForm" method="post" asp-page-handler="Data" enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoading"
+      data-ajax-complete="OnComplete"
+      data-ajax-failure="OnError">
+
+    <input type="hidden" asp-for="Id" id="Id" />
+    
+
+</form>
+<!--END FORMS-->
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    @*<script src="~/Admin/js/pages/datatable.js"></script>*@
+
+    <script src="~/shared/lib/admin/users/Stores/base.js"></script>
+    
+
+}

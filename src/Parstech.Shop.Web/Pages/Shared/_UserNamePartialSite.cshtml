@@ -1,5 +1,5 @@
 ﻿@{
-    var Param = new Shop.Application.DTOs.User.UserNameDto();
+    var Param = new Context.Application.DTOs.User.UserNameDto();
     if (User.Identity.IsAuthenticated)
     {
         Param.userName = User.Identity.Name;
@@ -11,4 +11,4 @@
 
     Param.Position = "Site";
 }
-@await Component.InvokeAsync("UserName", Param)
+@await Component.InvokeAsync("UserName",Param)  

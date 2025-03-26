@@ -1,0 +1,361 @@
+﻿@page "{id}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Parstech.Shop.Web.Admin.Pages.Admin.Orders.ApiHamkaranModel
+@{
+    Layout = "Shared/Admin_Layout";
+
+}
+@Html.AntiForgeryToken()
+<div class="row">
+    <input type="hidden" asp-for="OrderId" id="orderId" />
+    <div class="col-lg-6">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        ارسال وب سرویس
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" id="sendSection">
+            </div>
+            <div class="portlet-footer" id="sendLoad">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        استعلام فاکتور
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" id="followSection">
+            </div>
+            <div class="portlet-footer" id="followLoad">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        سفارش
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <table class="table ">
+                    <thead class="bordered-darkorange">
+                        <tr>
+                            <th>
+                                شناسه
+                            </th>
+                            <th>
+                                شناسه پیش فاکتور
+                            </th>
+                            <th>
+                                شناسه فاکتور
+                            </th>
+                            <th>
+                                سریال فاکتور
+                            </th>
+                            <th>
+                                عملیات
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="RahakarnOrder">
+                    </tbody>
+                </table>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+    </div>
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        مشتری
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <table class="table ">
+                    <thead class="bordered-darkorange">
+                        <tr>
+                            <th>
+                                نام مشتری
+                            </th>
+                            <th>
+                                نام کاربری
+                            </th>
+                            <th>
+                                کد ملی
+                            </th>
+                            <th>
+                                کد حقوقی
+                            </th>
+                            <th>
+                                شناسه راهکاران
+                            </th>
+                            <th>
+                                عملیات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="RahakarnUser">
+                    </tbody>
+                </table>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+    </div>
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        اقلام
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <table class="table ">
+                    <thead class="bordered-darkorange">
+                        <tr>
+                            <th>
+                                شرح قلم
+                            </th>
+                            <th>
+                                کد کالا
+                            </th>
+                            <th>
+                                شناسه راهکاران
+                            </th>
+                            <th>
+                                شناسه واحد اندازه گیری
+                            </th>
+
+                            <th>
+                                عملیات
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="RahakarnProduct">
+                    </tbody>
+                </table>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+    </div>
+
+
+</div>
+<div id="OrderModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>وب سرویس سفارش </b></h4><br />
+                <div class="pt-2">
+                </div>
+            </div>
+            <div class="modal-body">
+
+
+                <form method="post" asp-page-handler="AEOrder"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-complete="OnComplete">
+                    <input type="hidden" name="type" id="roType" />
+                    <input type="text" class="form-control" asp-for="orderDto.OrderId" id="roOrderId" />
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>شناسه پیش فاکتور راهکاران</label>
+                        <div class="form-group round">
+
+                            <input type="text" required class="form-control" asp-for="orderDto.RahkaranPishNumber" id="roRahkaranPishNumber" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>شناسه  فاکتور راهکاران</label>
+                        <div class="form-group round">
+
+                            <input type="text" class="form-control" asp-for="orderDto.RahakaranFactorNumber" id="roRahakaranFactorNumber" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>سریال  فاکتور راهکاران</label>
+                        <div class="form-group round">
+
+                            <input type="text" class="form-control" asp-for="orderDto.RahakaranFactorSerial" id="roRahakaranFactorSerial" />
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        ثبت
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="UserModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>وب سرویس مشتری</b></h4><br />
+                <div class="pt-2">
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <form method="post" asp-page-handler="AEUser"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-complete="OnComplete">
+                    <input type="hidden" name="type" id="ruType" />
+                    <input type="text" class="form-control" asp-for="userDto.UserId" id="ruUserId" />
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>شناسه  راهکاران</label>
+                        <div class="form-group round">
+
+                            <input type="text" required class="form-control" asp-for="userDto.RahkaranUserId" id="ruRahkaranUserId" />
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        ثبت
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="ProductModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class=" fas fa-pencil Yellow m-1"></i> <b>وب سرویس محصول</b></h4><br />
+                <div class="pt-2">
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <form method="post" asp-page-handler="AEProduct"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-complete="OnComplete">
+                    <input type="hidden" name="type" id="rpType" />
+                    <input type="text" class="form-control" asp-for="productDto.ProductId" id="rpProductId" />
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>شناسه  راهکاران</label>
+                        <div class="form-group round">
+
+                            <input type="text" required class="form-control" asp-for="productDto.RahkaranProductId" id="rpRahkaranProductId" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                        <label>واحد اندازه گیری</label>
+                        <div class="form-group round">
+
+                            <select required class="form-control" asp-for="productDto.RahkaranUnitId" id="rpRahkaranUnitId">
+                                <option value=1>عدد (1)</option>
+                                <option value=21>عدد (21)</option>
+                                <option value=2>جفت</option>
+                                <option value=3>دستگاه</option>
+                                <option value=4>رشته</option>
+                                <option value=6>سری</option>
+                                <option value=7>دست</option>
+                                <option value=10>بسته</option>
+                                <option value=14>رول</option>
+                                <option value=25>حلقه</option>
+                                <option value=26>شاخه</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                        ثبت
+                        <div class="paper-ripple">
+                            <div class="paper-ripple__background"></div>
+                            <div class="paper-ripple__waves"></div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<form id="SendOrderform" method="post" asp-page-handler="SendOrder"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteApi">
+    <input type="hidden" name="orderId" class="orderId" />
+</form>
+<form id="FollowOrderform" method="post" asp-page-handler="FollowOrder"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteApi">
+    <input type="hidden" name="orderId" class="orderId" />
+</form>
+@section Styles {
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+
+}
+@section Scripts {
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/shared/lib/shared/toast/toast.js"></script>
+    <script src="~/shared/lib/shared/toast/mytoast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/separate.js"></script>
+
+    <script src="~/shared/lib/admin/Orders/ApiHamkaran.js"></script>
+
+}

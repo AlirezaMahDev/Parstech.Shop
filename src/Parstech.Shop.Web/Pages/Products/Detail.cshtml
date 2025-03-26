@@ -3,7 +3,6 @@
 @{
     var Item = Model.Item;
 }
-
 @section Meta {
     <!-- Torob Meta -->
     <meta name="product_id" content="@Model.Torob.product_id">
@@ -15,7 +14,6 @@
 
     <!-- End Torob meta -->
 }
-
 @* <div class="bg-gray-13 bg-md-transparent">
     <div class="container rtl">
 
@@ -51,7 +49,7 @@
                                     </div>
                                 }
 
-
+                              
                             </div>
                             <div class="d-flex justify-content-center flex-wrap">
                                 <ul class="product-thumbnails owl-thumbs ml-2" data-slider-id="1">
@@ -62,9 +60,10 @@
                                                 <img src="~/Shared/Images/Products/@item.ImageName" alt="@item.Alt">
                                             </a>
                                         </li>
+
                                     }
 
-
+                                   
                                 </ul>
 
                             </div>
@@ -90,19 +89,20 @@
                                                     @if (Model.StoreId == child.ProductStockPriceId)
                                                     {
                                                         <label class="ui-variant ui-variant--color border-orange">
-                                                            <span class="ui-variant-shape"><i
-                                                                    class="mdi mdi-check-circle font-size-17 Sormei"></i></span>
+                                                            <span class="ui-variant-shape"><i class="mdi mdi-check-circle font-size-17 Sormei"></i></span>
                                                             <span class="ui-variant--check">@child.VariationName</span>
                                                         </label>
                                                     }
                                                     else
                                                     {
                                                         <label class="ui-variant ui-variant--color ">
-                                                            <span class="ui-variant-shape"><i
-                                                                    class="mdi mdi-circle-outline font-size-17"></i></span>
+                                                            <span class="ui-variant-shape"><i class="mdi mdi-circle-outline font-size-17"></i></span>
                                                             <span class="ui-variant--check">@child.VariationName</span>
                                                         </label>
                                                     }
+
+
+
 
 
                                                 </a>
@@ -120,8 +120,8 @@
 
 
                         <div class="">
-
-
+                           
+                            
                             <div class="card-body">
                                 <h5 class="font-weight-bold font-size-13">توضیحات کوتاه محصول</h5>
                                 <p class="Gray font-size-15">@Model.Item.ShortDescription</p>
@@ -147,16 +147,12 @@
                         </div>
                         <ul class="d-flex ">
                             <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
-                                <a href="#" onclick="AddToCompare(@Item.ProductStockPriceId)" class="text-orange-90"
-                                   data-toggle="tooltip" data-placement="top" aria-label="مقایسه محصول"
-                                   data-bs-original-title="مقایسه محصول" aria-describedby="tooltip887359">
+                                <a href="#" onclick="AddToCompare(@Item.ProductStockPriceId)" class="text-orange-90" data-toggle="tooltip" data-placement="top" aria-label="مقایسه محصول" data-bs-original-title="مقایسه محصول" aria-describedby="tooltip887359">
                                     <i class="font-size-22 mdi mdi-compare"></i>
                                 </a>
                             </li>
                             <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
-                                <a href="#" onclick="AddToFavorite(@Item.ProductStockPriceId)" class="text-orange-90 "
-                                   data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی"
-                                   data-bs-original-title="علاقه مندی">
+                                <a href="#" onclick="AddToFavorite(@Item.ProductStockPriceId)" class="text-orange-90 " data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی" data-bs-original-title="علاقه مندی">
                                     <i class="font-size-22 mdi mdi-heart-multiple"></i>
                                 </a>
                             </li>
@@ -170,22 +166,21 @@
                 <div class="productImage m-1   p-3 ">
                     @if (Item.Quantity > 0 && Item.SalePrice > 0)
                     {
-                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">موجود در انبار<i
-                                class=" mdi mdi-cart-check Green p-1"></i></div>
+                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">موجود در انبار<i class=" mdi mdi-cart-check Green p-1"></i></div>
+
                     }
                     else
                     {
-                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">ناموجود<i
-                                class=" mdi mdi-cart-off Red p-1"></i></div>
+                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">ناموجود<i class=" mdi mdi-cart-off Red p-1"></i></div>
+
                     }
 
 
                     <div class="card-blue">
                         <div class="text-gray-9   p-2">
-                            <i class="mdi mdi-store p-1 "></i>فروشنده :<a href="/Products/Stores/@Item.StoreLatin"><span
-                                    class="Black ">@Item.Store</span></a>
+                            <i class="mdi mdi-store p-1 "></i>فروشنده :<a href="/Products/Stores/@Item.StoreLatin"><span class="Black ">@Item.Store</span></a>
                         </div>
-                        <hr class="dashed-hr"/>
+                        <hr class="dashed-hr" />
                         @*  <div class="text-gray-9   p-2">
                             <i class="fa fa-gear p-1"></i>ارزیابی عملکرد :<a href="/Products/Stores/arvinfardad"><span class="Black ">عالی</span></a>
 
@@ -196,8 +191,8 @@
                         </div>
                         @if (Item.CateguryOfUserId != null)
                         {
-                            <span class="badge BgBlue w-100 mt-1 mb-1  font-size-12"><i class="mdi mdi-sale"></i> <span
-                                    class="text-weight-bold Black">ویژه</span> همکاران بانک ملی ایران</span>
+                            <span class="badge BgBlue w-100 mt-1 mb-1  font-size-12"><i class="mdi mdi-sale"></i> <span class="text-weight-bold Black">ویژه</span> همکاران بانک ملی ایران</span>
+
                         }
 
                     </div>
@@ -209,34 +204,26 @@
                                 @if (Item.DiscountPrice != 0)
                                 {
                                     <del class="font-size-1 tex-gray-6  ">@Item.SalePrice.ToString("#,0")</del>
-                                    <ins
-                                        class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.DiscountPrice.ToString("#,0")<img
-                                            src="/shared/toman.svg"></ins>
+                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.DiscountPrice.ToString("#,0")<img src="/shared/toman.svg"></ins>
+
                                 }
                                 else
                                 {
-                                    <ins
-                                        class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.SalePrice.ToString("#,0")<img
-                                            src="/shared/toman.svg"></ins>
+                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.SalePrice.ToString("#,0")<img src="/shared/toman.svg"></ins>
+
                                 }
                             </div>
                         </div>
-                        <div class="mb-2 pb-0dot5"><a onclick="CreateCheckout(@Item.ProductStockPriceId)" href="#"
-                                                      class="btn btn-block  BgSormei text-white"> افزودن به سبد خرید <i
-                                    class="mdi mdi-cart-plus mr-2 font-size-20"></i></a></div>
+                        <div class="mb-2 pb-0dot5"><a onclick="CreateCheckout(@Item.ProductStockPriceId)" href="#" class="btn btn-block  BgSormei text-white">  افزودن به سبد خرید <i class="mdi mdi-cart-plus mr-2 font-size-20"></i></a></div>
                     }
                     else
                     {
-                        <div class="mb-2 pb-0dot5"><a href="#" class="btn btn-block disabled  BgRed text-white"> محصول
-                                ناموجود میباشد<i class="mdi mdi-cart-off mr-2 font-size-20"></i></a></div>
-                    }
-                    <button
-                        class=" flex w-full flex-col  rounded-lg bg-white border-dashed border-blue-information px-2 py-3 mb-1">
-                        خرید به صورت قسطی<i class="mdi mdi-shopping"></i> <span class="Orange">به زودی</span></button>
+                        <div class="mb-2 pb-0dot5"><a href="#" class="btn btn-block disabled  BgRed text-white">  محصول ناموجود میباشد<i class="mdi mdi-cart-off mr-2 font-size-20"></i></a></div>
 
-                    <a href="#" onclick="scrollToStores()"
-                       class="btn btn-Custom btn-block  bg-gray-17 Gray font-size-14 text-center mb-2">خرید از فروشندگان
-                        دیگر <i class=" mdi mdi-menu-down"></i></a>
+                    }
+                    <button class=" flex w-full flex-col  rounded-lg bg-white border-dashed border-blue-information px-2 py-3 mb-1"> خرید به صورت قسطی<i class="mdi mdi-shopping"></i> <span class="Orange">به زودی</span></button>
+
+                    <a href="#" onclick="scrollToStores()" class="btn btn-Custom btn-block  bg-gray-17 Gray font-size-14 text-center mb-2">خرید از فروشندگان دیگر <i class=" mdi mdi-menu-down"></i></a>
                 </div>
             </div>
         </div>
@@ -251,16 +238,13 @@
             <ul class="nav nav-tabs border" role="tablist">
 
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#tab2" aria-selected="true" role="tab">معرفی
-                        محصول</a>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab2" aria-selected="true" role="tab">معرفی محصول</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab3" aria-selected="false" tabindex="-1"
-                       role="tab">مشخصات</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3" aria-selected="false" tabindex="-1" role="tab">مشخصات</a>
                 </li>
                 <li class="nav-item" id="StoresTab" role="presentation">
-                    <a class="nav-link " data-bs-toggle="tab" href="#tab1" aria-selected="false" tabindex="-1"
-                       role="tab">سایر مدل ها و فروشندگان</a>
+                    <a class="nav-link " data-bs-toggle="tab" href="#tab1" aria-selected="false" tabindex="-1" role="tab">سایر مدل ها و فروشندگان</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -273,72 +257,44 @@
                                 <li class="product-item remove-divider">
                                     <div class="product-item__outer w-100">
                                         <div class="product-item__inner remove-prodcut-hover py-4 row">
-                                            <div class="product-item__header col-6 col-md-2">
-                                                <div class="mb-2"><a
-                                                        href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId"
-                                                        class="d-block text-center"><img class="w-50"
-                                                                                         src="/Shared/Images/Products/@related.Image"
-                                                                                         alt="@related.Name"></a></div>
-                                            </div>
-                                            <div class="product-item__body col-6 col-md-7">
-                                                <div class="pr-lg-10">
-                                                    <div
-                                                        class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">
-                                                        <i class="  fas fa-shop Red p-1"></i>فروشنده :<span
-                                                            class="Black font-weight-bold">@related.StoreName</span>
-                                                    </div>
-                                                    <h5 class="mb-2 product-item__title"><a
-                                                            href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId"
-                                                            class="Gray font-weight-bold">@related.Name</a></h5></div>
-                                                <div class="row">
-                                                    <div class="col-12"><p class="null"></p></div>
-                                                </div>
-                                            </div>
-                                            <div class="product-item__footer col-md-3 d-md-block">
+                                            <div class="product-item__header col-6 col-md-2"><div class="mb-2"><a href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId" class="d-block text-center"><img class="w-50" src="/Shared/Images/Products/@related.Image" alt="@related.Name"></a></div></div><div class="product-item__body col-6 col-md-7"><div class="pr-lg-10"><div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3"> <i class="  fas fa-shop Red p-1"></i>فروشنده :<span class="Black font-weight-bold">@related.StoreName</span></div><h5 class="mb-2 product-item__title"><a href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId" class="Gray font-weight-bold">@related.Name</a></h5></div><div class="row"><div class="col-12"><p class="null"></p></div></div></div><div class="product-item__footer col-md-3 d-md-block">
                                                 <div class="mb-2  flex-center-between">
                                                     <div class="prodcut-price mt-3">
                                                         @if (related.Quantity > 0 && related.SalePrice > 0)
                                                         {
                                                             if (related.DiscountPrice > 0)
                                                             {
-                                                                <div
-                                                                    class="prodcut-price d-flex align-items-center position-relative">
-                                                                    <ins
-                                                                        class="font-size-19 font-weight-bold text-red text-decoration-none d-flex">@related.DiscountPrice.ToString("#,0") <img
-                                                                            src="/shared/toman.svg"></ins>
-                                                                    <del
-                                                                        class="font-size-1 tex-gray-6 position-absolute bottom-100">@related.SalePrice.ToString("#,0")</del>
+                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                    <ins class="font-size-19 font-weight-bold text-red text-decoration-none d-flex">@related.DiscountPrice.ToString("#,0") <img src="/shared/toman.svg"></ins>
+                                                                    <del class="font-size-1 tex-gray-6 position-absolute bottom-100">@related.SalePrice.ToString("#,0")</del>
                                                                 </div>
                                                             }
                                                             else
                                                             {
-                                                                <div
-                                                                    class="prodcut-price d-flex align-items-center position-relative">
-                                                                    <ins
-                                                                        class="font-size-19 font-weight-bold  text-decoration-none d-flex">@related.SalePrice.ToString("#,0") <img
-                                                                            src="/shared/toman.svg"></ins>
+                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@related.SalePrice.ToString("#,0") <img src="/shared/toman.svg"></ins>
                                                                 </div>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <div class="mb-2 pb-0dot5"><a href="#"
-                                                                                          class="btn btn-Custom btn-block defoult BgRed White">محصول
-                                                                    ناموجود</a></div>
-                                                        }
+                                                            <div class="mb-2 pb-0dot5"><a href="#" class="btn btn-Custom btn-block defoult BgRed White">محصول ناموجود</a></div>
 
+                                                        }
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
+
                             }
                         }
-
+                       
                     </ul>
 
-
+                    
                 </div>
                 <div id="tab2" class="tab-pane fade active show" role="tabpanel">
                     <div class="mx-md-4 pt-1 mt-3" style="text-align: justify;">
@@ -355,14 +311,13 @@
                                     <tbody>
                                     </tbody>
                                     <tbody>
-                                    @foreach (var subProp in prop.Properties)
-                                    {
-                                        <tr>
-                                            <th class="px-4 px-xl-5 border-top-0 w-50">@subProp.PropertyName</th>
-                                            <td class="border-top-0 w-50"
-                                                style="text-align: justify;">@subProp.Value</td>
-                                        </tr>
-                                    }
+                                        @foreach (var subProp in prop.Properties)
+                                        {
+                                            <tr>
+                                                <th class="px-4 px-xl-5 border-top-0 w-50">@subProp.PropertyName</th>
+                                                <td class="border-top-0 w-50" style="text-align: justify;">@subProp.Value</td>
+                                            </tr>
+                                        }
 
                                     </tbody>
                                 </table>
@@ -387,15 +342,14 @@
 
 
 @section Styles {
-    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet"/>
+    <link href="~/shared/lib/shared/toast/toast.css" rel="stylesheet" />
     <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
     <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
 
-    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet"/>
-    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet"/>
-    <link href="~/site/productdetail/main.css" rel="stylesheet"/>
+    <link href="~/site/productdetail/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/site/productdetail/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/site/productdetail/main.css" rel="stylesheet" />
 }
-
 @section Scripts {
     <script src="~/shared/lib/shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/shared/lib/shared/toast/toast.js"></script>

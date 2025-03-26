@@ -1,31 +1,29 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Shared.Models;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Brand;
+using Parstech.Shop.Context.Application.DTOs.Categury;
+using Parstech.Shop.Context.Application.DTOs.Product;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.DTOs.UserStore;
+using Parstech.Shop.Context.Application.Features.Brand.Requests.Commands;
+using Parstech.Shop.Context.Application.Features.Categury.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.Product.Requests.Queries;
+using Parstech.Shop.Context.Application.Features.UserStore.Requests.Commands;
 
 namespace Parstech.Shop.Web.Pages.Products;
 
 public class BrandsModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly BrandGrpcClient _brandClient;
-    private readonly CategoryGrpcClient _categoryClient;
-    private readonly ProductGrpcClient _productClient;
-    private readonly UserStoreGrpcClient _userStoreClient;
+    private readonly IMediator _mediator;
 
-    public BrandsModel(
-        BrandGrpcClient brandClient,
-        CategoryGrpcClient categoryClient,
-        ProductGrpcClient productClient,
-        UserStoreGrpcClient userStoreClient)
+    public BrandsModel(IMediator mediator)
     {
-        _brandClient = brandClient;
-        _categoryClient = categoryClient;
-        _productClient = productClient;
-        _userStoreClient = userStoreClient;
+        _mediator = mediator;
     }
 
     #endregion
@@ -34,19 +32,23 @@ public class BrandsModel : PageModel
 
     //paging parameter
     [BindProperty]
-    public ProductParameter Parameter { get; set; } = new ProductParameter();
+    public ProductParameterDto Parameter { get; set; } = new();
+
 
     //products
     [BindProperty]
-    public ProductPaging List { get; set; }
+    public ProductPageingDto List { get; set; }
+
 
     //result
     [BindProperty]
     public ResponseDto Response { get; set; } = new();
 
-    //brand
+    //categury
     [BindProperty]
     public string Brand { get; set; }
+
+
 
     [BindProperty]
     public string FilterCat { get; set; }
@@ -57,10 +59,10 @@ public class BrandsModel : PageModel
     [BindProperty]
     public string Filter { get; set; }
 
-    public List<Category> Categories { get; set; } = new();
-    public List<Brand> Brands { get; set; } = new();
-    public List<UserStore> Stores { get; set; } = new();
 
+    public List<CateguryDto> categuries { get; set; }
+    public List<BrandDto> Brands { get; set; }
+    public List<UserStoreDto> Stores { get; set; }
     #endregion
 
     #region Get
@@ -68,44 +70,38 @@ public class BrandsModel : PageModel
     public async Task<IActionResult> OnGet(string brand)
     {
         Brand = brand;
-        var brandsResponse = await _brandClient.GetAllBrandsAsync();
-        Brands = brandsResponse.Brands.ToList();
-        Stores = (await _userStoreClient.GetStoresAsync()).ToList();
+        Brands = await _mediator.Send(new BrandReadsCommandReq());
+        Stores = await _mediator.Send(new UserStoreReadsCommandReq());
 
-        // Get categories in a hierarchical structure
-        Categories = new();
-        var parentCategories = await _categoryClient.GetParentCategoriesAsync();
-        foreach (var parent in parentCategories)
+
+        categuries = new();
+        var parent = await _mediator.Send(new CateguryParentsReadQueryReq());
+        foreach (var parrent in parent)
         {
-            Categories.Add(parent);
-            var subParents = await _categoryClient.GetSubCategoriesAsync(parent.Id);
-            foreach (var subParent in subParents)
+            categuries.Add(parrent);
+            var subParrent = await _mediator.Send(new CateguryByParentIdReadQueryReq(parrent.GroupId));
+            foreach (var subP in subParrent)
             {
-                Categories.Add(subParent);
-                var subCategories = await _categoryClient.GetSubCategoriesAsync(subParent.Id);
-                foreach (var subCategory in subCategories)
+                categuries.Add(subP);
+                var subs = await _mediator.Send(new CateguryByParentIdReadQueryReq(subP.GroupId));
+                foreach (var sub in subs)
                 {
-                    Categories.Add(subCategory);
+                    categuries.Add(sub);
+
                 }
             }
         }
-
         return Page();
     }
 
     public async Task<IActionResult> OnPostData()
     {
-        Parameter.PageSize = 30;
-        var productRequest = new ProductPagingRequest
-        {
-            Parameter = Parameter, UserName = User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty
-        };
-
-        List = await _productClient.GetProductsAsync(Parameter,
-            User.Identity.IsAuthenticated ? User.Identity.Name : null);
+        //Parameter.CurrentPage = 1;
+        Parameter.TakePage = 30;
+        List = await _mediator.Send(new ProductPagingQueryReq(Parameter));
         Response.Object = List;
-        var category = await _categoryClient.GetCategoryByLatinNameAsync(Parameter.Brand);
-        Response.Object2 = category;
+        var cat = await _mediator.Send(new GetCateguryByLatinameQueryReq(Parameter.Brand));
+        Response.Object2 = cat;
         Response.IsSuccessed = true;
         return new JsonResult(Response);
     }

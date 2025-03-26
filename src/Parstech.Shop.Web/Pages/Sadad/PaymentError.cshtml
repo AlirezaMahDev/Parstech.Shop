@@ -1,0 +1,223 @@
+﻿@model Parstech.Shop.Context.Application.DTOs.Order.RequestPaymentResult
+@{
+    //Layout = "/Pages/Shared/Checkout_Layout.cshtml";
+}
+<div id="about-us-cover" class="has-bg section-container">
+    <!-- BEGIN cover-bg -->
+    <div class="cover-bg" style="background-size:cover !important;">
+        <img src="/image/profile.jpg" alt="">
+    </div>
+    <!-- END cover-bg -->
+    <!-- BEGIN container -->
+    <div class="container profile-container">
+        <!-- BEGIN breadcrumb -->
+        <!-- END breadcrumb -->
+        <!-- BEGIN about-us -->
+        <div class="about-us text-center">
+            <h2 class="tr" style="font-size:21px !important;">پروفایل</h2>
+            <div class="row profile-menu">
+                <!-- begin col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="/profile">
+                        <div class="service ">
+                            <div class="icon text-warning"><i class="fticon ft-user"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">اطلاعات شعبه</h4>
+
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="/Checkout">
+                        <div class="service profile-active">
+                            <div class="icon"><i class="fticon ft-shopping-bag"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">سبد سفارش</h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="/wallet">
+                        <div class="service">
+                            <div class="icon "><i class="fa fa-money"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">سوابق مالی</h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="Support">
+                        <div class="service">
+                            <div class="icon "><i class="fa fa-life-ring"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">تیکت های
+                                    پشتیبانی</h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="/factors">
+                        <div class="service">
+                            <div class="icon "><i class="fa fa-file-text"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">پیش فاکتور ها</h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-2 col-sm-4 mb-2">
+                    <a href="/budget">
+                        <div class="service">
+                            <div class="icon "><i class="fa fa-suitcase"></i></div>
+                            <div class="info">
+                                <h4 class="title " style="color: white !important; font-size: 13px;">اطلاعات بودجه</h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end col-4 -->
+            </div>
+            <div style="width: 50%; height: 145px;">
+                <div class="card-content">
+
+                </div>
+            </div>
+        </div>
+        <!-- END about-us -->
+    </div>
+    <!-- END container -->
+</div>
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+
+        <div class="content-body">
+
+            <!-- account setting page start -->
+            <section id="page-account-settings">
+                <div class="container">
+                    <!-- BEGIN checkout -->
+                    <div class="checkout">
+                        <form action="checkout_info.html" method="POST" name="form_checkout">
+                            <!-- BEGIN checkout-header -->
+                            <div class="checkout-header">
+                                <!-- BEGIN row -->
+                                <div class="row">
+                                    <!-- BEGIN col-3 -->
+                                    <div class="col-lg-3 tab-checkout hidden-tab">
+                                        <div class="step ">
+                                            <a>
+                                                <div class="number">1</div>
+                                                <div class="info">
+                                                    <div class="title">سبد خرید</div>
+                                                    <div class="desc"></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- END col-3 -->
+                                    <!-- BEGIN col-3 -->
+                                    <div class="col-lg-3 tab-checkout hidden-tab">
+                                        <div class="step ">
+                                            <a>
+                                                <div class="number">2</div>
+                                                <div class="info">
+                                                    <div class="title">اطلاعات حساب</div>
+                                                    <div class="desc"></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- END col-3 -->
+                                    <!-- BEGIN col-3 -->
+                                    <div class="col-lg-3 tab-checkout hidden-tab">
+                                        <div class="step ">
+                                            <a>
+                                                <div class="number">3</div>
+                                                <div class="info">
+                                                    <div class="title">نحوه پرداخت</div>
+                                                    <div class="desc"></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- END col-3 -->
+                                    <!-- BEGIN col-3 -->
+                                    <div class="col-lg-3 tab-checkout ">
+                                        <div class="step active">
+                                            <a>
+                                                <div class="number">4</div>
+                                                <div class="info">
+                                                    <div class="title">اتمام خرید</div>
+                                                    <div class="desc"></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- END col-3 -->
+                                </div>
+                                <!-- END row -->
+                            </div>
+                            <!-- END checkout-header -->
+                            <div class="checkout-body">
+                                <!-- BEGIN checkout-message -->
+
+                                <div class="checkout-message">
+                                    <h1>انصراف از پرداخت</h1>
+                                    <div class="table-responsive2">
+                                        <table class="table table-payment-summary">
+                                            <tbody>
+                                            <tr>
+                                                <td class="field">وضعیت خرید</td>
+
+                                                <td class="value">
+                                                    <h2 class="text-danger">انصراف از پرداخت</h2>
+                                                    <p>@Model.ResCode - @Model.Description</p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                                <!-- END checkout-message -->
+                            </div>
+                            <!-- BEGIN checkout-footer -->
+                            <!-- END checkout-footer -->
+                        </form>
+                    </div>
+                    <!-- END checkout -->
+                </div>
+            </section>
+            <!-- account setting page end -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).scrollTop(400);
+        });
+    </script>
+}

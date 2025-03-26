@@ -1,22 +1,27 @@
+using Azure;
+
+using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Parstech.Shop.Shared.DTOs;
-using Parstech.Shop.Web.Services;
+using Parstech.Shop.Context.Application.DTOs.Order;
+using Parstech.Shop.Context.Application.DTOs.Response;
+using Parstech.Shop.Context.Application.Features.Order.Requests.Queries;
 
 namespace Parstech.Shop.Web.Pages.Panel;
 
 [Authorize]
 public class ShopingCartModel : PageModel
 {
-    #region Constructor
+    #region Constractor
 
-    private readonly UserPreferencesGrpcClient _userPreferencesClient;
+    private readonly IMediator _mediator;
 
-    public ShopingCartModel(UserPreferencesGrpcClient userPreferencesClient)
+    public ShopingCartModel(IMediator mediator)
     {
-        _userPreferencesClient = userPreferencesClient;
+        _mediator = mediator;
     }
 
     #endregion
@@ -27,7 +32,7 @@ public class ShopingCartModel : PageModel
     public OrderDetailShowDto ShoppingCart { get; set; }
 
     [BindProperty]
-    public ResponseDto Response { get; set; } = new();
+    public ResponseDto Response { get; set; } = new ResponseDto();
 
     [BindProperty]
     public int UserId { get; set; }
@@ -36,37 +41,14 @@ public class ShopingCartModel : PageModel
 
     #region Get
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
         return Page();
     }
 
     public async Task<IActionResult> OnPostData()
     {
-        var cartResponse = await _userPreferencesClient.GetShoppingCartAsync(UserId);
-
-        ShoppingCart = new()
-        {
-            OrderId = cartResponse.OrderId,
-            UserName = cartResponse.UserName,
-            Total = cartResponse.Total,
-            Discount = cartResponse.Discount,
-            FinalPrice = cartResponse.FinalPrice,
-            OrderDetails = cartResponse.Details.Select(d => new Parstech.Shop.Shared.DTOsDetail.OrderDetailItem
-                {
-                    Id = d.Id,
-                    OrderId = d.OrderId,
-                    ProductId = d.ProductId,
-                    ProductName = d.ProductName,
-                    ProductImage = d.ProductImage,
-                    Count = d.Count,
-                    Price = d.Price,
-                    Discount = d.Discount,
-                    Total = d.Total
-                })
-                .ToList()
-        };
-
+        ShoppingCart = await _mediator.Send(new NotFinallyOrderOfUserQueryReq(UserId));
         Response.Object = ShoppingCart;
         Response.IsSuccessed = true;
 
