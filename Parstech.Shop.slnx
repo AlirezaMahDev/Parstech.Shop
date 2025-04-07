@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Parstech.Shop.ApiService/Parstech.Shop.ApiService.csproj" />
+  <Project Path="Parstech.Shop.AppHost/Parstech.Shop.AppHost.csproj" Id="74a2db37-df4e-466b-a278-5d42ccfef8fc" />
+  <Project Path="Parstech.Shop.ServiceDefaults/Parstech.Shop.ServiceDefaults.csproj" />
+  <Project Path="Parstech.Shop.Web/Parstech.Shop.Web.csproj" />
+</Solution>
