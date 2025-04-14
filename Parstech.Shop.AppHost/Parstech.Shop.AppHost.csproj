@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Parstech.Shop.Ai\Parstech.Shop.Ai.pyproj" />
     <ProjectReference Include="..\Parstech.Shop.ApiService\Parstech.Shop.ApiService.csproj" />
     <ProjectReference Include="..\Parstech.Shop.Web\Parstech.Shop.Web.csproj" />
   </ItemGroup>

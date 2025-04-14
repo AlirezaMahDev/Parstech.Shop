@@ -1,13 +1,12 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var seq = builder.AddSeq("seq")
-    //.ExcludeFromManifest()
     .WithLifetime(ContainerLifetime.Persistent)
     .WithEnvironment("ACCEPT_EULA", "Y");
 
 var cache = builder.AddRedis("cache")
     .WithDataVolume()
-    .WithDbGate();
+    .WithDbGate(resourceBuilder => resourceBuilder.WithLifetime(ContainerLifetime.Persistent));
 
 var sql = builder.AddSqlServer("sql")
                  .WithLifetime(ContainerLifetime.Persistent)
@@ -23,6 +22,8 @@ var mongo = builder.AddMongoDB("mongo")
     //.WithMongoExpress();
 
 var mongodb = mongo.AddDatabase("mongodb");
+
+var ai = builder.AddProject<Projects.Parstech_Shop_Ai>("ai");
 
 var apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
     .WithReference(seq)
@@ -42,5 +43,6 @@ builder.AddProject<Projects.Parstech_Shop_Web>("webfrontend")
     .WaitFor(cache)
     .WithReference(apiService)
     .WaitFor(apiService);
+
 
 builder.Build().Run();
