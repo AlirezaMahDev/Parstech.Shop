@@ -11,13 +11,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Microsoft.Data.SqlClient" Version="9.1.0" />
-        <PackageReference Include="Aspire.MongoDB.Driver" Version="9.1.0" />
-        <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.1.0" />
-        <PackageReference Include="Aspire.Seq" Version="9.1.0" />
-        <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.1.0" />
-        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+        <PackageReference Include="Aspire.Microsoft.Data.SqlClient" Version="9.2.0" />
+        <PackageReference Include="Aspire.MongoDB.Driver" Version="9.2.0" />
+        <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.2.0" />
+        <PackageReference Include="Aspire.Seq" Version="9.2.0" />
+        <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.2.0" />
+        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
     </ItemGroup>
 
 </Project>
