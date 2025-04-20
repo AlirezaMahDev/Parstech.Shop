@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pyodbc
+sentence-transformers
+scikit-learn
+chromadb

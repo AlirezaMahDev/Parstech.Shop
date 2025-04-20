@@ -1,7 +1,16 @@
 <Solution>
-  <Project Path="Parstech.Shop.Ai/Parstech.Shop.Ai.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="cc26d734-2e32-4425-adf5-900680084d2e" />
-  <Project Path="Parstech.Shop.ApiService/Parstech.Shop.ApiService.csproj" />
-  <Project Path="Parstech.Shop.AppHost/Parstech.Shop.AppHost.csproj" Id="74a2db37-df4e-466b-a278-5d42ccfef8fc" />
-  <Project Path="Parstech.Shop.ServiceDefaults/Parstech.Shop.ServiceDefaults.csproj" />
-  <Project Path="Parstech.Shop.Web/Parstech.Shop.Web.csproj" />
+  <Folder Name="/data/" />
+  <Folder Name="/deploy/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Host/" Id="981c2cf6-e5bb-602a-511c-234b538302b0">
+    <Project Path="src/Parstech.Shop.AppHost/Parstech.Shop.AppHost.csproj" />
+  </Folder>
+  <Folder Name="/src/Libraries/" Id="5e7ec0af-e837-5b7a-fb41-a4dcca877d1f">
+    <Project Path="src/Parstech.Shop.ServiceDefaults/Parstech.Shop.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/Projects/" Id="d587d8b4-e7c0-3fd6-56a9-41fc457b6096">
+    <Project Path="src/Parstech.Shop.ApiService/Parstech.Shop.ApiService.csproj" />
+    <Project Path="src/Parstech.Shop.Web/Parstech.Shop.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
 </Solution>
