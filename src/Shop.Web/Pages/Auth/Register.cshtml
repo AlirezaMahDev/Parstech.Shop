@@ -1,0 +1,189 @@
+﻿@page
+@model Shop.Web.Pages.Auth.RegisterModel
+@{
+    Layout = "Shared/SiteAuth_Layout";
+    ViewData["Title"] = "ثبت نام";
+}
+@Html.AntiForgeryToken()
+
+
+
+
+
+<main class="main-content dt-sl mt-4 mb-3">
+    <div class="container main-container">
+        <div class="row rtl">
+            <div class="col-xl-4 col-lg-5 col-md-7 col-12 mx-auto">
+                <div class="logo-area text-center mb-3 ">
+
+                    <a href="/"><img src="/Shared/Images/MeliLogo.png" class="img-fluid" style="width: 70px;" alt="logo"></a>
+
+                </div>
+
+                <div class="auth-wrapper form-ui border pt-4 shadow-1200">
+                    @*  <div class="section-title title-wide mb-1 no-after-title-wide">
+                        <h2 class="font-weight-bold">ورود</h2>
+                    </div> *@
+                    <div class="logo-area text-center mb-3 ">
+                        <a href="/"><img src="/Shared/Images/logo.png" class="img-fluid w-50" alt="logo"></a>
+                    </div>
+                    <div class="form">
+                        <div id="Error">
+                        </div>
+
+
+
+
+                        <form method="post" asp-page-handler="Register"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-complete="OnComplete">
+
+                       
+                            <!-- Signup -->
+                            <div id="signup" style="opacity: 1;" data-target-group="idForm" class="animated slideInUp">
+                                <!-- Title -->
+                                <header class="text-center mb-7">
+                                    <h3 class="h5 mb-0">ثبت نام در فروشگاه</h3>
+                                    
+                                </header>
+                                <!-- End Title -->
+                                <!-- Form Group -->
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>شماره موبایل</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.Mobile" id="registermobile" class="input-ui pr-2" placeholder="شماره موبایل خود را وارد نمایید">
+                                        <i class="fas fa-mobile"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>نام</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.Name" id="registername" class="input-ui pr-2" placeholder="نام خود را وارد نمایید">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>نام خانوادگی</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.Family" id="registerfamily" class="input-ui pr-2" placeholder="نام خانوادگی خود را وارد نمایید">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>کد ملی</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.MeliCode" id="registerMeliCode" class="input-ui pr-2" placeholder="کد ملی خود را وارد نمایید">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>استان</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.State" id="registerstate" class="input-ui pr-2" placeholder="استان محل سکونت را وارد نمایید">
+                                        <i class="fas fa-map-location"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>شهر</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <input type="text" asp-for="Inputs.City" id="registercity" class="input-ui pr-2" placeholder="شهر محل سکونت را وارد نمایید">
+                                        <i class="fas fa-location-dot"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row-title">
+                                        <h3>آدرس محل زندگی</h3>
+                                    </div>
+                                    <div class="form-row with-icon">
+                                        <textarea type="text" asp-for="Inputs.Address" id="registeraddress" class="input-ui pr-2" placeholder="آدرس محل سکونت را وارد نمایید"></textarea>
+                                        <i class="fas fa-location-dot"></i>
+                                    </div>
+
+                                </div>
+                                <div class="form-group" id="CapchaSection">
+                                    
+
+                                </div>
+                            <div class="form-group">
+                                <div class="form-row-title d-flex">
+                                    <h3>کد امنیتی</h3>
+                                        <button type="button" class="btn btn-default mb-2 pointer" onclick="GetCapcha()">دریافت مجدد کد امنیتی</button>
+                                </div>
+                                <div class="form-row with-icon">
+                                        <input type="hidden" asp-for="Inputs.CaptchaKey" id="CaptchaKey">
+                                        <input type="text" asp-for="Inputs.CaptchaValue" id="CaptchaValue" class="input-ui pr-2" placeholder="کد امنیتی را وارد نمایید">
+                                    @* <i class="fas fa-location-dot"></i> *@
+                                </div>
+
+                            </div>
+                                <div class="form-row mt-3">
+                                    <button type="submit" class="btn-primary-cm btn pointer  BgOrange btn-with-icon mx-auto w-100">
+                                        <i class="mdi mdi-login-variant"></i>
+                                        ثبت نام
+                                    </button>
+                                </div>
+                                <!-- End Input -->
+                               
+                            </div>
+                            <!-- End Signup -->
+                        </form>
+                        
+                    </div>
+                    <div class="form-footer mt-3">
+                        <div>
+                            <span class="font-weight-bold">حساب کاربری دارید؟</span>
+                            <a href="/Auth/LoginRegister" class="mr-3 mt-2 Orange">ورود به پارس تک</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+    <link href="~/Site/ProductDetail/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/main.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+     
+    
+    <script src="~/Shared/Lib/Admin/Auth/Register.js"></script>
+    <script src="~/Shared/Lib/Admin/Auth/Capcha.js"></script>
+
+}
+

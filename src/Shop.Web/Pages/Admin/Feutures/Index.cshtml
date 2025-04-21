@@ -1,0 +1,210 @@
+﻿@page
+@model Shop.Web.Pages.Admin.Feutures.IndexModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست ویژگی ها
+                    </h3>
+                </div>
+                <div class="buttons-box">
+                    <button class="btn btn-sm btn-success btn-round hover-green" onclick="CleanItem()" data-bs-toggle="modal" data-bs-target="#AddOrEditCateguryModal">
+                        <i class="icon-plus"></i>
+                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0088;"></div><div class="paper-ripple__waves"></div></div>
+                    </button>
+
+                </div>
+                <div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">افزودن ویژگی</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body" style="">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="data-table">
+                        <div class="form-group d-flex">
+
+                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی ویژگی" />
+                            <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
+
+                            @*<select class="form-control w-25" placeholder="جستجوی کاربران">
+                            </select>
+                            <button class="btn btn-orange text-white font-weight-bold">فیلتر دسترسی ها</button>*@
+                        </div>
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div class="d-flex mb-2" id="paging">
+                    </div>
+                </div>
+
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+
+    </div>
+</div>
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
+    
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage" />
+</form>
+<form method="post" id="GetCateguryForm" asp-page-handler="Item"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGetItem"
+      data-ajax-complete="OnCompleteGetItem"
+      data-ajax-failure="OnErrorGetItem">
+    <input type="hidden" asp-for="PropertyId" class="PropertyId" />
+</form>
+
+
+<!--modal-->
+<!--Start Add Or Edit Categury -->
+<div id="AddOrEditCateguryModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">اطلاعات ویژگی</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="EditOrCreate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingAE"
+                          data-ajax-complete="OnCompleteAE"
+                          data-ajax-failure="OnErrorAE">
+
+                        <input type="hidden" asp-for="PropertyDto.Id" id="PropertyDto_Id" />
+
+
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label> عنوان ویژگی</label>
+                            <div class="form-group round">
+                                <input asp-for="PropertyDto.Caption" id="PropertyDto_Caption" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>جستجوی دسته بندی</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control " id="SearchCatText" placeholder="عنوان دسته بندی را جستجو نمایید">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="SearchCat()" type="button">جستجو<div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label> دسته بندی </label>
+                            <div class="form-group round">
+                                <select class="form-control" asp-for="PropertyDto.CateguryId" id="PropertyDto_CateguryId"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                            <label> دسته بندی ویژگی</label>
+                            <div class="form-group round">
+                                <select class="form-control" asp-for="PropertyDto.PropertyCateguryId" id="PropertyDto_PropertyCateguryId">
+
+                                    @foreach (var item in Model.PropertyCateguryDtos)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                                @*<input asp-for="PropertyDto.PropertyCateguryId" id="PropertyDto_PropertyCateguryId" type="text" class="form-control">*@
+                            </div>
+                        </div>
+                       
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Add Or Edit Categury -->
+
+<form method="post" id="GetAllCatForm" asp-page-handler="GetAllCateguries"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteGetAllCat">
+    
+    <input type="hidden" asp-for="FilterCat" id="FilterCatForm" />
+</form>
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+    <script src="~/Shared/Lib/Admin/Feutures/Index.js"></script>
+
+}

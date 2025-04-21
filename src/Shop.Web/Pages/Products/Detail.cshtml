@@ -1,0 +1,387 @@
+﻿@page "{shortLink}/{storeId}"
+@model Shop.Web.Pages.Products.DetailModel
+@{
+    var Item = Model.Item;
+}
+@section Meta {
+    <!-- Torob Meta -->
+    <meta name="product_id" content="@Model.Torob.product_id">
+    <meta name="product_name" content="@Model.Torob.Name">
+    <meta property="og:image" content="@Model.Torob.Image">
+    <meta name="product_price" content="@Model.Torob.price">
+    <meta name="product_old_price" content="@Model.Torob.old_price">
+    <meta name="availability" content="@Model.Torob.availability">
+
+    <!-- End Torob meta -->
+}
+@* <div class="bg-gray-13 bg-md-transparent">
+    <div class="container rtl">
+
+        <div class="my-md-3">
+            <div class="breadcrumb  ">
+
+                <a class="small">جزئیات محصول</a><i class=" ec ec-arrow-right-categproes p-1"></i>
+                <a class="small" aria-current="page" id="ProductNav">گوشی موبایل سامسونگ مدل Galaxy S21 FE 5G دو سیم‌ کارت ظرفیت 128 گیگابایت و رم 8 گیگابایت</a>
+            </div>
+        </div>
+
+    </div>
+</div> *@
+<div class=" rtl">
+    <div class="swiper-wrapper d-flex mr-5 ">
+        <div class="swiper-slide swiper-slide-active" style="width: auto; height: auto;">
+            <a class="Gray text-body-2 shrink-0" data-cro-id="pdp-breadcrumb-up" href="/">پارس تک<span class="mx-3">/</span></a>
+        </div>
+        @foreach( var cat in Model.Categuries)
+        {
+
+            <div class="swiper-slide swiper-slide-next" style="width: auto; height: auto;">
+                <a class="Gray text-body-2 shrink-0" data-cro-id="pdp-breadcrumb-up" href="/Products/@cat.LatinGroupTitle">@cat.GroupTitle<span class="mx-3">/</span></a>
+            </div>
+        }
+       
+       
+       
+    </div>
+
+    <div class="grid-container m-2">
+        <div class="item1 ">
+            <div class="card ">
+                <div class="grid-container-sub p-3">
+                    <div class="item1">
+
+
+                        <div class="product-gallery ml-2 mr-2">
+
+                            <div class="product-carousel owl-carousel" data-slider-id="1">
+                                @foreach (var item in Model.Galleries.OrderByDescending(u => u.IsMain))
+                                {
+                                    <div class="item">
+                                        <a class="gallery-item" href="~/Shared/Images/Products/@item.ImageName"
+                                           data-fancybox="gallery1">
+                                            <img src="~/Shared/Images/Products/@item.ImageName" alt="@item.Alt">
+                                        </a>
+                                    </div>
+                                }
+
+
+                            </div>
+                            <div class="d-flex justify-content-center flex-wrap">
+                                <ul class="product-thumbnails owl-thumbs ml-2" data-slider-id="1">
+                                    @foreach (var item in Model.Galleries.OrderByDescending(u => u.IsMain))
+                                    {
+                                        <li class="owl-thumb-item active">
+                                            <a href="">
+                                                <img src="~/Shared/Images/Products/@item.ImageName" alt="@item.Alt">
+                                            </a>
+                                        </li>
+
+                                    }
+
+
+                                </ul>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="item1">
+                        <h5 class="mb-2 font-size-16"><a href="#" class="black font-weight-bold">@Item.Name </a></h5>
+
+                        @if (Item.Childs != null)
+                        {
+                            <div class="section-title text-sm-title title-wide no-after-title-wide mb-0">
+                                <h2>انتخاب مدل:</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="product-variants float-right ml-3">
+                                        @foreach (var child in Item.Childs)
+                                        {
+                                            <li class="ui-variant">
+                                                <a href="/Products/Detail/@Item.ShortLink/@child.ProductStockPriceId">
+
+                                                    @if (Model.StoreId == child.ProductStockPriceId)
+                                                    {
+                                                        <label class="ui-variant ui-variant--color border-orange">
+                                                            <span class="ui-variant-shape"><i class="mdi mdi-check-circle font-size-17 Sormei"></i></span>
+                                                            <span class="ui-variant--check">@child.VariationName</span>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="ui-variant ui-variant--color ">
+                                                            <span class="ui-variant-shape"><i class="mdi mdi-circle-outline font-size-17"></i></span>
+                                                            <span class="ui-variant--check">@child.VariationName</span>
+                                                        </label>
+                                                    }
+
+
+
+
+
+                                                </a>
+                                            </li>
+                                        }
+
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        }
+
+
+
+                        <div class="">
+
+
+                            <div class="card-body">
+                                <h5 class="font-weight-bold font-size-13">توضیحات کوتاه محصول</h5>
+                                <p class="Gray font-size-15">@Model.Item.ShortDescription</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="font-weight-bold font-size-13">ویژگی محصول</h5>
+                            </div>
+                            <div class="card-body">
+                                @foreach (var property in Item.SomeProperties)
+                                {
+                                    <div class="d-flex">
+                                        <p class="Gray font-size-15">@property.PropertyName:</p>
+                                        <span class="font-weight-bold font-size-15 Black">@property.Value</span>
+                                    </div>
+                                    <hr class="dashed-hr">
+                                }
+
+                                @* <p class="Gray font-size-15">وزن:<span class="font-weight-bold font-size-15 Black">۱۷۷ گرم</span></p>
+                                <hr class="dashed-hr"> *@
+                            </div>
+                        </div>
+                        <ul class="d-flex ">
+                            <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
+                                <a href="#" onclick="AddToCompare(@Item.ProductStockPriceId)" class="text-orange-90" data-toggle="tooltip" data-placement="top" aria-label="مقایسه محصول" data-bs-original-title="مقایسه محصول" aria-describedby="tooltip887359">
+                                    <i class="font-size-22 mdi mdi-compare"></i>
+                                </a>
+                            </li>
+                            <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
+                                <a href="#" onclick="AddToFavorite(@Item.ProductStockPriceId)" class="text-orange-90 " data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی" data-bs-original-title="علاقه مندی">
+                                    <i class="font-size-22 mdi mdi-heart-multiple"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item2 ">
+            <div class="card shadow-1200">
+                <div class="productImage m-1   p-3 ">
+                    @if (Item.Quantity > 0 && Item.SalePrice > 0)
+                    {
+                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">موجود در انبار<i class=" mdi mdi-cart-check Green p-1"></i></div>
+
+                    }
+                    else
+                    {
+                        <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">ناموجود<i class=" mdi mdi-cart-off Red p-1"></i></div>
+
+                    }
+
+
+                    <div class="card-blue">
+                        <div class="text-gray-9   p-2">
+                            <i class="mdi mdi-store p-1 "></i>فروشنده :<a href="/Products/Stores/@Item.StoreLatin"><span class="Black ">@Item.Store</span></a>
+                        </div>
+                        <hr class="dashed-hr" />
+                        @*  <div class="text-gray-9   p-2">
+                            <i class="fa fa-gear p-1"></i>ارزیابی عملکرد :<a href="/Products/Stores/arvinfardad"><span class="Black ">عالی</span></a>
+
+                        </div> *@
+                        <div class="text-gray-9   p-2">
+                            <i class="fa fa-gear p-1"></i>شناسه کالا :<span class="Black ">@Item.Code</span>
+
+                        </div>
+                        @if (Item.CateguryOfUserId != null)
+                        {
+                            <span class="badge BgBlue w-100 mt-1 mb-1  font-size-12"><i class="mdi mdi-sale"></i> <span class="text-weight-bold Black">ویژه</span> همکاران بانک ملی ایران</span>
+
+                        }
+
+                    </div>
+                    @* <div class="badge badge-danger rounded-5 p-2  w-50"><span class="font-weight-bold">400,000</span> تومان تخفیف</div> *@
+                    @if (Item.Quantity > 0 && Item.SalePrice > 0)
+                    {
+                        <div class="flex-center-between-price rtl border-width-2 border-color-1 mt-2">
+                            <div class="prodcut-price ">
+                                @if (Item.DiscountPrice != 0)
+                                {
+                                    <del class="font-size-1 tex-gray-6  ">@Item.SalePrice.ToString("#,0")</del>
+                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.DiscountPrice.ToString("#,0")<img src="/Shared/Toman.svg"></ins>
+
+                                }
+                                else
+                                {
+                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@Item.SalePrice.ToString("#,0")<img src="/Shared/Toman.svg"></ins>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="mb-2 pb-0dot5"><a onclick="CreateCheckout(@Item.ProductStockPriceId)" href="#" class="btn btn-block  BgSormei text-white">  افزودن به سبد خرید <i class="mdi mdi-cart-plus mr-2 font-size-20"></i></a></div>
+                        <a target="_blank" href="/Products/Credit/@Model.ShortLink" class=" flex w-full flex-col text-center Blue  rounded-lg bg-white border-dashed border-blue-information px-2 py-3 mb-1"> خرید به صورت قسطی<i class="mdi mdi-shopping"></i></a>
+
+                    }
+                    else
+                    {
+                        <div class="mb-2 pb-0dot5"><a href="#" class="btn btn-block disabled  BgRed text-white">  محصول ناموجود میباشد<i class="mdi mdi-cart-off mr-2 font-size-20"></i></a></div>
+
+                    }
+                    
+                    <a href="#" onclick="scrollToStores()" class="btn btn-Custom btn-block  bg-gray-17 Gray font-size-14 text-center mb-2">خرید از فروشندگان دیگر <i class=" mdi mdi-menu-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<main id="content" role="main">
+
+    <div class="bg-gray-7 pt-2 rtl border-color-1 productImageBackRadius">
+        <div class="container productImage ">
+            <ul class="nav nav-tabs border" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab2" aria-selected="true" role="tab">معرفی محصول</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3" aria-selected="false" tabindex="-1" role="tab">مشخصات</a>
+                </li>
+                <li class="nav-item" id="StoresTab" role="presentation">
+                    <a class="nav-link " data-bs-toggle="tab" href="#tab1" aria-selected="false" tabindex="-1" role="tab">سایر مدل ها و فروشندگان</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane fade " role="tabpanel">
+                    <ul class="d-block list-unstyled products-group prodcut-list-view-small mt-3">
+                        @if (Item.RelatedStores.Count() > 0)
+                        {
+                            foreach (var related in Item.RelatedStores)
+                            {
+                                <li class="product-item remove-divider">
+                                    <div class="product-item__outer w-100">
+                                        <div class="product-item__inner remove-prodcut-hover py-4 row">
+                                            <div class="product-item__header col-6 col-md-2"><div class="mb-2"><a href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId" class="d-block text-center"><img class="w-50" src="/Shared/Images/Products/@related.Image" alt="@related.Name"></a></div></div><div class="product-item__body col-6 col-md-7"><div class="pr-lg-10"><div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3"> <i class="  fas fa-shop Red p-1"></i>فروشنده :<span class="Black font-weight-bold">@related.StoreName</span></div><h5 class="mb-2 product-item__title"><a href="/Products/Detail/@related.ShortLink/@related.ProductStockPriceId" class="Gray font-weight-bold">@related.Name</a></h5></div><div class="row"><div class="col-12"><p class="null"></p></div></div></div><div class="product-item__footer col-md-3 d-md-block">
+                                                <div class="mb-2  flex-center-between">
+                                                    <div class="prodcut-price mt-3">
+                                                        @if (related.Quantity > 0 && related.SalePrice > 0)
+                                                        {
+                                                            if (related.DiscountPrice > 0)
+                                                            {
+                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                    <ins class="font-size-19 font-weight-bold text-red text-decoration-none d-flex">@related.DiscountPrice.ToString("#,0") <img src="/Shared/Toman.svg"></ins>
+                                                                    <del class="font-size-1 tex-gray-6 position-absolute bottom-100">@related.SalePrice.ToString("#,0")</del>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                    <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">@related.SalePrice.ToString("#,0") <img src="/Shared/Toman.svg"></ins>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="mb-2 pb-0dot5"><a href="#" class="btn btn-Custom btn-block defoult BgRed White">محصول ناموجود</a></div>
+
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            }
+                        }
+
+                    </ul>
+
+
+                </div>
+                <div id="tab2" class="tab-pane fade active show" role="tabpanel">
+                    <div class="mx-md-4 pt-1 mt-3" style="text-align: justify;">
+                        @Html.Raw(Item.Description)
+                    </div>
+                </div>
+                <div id="tab3" class="tab-pane fade" role="tabpanel">
+                    <div class="mx-md-5 pt-1 mt-3">
+                        @foreach (var prop in Item.Properties)
+                        {
+                            <h3 class="font-size-18 mb-4"></h3>
+                            <div class="table-responsive">
+                                <table id="PropTable-7" class="table table-hover">
+                                    <tbody>
+                                    </tbody>
+                                    <tbody>
+                                        @foreach (var subProp in prop.Properties)
+                                        {
+                                            <tr>
+                                                <th class="px-4 px-xl-5 border-top-0 w-50">@subProp.PropertyName</th>
+                                                <td class="border-top-0 w-50" style="text-align: justify;">@subProp.Value</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+
+
+
+
+
+
+
+
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+    <link href="~/Site/ProductDetail/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/main.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+    <script src="~/Shared/Lib/Site/Products/Detail/Base.js"></script>
+
+    <script src="~/Site/ProductDetail/owl.carousel.min.js"></script>
+    <script src="~/Site/ProductDetail/owl.carousel2.thumbs.min.js"></script>
+    <script src="~/Site/ProductDetail/main.js"></script>
+}
+
+
+
+
+

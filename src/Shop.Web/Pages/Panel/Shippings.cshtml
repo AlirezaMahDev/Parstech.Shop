@@ -1,0 +1,185 @@
+﻿@page
+@model Shop.Web.Pages.Panel.ShippingsModel
+@{
+}
+
+<main id="content" role="main">
+
+
+    <div class="container">
+
+
+        <form class="js-validate" novalidate="novalidate">
+            <div class="row">
+                <partial name="Site/_PanelSideBar" />
+
+                <div class="col-lg-9 order-lg-1">
+                    <div class="pb-7 mb-7">
+                        <!-- Title -->
+                        <div class="panel panel-warning box shadow border">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h6 class="title">
+
+                                        آدرس های من
+                                        <i class=" fas fa-map-location-dot Orange"></i>
+                                    </h6>
+                                </div><!-- /.panel-title -->
+                                <div class="leftButtons ">
+                                    <button type="button" class="btn btn-xs mt-1 cart-Green" onclick="openModal()">افزودن آدرس جدید <i class=" fas fa-circle-plus Orange p-1"></i></button>
+                                </div><!-- /.buttons-box -->
+                            </div><!-- /.panel-heading -->
+                            <div class="panel-body rtl" id="AddressData">
+                            </div><!-- /.panel-body -->
+                        </div>
+                        <!-- End Title -->
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+
+@*Modal *@
+<div id="ShippingCreateUpdateModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeModal()">&times;</button>
+                <h4 class="modal-title">آدرس کاربر</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <form method="post" asp-page-handler="UpdateAndCreate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoadingShippingEC"
+                      data-ajax-complete="OnCompleteShippingEC"
+                      data-ajax-failure="OnErrorShippingEC">
+                    <div class="row">
+
+                        <input type="hidden" asp-for="UserShippingDto.Id" id="UserShippingDto_Id" />
+                        <input type="hidden" asp-for="UserShippingDto.UserId" id="UserShippingDto_UserId" class="IUserId" />
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label> نام</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.FirstName" id="UserShippingDto_FirstName" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label> نام خانودگی</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.LastName" id="UserShippingDto_LastName" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>تلفن</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.Phone" id="UserShippingDto_Phone" type="text" class="form-control ">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>موبایل</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.Mobile" id="UserShippingDto_Mobile" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>کشور</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.Country" id="UserShippingDto_Country" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>استان</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.State" id="UserShippingDto_State" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>شهر</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.City" id="UserShippingDto_City" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                       
+                        <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                            <label>کد پستی</label>
+                            <div class="form-group round">
+                                <input asp-for="UserShippingDto.PostCode" id="UserShippingDto_PostCode" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-12 m-auto m-b-10">
+                            <label>آدرس</label>
+                            <div class="form-group round">
+                                <textarea asp-for="UserShippingDto.Address" id="UserShippingDto_Address" type="text" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </div><!-- /.col-md-8 -->
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" onclick="closeModal()">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*end Modal*@
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoading"
+      data-ajax-complete="OnComplete"
+      data-ajax-failure="OnError">
+</form>
+<form method="post" id="GetItemForm" asp-page-handler="GetItem"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingGetItem"
+      data-ajax-complete="OnCompleteGetItem">
+    <input type="hidden" asp-for="UserShippingId" id="UserShippingId" />
+</form>
+<form method="post" id="DeleteItemForm" asp-page-handler="DeleteItem"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingDelete"
+      data-ajax-complete="OnCompleteDelete">
+    <input type="hidden" asp-for="UserShippingId" class="Id" />
+</form>
+<!--End FORMS-->
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+    <script src="~/Admin/js/pages/swal.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/Shippings.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/AllShared.js"></script>
+}

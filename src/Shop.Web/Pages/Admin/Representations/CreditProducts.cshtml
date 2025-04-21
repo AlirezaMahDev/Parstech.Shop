@@ -1,0 +1,249 @@
+﻿@page
+@model Shop.Web.Pages.Admin.Representations.CreditProductsModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+@using Microsoft.AspNetCore.Antiforgery;
+
+<input type="hidden" value="@Model.repId" id="repId" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title row">
+                    
+                
+                    <div class="col-lg-3">
+                        <h3 class="title">
+                            کالا های اعتباری
+                        </h3>
+                    </div>
+                    <div class="col-lg-5">
+                        <label>افزودن کالای اعتباری </label>
+                        <div class="form-group d-flex">
+                           
+                            <select id="addProduct" class="form-control round select2">
+                            </select>
+                            <button onclick="AddCredit()" class="btn btn-round text-white BgGreen font-weight-bold">افزودن</button>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div><!-- /.portlet-heading -->
+           
+            <div class="portlet-body" style="">
+                <form method="post" asp-page-handler="GetData"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="OnLoadingData"
+                      data-ajax-complete="OnCompleteData"
+                      data-ajax-failure="OnErrorData">
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="form-group ">
+                                <label>فیلتر انبار</label>
+                                <select asp-for="parameters.RepId" id="RepId"  class="form-control select2 round select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                                    <option value="">انتخاب انبار</option>
+                                    @foreach (var item in Model.Representations)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group ">
+                                <label>فیلتر کالا </label>
+                                <select asp-for="parameters.Filter" id="ProductsSelect" class="form-control round select2">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-blue btn-block btn-round text-white font-weight-bold mt-4 pt-2">فیلتر</button>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="d-flex mb-2" id="pagingHeader">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered " id="data-table">
+
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="d-flex mb-2" id="paging">
+                </div>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+    </div>
+
+</div>
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="GetData"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    @* <input type="hidden" asp-for="parameters.RepId" class="RepId" />
+    <input type="hidden" asp-for="parameters.Filter" id="Parameter_Filter" />*@
+    <input type="hidden" asp-for="parameters.CurrentPage" id="Parameter_CurrentPage" />
+</form>
+
+
+
+<!--Start Fecilities-->
+<div id="CreditModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">افزودن/ویرایش کالای اعتباری</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" id="formCredit"  asp-page-handler="CreateOrUpdate" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingCredit"
+                          data-ajax-complete="OnCompleteCredit">
+
+                        <input type="hidden" asp-for="Credit.Id" id="Id" />
+                        <input type="hidden" asp-for="Credit.ProductStockPriceId" id="ProductStockPriceId" />
+                        <h5 class="font-weight-bold" id="ProductStockPriceText"></h5>
+                       
+                        
+                        <div class="row">
+                            <div class="col-12  m-auto m-b-10">
+                                <label>پیش پرداخت(تومان):</label>
+                                <div class="form-group round m-auto">
+                                    <input asp-for="Credit.TextPrePay" id="PrePay" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                </div>
+                            </div> 
+                            <div class="col-12  m-auto m-b-10">
+                                <label>مقسط ماهانه(تومان):</label>
+                                <div class="form-group round m-auto">
+                                    <input asp-for="Credit.TextPayMonth" id="PayMonth" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                </div>
+                            </div>
+                            <div class="col-12  m-auto m-b-10">
+                                <label>مبلغ کل(تومان):</label>
+                                <div class="form-group round m-auto">
+                                    <input asp-for="Credit.TextTotal" id="Total" type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);">
+                                </div>
+                            </div>
+                            
+                           
+                            <div class="col-6  m-auto m-b-10">
+
+                                <label>نرخ سود:</label>
+                                <div class="form-group round m-auto">
+                                    <input asp-for="Credit.Persent" id="Persent" type="number" class="form-control">
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-6  m-auto m-b-10">
+                                <label>تعداد اقساط:</label>
+                                <div class="form-group round m-auto">
+                                    <input asp-for="Credit.Month" id="Month"  type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-6  m-auto m-b-10">
+                                
+                                @if (User.IsInRole("SupperUser")) 
+                                {
+                                    <label>وضعیت</label>
+
+                                    <div class="form-group round m-auto">
+
+                                        <select asp-for="Credit.Active" id="Active" class="form-control">
+                                            <option value=true>فعال</option>
+                                            <option value=false>غیرفعال</option>
+                                        </select>
+
+                                    </div>
+                                }
+                                else{
+                                    <span id="Active"></span>
+                                    <input type="hidden" asp-for="Credit.Active" value="false" class="form-control">
+                                }
+                            </div>
+
+                           
+
+                            <div class="col-12 m-auto m-b-10">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+
+                            </div><!-- /.col-md-8 -->
+                        </div>
+                    </form>
+
+
+
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--End Fecilities-->
+
+
+
+
+
+
+
+
+
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+        <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+}
+@section Scripts {
+
+    <script src="~/Shared/Lib/Admin/Representations/CreditProducts.js"></script>
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+        <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+
+}

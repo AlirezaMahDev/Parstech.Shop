@@ -1,0 +1,14 @@
+﻿@{
+    var Param = new Shop.Application.DTOs.User.UserNameDto();
+    if (User.Identity.IsAuthenticated)
+    {
+        Param.userName = User.Identity.Name;
+    }
+    else
+    {
+        Param.userName = null;
+    }
+
+    Param.Position = "SitePanel";
+}
+@await Component.InvokeAsync("UserName",Param)  

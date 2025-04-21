@@ -1,0 +1,87 @@
+﻿@page
+@model Shop.Web.Pages.Checkout.IndexModel
+@{
+}
+@using Microsoft.AspNetCore.Antiforgery;
+
+
+<main id="content" role="main" dir="rtl">
+    <div class="container">
+        @* <div class="alert BgRed text-white borders-radius-17">
+            
+            به علت تعطیلی شرکت های پستی در ایام عید کالاهای خریدار شده پس از <strong>25 اسفند</strong>،بعد از تعطیلات ارسال خواهند شد.<br />
+            ارسال های تهران تا   <strong>تاریخ 27 ام</strong> با پیک انجام خواهد شد.
+            
+        </div> *@
+
+        <div class="row" id="DataSection">
+        </div>
+    </div>
+</main>
+
+
+@*Modal *@
+<div id="OrderComplete" class="modal  fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeModal()">&times;</button>
+                <h4 class="modal-title">ثبت نهایی سفارش</h4>
+            </div>
+            <div class="modal-body" id="CompleteInfo">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AghsatComplete" class="modal fade " role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeAghsatModal()">&times;</button>
+                <h5 class="modal-title">جزئیات پرداخت سفارش از طریق تسهیلات</h5>
+            </div>
+            <div class="modal-body" id="AghsatSection">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Shippings" class="modal  fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeModal()">&times;</button>
+                <h4 class="modal-title">ثبت آدرس خریدار</h4>
+
+            </div>
+            <br />
+            <div class="alert BgYellow font-weight-bold font-size-13"><i class=" fas fa-circle-info p-1 Black"></i> جهت ثبت آدرس جدید و یا ویرایش آدرس های خود به پنل کاربری خود مراجعه فرمایید</div>
+            <button onclick="SetShipping(0)" type="button" class="btn BgOrange font-weight-bold White btn-xs"> <i class=" fas fa-boxes-packing p-2 White"></i> تحویل حضوری در دفتر مرکزی شرکت پارس تکنولوژی سداد</button>
+            <div class="modal-body" id="ShippingList">
+            </div>
+
+        </div>
+    </div>
+</div>
+@*end Modal*@
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/main.css" rel="stylesheet" />
+    <link href="~/Dite/ProductDetail/materialdesignicons.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+    <script src="~/Shared/Lib/Site/Checkout/Base.js"></script>
+    <script src="~/Site/ProductDetail/main.js"></script>
+}

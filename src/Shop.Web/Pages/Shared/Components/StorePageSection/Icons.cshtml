@@ -1,0 +1,76 @@
+﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+<div class="mr-5 ml-5">
+    <div class="position-relative">
+        <div class="js-slick-carousel u-slick u-slick--gutters-0 position-static overflow-hidden u-slick-overflow-visble pb-3 pt-1 px-1"
+             data-arrows-classes="d-none d-xl-block u-slick__arrow-normal u-slick__arrow-centered--y rounded-circle text-black font-size-30 z-index-2"
+             data-arrow-left-classes="fa fa-angle-left u-slick__arrow-inner--left left-n16"
+             data-arrow-right-classes="fa fa-angle-right u-slick__arrow-inner--right right-n20"
+             data-pagi-classes="d-xl-none text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-3 pt-1"
+             data-slides-show="15"
+             data-slides-scroll="1"
+             data-responsive='[{
+                              "breakpoint": 1400,
+                              "settings": {
+                                "slidesToShow": 8
+                              }
+                            }, {
+                                "breakpoint": 1200,
+                                "settings": {
+                                  "slidesToShow": 6
+                                }
+                            }, {
+                              "breakpoint": 992,
+                              "settings": {
+                                "slidesToShow": 5
+                              }
+                            }, {
+                              "breakpoint": 768,
+                              "settings": {
+                                "slidesToShow": 3
+                              }
+                            }, {
+                              "breakpoint": 554,
+                              "settings": {
+                                "slidesToShow":3
+                              }
+                            }]'>
+            @foreach (var item in Model.SectionDetails)
+            {
+                <div class="js-slide">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#@item.Id" class="d-block text-center bg-on-hover width-122 mx-auto">
+                        <div class="rounded-circle width-75 height-75 border" style="background-image:url('/Shared/Images/@item.Image'); background-size:cover;border: solid 3px !important;">
+                        </div>
+                        <div class="bg-white px-2 pt-2 width-75">
+                            <h6 class="font-weight-semi-bold font-size-14 text-gray-90 mb-0 text-lh-1dot2">@item.Caption</h6>
+                        </div>
+                    </a>
+                </div>
+               
+            }
+
+
+        </div>
+    </div>
+</div>
+
+@foreach (var item in Model.SectionDetails)
+{
+    <div id="@item.Id" class="modal fade " role="dialog" tabindex="-1">
+        <div class="modal-dialog ">
+            <div class="modal-content ">
+
+                <div class="modal-body">
+                    <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                    <div><small class="modal-title m-1">@item.Caption</small></div>
+                    <div> <img width="100%" style="background-size:cover" src="/Shared/Images/@item.BackgroundImage" /></div>
+
+                    <div>  <button type="button" class="btn btn-xs btn-block btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+

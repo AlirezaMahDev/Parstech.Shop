@@ -1,0 +1,172 @@
+﻿@page
+@model Shop.Web.Pages.Panel.IndexModel
+@{
+}
+
+<main id="content" role="main">
+
+
+    <div class="container">
+            <div class="row">
+                <partial name="Site/_PanelSideBar" />
+
+                <div class="col-lg-9 order-lg-1">
+                    <div class="pb-7 mb-7">
+                        <!-- Title -->
+                        <div class="panel panel-warning box shadow border">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h6 class="title">
+
+                                        اطلاعات حساب
+                                        <i class=" far fa-circle-user Orange"></i>
+                                    </h6>
+                                </div><!-- /.panel-title -->
+                                <div class="buttons-box toggle">
+                                </div><!-- /.buttons-box -->
+                            </div><!-- /.panel-heading -->
+                            <div class="panel-body">
+                            <form method="post" asp-page-handler="Update"
+                                  data-ajax="true"
+                                  data-ajax-method="POST"
+                                  data-ajax-begin="OnLoadingUpdate"
+                                  data-ajax-complete="OnCompleteUpdate"
+                                  data-ajax-failure="OnErrorUpdate">
+                                <div class="row rtl">
+                                    <input type="hidden" asp-for="UserBillingDto.Id" id="UserBillingDto_Id" />
+                                    <input type="hidden" asp-for="UserBillingDto.UserId" id="UserBillingDto_UserId" />
+                                    <input type="hidden" asp-for="UserBillingDto.Mobile" id="UserBillingDto_Mobile" />
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label> نام</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_FirstName" type="text" class="form-control" asp-for="UserBillingDto.FirstName" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label> نام خانودگی</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_LastName" type="text" class="form-control" asp-for="UserBillingDto.LastName" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>شرکت</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_Company" type="text" class="form-control" asp-for="UserBillingDto.Company" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کد ملی</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_NationalCode" type="text" class="form-control" asp-for="UserBillingDto.NationalCode" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>تلفن</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_Phone" type="text" class="form-control" asp-for="UserBillingDto.Phone" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>موبایل</label>
+                                        <div class="form-group round">
+                                            <input disabled="" id="UserBillingDto_Mobile2" type="text" class="form-control disabled" data-val="true" data-val-required="The Mobile field is required." >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کشور</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_Country" type="text" class="form-control" asp-for="UserBillingDto.Country" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>استان</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_State" type="text" class="form-control" asp-for="UserBillingDto.State" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>شهر</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_City" type="text" class="form-control" asp-for="UserBillingDto.City" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>آدرس</label>
+                                        <div class="form-group round">
+                                            <textarea id="UserBillingDto_Address" type="text" class="form-control" asp-for="UserBillingDto.Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کد پستی</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_PostCode" type="text" class="form-control" asp-for="UserBillingDto.PostCode" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>کد اقتصادی</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_EconomicCode" type="text" class="form-control" asp-for="UserBillingDto.EconomicCode" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-10">
+                                        <label>پست الکترونیکی</label>
+                                        <div class="form-group round">
+                                            <input id="UserBillingDto_Email" type="text" class="form-control" asp-for="UserBillingDto.Email" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                        <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                            ثبت
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
+                                        </button>
+                                    </div><!-- /.col-md-8 -->
+                                    
+
+                                </div>
+                                </form>
+                            </div><!-- /.panel-body -->
+                        </div>
+                        <!-- End Title -->
+
+
+
+
+                    </div>
+                </div>
+            </div>
+       
+    </div>
+</main>
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingBillingGet"
+      data-ajax-complete="OnCompleteBillingGet"
+      data-ajax-failure="OnErrorBillingGet">
+</form>
+<!--End FORMS-->
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/Index.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/AllShared.js"></script>
+
+}

@@ -1,0 +1,238 @@
+﻿@model Shop.Application.DTOs.User.UserInfoDto
+
+@if (Model.Position == "SideBar")
+{
+    <div class="user-box">
+        <a href="#">
+            <img src="~/Admin/images/user/128.png" alt="عکس پروفایل" class="img-circle img-responsive">
+        </a>
+        <div class="user-details">
+            <h3>@Model.FullName</h3>
+            <p class="role">@Model.Role</p>
+            <div class="dropdown user-login">
+                @*<div class="btn btn-block btn-xs btn-status btn-round ">
+                    <small>آخرین ورود:</small>
+                    <small>@Model.LastLoginShamsi</small>
+                </div>*@
+            </div><!-- /dropdown -->
+        </div><!-- /.user-details -->
+    </div>
+
+    <!-- /.user-box -->
+}
+@if (Model.Position == "Menu")
+{
+    <li class="dropdown dropdown-user">
+        <a href="#" class="dropdown-toggle dropdown-hover" data-bs-toggle="dropdown">
+            <img src="~/Admin/images/user/48.png" alt="عکس پرفایل" class="img-circle img-responsive">
+            <span>@Model.FullName</span>
+            <i class="icon-arrow-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            @* <li>
+        <a href="edit_profile.html">
+        <i class="icon-note"></i>
+        ویرایش پروفایل
+        </a>
+        </li>*@
+            <li>
+                <a href="/Admin/ChangePassword">
+                    <i class="icon-key"></i>
+                    تغییر رمز عبور
+                </a>
+            </li>
+            <li class="divider"></li>
+            @*<li>
+        <a href="chat.html">
+        <span class="badge badge-primary float-end"> 14 </span>
+        <i class="icon-envelope"></i>
+        تیکت های جدید
+        </a>
+        </li>*@
+
+            <li class="divider"></li>
+            <li>
+                <a href="#" onclick="LogoutUser()">
+                    <i class="icon-power"></i>
+                    خروج
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+
+@if (Model.Position == "Site")
+{
+    @* if (Model.FullName == "-")
+    {
+        <li class="list-inline-item mr-0 u-header-topbar__nav-item u-header-topbar__nav-item-border">
+            
+            <a id="sidebarNavToggler" href="javascript:;" role="button" class="u-header-topbar__nav-link"
+               aria-controls="sidebarContent"
+               aria-haspopup="true"
+               aria-expanded="false"
+               data-unfold-event="click"
+               data-unfold-hide-on-scroll="false"
+               data-unfold-target="#sidebarContent"
+               data-unfold-type="css-animation"
+               data-unfold-animation-in="fadeInRight"
+               data-unfold-animation-out="fadeOutRight"
+               data-unfold-duration="500">
+                <i class="ec ec-user mr-1"></i> ورود <span class="text-gray-50">یا</span> ثبت نام
+            </a>
+           
+        </li>
+    }
+    else
+    {
+        <li class="list-inline-item mr-0 u-header-topbar__nav-item u-header-topbar__nav-item-border">
+            
+            <a href="/Panel" class="u-header-topbar__nav-link">
+                <i class="ec ec-user mr-1"></i> وارد شده اید (مشاهده پنل کاربری)
+            </a>
+         
+        </li>
+    } *@
+
+}
+@if (Model.Position == "SiteMenu")
+{
+    <li class="col mt-3 d-xl-none  position-static">
+        <a id="searchClassicInvoker" class="font-size-24 text-gray-90 text-lh-1 btn-text-secondary" href="javascript:;" role="button"
+           data-toggle="tooltip"
+           data-placement="top"
+           title="جستجو"
+           aria-controls="searchClassic"
+           aria-haspopup="true"
+           aria-expanded="false"
+           data-unfold-target="#searchClassic"
+           data-unfold-type="css-animation"
+           data-unfold-duration="300"
+           data-unfold-delay="300"
+           data-unfold-hide-on-scroll="true"
+           data-unfold-animation-in="slideInUp"
+           data-unfold-animation-out="fadeOut">
+            <span class="ec ec-search "></span>
+        </a>
+
+        <!-- Input -->
+        <div id="searchClassic" class="dropdown-menu dropdown-unfold dropdown-menu-right left-0 mx-2" aria-labelledby="searchClassicInvoker">
+            <div class="js-focus-state input-group px-2">
+                <input class="form-control rtl" type="search" id="SearchFilterMobile" placeholder="جستجوی محصول">
+                <div class="">
+                    <button onclick="SearchMobile()" class="btn  px-3" type="button"><i class="font-size-15 ec ec-search"></i></button>
+                </div>
+            </div>
+            <div class="rtl" id="SearchSectionMobile">
+            </div>
+        </div>
+
+        <!-- End Input -->
+    </li>
+    if (Model.FullName == "-")
+    {
+        @* <li class="col mt-3 pr-xl-0 px-2 px-sm-3">
+            <a id="sidebarNavToggler" href="javascript:;" role="button" class="u-header-topbar__nav-link"
+               aria-controls="sidebarContent"
+               aria-haspopup="true"
+               aria-expanded="false"
+               data-unfold-event="click"
+               data-unfold-hide-on-scroll="false"
+               data-unfold-target="#sidebarContent"
+               data-unfold-type="css-animation"
+               data-unfold-animation-in="fadeInRight"
+               data-unfold-animation-out="fadeOutRight"
+               data-unfold-duration="500"
+               data-toggle="tooltip" data-placement="top" title="ورود به سایت">
+                <i class=" far fa-circle-user font-size-24"></i>
+
+            </a>
+        </li> *@
+        <li class="nav-item account dropdown">
+            <a class=" btn btn-sm mt-2 pointer d-none d-xl-block" href="/Auth/LoginRegister">
+                <span class="label-dropdown ">ورود به حساب</span>
+                <i class="ec ec-user mr-1"></i>
+            </a>
+            
+        </li>
+    }
+    else
+    {
+        
+
+        <li class="col mt-3 pr-xl-0 px-2 px-sm-3" id="countOfOpenOrder">
+           
+        </li>
+
+        <ul class="nav float-right d-none d-xl-block">
+            <li class="nav-item account dropdown">
+                <a class=" btn btn-sm mt-2 pointer" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="label-dropdown">حساب کاربری</span>
+                    <i class="ec ec-user mr-1"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right rtl" style="text-align: right;">
+                    <a class="dropdown-item" href="/panel">
+                        پروفایل
+                    </a>
+                    
+                    <div class="dropdown-divider" role="presentation"></div>
+                    <a class="dropdown-item" href="#" onclick="LogoutUser()">
+                        خروج
+                    </a>
+                </div>
+            </li>
+        </ul>
+    }
+
+}
+
+
+@if (Model.Position == "SitePanel")
+{
+    <div class=" shadow border">
+        <div class="panel-heading">
+            <div class="panel-title">
+
+                
+                <h5 class=" text-center img-circle ">
+                    <img class="border-panel img-circle" src="~/admin/images/user/64.png" />
+
+                </h5>
+                <h6 class="title text-center ">
+
+                    @Model.FullName <i class=" fas fa-chalkboard-user Red"></i>
+                </h6>
+                <button type="button" onclick="LogoutUser()" class="btn BgRed btn-xs btn-block White mb-2"> خروج از حساب <i class=" fas fa-power-off"></i> </button>
+            </div><!-- /.panel-title -->
+
+        </div><!-- /.panel-heading -->
+
+    </div>
+}
+
+@if (Model.Position == "MobileMenu")
+{
+    if (Model.FullName == "-")
+    {
+        <a id="sidebarNavToggler" href="/Auth/LoginRegister" role="button" class="u-header-topbar__nav-link">
+          
+            <img width="25" src="/Shared/Images/user.png" />
+        </a>
+
+        <a href="#" onclick="UserNotLogin()" class="text-gray-90" data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی" data-bs-original-title="علاقه مندی"><img width="25" src="/Shared/Images/love.png" /></a>
+        <a href="#" onclick="UserNotLogin()" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="سبد خرید"><img width="40" src="/Shared/Images/bag.png" /></a>
+        <a href="#" onclick="UserNotLogin()" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="مقایسه محصول"><img width="25" src="/Shared/Images/compare.png" /></a>
+        <a href="/" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="صفحه نخست"><img width="25" src="/Shared/Images/home.png" /></a>
+
+    }
+    else
+    {
+        <a href="/Panel" class="text-gray-90" data-toggle="tooltip" data-placement="top" aria-label="پنل کاربری" data-bs-original-title="پنل کاربری" aria-describedby="tooltip387185"><img width="25" src="/Shared/Images/user.png" /></a>
+        <a href="/Panel/UserFavorite" class="text-gray-90" data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی" data-bs-original-title="علاقه مندی"><img width="25" src="/Shared/Images/love.png" /></a>
+        <a href="/Checkout" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="سبد خرید"><img width="40" src="/Shared/Images/bag.png" /></a>
+        <a href="/Panel/UserCompare" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="مقایسه محصول"><img width="25" src="/Shared/Images/compare.png" /></a>
+        <a href="/" class="text-gray-90 position-relative d-flex " data-toggle="tooltip" data-placement="top" title="صفحه نخست"><img width="25" src="/Shared/Images/home.png" /></a>
+
+    }
+   
+}

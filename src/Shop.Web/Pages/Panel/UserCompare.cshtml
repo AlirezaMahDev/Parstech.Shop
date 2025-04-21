@@ -1,0 +1,52 @@
+﻿@page
+@model Shop.Web.Pages.Panel.UserCompareModel
+@{
+}
+<main id="content" role="main">
+
+
+    <div class="container">
+
+
+
+        <div class="row">
+            <partial name="Site/_PanelSideBar" />
+
+            <div class="col-lg-9 order-lg-1">
+                <div class="row rtl" id="compareSection">
+                    
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+
+
+@*End Modal*@
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="Data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnComplete">
+</form>
+
+<!--End FORMS-->
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+    <script src="~/Admin/js/pages/swal.js"></script>
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/UserCompare.js"></script>
+    <script src="~/Shared/Lib/Site/Panel/AllShared.js"></script>
+}

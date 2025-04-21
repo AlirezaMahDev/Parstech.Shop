@@ -1,55 +1,57 @@
-using System.Diagnostics.CodeAnalysis;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 var seq = builder.AddSeq("seq")
-    .WithContainerName("seq")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataBindMount("../../.cache/seq")
     .WithEnvironment("ACCEPT_EULA", "Y");
 
 var cache = builder.AddRedis("cache")
-    .WithContainerName("redis")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataBindMount("../../.cache/redis")
     .WithDbGate(resourceBuilder =>
         resourceBuilder
-            .WithContainerName("dbgate")
-            .WithDataBindMount("../../.cache/dbgate")
+            .WithDataBindMount("../../.cache/dbGate")
             .WithLifetime(ContainerLifetime.Persistent));
 
 var sql = builder.AddSqlServer("sql")
-    .WithContainerName("mssql")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataBindMount("../../.cache/mssql")
+    .WithBindMount("../../Data/Parstech.bak", "/var/opt/mssql/backup/Parstech.bak")
     .WithDbGate();
 
-var db = sql.AddDatabase("database");
+var db = sql.AddDatabase("database", "Parstech")
+    .WithCreationScript("""
+                        RESTORE DATABASE Parstech
+                        FROM DISK = '/var/opt/mssql/backup/Parstech.bak'
+                        WITH REPLACE, RECOVERY;
+                        """);
 
 var mongo = builder.AddMongoDB("mongo")
-    .WithContainerName("mongo")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataBindMount("../../.cache/mongo")
     .WithDbGate();
 
 var mongodb = mongo.AddDatabase("mongodb");
 
-var ollama = builder.AddOllama("ollama")
-    .WithContainerName("ollama")
-    .WithDataVolume()
-    .WithLifetime(ContainerLifetime.Persistent)
-    .WithOpenWebUI(options => options
-        .WithContainerName("webui")
-        .WithDataVolume()
-        .WithLifetime(ContainerLifetime.Persistent));
-
-var model = ollama.AddHuggingFaceModel("model", "sentence-transformers/paraphrase-multilingual-mpnet-base-v2");
+// var ollama = builder.AddOllama("ollama")
+//     .WithDataVolume()
+//     .WithLifetime(ContainerLifetime.Persistent)
+//     .WithOpenWebUI(options => options
+//         .WithDataVolume()
+//         .WithLifetime(ContainerLifetime.Persistent));
+//
+// var model = ollama
+//     .AddHuggingFaceModel("model", "sentence-transformers/paraphrase-multilingual-mpnet-base-v2");
 
 #pragma warning disable ASPIREHOSTINGPYTHON001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-var ai = builder.AddPythonApp("ai", "../Parstech.Shop.Ai","main.py")
+var ai = builder.AddUvicornApp("ai", "../Parstech.Shop.Ai", "main.py")
     .WithHttpEndpoint()
     .WithExternalHttpEndpoints()
-    .WithOtlpExporter();
+    .WithOtlpExporter()
+    // .WithReference(model)
+    // .WaitFor(model)
+    .WithReference(db)
+    .WaitFor(db);
 #pragma warning restore ASPIREHOSTINGPYTHON001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 var apiService = builder.AddProject<Projects.Parstech_Shop_ApiService>("apiservice")
@@ -69,6 +71,22 @@ builder.AddProject<Projects.Parstech_Shop_Web>("webfrontend")
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)
-    .WaitFor(apiService);
+    .WaitFor(apiService)
+    .WithReference(ai)
+    .WaitFor(ai);
+
+
+builder.AddProject<Projects.Shop_Web>("web")
+    .WithExternalHttpEndpoints()
+    .WithReference(seq)
+    .WaitFor(seq)
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(db)
+    .WaitFor(db)
+    .WithReference(mongodb)
+    .WaitFor(mongodb)
+    .WithReference(ai)
+    .WaitFor(ai);
 
 builder.Build().Run();

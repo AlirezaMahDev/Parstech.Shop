@@ -1,16 +1,23 @@
 <Solution>
-  <Folder Name="/data/" />
-  <Folder Name="/deploy/" />
-  <Folder Name="/src/" />
-  <Folder Name="/src/Host/" Id="981c2cf6-e5bb-602a-511c-234b538302b0">
-    <Project Path="src/Parstech.Shop.AppHost/Parstech.Shop.AppHost.csproj" />
-  </Folder>
-  <Folder Name="/src/Libraries/" Id="5e7ec0af-e837-5b7a-fb41-a4dcca877d1f">
-    <Project Path="src/Parstech.Shop.ServiceDefaults/Parstech.Shop.ServiceDefaults.csproj" />
-  </Folder>
-  <Folder Name="/src/Projects/" Id="d587d8b4-e7c0-3fd6-56a9-41fc457b6096">
-    <Project Path="src/Parstech.Shop.ApiService/Parstech.Shop.ApiService.csproj" />
-    <Project Path="src/Parstech.Shop.Web/Parstech.Shop.Web.csproj" />
-  </Folder>
-  <Folder Name="/tests/" />
+    <Folder Name="/data/"/>
+    <Folder Name="/deploy/"/>
+    <Folder Name="/src/"/>
+    <Folder Name="/src/Host/">
+        <Project Path="src/Parstech.Shop.AppHost/Parstech.Shop.AppHost.csproj"/>
+    </Folder>
+    <Folder Name="/src/Libraries/">
+        <Project Path="src/Parstech.Shop.ServiceDefaults/Parstech.Shop.ServiceDefaults.csproj"/>
+    </Folder>
+    <Folder Name="/src/Old/">
+        <Project Path="src\Shop.Web\Shop.Web.csproj"/>
+        <Project Path="src\Shop.Persistence\Shop.Persistence.csproj"/>
+        <Project Path="src\Shop.Infrastructure\Shop.Infrastructure.csproj"/>
+        <Project Path="src\Shop.Application\Shop.Application.csproj"/>
+        <Project Path="src\Shop.Domain\Shop.Domain.csproj"/>
+    </Folder>
+    <Folder Name="/src/Projects/">
+        <Project Path="src/Parstech.Shop.ApiService/Parstech.Shop.ApiService.csproj"/>
+        <Project Path="src/Parstech.Shop.Web/Parstech.Shop.Web.csproj"/>
+    </Folder>
+    <Folder Name="/tests/"/>
 </Solution>

@@ -1,0 +1,233 @@
+﻿@page
+@model Shop.Web.Pages.Products.Components.ProductDetailModel
+@{
+    Layout = null;
+}
+<div class="bg-gray-13 bg-md-transparent">
+    <div class="container rtl">
+        <!-- breadcrumb -->
+        <div class="my-md-3">
+            <div class="breadcrumb  ">
+
+                <a class="small">جزئیات محصول</a><i class=" ec ec-arrow-right-categproes p-1"></i>
+                <a class="small" aria-current="page" id="ProductNav">گوشی موبایل سامسونگ مدل Galaxy S21 FE 5G دو سیم‌ کارت ظرفیت 128 گیگابایت و رم 8 گیگابایت</a>
+            </div>
+        </div>
+        <!-- End breadcrumb -->
+    </div>
+</div>
+
+<div class=" rtl">
+    <div class="grid-container m-2">
+        <div class="item1 ">
+            <div class="card ">
+                <div class="grid-container-sub p-3">
+                    <div class="item2">
+
+                        <ul class="d-flex " id="Actions">
+                            <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
+                                <a href="#" onclick="AddToCompare(22146)" class="text-orange-90" data-toggle="tooltip" data-placement="top" aria-label="مقایسه محصول" data-bs-original-title="مقایسه محصول" aria-describedby="tooltip887359">
+                                    <i class="font-size-22 mdi mdi-compare"></i>
+                                </a>
+                            </li>
+                            <li class="m-2 btn btn-default" data-bs-toggle="tooltip" data-bs-placement="left">
+                                <a href="#" onclick="AddToFavorite(22146)" class="text-orange-90 " data-toggle="tooltip" data-placement="top" aria-label="علاقه مندی" data-bs-original-title="علاقه مندی">
+                                    <i class="font-size-22 mdi mdi-heart-multiple"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="product-gallery">
+                            <span class="badge">پر فروش</span>
+                            <div class="product-carousel owl-carousel" data-slider-id="1">
+                                <div class="item">
+                                    <a class="gallery-item" href="/site/ProductDetail/thumbnail-1.jpg"
+                                       data-fancybox="gallery1">
+                                        <img src="~/site/productdetail/thumbnail-1.jpg" alt="Product">
+                                    </a>
+                                </div>
+                                <div class="item">
+                                    <a class="gallery-item" href="~/site/productdetail/thumbnail-2.jpg"
+                                       data-fancybox="gallery1">
+                                        <img src="~/site/productdetail/thumbnail-2.jpg" alt="Product">
+                                    </a>
+                                </div>
+                                <div class="item">
+                                    <a class="gallery-item" href="~/site/productdetail/thumbnail-3.jpg"
+                                       data-fancybox="gallery1">
+                                        <img src="~/site/productdetail/thumbnail-3.jpg" alt="Product">
+                                    </a>
+                                </div>
+                                <div class="item">
+                                    <a class="gallery-item" href="~/site/productdetail/thumbnail-4.jpg"
+                                       data-fancybox="gallery1">
+                                        <img src="~/site/productdetail/thumbnail-4.jpg" alt="Product">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center flex-wrap">
+                                <ul class="product-thumbnails owl-thumbs ml-2" data-slider-id="1">
+                                    <li class="owl-thumb-item active">
+                                        <a href="">
+                                            <img src="~/site/productdetail/thumbnail-1.jpg" alt="Product">
+                                        </a>
+                                    </li>
+                                    <li class="owl-thumb-item">
+                                        <a href="">
+                                            <img src="~/site/productdetail/thumbnail-2.jpg" alt="Product">
+                                        </a>
+                                    </li>
+                                    <li class="owl-thumb-item">
+                                        <a href="">
+                                            <img src="~/site/productdetail/thumbnail-3.jpg" alt="Product">
+                                        </a>
+                                    </li>
+                                    <li class="owl-thumb-item">
+                                        <a href="">
+                                            <img src="~/site/productdetail/thumbnail-4.jpg" alt="Product">
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="product-thumbnails">
+                                    <li>
+                                        <a class="navi-link text-sm" href="./assets/video/download.mp4"
+                                           data-fancybox data-width="960" data-height="640">
+                                            <i class="mdi mdi-video text-lg d-block mb-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="item1">
+                        <h5 class="mb-2 font-size-16"><a href="#" class="black font-weight-bold">گوشی موبایل سامسونگ مدل Galaxy S21 FE 5G دو سیم‌ کارت ظرفیت 128 گیگابایت و رم 8 گیگابایت </a></h5>
+                        <div class="section-title text-sm-title title-wide no-after-title-wide mb-0">
+                            <h2>انتخاب مدل:</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="product-variants float-right ml-3">
+                                    <li class="ui-variant">
+                                        <label class="ui-variant ui-variant--color">
+                                            <span class="ui-variant-shape" style="background-color: #212121"></span>
+                                            <input type="radio" value="1" name="color" class="variant-selector" checked="">
+                                            <span class="ui-variant--check">مشکی</span>
+                                        </label>
+                                    </li>
+                                    <li class="ui-variant">
+                                        <label class="ui-variant ui-variant--color">
+                                            <span class="ui-variant-shape" style="background-color: #f6f6f6"></span>
+                                            <input type="radio" value="3" name="color" class="variant-selector">
+                                            <span class="ui-variant--check">سفید</span>
+                                        </label>
+                                    </li>
+                                    <li class="ui-variant">
+                                        <label class="ui-variant ui-variant--color">
+                                            <span class="ui-variant-shape" style="background-color: #2196f3"></span>
+                                            <input type="radio" value="4" name="color" class="variant-selector">
+                                            <span class="ui-variant--check">آبی</span>
+                                        </label>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="font-weight-bold font-size-13">ویژگی محصول</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="Gray font-size-15">وزن:<span class="font-weight-bold font-size-15 Black">۱۷۷ گرم</span></p>
+                                <hr class="dashed-hr">
+                                <p class="Gray font-size-15">وزن:<span class="font-weight-bold font-size-15 Black">۱۷۷ گرم</span></p>
+                                <hr class="dashed-hr">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item2 ">
+            <div class="card shadow-1200">
+                <div class="productImage m-1   p-3 " id="PriceSection">
+                    <div class="text-gray-9 font-size-14 pb-2 border-color-1 border-bottom mb-3">موجود در انبار<i class=" mdi mdi-cart-off Green p-1"></i></div>
+                    @* mdi mdi-cart-check *@
+
+                    <div class="card-blue">
+                        <div class="text-gray-9   p-2">
+                            <i class="mdi mdi-store p-1 "></i>فروشنده :<a href="/Products/Stores/arvinfardad"><span class="Black ">آروین فرداد</span></a>
+                        </div>
+                        <hr class="dashed-hr" />
+                        <div class="text-gray-9   p-2">
+                            <i class="fa fa-gear p-1"></i>ارزیابی عملکرد :<a href="/Products/Stores/arvinfardad"><span class="Black ">عالی</span></a>
+
+                        </div>
+                        <div class="text-gray-9   p-2">
+                            <i class="fa fa-gear p-1"></i>شناسه کالا :<a href="/Products/Stores/arvinfardad"><span class="Black ">710010013028</span></a>
+
+                        </div>
+                        <span class="badge BgBlue w-100 mt-1 mb-1  font-size-12"><i class="mdi mdi-sale"></i> <span class="text-weight-bold Black">ویژه</span> همکاران بانک ملی ایران</span>
+
+                    </div>
+                    @* <div class="badge badge-danger rounded-5 p-2  w-50"><span class="font-weight-bold">400,000</span> تومان تخفیف</div> *@
+                    <div class="flex-center-between-price rtl border-width-2 border-color-1 mt-2">
+
+                        <div class="prodcut-price ">
+                            <del class="font-size-1 tex-gray-6  ">40,300,000</del>
+                            <ins class="font-size-19 font-weight-bold  text-decoration-none d-flex">39,600,000<img src="/Shared/Toman.svg"></ins>
+
+                        </div>
+
+                    </div>
+
+                    <button class=" flex w-full flex-col  rounded-lg bg-white border-dashed border-blue-information px-2 py-3 mb-1"><span>به زودی</span> خرید به صورت قسطی<i class="mdi mdi-shopping"></i></button>
+                    <div class="mb-2 pb-0dot5"><a onclick="CreateCheckout(10961)" href="#" class="btn btn-block  BgSormei text-white">  افزودن به سبد خرید <i class="mdi mdi-cart-plus mr-2 font-size-20"></i></a></div><a href="#" onclick="scrollToStores()" class="btn btn-Custom btn-block  bg-gray-17 Gray font-size-14 text-center mb-2">خرید از فروشندگان دیگر <i class=" mdi mdi-menu-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<main id="content" role="main">
+
+    <div class="bg-gray-7 pt-2 rtl border-color-1 productImageBackRadius">
+        <div class="container productImage ">
+            <ul class="nav nav-tabs border" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab2" aria-selected="true" role="tab">معرفی محصول</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3" aria-selected="false" tabindex="-1" role="tab">مشخصات</a>
+                </li>
+                <li class="nav-item" id="StoresTab" role="presentation">
+                    <a class="nav-link " data-bs-toggle="tab" href="#tab1" aria-selected="false" tabindex="-1" role="tab">سایر مدل ها و فروشندگان</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane fade " role="tabpanel">
+                    <ul class="d-block list-unstyled products-group prodcut-list-view-small mt-3" id="RelatedSection">
+                        <span class="text-muted">فروشنده دیگری برای این محصول وجود ندارد</span>
+                    </ul>
+                </div>
+                <div id="tab2" class="tab-pane fade active show" role="tabpanel">
+                    <div class="mx-md-4 pt-1 mt-3" id="DescriptionSection" style="text-align: justify;"></div>
+                </div>
+                <div id="tab3" class="tab-pane fade" role="tabpanel">
+                    <div class="mx-md-5 pt-1 mt-3" id="PropertySection">
+                        <h3 class="font-size-18 mb-4"></h3><div class="table-responsive"><table id="PropTable-7" class="table table-hover"><tbody></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">ابعاد</th><td class="border-top-0 w-70">۷.۹×۷۴.۵×۱۵۵.۷</td></tr></tbody></table></div><h3 class="font-size-18 mb-4"></h3><div class="table-responsive"><table id="PropTable-5" class="table table-hover"><tbody></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">وزن</th><td class="border-top-0 w-70">۱۷۷ گرم</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">رنگ</th><td class="border-top-0 w-70">خاکستری</td></tr></tbody></table></div><h3 class="font-size-18 mb-4"></h3><div class="table-responsive"><table id="PropTable-4" class="table table-hover"><tbody></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">فناوری-صفحهنمایش</th><td class="border-top-0 w-70">Dynamic AMOLED ۲X</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">بازهی-اندازه-صفحه-نمایش</th><td class="border-top-0 w-70">۶.۰ اینچ و بزرگتر</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">توضیحات-سیم-کارت</th><td class="border-top-0 w-70">سایز نانو (۸.۸ × ۱۲.۳ میلی‌متر)</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">نمایشگر</th><td class="border-top-0 w-70">ابعاد نمایشگر 6.4 اینچ نوع نمایشگر Dynamic AMOLED 2X حداکثر نرخ نوسازی (Refresh Rate) 120 هرتز رزولوشن 1080 در 2400 پیکسل تراکم پیکسلی ~401 پیکسل در اینچ نسبت تصویر 20:9 نسبت نمایشگر به بدنه ~89.6 درصد استانداردهای HDR HDR10+ سایر مشخصات نمایشگر نمایشگر همیشه روشن (Always-on Display)</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">صدا</th><td class="border-top-0 w-70">نوع اسپیکر استریو (دوگانه) ویژگی‌‌های صوتی صدای 32 بیت / 384 کیلوهرتز</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مدل-تراشه</th><td class="border-top-0 w-70">Qualcomm SM8350 Snapdragon 888 5G Exynos 2100</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">فرآیند-ساخت-تراشه</th><td class="border-top-0 w-70">5 نانومتر</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">تعداد هسته پردازنده</th><td class="border-top-0 w-70">8 هسته</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مشخصات-هستهها</th><td class="border-top-0 w-70">1 هسته 2.9 گیگاهرتز Cortex-X1 و 3 هسته 2.80 گیگاهرتز Cortex-A78 و 4 هسته‌ 2.2 گیگاهرتز Cortex-A55 1 هسته 2.9 گیگاهرتز Cortex-X1 و 3 هسته 2.80 گیگاهرتز Cortex-A78 و 4 هسته‌ 2.2 گیگاهرتز Cortex-A55</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">پردازنده-گرافیکی</th><td class="border-top-0 w-70">Adreno 660 Mali-G78 MP14</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">سایر-مشخصات-تراشه</th><td class="border-top-0 w-70">عرضه در دو نسخه اسنپدراگون و اگزینوس</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">پیکربندی-دوربین-پشت</th><td class="border-top-0 w-70">واید/استاندارد 12 مگاپیکسل اولتراواید 12 مگاپیکسل تله‌فوتو 8 مگاپیکسل</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مشخصات-دوربین-اصلی-واید-استاندارد</th><td class="border-top-0 w-70">لنز واید 26 میلی‌متری فوکوس خودکار دوال پیکسل با تشخیص فاز 1/1.76 اینچ سایز سنسور 1.8 میکرومتر سایز پیکسل لرزش‌گیر اپتیکال تصویر f/1.8</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مشخصات-دوربین-اولتراواید</th><td class="border-top-0 w-70">لنز اولتراواید 13 میلی‌متری پوشش 123 درجه 1/3.0 اینچ سایز سنسور 1.12 میکرومتر سایز پیکسل f/2.2</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مشخصات-دوربین-تلهفوتو</th><td class="border-top-0 w-70">لنز تله‌فوتو 76 میلی‌متری فوکوس خودکار با تشخیص فاز 1/4.5 اینچ سایز سنسور 1.0 میکرومتر سایز پیکسل لرزش‌گیر اپتیکال تصویر بزرگ‌نمایی اپتیکال 3 برابر f/2.4</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">رزولوشن-و-نرخ-فریم-ویدئو</th><td class="border-top-0 w-70">4K@30/60fps 1080p@30/60/240fps 720p@960fps</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">باتری-و-شارژ</th><td class="border-top-0 w-70">ظرفیت باتری 4500 میلی‌آمپر ساعت کلاس ظرفیت باتری 4000 تا 5000 میلی‌آمپر ساعت نوع باتری لیتیوم یونی تعویض‌پذیری باتری غیر قابل تعویض توسط کاربر حداکثر توان شارژ پشتیبانی شده 25 وات پشتیبانی از شارژ سریع پشتیبانی از شارژ بی‌سیم حداکثر توان شارژ بی‌سیم 15 وات</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">سایر-ویژگیهای-شارژ-و-باتری</th><td class="border-top-0 w-70">شارژ معکوس بی‌سیم پشتیبانی از فناوری Power Delivery 3</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">درگاه-اتصال</th><td class="border-top-0 w-70">USB Type-C</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">پشتیبانی-از-otg</th><td class="border-top-0 w-70">دارد</td></tr></tbody></table></div><h3 class="font-size-18 mb-4"></h3><div class="table-responsive"><table id="PropTable-12" class="table table-hover"><tbody></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">حداکثر رزولوشن فیلمبرداری دوربین</th><td class="border-top-0 w-70">4K</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">توضیحات فیلمبرداری</th><td class="border-top-0 w-70">فیلم‌برداری +HDR10 لرزش‌گیر الکترونیکی تصویر-ژیروسکوپی</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">دوربین سلفی اصلی</th><td class="border-top-0 w-70">32 مگاپیکسل</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">مشخصات دوربین سلفی اصلی</th><td class="border-top-0 w-70">لنز واید 26 میلی‌متری 1/2.74 اینچ سایز سنسور 0.8 میکرومتر سایز پیکسل f/2.2</td></tr></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">رزولوشن و نرخ فریم ویدئو سلفی</th><td class="border-top-0 w-70">4K</td></tr></tbody></table></div><h3 class="font-size-18 mb-4"></h3><div class="table-responsive"><table id="PropTable-11" class="table table-hover"><tbody></tbody><tbody><tr><th class="px-4 px-xl-5 border-top-0 w-30">بلوتوث</th><td class="border-top-0 w-70">5.0</td></tr></tbody></table></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+

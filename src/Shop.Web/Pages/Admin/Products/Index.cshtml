@@ -1,0 +1,626 @@
+﻿@page
+@model Shop.Web.Pages.Admin.Products.IndexModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        لیست محصولات
+                    </h3>
+                </div>
+
+                <div class=" ">
+
+                    <button class="btn btn-sm btn-green font-weight-bold hover-green" data-bs-toggle="modal" data-bs-target="#SerachProductModal">
+                        درخواست ثبت محصول
+                    </button>
+
+                    @*<button class="btn btn-sm btn-orange font-weight-bold hover-orange" onclick="CleanProduct()" data-bs-toggle="modal" data-bs-target="#EditProductModal">
+                        افزودن سریع محصول
+
+                    </button>*@
+                </div>
+                <div id="CreateUser" class="modal fade" role="dialog" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">افزودن محصول</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-center m-t-30 m-b-40" id="image">
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ProductStoresModal" class="modal fade" role="dialog" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">فروشندگان محصول</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12" id="ProductStoresSection">
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                    </div><!-- /col-lg-12 -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form method="post" asp-page-handler="GetData" 
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-begin="OnLoadingData"
+                  data-ajax-complete="OnCompleteData"
+                  data-ajax-failure="OnErrorData">
+               
+                <div class="row">
+
+                    <div class="col-lg-5" >
+                        <div class="form-group ">
+                            <label>فیلتر کالا</label>
+                            <select asp-for="Parameter.Filter" id="ProductsSelect" class="form-control select2">
+                            </select>
+                        </div>
+                        <div class="form-group ">
+                            <label>فیلتر با متن دلخواه</label>
+                            <input asp-for="Parameter.FilterText" class="form-control" />
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-4" >
+                        <div class="form-group ">
+                            <label>دسته بندی ها</label>
+                            <select asp-for="Parameter.Categury" id="CategurySelect" class="form-control select2">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group ">
+                            <label>فیلتر وضعیت</label>
+                            <select asp-for="Parameter.Type" id="TypeSelect" class="form-control select2">
+                                <option value="">انتخاب نشده</option>
+                                <option value="Active">منتشر شده</option>
+                                <option value="NotActive">عدم انتشار</option>
+
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="col-lg-1">
+                        <button type="submit" class="btn btn-blue text-white font-weight-bold mt-4 pt-2">فیلتر</button>
+                    </div>
+
+                </div>
+            </form>
+            <div class="portlet-body" style="">
+                <div class="d-flex mb-2" id="pagingHeader">
+                   
+                </div>
+                <div class="table-responsive">
+
+                    <table class="table table-bordered  " id="data-table">
+
+
+                        @* <div class="form-group d-flex">
+
+                            <input id="FilterInput" type="text" class="form-control w-50" placeholder="جستجوی محصولات"/>
+                            <button onclick="Filter()" class="btn btn-blue text-white font-weight-bold">فیلتر</button>
+                            <h5 id="serached" class="font-weight-bold text-danger"></h5>
+                            
+                        </div> *@
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="w-100">
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="d-flex mb-2" id="paging">
+                </div>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+
+    </div>
+</div>
+
+
+
+
+<!--FORMS-->
+<form method="post" id="GetDataForm" asp-page-handler="GetData"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingData"
+      data-ajax-complete="OnCompleteData"
+      data-ajax-failure="OnErrorData">
+    <input type="hidden" asp-for="Parameter.Filter" id="Parameter_Filter"/>
+    <input type="hidden" asp-for="Parameter.Categury" id="Parameter_Categury" />
+    <input type="hidden" asp-for="Parameter.Type" id="Parameter_Type" />
+    <
+    <input type="hidden" asp-for="Parameter.CurrentPage" id="Parameter_CurrentPage"/>
+</form>
+<form method="post" id="GetProductForm" asp-page-handler="Product"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingProdcut"
+      data-ajax-complete="OnCompleteProdcut"
+      data-ajax-failure="OnErrorProdcut">
+    <input type="hidden" asp-for="productId" class="productId"/>
+</form>
+<form method="post" id="GetCateguryForm" asp-page-handler="Categuries"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingCateguries"
+      data-ajax-complete="OnCompleteCateguries"
+      data-ajax-failure="OnFailureCateguries">
+    <input type="hidden" asp-for="productId" class="productId"/>
+</form>
+<form method="post" id="ProductParentsForm" asp-page-handler="ProductParents"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="OnLoadingProductParents"
+      data-ajax-complete="OnCompleteProductParents">
+    <input type="hidden" asp-for="Type" id="Type"/>
+    <input type="hidden" asp-for="Filter" id="FilterParrents"/>
+</form>
+<form method="post" id="DeleteCatForm" asp-page-handler="DeleteCategury"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteDeleteCat">
+    <input type="hidden" asp-for="productId" class="productId"/>
+</form>
+
+<form method="post" id="GetAllCatForm" asp-page-handler="GetAllCateguries"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteGetAllCat">
+    <input type="hidden" asp-for="productId" class="productId"/>
+    <input type="hidden" asp-for="FilterCat" id="FilterCatForm"/>
+</form>
+<form method="post" id="DeleteProduct" asp-page-handler="Delete"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-complete="OnCompleteDelete">
+    <input type="hidden" asp-for="productId" class="productId"/>
+
+</form>
+
+<!--modal-->
+<!--Start Prodcut Edit -->
+<div id="EditProductModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">اطلاعات محصول</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="EditOrCreateProduct" class="form-horizontal" role="form" enctype="multipart/form-data"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingProductEC"
+                          data-ajax-complete="OnCompleteProductEC"
+                          data-ajax-failure="OnErrorProductEC">
+
+                        <input type="hidden" asp-for="ProductDto.Id" id="ProductDto_Id"/>
+                        <input type="hidden" asp-for="ProductDto.ProductId" id="ProductDto_ProductId"/>
+                        <input type="hidden" asp-for="ProductDto.CreateDate" id="ProductDto_CreateDate"/>
+                        <input type="hidden" asp-for="ProductDto.Visit" id="ProductDto_Visit"/>
+                        <input type="hidden" asp-for="ProductDto.ShortLink" id="ProductDto_ShortLink"/>
+                        <input type="hidden" asp-for="ProductDto.ParentId" id="ProductDto_ParentId"/>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                                <label> عنوان محصول</label>
+                                <div class="form-group round">
+                                    <input asp-for="ProductDto.Name" id="ProductDto_Name" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 m-auto m-b-10">
+                                <label> عنوان لاتین محصول</label>
+                                <div class="form-group round">
+                                    <input asp-for="ProductDto.LatinName" id="ProductDto_LatinName" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 m-auto m-b-10">
+                                <label>کد محصول</label>
+                                <div class="form-group round">
+                                    <input asp-for="ProductDto.Code" id="ProductDto_Code" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 m-auto m-b-10">
+                                <label>نوع محصول<br/> <small class="text-warning" id="ParentText"></small></label>
+                                <div class="form-group round">
+                                    <select class="form-control" asp-for="ProductDto.TypeId" id="ProductDto_TypeId">
+
+                                        @foreach (var item in Model.ProducyTypes)
+                                        {
+                                            <option value="@item.Id">@item.TypeName</option>
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 m-auto m-b-10">
+                                <label>فروش تکی<br/> <small class="text-warning" id="ParentText"></small></label>
+                                <div class="form-group round">
+                                    <small class="Orange">در صورت انتخاب نوع محصول (زیرمجموعه باندل)</small>
+                                    <select class="form-control" asp-for="ProductDto.SingleSale" id="ProductDto_SingleSale">
+                                        <option value="true">فروش به صورت تکی</option>
+                                        <option value="false">فروش فقط به صورت باندل</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 m-auto m-b-10 hidden" id="VariationSection">
+
+                                <label>عنوان مختصر متغیر</label>
+                                <div class="form-group round">
+                                    <input asp-for="ProductDto.VariationName" id="ProductDto_VariationName" type="text" class="form-control">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 m-auto m-b-10 hidden" id="SelectParentSection">
+
+                                <label>جستجوی محصول</label>
+
+                                <div class="input-group">
+                                    <input type="text" class="form-control " id="SearchProduct" placeholder="شناسه و یا عنوان محصول را جستجو کنید">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" onclick="SearchProductParents()" type="button">
+                                            جستجو
+                                            <div class="paper-ripple">
+                                                <div class="paper-ripple__background"></div>
+                                                <div class="paper-ripple__waves"></div>
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                                <label>محصول اصلی</label>
+
+                                <div class="form-group round">
+                                    <select class="form-control" asp-for="ProductDto.ParentId" id="ProductDto_ParentId">
+                                    </select>
+                                    @*<input asp-for="ProductDto.TypeId" id="ProductDto_TypeId" type="text" class="form-control">*@
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 m-auto m-b-10">
+                                <label>تعداد در هر پک باندل</label>
+                                <div class="form-group round">
+
+                                    <small class="Orange">محصول از جنس زیر مجموعه باندل باشد</small>
+                                    <div class="form-group round">
+                                        <input asp-for="ProductDto.QuantityPerBundle" id="ProductDto_QuantityPerBundle" type="number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 m-auto m-b-10">
+                                <label>برند</label>
+                                <div class="form-group round">
+
+                                    <select class="form-control" asp-for="ProductDto.BrandId" id="ProductDto_BrandId">
+
+                                        @foreach (var item in Model.Brands)
+                                        {
+                                            <option value="@item.BrandId">@item.BrandTitle</option>
+                                        }
+                                    </select>
+                                    @*<input asp-for="ProductDto.BrandId" id="ProductDto_BrandId" type="text" class="form-control">*@
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 m-auto m-b-10">
+                                <label>فروشنده</label>
+                                <div class="form-group round">
+                                    <select class="form-control" asp-for="ProductDto.StoreId" id="ProductDto_StoreId">
+
+                                        @foreach (var item in Model.UserStores)
+                                        {
+                                            <option value="@item.Id">@item.StoreName</option>
+                                        }
+                                    </select>
+                                    @*<input asp-for="ProductDto.StoreId" id="ProductDto_StoreId" type="text" class="form-control">*@
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                                <label>کلاس مالیاتی</label>
+                                <div class="form-group round">
+                                    <select class="form-control" asp-for="ProductDto.TaxId" id="ProductDto_TaxId">
+
+                                        @foreach (var item in Model.TaxList)
+                                        {
+                                            <option value="@item.Id">@item.TaxName</option>
+                                        }
+                                    </select>
+                                    @*<input asp-for="ProductDto.TaxId" id="ProductDto_TaxId" type="text" class="form-control">*@
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 m-auto m-b-10">
+                                <label>امتیاز</label>
+                                <div class="form-group round">
+                                    <input asp-for="ProductDto.Score" id="ProductDto_Score" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-12 m-auto m-b-10">
+                                <label>توضیح کوتاه</label>
+                                <div class="form-group round">
+                                    <textarea asp-for="ProductDto.ShortDescription" id="ProductDto_ShortDescription" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-6 m-auto m-b-50">
+
+                                <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                    ثبت
+                                    <div class="paper-ripple">
+                                        <div class="paper-ripple__background"></div>
+                                        <div class="paper-ripple__waves"></div>
+                                    </div>
+                                </button>
+                            </div><!-- /.col-md-8 -->
+                        </div>
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Prodcut Edit -->
+<!--Start Categuies -->
+<div id="CateguriesModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">دسته بندی محصولات</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+
+                    <div>
+                        <button type="button" class="btn btn-xs btn-success hover-green" onclick="showAddCatModal()">افزودن دسته بندی</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <i class="icon-energy"></i>
+                                </th>
+                                <th>دسته بندی</th>
+                                <th>عملیات</th>
+                            </tr>
+                            </thead>
+                            <tbody id="CatsData">
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="AddCateguryModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">افزودن دسته بندی</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" id="AddCatForm" asp-page-handler="EditOrCreateCategury"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-complete="OnCompleteAddCat">
+                        <input type="hidden" asp-for="categury.ProductId" class="productId"/>
+
+                        <div class="form-group">
+                            <label>جستجوی دسته بندی</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control " id="SearchCatText" placeholder="عنوان دسته بندی را جستجو نمایید">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" onclick="SearchCat()" type="button">
+                                        جستجو
+                                        <div class="paper-ripple">
+                                            <div class="paper-ripple__background"></div>
+                                            <div class="paper-ripple__waves"></div>
+                                        </div>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <select class="form-control" asp-for="categury.CateguryId" id="categuriesSelect"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">ثبت </button>
+                        </div>
+
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ProductDuplicateModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">کپی محصول برای فروشنده دیگر</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="DuplicateForStoreProduct"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-complete="OnCompleteDublicate">
+                        <input type="hidden" name="productId" class="productId"/>
+
+
+                        <div class="form-group">
+                            <label>فروشنده محصول</label>
+                            <select class="form-control" name="storeId">
+                                @foreach (var item in Model.UserStores)
+                                {
+                                    <option value="@item.Id">@item.StoreName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">ثبت </button>
+                        </div>
+
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ProductCopyModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">کپی محصول</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <form method="post" asp-page-handler="DuplicateProduct"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-complete="OnCompleteCopy">
+                        <input type="hidden" name="productId" class="productId"/>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">دوبل کردن محصول </button>
+                        </div>
+
+                    </form>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="SerachProductModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">درخواست ثبت محصول تامین کننده</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <strong>نام محصول درخواستی خود را وارد نمایید در صورت وجود محصول در فروشگاه میتوانید فروشنده آن شوید</strong>
+                        <input type="text" class="form-control" name="Filter" id="SroreSearchProduct"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" onclick="SearchProducts()"  class="btn btn-primary">جستجوی محصول </button>
+                        <a href="/Admin/Products/CreateOrUpdate" class="btn btn-sm btn-green font-weight-bold hover-green">
+                            میخواهم محصول جدید ایجاد کنم
+
+                        </a>
+                    </div>
+
+                    <div id="SearchedProductSection">
+                    </div>
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Categuries -->
+
+
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+    <link href="~/Admin/plugins/persian-datepicker/css/persian-datepicker.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+    <script src="~/Admin/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+   
+    <script src="~/Admin/plugins/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Admin/plugins/select2/dist/js/i18n/fa.js"></script>
+    <script src="~/Admin/js/pages/select2.js"></script>
+    <script src="~/Admin/plugins/persian-date/persian-date.min.js"></script>
+    <script src="~/Admin/plugins/persian-datepicker/js/persian-datepicker.min.js"></script>
+    <script src="~/Admin/js/pages/calendar.js"></script>
+    <script src="~/Shared/Lib/Admin/Products/Base.js"></script>
+    <script src="~/Shared/Lib/Admin/products/Categury.js"></script>
+}

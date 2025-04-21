@@ -1,0 +1,11 @@
+﻿@page "{repId}"
+@model Shop.Web.Pages.Components.GetProductStockPricesSelectModel
+@{
+    Layout = null;
+}
+
+<option value="">انتخاب نشده</option>
+@foreach (var item in Model.list)
+{
+    <option value="@item.Id">@item.ProductName (@item.Code)</option>
+}

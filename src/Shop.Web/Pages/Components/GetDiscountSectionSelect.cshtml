@@ -1,0 +1,11 @@
+﻿@page
+@model Shop.Web.Pages.Components.GetDiscountSectionSelect
+@{
+    Layout = null;
+}
+
+<option value="">انتخاب نشده</option>
+@foreach (var item in Model.list)
+{
+                    <option value="@item.Id">@item.SectionName </option>
+}

@@ -1,0 +1,166 @@
+﻿@model Shop.Application.DTOs.Wallet.WalletDto 
+
+
+<div class="pl-lg-3 ">
+    <div class="bg-gray-1 rounded-lg">
+        <!-- Order Summary -->
+        <div class="pl-4 pr-4 pt-4 pb-2  checkout-table">
+            <!-- Title -->
+            <div class="border-bottom border-color-1 mb-5">
+                <h3 class="section-title mb-0 pb-2 font-size-25">پنل کاربری</h3>
+            </div>
+            <!-- End Title -->
+
+            <partial name="Shared/_UserNamePartialSitePanel" />
+            
+            <div id="shopCartAccordion1" class="accordion rounded mb-2">
+                <!-- Card -->
+                <div class="card border-0">
+                    <div id="shopCartHeadingTwo" class="alert   mb-0" role="alert">
+                        <h6 class="title text-right font-weight-bold p-1">حساب کیف پول<i class=" fas fa-wallet Green  m-1"></i></h6>
+
+                        <a href="#" class="alert-link collapsed small" data-toggle="collapse" data-target="#shopCartTwo" aria-expanded="false" aria-controls="shopCartTwo"> <i class=" fas fa-arrow-left"></i>مشاهده موجودی</a>
+
+                    </div>
+                    <div id="shopCartTwo" class="border border-top-0 collapse rtl" aria-labelledby="shopCartHeadingTwo" data-parent="#shopCartAccordion1" style="">
+                        <h6 class="title text-center font-weight-bold">@Model.Amount.ToString("#,0") تومان</h6>
+                    </div>
+                </div>
+                <!-- End Card -->
+            </div>
+            <div id="shopCartAccordion4" class="accordion rounded mb-2">
+                <!-- Card -->
+                <div class="card border-0">
+                    <div id="shopCartHeadingTwo" class="alert  mb-0" role="alert">
+                        <h6 class="title text-right font-weight-bold p-1">اعتبار سازمانی<i class="  fas fa-briefcase Yellow m-1"></i></h6>
+                        <a href="#" class="alert-link collapsed small" data-toggle="collapse" data-target="#shopCartTwo4" aria-expanded="false" aria-controls="shopCartTwo4"> <i class=" fas fa-arrow-left"></i>مشاهده موجودی</a>
+                    </div>
+                    <div id="shopCartTwo4" class="border border-top-0 collapse rtl" aria-labelledby="shopCartHeadingTwo" data-parent="#shopCartAccordion4" style="">
+                        <h6 class="title text-center font-weight-bold">@Model.OrgCredit.ToString("#,0") تومان</h6>
+                    </div>
+                </div>
+                <!-- End Card -->
+            </div>
+            <div id="shopCartAccordion3" class="accordion rounded mb-2">
+                <!-- Card -->
+                <div class="card border-0">
+                    <div id="shopCartHeadingTwo" class="alert  mb-0" role="alert">
+                        <h6 class="title text-right font-weight-bold p-1">تسهیلات<i class="  fas fa-briefcase Blue m-1"></i></h6>
+                        <a href="#" class="alert-link collapsed small" data-toggle="collapse" data-target="#shopCartTwo3" aria-expanded="false" aria-controls="shopCartTwo3"> <i class=" fas fa-arrow-left"></i>مشاهده موجودی</a>
+                    </div>
+                    <div id="shopCartTwo3" class="border border-top-0 collapse rtl" aria-labelledby="shopCartHeadingTwo" data-parent="#shopCartAccordion3" style="">
+                        <h6 class="title text-center font-weight-bold">@Model.Fecilities.ToString("#,0") تومان</h6>
+                    </div>
+                </div>
+                <!-- End Card -->
+            </div>
+            <div id="shopCartAccordion2" class="accordion rounded mb-2">
+                <!-- Card -->
+                <div class="card border-0">
+                    <div id="shopCartHeadingTwo" class="alert  mb-0" role="alert">
+                        <h6 class="title text-right font-weight-bold p-1">امتیاز شما<i class=" fas fa-coins Pink m-1"></i></h6>
+
+
+                        <a href="#" class="alert-link collapsed small" data-toggle="collapse" data-target="#shopCartTwo2" aria-expanded="false" aria-controls="shopCartTwo2"> <i class=" fas fa-arrow-left"></i>مشاهده موجودی</a>
+                    </div>
+                    <div id="shopCartTwo2" class="border border-top-0 collapse rtl" aria-labelledby="shopCartHeadingTwo" data-parent="#shopCartAccordion2" style="">
+                        <h6 class="title text-center font-weight-bold">@Model.Coin پارس کوین</h6>
+                    </div>
+                </div>
+                <!-- End Card -->
+            </div>
+
+           
+        </div>
+        <!-- End Order Summary -->
+        <div class="pr-4 pl-4 pb-4  checkout-table">
+            <!-- Title -->
+            <!-- End Title -->
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 ">
+                    <div class="panel-title2  p-2">
+                        <a target="_blank" href="/Panel/CreditTransactions" class=" flex btn-block flex-col text-center Blue  rounded-lg bg-white border-dashed border-blue-information px-2 py-3 mb-1"> سوابق خرید های اعتباری<i class="mdi mdi-shopping"></i></a>
+
+                    </div>
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2">
+                        <a href="/Panel" class=" p-3">اطلاعات کاربر <i class=" fas fa-user-gear Blue"></i></a>
+                    </div>
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2">
+                        <a href="/Panel/Shippings" class=" p-3">آدرس ها <i class=" fas fa-map-location-dot Orange"></i></a>
+                    </div>
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2 p-2">
+                        <a href="/Panel/Orders" class=" p-3">سوابق سفارشات <i class="  fas fa-basket-shopping Blue"></i></a>
+                    </div>
+
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2">
+                        <a href="/Panel/TransactionsList" class="  p-3">سوابق تراکنشات <i class="   fas fa-money-bill-transfer Orange"></i></a>
+                    </div>
+
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2">
+                        <a href="/Panel/UserCompare" class="  p-3">مقایسه محصولات من <i class="    fas fa-code-compare Pink"></i></a>
+                    </div>
+
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2">
+                        <a href="/Panel/UserFavorite" class="  p-3">محصولات مورد علاقه  <i class="    fas fa-heart Red"></i></a>
+                    </div>
+
+
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2 ">
+                        <a disabled="" href="" class=" p-3">پیام های ورودی <i class="   fas fa-envelope Blue"></i></a>
+                    </div>
+                </div><!-- /.panel-heading -->
+
+            </div>
+            <div class=" panel-warning box shadow border">
+                <div class="panel-heading2 cart-Hover">
+                    <div class="panel-title2  p-2 ">
+                        <a disabled="" href="/Panel/ChangePassword" class=" p-3">تنظیمات احراز هویت <i class="fas fa-key Orange"></i></a>
+                    </div>
+                </div><!-- /.panel-heading -->
+
+            </div>
+
+        </div>
+        <!-- End Order Summary -->
+    </div>
+</div>

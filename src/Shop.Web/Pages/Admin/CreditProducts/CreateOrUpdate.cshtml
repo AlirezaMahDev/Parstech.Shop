@@ -1,0 +1,95 @@
+﻿@page
+@model Shop.Web.Pages.Admin.CreditProducts.CreateOrUpdateModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-bag Orange"></i>
+                        اطلاعات محصول
+                    </h3>
+
+                </div>
+
+            </div>
+            <div class="portlet-body">
+                <div class="portlet-body">
+                    <form method="post" id="SaveForm" class="form-horizontal" role="form" enctype="multipart/form-data" data-ajax="true" data-ajax-method="POST" data-ajax-begin="OnLoadingSave" data-ajax-complete="OnCompleteSave" data-ajax-failure="OnErrorSave" action="/admin/products/createorupdate/24153?handler=save">
+                        <div class="col-12  m-auto m-b-10">
+                            <label>مبلغ تسهیلات(تومان):</label>
+                            <div class="form-group round m-auto">
+                                <input type="text" class="form-control" onkeyup="javascript:this.value=itpro(this.value);" data-val="true" data-val-required="The InputPrice field is required." id="Transaction_InputPrice" name="Transaction.InputPrice" value="">
+                            </div>
+                        </div>
+                        <div class="col-6  m-auto m-b-10">
+                            <label>نوع اعتبار:</label>
+                            <div class="form-group round m-auto">
+                                <select id="" type="text" class="has-persian-datepicker form-control" data-val="true" data-val-required="The Type field is required." name="Transaction.Type">
+                                    <option value="Fecilities">تسهیلات عادی</option>
+                                    <option value="OrgCredit">اعتبار سازمانی</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6  m-auto m-b-10">
+                            <label>نوع تراکنش:</label>
+                            <div class="form-group round m-auto">
+                                <select id="" type="text" class="has-persian-datepicker form-control" data-val="true" data-val-required="The TypeId field is required." name="Transaction.TypeId">
+                                    <option value="1">واریز</option>
+                                    <option value="2">برداشت</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6  m-auto m-b-10">
+
+                            <label>نرخ سود:</label>
+                            <div class="form-group round m-auto">
+                                <input id="" type="number" class="form-control" name="Transaction.Persent" value=""><input name="__Invariant" type="hidden" value="Transaction.Persent">
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6  m-auto m-b-10">
+                            <label>تعداد اقساط:</label>
+                            <div class="form-group round m-auto">
+                                <input id="" type="text" class="form-control" name="Transaction.Month" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-6  m-auto m-b-10">
+                            <label>تسهیلات فعال جهت استفاده مشتری</label>
+                            <span class="badge bg-red">جهت اجازه به استفاده کاربر از تسهیلات این گزینه فعال شود </span>
+                            <div class="form-group round m-auto">
+
+                                <select class="form-control" id="Transaction_Active" name="Transaction.Active">
+                                    <option value="true">فعال</option>
+                                    <option value="false">غیرفعال</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 m-auto m-b-10">
+
+                            <button type="submit" class="btn btn-info btn-round btn-block mb-2">
+                                ثبت
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+
+                        </div><!-- /.col-md-8 -->
+                        </form>
+                </div><!-- /.portlet-body -->
+
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+    </div>
+</div>

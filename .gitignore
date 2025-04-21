@@ -484,3 +484,5 @@ $RECYCLE.BIN/
 *.swp
 
 .cache
+.venv
+__pycache__

@@ -1,0 +1,286 @@
+﻿@model Shop.Application.DTOs.Section.SectionAndDetailsDto
+@{
+    var detail = Model.SectionDetails.FirstOrDefault();
+}
+<div class="mb-6">
+    <!-- Nav nav-pills -->
+    <div class="position-relative z-index-2">
+        <div class="  justify-content-between flex-lg-nowrap flex-wrap border-md-down-top-0 border-md-down-bottom-0 rtl">
+            <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">@Model.SectionName</h3>
+            <a class="d-block text-gray-16 pt-1" href="/Products/@Model.latinCateguryName">مشاهده همه <i class="ec ec-arrow-right-categproes" style="rotate: 180deg;"></i></a>
+        </div>
+        <!-- Tab Content -->
+        <div class="row  border border-width-2 border-muted borders-radius-20 mt-2">
+
+            @if (Model.SectionDetails.Count() > 0)
+            {
+                <div class="col-md-9 col-xs-12 ">
+                    <div class="tab-content" id="Bpills-tabContent">
+                        <div class="tab-pane fade pt-2 show active" id="Bpills-one-example1" role="tabpanel" aria-labelledby="Bpills-one-example1-tab">
+                            <div class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-3 pb-6 px-1"
+                                 data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4"
+                                 data-slides-show="4"
+                                 data-slides-scroll="1"
+                                 data-responsive='[{
+                                                  "breakpoint": 1400,
+                                                  "settings": {
+                                                    "slidesToShow": 5
+                                                  }
+                                                }, {
+                                                    "breakpoint": 1200,
+                                                    "settings": {
+                                                      "slidesToShow": 3
+                                                    }
+                                                }, {
+                                                  "breakpoint": 992,
+                                                  "settings": {
+                                                    "slidesToShow": 3
+                                                  }
+                                                }, {
+                                                  "breakpoint": 768,
+                                                  "settings": {
+                                                    "slidesToShow": 2
+                                                  }
+                                                }, {
+                                                  "breakpoint": 554,
+                                                  "settings": {
+                                                    "slidesToShow": 2
+                                                  }
+                                                }]'>
+                                @foreach (var item in Model.ProductCateguries)
+                                {
+                                    <div class="js-slide products-group rtl">
+                                        <div class="product-item">
+                                            <div class="product-item__outer h-100">
+                                                <div class="product-item__inner px-xl-2 p-2">
+
+                                                    @if (item.DiscountDate != null)
+                                                    {
+
+
+                                                        <div class="rtl">
+                                                            <input type="hidden" id="date-@item.Id" value="@item.DiscountDate" />
+                                                            <input type="hidden" value="@item.Id" class="Discount" />
+                                                            <div id="@item.ProductStockPriceId">
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    <div class="product-item__body pb-xl-2">
+                                                        <div class="mb-2"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="font-size-12 text-gray-5">@item.CateguryName</a></div>
+                                                        <div class="mb-2">
+                                                            <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="d-block text-center"><img class="img-fluid" src="~/Shared/Images/Products/@item.Image" alt=""></a>
+                                                        </div>
+                                                        <h6 class="font-size-12 mb-1 product-item__title"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class=" font-weight-bold">@item.Name</a></h6>
+
+                                                        <div class="flex-center-between mt-4 mb-1">
+
+
+                                                            <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                @if (item.Quantity > 0 && item.SalePrice != 0)
+                                                                {
+                                                                    @if (item.DiscountPrice > 0)
+                                                                    {
+                                                                        <ins class="font-size-15 font-weight-bold text-red text-decoration-none d-flex">@item.DiscountPrice.ToString("#,0") <img src="~/Shared/Toman.svg" /></ins>
+
+                                                                        <del class="font-size-1 tex-gray-6 position-absolute bottom-100">@item.SalePrice.ToString("#,0")</del>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img src="~/Shared/Toman.svg" /></ins>
+
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">به اتمام رسیده </ins>
+                                                                }
+
+
+                                                            </div>
+                                                            <div class="d-none d-xl-block prodcut-add-cart">
+                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="btn-add-cart btn-primary transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-item__footer">
+                                                        <div class="border-top pt-2 flex-center-between flex-wrap">
+                                                            <a onclick="AddToCompare(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-compare mr-1 font-size-15"></i> مقایسه</a>
+                                                            <a onclick="AddToFavorite(@item.ProductId)" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> علاقه مندم</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12  ">
+                    <div>
+                        <div class="js-slick-carousel u-slick">
+                            <a href="@detail.Link">
+                                <div class="js-slide">
+                                    <div class="bg-img-hero height-420 m-1 listProductBox" style=" background-image: url(/Shared/Images/@detail.BackgroundImage);">
+                                        <div class="row height-410-xl mx-0 align-items-center mobile-height-410">
+                                            <div class="col-md-12 mt-6 mt-md-0 mb-4 mb-md-0">
+                                                <div class="text-white text-center">
+                                                    @if (detail.Image != null)
+                                                    {
+                                                        <img width="100%" src="~/Shared/Images/@detail.Image" alt="">
+                                                    }
+                                                    else
+                                                    {
+
+                                                    }
+
+                                                    <span class="font-size-sl-50  font-weight-bold  font-weight-light mb-2 mb-lg-3 mb-wd-4">
+                                                        @detail.Caption<br />
+                                                        <small class="p-2 font-size-sl-50 font-weight-bold text-lh-1 font-weight-light mb-2 mb-lg-3 mb-wd-4">
+                                                            @detail.SubCaption
+                                                        </small>
+                                                    </span>
+
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12 col-xs-12  ">
+                    <div class="tab-content" id="Bpills-tabContent">
+                        <div class="tab-pane fade pt-2 show active" id="Bpills-one-example1" role="tabpanel" aria-labelledby="Bpills-one-example1-tab">
+                            <div class="js-slick-carousel u-slick overflow-hidden u-slick-overflow-visble pt-3 pb-6 px-1"
+                                 data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4"
+                                 data-slides-show="6"
+                                 data-slides-scroll="1"
+                                 data-responsive='[{
+                                                  "breakpoint": 1400,
+                                                  "settings": {
+                                                    "slidesToShow": 5
+                                                  }
+                                                }, {
+                                                    "breakpoint": 1200,
+                                                    "settings": {
+                                                      "slidesToShow": 3
+                                                    }
+                                                }, {
+                                                  "breakpoint": 992,
+                                                  "settings": {
+                                                    "slidesToShow": 3
+                                                  }
+                                                }, {
+                                                  "breakpoint": 768,
+                                                  "settings": {
+                                                    "slidesToShow": 2
+                                                  }
+                                                }, {
+                                                  "breakpoint": 554,
+                                                  "settings": {
+                                                    "slidesToShow": 2
+                                                  }
+                                                }]'>
+                                @foreach (var item in Model.ProductCateguries)
+                                {
+                                    <div class="js-slide products-group rtl">
+                                        <div class="product-item">
+                                            <div class="product-item__outer h-100">
+                                                <div class="product-item__inner px-xl-1 p-2">
+
+                                                    @if (item.DiscountDate != null)
+                                                    {
+
+
+                                                        <div class="rtl">
+                                                            <input type="hidden" id="date-@item.Id" value="@item.DiscountDate" />
+                                                            <input type="hidden" value="@item.Id" class="Discount" />
+                                                            <div id="@item.ProductStockPriceId">
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    <div class="product-item__body pb-xl-2">
+                                                        <div class="mb-2"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="font-size-12 text-gray-5">@item.CateguryName</a></div>
+                                                        <div class="mb-2">
+                                                            <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="d-block text-center"><img class="img-fluid" src="~/Shared/Images/Products/@item.Image" alt=""></a>
+                                                        </div>
+                                                        <h6 class="font-size-12 mb-1 product-item__title"><a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class=" font-weight-bold">@item.Name</a></h6>
+
+                                                        <div class="flex-center-between mt-4 mb-1">
+
+
+                                                            <div class="prodcut-price d-flex align-items-center position-relative">
+                                                                @if (item.Quantity > 0 && item.SalePrice!=0)
+                                                                {
+                                                                    @if (item.DiscountPrice > 0)
+                                                                    {
+                                                                        <ins class="font-size-15 font-weight-bold text-red text-decoration-none d-flex">@item.DiscountPrice.ToString("#,0") <img src="~/Shared/Toman.svg" /></ins>
+
+                                                                        <del class="font-size-1 tex-gray-6 position-absolute bottom-100">@item.SalePrice.ToString("#,0")</del>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">@item.SalePrice.ToString("#,0") <img src="~/Shared/Toman.svg" /></ins>
+
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <ins class="font-size-15 font-weight-bold text-decoration-none d-flex">به اتمام رسیده </ins>
+                                                                }
+
+
+                                                            </div>
+                                                            <div class="d-none d-xl-block prodcut-add-cart">
+                                                                <a href="/Products/Detail/@item.ShortLink/@item.ProductStockPriceId" class="btn-add-cart btn-primary transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-item__footer">
+                                                        <div class="border-top pt-2 flex-center-between flex-wrap">
+                                                            <a onclick="AddToCompare(@item.Id)" class="text-gray-6 font-size-13"><i class="ec ec-compare mr-1 font-size-15"></i> مقایسه</a>
+                                                            <a onclick="AddToFavorite(@item.Id)" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> علاقه مندم</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+        <!-- End Tab Content -->
+    </div>
+    <!-- End Nav Pills -->
+</div>
+

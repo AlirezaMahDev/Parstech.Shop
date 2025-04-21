@@ -1,0 +1,577 @@
+﻿@page
+@model Shop.Web.Pages.Admin.Config.IndexModel
+@{
+    Layout = "Shared/Admin_Layout";
+}
+
+<div class="row">
+
+
+    <div class="col-lg-6">
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        افزودن محصولات به صورت اکسل
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+
+
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                        افزودن محصولات به صورت اکسل
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="Api">
+                    <div class="form-body">
+
+
+
+                       
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet --> 
+        
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h3 class="title">
+                        <i class="icon-settings"></i>
+                       تصاویر محصول
+                    </h3>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="Images">
+                    <div class="form-body">
+
+
+
+                       
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>دریافت محصولات وردپرس</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="Wordpress">
+                    <div class="form-body">
+                        
+                    </div><!-- /.form-body -->
+                    <input type="number" name="page" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>دریافت محصولات متغیر وردپرس</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="VariationWordpress">
+                    <div class="form-body">
+                        
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>فیکس قیمت محصولات</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="FixProductStocks">
+                    <div class="form-body">
+                        
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>اختصاص کد به محصولات</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="FillProductCode" enctype="multipart/form-data">
+                    <div class="form-body">
+
+
+
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+        
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>  استعلام اعتبار سازمانی سرمایه انسانی</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="UpdateUserWalletsCredit" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <h5 class="text-warning">کد پرسنلی - شماره همراه - مانده اعتبار</h5>
+
+
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+    </div><!-- /.col-lg-6 -->
+
+    <div class="col-lg-6">
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>پیج محصولات</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="ProductList">
+                    <div class="form-body">
+                        
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+        
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>دریافت تک محصول با شناسه</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="GetProductFromWordpressById">
+                    <div class="form-body">
+                       
+                    </div><!-- /.form-body -->
+
+                    <input type="text" name="pid" class="form-control" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>دریافت دسته بندی ها</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="GetCateguriesFromWordpress">
+                    <div class="form-body">
+                       
+                    </div><!-- /.form-body -->
+
+                    <input type="text" name="pageCategury" class="form-control" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>ویرایش تاریخ محصولات</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="DatetimeChange">
+                    <div class="form-body">
+                        
+                    </div><!-- /.form-body -->
+
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            دریافت
+
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>فیکس رزرو به پارس</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="ExcelFixProducts" enctype="multipart/form-data">
+                    <div class="form-body">
+
+
+                        
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>اصلاح محصولات تکراری</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="FixDublicate" enctype="multipart/form-data">
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ثبت
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>ویرایش دسته بندی محصولات</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="EditCateguriesOfProducts" enctype="multipart/form-data">
+                    <div class="form-body">
+
+
+
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>ثبت کاربران و اختصاص اعتبار سازمانی</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="AddUsersAndWalletCredit" enctype="multipart/form-data">
+                    <div class="form-body">
+
+
+
+
+                        <div class="form-group relative">
+                            <input required="" type="file" name="file" class="form-control">
+                            <label>آپلود فایل</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.form-body -->
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ذخیره
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+
+        <div class="portlet box border shadow">
+            <div class="portlet-heading">
+                <div class="portlet-title">
+                    <h5>بهترین قیمت دسته بندی کاربران</h5>
+                </div><!-- /.portlet-title -->
+
+            </div><!-- /.portlet-heading -->
+            <div class="portlet-body" style="">
+                <form role="form" method="post" asp-page-handler="SetBestStockId" >
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info btn-round">
+                            <i class="icon-check"></i>
+                            ثبت
+                            <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                        </button>
+
+                    </div><!-- /.form-actions -->
+                </form>
+            </div><!-- /.portlet-body -->
+        </div><!-- /.portlet -->
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.rw)
+            {
+                <tr>
+                    <td>@item.productId</td>
+                    <td>@item.error</td>
+                </tr>
+            }
+           
+        </tbody>
+    </table>
+</div><!-- /.row -->

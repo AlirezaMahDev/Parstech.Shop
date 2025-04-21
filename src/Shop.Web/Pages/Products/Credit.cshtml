@@ -1,0 +1,142 @@
+﻿@page "{shortLink}"
+@model Shop.Web.Pages.Products.CreditModel
+@{
+}
+<main id="content" role="main">
+    <div class="container ">
+        <div class="row">
+            <partial name="Site/_PanelSideBar" />
+
+            <div class="col-lg-9 order-lg-1 rtl">
+                <div class="pb-7 mb-7">
+                    <!-- Title -->
+                    <div class="panel panel-warning box shadow border">
+                        <div class="panel-heading">
+                            <div class="panel-title ">
+                                <h6 class="title">
+
+                                    شرایط خرید اعتباری
+                                    
+                                    
+                                </h6>
+                                @if(Model.Items.Count>0){
+                                    <strong>@Model.Items.FirstOrDefault().Name</strong>
+                                }
+                            </div><!-- /.panel-title -->
+                            <div class="buttons-box toggle">
+                            </div><!-- /.buttons-box -->
+                        </div><!-- /.panel-heading -->
+                       
+                        <div class="row mt-2">
+                            @foreach(var item in Model.Items){
+                                <div class="col-lg-6 col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                            <h1 class="badge font-size-17 BgBlue font-weight-bold">@item.Month ماهه</h1>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h5 class="font-weight-bold">کالا</h5>
+                                        <h6>@item.Name </h6>
+                                        
+                                        <h5 class="font-weight-bold">مدل</h5>
+                                        <h6>@item.VariationName</h6>
+                                        
+                                        <h5 class="font-weight-bold">قیمت محصول</h5>
+                                            <h6>  @item.SalePrice.ToString("0,#")  تومان </h6>
+                                        
+                                        <h5 class="font-weight-bold">میزان سود محاسبه شده</h5>
+                                        <h6>@item.Persent %</h6>
+                                        
+                                        <h5 class="font-weight-bold">مبلغ قابل پرداخت ماهیانه</h5>
+                                            <h6>  @item.PayMonth.ToString("0,#") تومان</h6>
+                                        
+                                        <h5 class="font-weight-bold">مبلغ پیش پرداخت </h5>
+                                            <h6>  @item.PrePay.ToString("0,#") تومان</h6>
+                                        
+                                        <h5 class="font-weight-bold">مبلغ نهایی  </h5>
+                                            <h6>  @item.Total.ToString("0,#") تومان</h6>
+                                    </div>
+                                    <div class="card-foote">
+
+                                            <button type="button" onclick="AcceptCredit(@item.Id,@item.ProductStockPriceId)" class="btn BgBlue text-white  btn-block " data-bs-toggle="modal" data-bs-target="#CreditModal">
+                                                درخواست خرید اعتباری
+                                                <div class="paper-ripple">
+                                                    <div class="paper-ripple__background"></div>
+                                                    <div class="paper-ripple__waves"></div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                           
+                            }
+                        </div>
+                    </div>
+                    <!-- End Title -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<div id="CreditModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close " data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تایید خرید اعتباری</h4>
+                
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 text-center">
+                    <h4>آیا از ثبت درخواست خود اطمینان دارید؟</h4>
+                    <h5>با تایید درخواست سفارش شما ثبت و اقساط شما محاسبه میگردد.</h5>
+                    <form method="post"  asp-page-handler="Complete"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-begin="OnLoadingCredit"
+                          data-ajax-complete="OnCompleteCredit">
+                        <input type="hidden" asp-for="Credit.Id" id="Credit_Id" />
+                        <input type="hidden" asp-for="Credit.ProductStockPriceId" id="Credit_ProductStockPriceId" />
+                        
+                        <button type="submit" class="btn btn-sm btn-success btn-round hover-green">تایید درخواست</button>
+                    </form>
+
+                </div><!-- /col-lg-12 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round" data-bs-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--FORMS-->
+
+
+
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/data-table/DataTables-1.10.16/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Admin/plugins/select2/dist/css/select2.min.css" rel="stylesheet">
+
+    <link href="~/Site/ProductDetail/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Site/ProductDetail/main.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/Separate.js"></script>
+
+    <script src="~/Shared/Lib/Site/Products/Credit.js"></script>
+}

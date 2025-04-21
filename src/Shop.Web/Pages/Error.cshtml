@@ -1,0 +1,37 @@
+﻿@page
+@model ErrorModel
+@{
+    Layout = "Shared/Auth_Layout";
+    ViewData["Title"] = "Log in";
+}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="logo-con m-t-10 m-b-10">
+                <img src="~/Shared/Images/logo.png" class="dark-logo center-block img-responsive" width="150" alt="logo">
+                <img src="~/Shared/updating.webp" class="dark-logo center-block img-responsive" alt="logo">
+               
+            </div><!-- /.logo-con -->
+
+            <h1 class="text-center m-b-20 font-weight-bold">سایت <strong class="Orange">در حال به روزرسانی</strong> میباشد.<br /> از شکیبایی شما متشکریم</h1>
+            <hr>
+            
+        </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+</div><!-- /.container-fluid -->
+@section Styles {
+    <link href="~/Shared/Lib/Shared/Toast/Toast.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Shared/Lib/Shared/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Shared/Lib/Admin/Auth/Login.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/Toast.js"></script>
+    <script src="~/Shared/Lib/Shared/Toast/MyToast.js"></script>
+
+    <!-- BEGIN PAGE JAVASCRIPT -->
+    <script src="~/Admin/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/Admin/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/Admin/js/pages/ladda.js"></script>
+}

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from fastapi import FastAPI
 import logging
@@ -17,12 +18,13 @@ app = FastAPI()
 
 # --- تنظیمات پیکربندی ---
 MODEL_NAME = 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2'
-DB_CONN_STR = (
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=localhost;'
-    'DATABASE=parstech;'
-    'Trusted_Connection=yes;'
-)
+# DB_CONN_STR = (
+#     'DRIVER={ODBC Driver 17 for SQL Server};'
+#     'SERVER=localhost;'
+#     'DATABASE=parstech;'
+#     'Trusted_Connection=yes;'
+# )
+DB_CONN_STR = "DRIVER={ODBC Driver 17 for SQL Server};" + os.getenv("ConnectionStrings__database").replace("TrustServerCertificate=true","Trusted_Connection=no").replace("User ID","UID").replace("Password","PWD")
 CHROMA_DIR = "./chroma_db"
 
 # --- متغیرهای سراسری ---
@@ -124,10 +126,10 @@ async def shutdown_event():
 
 # --- اندپوینت‌های API ---
 # اضافه کردن imports
-from persian_spell_checker import PersianSpellChecker
+# from persian_spell_checker import PersianSpellChecker
 
 # --- افزودن تنظیمات جدید ---
-SPELL_CHECKER = PersianSpellChecker()
+# SPELL_CHECKER = PersianSpellChecker()
 
 # --- اصلاح اندپوینت جستجو ---
 @app.post("/search")
