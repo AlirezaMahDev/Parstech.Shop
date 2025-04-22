@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-Shop.Web-b308d2ff-681a-47a6-bc4a-38a64cde3258</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -65,6 +66,9 @@
         <Content Update="wwwroot\Shared\Lib\Site\Products\Credit.js">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Include="..\..\.dockerignore">
+          <Link>.dockerignore</Link>
         </Content>
     </ItemGroup>
 

@@ -89,4 +89,6 @@ builder.AddProject<Projects.Shop_Web>("web")
     .WithReference(ai)
     .WaitFor(ai);
 
+builder.AddDockerComposePublisher();
+
 builder.Build().Run();
